@@ -1,9 +1,9 @@
 ﻿using FLG.Cs.Math;
-using System.Numerics;
 
 namespace FLG.Cs.UI.Layouts {
     internal class AbstractLayoutElementLeaf : AbstractLayoutElement {
-        internal AbstractLayoutElementLeaf(float size, int order, float stretchWeight) : base(size, order, stretchWeight) { }
+        internal AbstractLayoutElementLeaf(RectXform rectXform, Size size, int order, float stretchWeight)
+            : base(rectXform, size, order, stretchWeight) { }
 
         internal override void ComputeRectXform() { }
     }
