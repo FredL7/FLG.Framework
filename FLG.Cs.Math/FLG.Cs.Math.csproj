@@ -1,10 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>FLG.Cs.Math</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <BaseOutputPath>..\_build\bin</BaseOutputPath>
+    <BaseIntermediateOutputPath>..\_build\obj\</BaseIntermediateOutputPath>
   </PropertyGroup>
 
 </Project>

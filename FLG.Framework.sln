@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FLG.Cs.Math", "FLG.Cs.Math\FLG.Cs.Math.csproj", "{12EB426C-DF16-48B7-AE10-C8C762AC3B42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FLG.Cs.Math", "FLG.Cs.Math\FLG.Cs.Math.csproj", "{12EB426C-DF16-48B7-AE10-C8C762AC3B42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FLG.Cs.UI", "FLG.Cs.UI\FLG.Cs.UI.csproj", "{0ECEFC11-5A94-4F6E-A4C0-D75D4639C4F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FLG.Cs.UI", "FLG.Cs.UI\FLG.Cs.UI.csproj", "{0ECEFC11-5A94-4F6E-A4C0-D75D4639C4F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
