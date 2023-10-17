@@ -3,7 +3,7 @@ using FLG.Cs.UI.Layouts;
 using System.Numerics;
 
 namespace FLG.Cs.UI.Grid {
-    internal class VStack : Stack {
+    public class VStack : Stack {
         public VStack(RectXform rectXform, Size size, int order = 0, float weight = 0,
             EGridDirection direction = EGridDirection.NORMAL,
             EGridJustify justify = EGridJustify.START,
@@ -21,14 +21,15 @@ namespace FLG.Cs.UI.Grid {
         protected override float GetContainerDimensionMain(Size containerDimensions) => containerDimensions.Height;
         protected override float GetContainerDimensionSecondary(Size containerDimensions) => containerDimensions.Width;
 
-        protected override Vector2[] GetFinalPositions(float[] mainMargins, float[] secondaryMargins)
+        protected override Vector2[] GetFinalPositions(float[] mainMargins, float[] secondaryMargins, float[] mainDimensions)
         {
             Vector2[] positions = new Vector2[mainMargins.Length];
             var accumulate = 0f;
             for (int i = 0; i < positions.Length; ++i)
             {
-                positions[i] = new Vector2(secondaryMargins[i], accumulate + mainMargins[i]);
-                accumulate += mainMargins[i];
+                float mainDimensionDelta = i == 0 ? 0 : mainDimensions[i - 1];
+                positions[i] = new Vector2(secondaryMargins[i], accumulate + mainMargins[i] + mainDimensionDelta);
+                accumulate += mainMargins[i] + mainDimensionDelta;
             }
             return positions;
         }

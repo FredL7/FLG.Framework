@@ -1,7 +1,7 @@
 ﻿using FLG.Cs.Math;
 
 namespace FLG.Cs.UI.Layouts {
-    internal abstract class AbstractLayoutElementComposite : AbstractLayoutElement {
+    public abstract class AbstractLayoutElementComposite : AbstractLayoutElement {
         private List<AbstractLayoutElement> _childrens;
         protected List<AbstractLayoutElement> GetChildrens() => _childrens;
 
@@ -11,7 +11,7 @@ namespace FLG.Cs.UI.Layouts {
             _childrens = new();
         }
 
-        internal void AddChild(AbstractLayoutElement child)
+        public void AddChild(AbstractLayoutElement child)
         {
             _childrens.Add(child);
         }

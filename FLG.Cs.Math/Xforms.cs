@@ -48,6 +48,8 @@ namespace FLG.Cs.Math {
         {
             _values = new(width, height);
         }
+
+        public override string ToString() => _values.ToString();
     }
 
     public struct Spacing {
@@ -96,6 +98,8 @@ namespace FLG.Cs.Math {
                 bottom
             );
         }
+
+        public override string ToString() => _values.ToString();
     }
 
     public class RectXform {
@@ -109,6 +113,7 @@ namespace FLG.Cs.Math {
         public Vector2 GetContainerPosition() => _position + new Vector2(Padding.Left, Padding.Top);
         public Size GetDimensions() => _dimensions;
 
+        public RectXform() { }
         public RectXform(Spacing margin, Spacing padding)
         {
             _position = new();

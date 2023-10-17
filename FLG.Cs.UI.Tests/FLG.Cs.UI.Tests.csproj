@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FLG.Cs.Math\FLG.Cs.Math.csproj" />
     <ProjectReference Include="..\FLG.Cs.UI\FLG.Cs.UI.csproj" />
   </ItemGroup>
 

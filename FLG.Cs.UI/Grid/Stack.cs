@@ -9,7 +9,7 @@ namespace FLG.Cs.UI.Grid {
     public enum EGridJustify { START, END, CENTER, SPACE_BETWEEN, SPACE_AROUND, SPACE_EVENLY } // Along the main direction
     public enum EGridAlignment { START, END, CENTER, STRETCH } // Along the other direction
 
-    internal abstract class Stack : AbstractLayoutElementComposite {
+    public abstract class Stack : AbstractLayoutElementComposite {
         public EGridDirection Direction { get; private set; }
         public EGridJustify Justify { get; private set; }
         public EGridAlignment Alignment { get; private set; }
@@ -38,7 +38,7 @@ namespace FLG.Cs.UI.Grid {
             var secondaryMargins = secondaryDimensionsAndMargins.Item2;
 
             Size[] sizes = GetFinalSizes(mainDimensions, secondaryDimensions);
-            Vector2[] positions = GetFinalPositions(mainMargins, secondaryMargins);
+            Vector2[] positions = GetFinalPositions(mainMargins, secondaryMargins, mainDimensions);
 
             for (int i = 0; i < childrens.Length; ++i)
                 childrens[i].RectXform.SetSizesAndPosition(sizes[i], positions[i]);
@@ -53,7 +53,7 @@ namespace FLG.Cs.UI.Grid {
         protected abstract float GetContainerDimensionMain(Size containerDimensions);
         protected abstract float GetContainerDimensionSecondary(Size containerDimensions);
         protected abstract Size[] GetFinalSizes(float[] mainDimensions, float[] secondaryDimensions);
-        protected abstract Vector2[] GetFinalPositions(float[] mainMargins, float[] secondaryMargins);
+        protected abstract Vector2[] GetFinalPositions(float[] mainMargins, float[] secondaryMargins, float[] mainDimensions);
 
         private AbstractLayoutElement[] GetChildrensInOrder()
         {
@@ -98,8 +98,15 @@ namespace FLG.Cs.UI.Grid {
             var containerDimensions = RectXform.GetDimensions();
             var containerDimensionSecondary = GetContainerDimensionSecondary(containerDimensions);
 
-            float[] dimensions = new float[childrens.Length];
             float[] margins = new float[childrens.Length];
+            for (int i = 0; i < margins.Length; ++i)
+            {
+                var secondaryMarginFirst = GetChildSecondaryMarginFirst(childrens[i]);
+                var secondaryMarginLast = GetChildSecondaryMarginLast(childrens[i]);
+            }
+
+
+            float[] dimensions = new float[childrens.Length];
 
             for (int i = 0; i < childrens.Length; ++i)
             {
@@ -148,7 +155,7 @@ namespace FLG.Cs.UI.Grid {
             margins[^1] = GetChildMainMarginLast(childrens[^1]);
             if (margins.Length > 1)
             {
-                for (int i = 1; i < childrens.Length - 1; ++i)
+                for (int i = 1; i < childrens.Length; ++i)
                 {
                     float a = GetChildMainMarginLast(childrens[i - 1]);
                     float b = GetChildMainMarginFirst(childrens[i]);
