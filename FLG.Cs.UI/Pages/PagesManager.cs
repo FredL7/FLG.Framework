@@ -8,9 +8,10 @@
             _pages = new();
         }
 
-        internal void RegisterPage(uint id, AbstractPage page)
+        internal void RegisterPages(string pagesDir)
         {
-            _pages.Add(id, page);
+            // _pages.Add(id, page);
+            Console.WriteLine(pagesDir);
         }
 
         internal uint GetLayoutIdFromPageId(uint id) => _pages[id].LayoutId;

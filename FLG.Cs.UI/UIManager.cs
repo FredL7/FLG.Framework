@@ -3,34 +3,33 @@ using FLG.Cs.UI.Pages;
 
 namespace FLG.Cs.UI {
     public class UIManager : IUIManager {
-        private PagesManager _pagesManager;
         private LayoutsManager _layoutsManager;
+        private PagesManager _pagesManager;
 
         public UIManager()
         {
-            _pagesManager = new PagesManager();
             _layoutsManager = new LayoutsManager();
+            _pagesManager = new PagesManager();
         }
 
-        #region Layout
-        public void RegisterLayout(uint id, AbstractLayout layout)
+        #region Layouts
+        public void RegisterLayouts(string layoutsDir)
         {
-            _layoutsManager.RegisterLayout(id, layout);
+            Window defaultWindow = new(1920, 1080);
+            // TODO: Register window size change to compute on change
+            _layoutsManager.RegisterLayouts(layoutsDir, defaultWindow);
         }
-
-        public void ComputeLayoutsRectXforms(float windowWidth, float windowHeight)
+        public IEnumerable<Layout> GetLayouts()
         {
-            Window window = new(windowWidth, windowHeight);
-            _layoutsManager.ComputeLayoutsRectXforms(window);
+            return _layoutsManager.GetLayouts();
         }
-        #endregion Layout
+        #endregion Layouts
 
         #region Page
-        public void RegisterPage(uint id, AbstractPage page)
+        public void RegisterPages(string pagesDir)
         {
-            _pagesManager.RegisterPage(id, page);
+            _pagesManager.RegisterPages(pagesDir);
         }
-
         public void OpenPage(uint pageId)
         {
             uint layoutId = _pagesManager.GetLayoutIdFromPageId(pageId);

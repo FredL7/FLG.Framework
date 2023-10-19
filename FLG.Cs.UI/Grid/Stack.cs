@@ -3,16 +3,13 @@ using FLG.Cs.UI.Layouts;
 
 using System.Diagnostics;
 using System.Numerics;
+using System.Xml;
 
 namespace FLG.Cs.UI.Grid {
-    public enum EGridDirection { NORMAL, REVERSE }
-    public enum EGridJustify { START, END, CENTER, SPACE_BETWEEN, SPACE_AROUND, SPACE_EVENLY } // Along the main direction
-    public enum EGridAlignment { START, END, CENTER, STRETCH } // Along the other direction
-
     public abstract class Stack : AbstractLayoutElementComposite {
         public EGridDirection Direction { get; private set; }
-        public EGridJustify Justify { get; private set; }
-        public EGridAlignment Alignment { get; private set; }
+        public EGridJustify Justify { get; private set; } // Along the main direction
+        public EGridAlignment Alignment { get; private set; } // Along the other direction
 
         public Stack(RectXform rectXform, Size size, int order, float weight,
             EGridDirection direction, EGridJustify justify, EGridAlignment alignment)
@@ -21,6 +18,12 @@ namespace FLG.Cs.UI.Grid {
             Direction = direction;
             Justify = justify;
             Alignment = alignment;
+        }
+
+        public Stack(XmlNode node) : base(node) {
+            Direction = LayoutXMLParser.GetDirection(node);
+            Justify = LayoutXMLParser.GetJustify(node);
+            Alignment = LayoutXMLParser.GetAlignment(node);
         }
 
         protected sealed override void ComputeChildrenSizesAndPositions(Size parentDimensions)
@@ -57,7 +60,7 @@ namespace FLG.Cs.UI.Grid {
 
         private AbstractLayoutElement[] GetChildrensInOrder()
         {
-            var childrens = GetChildrens();
+            var childrens = GetChildrensInternal();
             var childrensOrdered = childrens.OrderBy(x => x.Order);
             if (Direction == EGridDirection.REVERSE)
                 return childrensOrdered.Reverse().ToArray();

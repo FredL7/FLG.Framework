@@ -1,14 +1,15 @@
 ﻿using FLG.Cs.Math;
 using FLG.Cs.UI.Layouts;
 using System.Numerics;
+using System.Xml;
 
 namespace FLG.Cs.UI.Grid {
     public class HStack : Stack {
-        public HStack(RectXform rectXform, Size size, int order = 0, float weight = 0,
-            EGridDirection direction = EGridDirection.NORMAL,
-            EGridJustify justify = EGridJustify.START,
-            EGridAlignment alignment = EGridAlignment.START)
+        public HStack(RectXform rectXform, Size size, int order, float weight,
+            EGridDirection direction, EGridJustify justify, EGridAlignment alignment)
             : base(rectXform, size, order, weight, direction, justify, alignment) { }
+
+        public HStack(XmlNode node) : base(node) { }
 
         protected override float GetChildMainMarginFirst(AbstractLayoutElement child) => child.RectXform.Margin.Left;
         protected override float GetChildMainMarginLast(AbstractLayoutElement child) => child.RectXform.Margin.Right;

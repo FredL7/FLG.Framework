@@ -1,5 +1,7 @@
 ﻿using FLG.Cs.Math;
+using FLG.Cs.UI.Grid;
 using System.Numerics;
+using System.Xml;
 
 namespace FLG.Cs.UI.Layouts {
     public abstract class AbstractLayoutElement {
@@ -16,7 +18,7 @@ namespace FLG.Cs.UI.Layouts {
         /// <param name="size">Expected size (pixels) along the main axis of its container, a value of zero (0) indicates that this element should stretch, used in combination with weight</param>
         /// <param name="order">Defines a custom order for this element</param>
         /// <param name="weight">Combines with a size of zero (0) to define its size, relative to other weights. Priority is given to element that have a size before stretching</param>
-        internal AbstractLayoutElement(RectXform rectXform, Size size,  int order, float weight = 0)
+        internal AbstractLayoutElement(RectXform rectXform, Size size,  int order, float weight)
         {
             RectXform = rectXform;
 
@@ -24,6 +26,24 @@ namespace FLG.Cs.UI.Layouts {
             Order = order;
             Weight = weight;
         }
+
+        //? TODO: Maybe only requires xml constructor and parameter constructor obsolete
+        internal AbstractLayoutElement(XmlNode node)
+        {
+            var margin = LayoutXMLParser.GetMargin(node);
+            var padding = LayoutXMLParser.GetPadding(node);
+            var width = LayoutXMLParser.GetWidth(node);
+            var height = LayoutXMLParser.GetHeight(node);
+
+            RectXform = new(margin, padding);
+            Size = new(width, height);
+            Order = LayoutXMLParser.GetOrder(node);
+            Weight = LayoutXMLParser.GetWeight(node);
+        }
+
+        internal abstract void AddChild(AbstractLayoutElement child);
+        public abstract bool HasChildren();
+        public abstract IEnumerable<AbstractLayoutElement> GetChildrens();
 
         internal abstract void ComputeRectXform();
     }

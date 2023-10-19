@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Layout>
+  <HStack>
+    <ProxyLayoutElement width="200" margin="5 10 15 20" padding="25 30 35 40" />
+    <ProxyLayoutElement margin="45 50 15 20" padding="25 30 35 40" />
+  </HStack>
+</Layout>
