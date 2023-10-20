@@ -1,11 +1,11 @@
 ﻿using System.Numerics;
 
 namespace FLG.Cs.UI.Layouts {
-    public class Layout {
+    public class Layout : ILayout {
         private bool _active;
 
         private AbstractLayoutElement _root;
-        public AbstractLayoutElement Root { get => _root; }
+        public ILayoutElement GetRoot() => _root;
 
         internal Layout(AbstractLayoutElement root)
         {

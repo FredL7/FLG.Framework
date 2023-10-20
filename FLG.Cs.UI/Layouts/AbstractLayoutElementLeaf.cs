@@ -2,11 +2,11 @@
 using System.Xml;
 
 namespace FLG.Cs.UI.Layouts {
-    public class AbstractLayoutElementLeaf : AbstractLayoutElement {
-        public AbstractLayoutElementLeaf(RectXform rectXform, Size size, int order, float stretchWeight)
+    internal class AbstractLayoutElementLeaf : AbstractLayoutElement {
+        internal AbstractLayoutElementLeaf(RectXform rectXform, Size size, int order, float stretchWeight)
             : base(rectXform, size, order, stretchWeight) { }
 
-        public AbstractLayoutElementLeaf(XmlNode node)
+        internal AbstractLayoutElementLeaf(XmlNode node)
             : base(node) { }
 
         internal override void AddChild(AbstractLayoutElement child)
@@ -14,6 +14,7 @@ namespace FLG.Cs.UI.Layouts {
             throw new NotImplementedException();
             // TODO: Better throw of error log
         }
+
         public override bool HasChildren() => false;
         public override IEnumerable<AbstractLayoutElement> GetChildrens()
         {

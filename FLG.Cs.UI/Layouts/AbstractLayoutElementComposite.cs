@@ -2,7 +2,7 @@
 using System.Xml;
 
 namespace FLG.Cs.UI.Layouts {
-    public abstract class AbstractLayoutElementComposite : AbstractLayoutElement {
+    internal abstract class AbstractLayoutElementComposite : AbstractLayoutElement {
         private List<AbstractLayoutElement> _childrens = new();
         protected List<AbstractLayoutElement> GetChildrensInternal() => _childrens;
 
@@ -15,6 +15,7 @@ namespace FLG.Cs.UI.Layouts {
         {
             _childrens.Add(child);
         }
+
         public override bool HasChildren() => _childrens.Count > 0;
         public override IEnumerable<AbstractLayoutElement> GetChildrens() => _childrens;
 

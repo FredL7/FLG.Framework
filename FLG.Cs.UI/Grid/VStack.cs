@@ -4,12 +4,12 @@ using System.Numerics;
 using System.Xml;
 
 namespace FLG.Cs.UI.Grid {
-    public class VStack : Stack {
-        public VStack(RectXform rectXform, Size size, int order, float weight,
+    internal class VStack : Stack {
+        internal VStack(RectXform rectXform, Size size, int order, float weight,
             EGridDirection direction, EGridJustify justify, EGridAlignment alignment)
             : base(rectXform, size, order, weight, direction, justify, alignment) { }
 
-        public VStack(XmlNode node) : base(node) { }
+        internal VStack(XmlNode node) : base(node) { }
 
         protected override float GetChildMainMarginFirst(AbstractLayoutElement child) => child.RectXform.Margin.Top;
         protected override float GetChildMainMarginLast(AbstractLayoutElement child) => child.RectXform.Margin.Bottom;

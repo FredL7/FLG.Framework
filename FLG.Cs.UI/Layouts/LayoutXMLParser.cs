@@ -6,8 +6,8 @@ namespace FLG.Cs.UI.Layouts {
     internal class LayoutXMLParser {
         private bool _error = false;
         private string _errorMsg = String.Empty;
-        public bool IsValid {  get => !_error; }
-        public string ErrorMsg { get => _errorMsg; }
+        internal bool IsValid {  get => !_error; }
+        internal string ErrorMsg { get => _errorMsg; }
 
         internal Layout Parse(string layoutPath)
         {

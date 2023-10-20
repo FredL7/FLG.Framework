@@ -4,7 +4,7 @@ namespace FLG.Cs.UI {
     public interface IUIManager {
         #region Layout
         public void RegisterLayouts(string layoutsDir);
-        public IEnumerable<Layout> GetLayouts();
+        public IEnumerable<ILayout> GetLayouts();
         #endregion Layout
 
         #region Page

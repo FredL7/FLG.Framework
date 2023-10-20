@@ -6,24 +6,24 @@ using System.Numerics;
 using System.Xml;
 
 namespace FLG.Cs.UI.Grid {
-    public abstract class Stack : AbstractLayoutElementComposite {
-        public EGridDirection Direction { get; private set; }
-        public EGridJustify Justify { get; private set; } // Along the main direction
-        public EGridAlignment Alignment { get; private set; } // Along the other direction
+    internal abstract class Stack : AbstractLayoutElementComposite {
+        private EGridDirection _direction;
+        private EGridJustify _justify; // Along the main direction
+        private EGridAlignment _alignment; // Along the other direction
 
-        public Stack(RectXform rectXform, Size size, int order, float weight,
+        internal Stack(RectXform rectXform, Size size, int order, float weight,
             EGridDirection direction, EGridJustify justify, EGridAlignment alignment)
             : base(rectXform, size, order, weight)
         {
-            Direction = direction;
-            Justify = justify;
-            Alignment = alignment;
+            _direction = direction;
+            _justify = justify;
+            _alignment = alignment;
         }
 
-        public Stack(XmlNode node) : base(node) {
-            Direction = LayoutXMLParser.GetDirection(node);
-            Justify = LayoutXMLParser.GetJustify(node);
-            Alignment = LayoutXMLParser.GetAlignment(node);
+        internal Stack(XmlNode node) : base(node) {
+            _direction = LayoutXMLParser.GetDirection(node);
+            _justify = LayoutXMLParser.GetJustify(node);
+            _alignment = LayoutXMLParser.GetAlignment(node);
         }
 
         protected sealed override void ComputeChildrenSizesAndPositions(Size parentDimensions)
@@ -62,7 +62,7 @@ namespace FLG.Cs.UI.Grid {
         {
             var childrens = GetChildrensInternal();
             var childrensOrdered = childrens.OrderBy(x => x.Order);
-            if (Direction == EGridDirection.REVERSE)
+            if (_direction == EGridDirection.REVERSE)
                 return childrensOrdered.Reverse().ToArray();
             return childrensOrdered.ToArray();
         }
@@ -102,7 +102,7 @@ namespace FLG.Cs.UI.Grid {
             var containerDimensionSecondary = GetContainerDimensionSecondary(containerDimensions);
 
             float[] margins = new float[childrens.Length];
-            for (int i = 0; i < margins.Length; ++i)
+            for (int i = 0; i < margins.Length; ++i) // TODO: Validate
             {
                 var secondaryMarginFirst = GetChildSecondaryMarginFirst(childrens[i]);
                 var secondaryMarginLast = GetChildSecondaryMarginLast(childrens[i]);
@@ -121,7 +121,7 @@ namespace FLG.Cs.UI.Grid {
                     dimension = dimensionStretched;
                 dimensions[i] = dimension;
 
-                switch (Alignment)
+                switch (_alignment)
                 {
                     case EGridAlignment.START:
                         margins[i] = secondaryMarginFirst;
@@ -190,7 +190,7 @@ namespace FLG.Cs.UI.Grid {
         private float[] UpdateMarginsForJustify(float[] margins, float spaceAvailable)
         {
             float[] justifiedMargin = margins;
-            switch (Justify)
+            switch (_justify)
             {
                 case EGridJustify.START:
                     break;

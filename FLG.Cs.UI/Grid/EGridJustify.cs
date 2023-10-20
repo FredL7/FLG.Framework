@@ -1,8 +1,8 @@
 ﻿namespace FLG.Cs.UI.Grid {
-    public enum EGridJustify { START, END, CENTER, SPACE_BETWEEN, SPACE_AROUND, SPACE_EVENLY }
+    internal enum EGridJustify { START, END, CENTER, SPACE_BETWEEN, SPACE_AROUND, SPACE_EVENLY }
 
-    public class EGridJustifyExtension {
-        public static EGridJustify FromString(string value)
+    internal class EGridJustifyExtension {
+        internal static EGridJustify FromString(string value)
         {
             return value.ToLower() switch
             {

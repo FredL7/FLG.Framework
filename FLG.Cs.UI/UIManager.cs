@@ -19,7 +19,7 @@ namespace FLG.Cs.UI {
             // TODO: Register window size change to compute on change
             _layoutsManager.RegisterLayouts(layoutsDir, defaultWindow);
         }
-        public IEnumerable<Layout> GetLayouts()
+        public IEnumerable<ILayout> GetLayouts()
         {
             return _layoutsManager.GetLayouts();
         }

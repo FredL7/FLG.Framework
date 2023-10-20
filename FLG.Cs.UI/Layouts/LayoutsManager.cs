@@ -13,7 +13,7 @@ namespace FLG.Cs.UI.Layouts {
             _layouts = new();
         }
 
-        public IEnumerable<Layout> GetLayouts() => _layouts.Values;
+        public IEnumerable<ILayout> GetLayouts() => _layouts.Values;
 
         internal void RegisterLayouts(string layoutsDir, Window window)
         {

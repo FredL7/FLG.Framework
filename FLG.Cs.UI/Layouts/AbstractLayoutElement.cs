@@ -1,11 +1,12 @@
 ﻿using FLG.Cs.Math;
-using FLG.Cs.UI.Grid;
 using System.Numerics;
 using System.Xml;
 
 namespace FLG.Cs.UI.Layouts {
-    public abstract class AbstractLayoutElement {
-        public RectXform RectXform { get; private set; }
+    internal abstract class AbstractLayoutElement : ILayoutElement {
+        internal RectXform RectXform { get; private set; }
+        public Vector2 GetPosition() => RectXform.GetContainerPosition();
+        public Size GetDimensions() => RectXform.GetDimensions();
 
         internal Size Size { get; private set; }
         internal int Order { get; private set; }
@@ -42,9 +43,8 @@ namespace FLG.Cs.UI.Layouts {
         }
 
         internal abstract void AddChild(AbstractLayoutElement child);
-        public abstract bool HasChildren();
-        public abstract IEnumerable<AbstractLayoutElement> GetChildrens();
-
         internal abstract void ComputeRectXform();
+        public abstract bool HasChildren();
+        public abstract IEnumerable<ILayoutElement> GetChildrens();
     }
 }

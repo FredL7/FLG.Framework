@@ -1,11 +1,11 @@
 ﻿namespace FLG.Cs.UI.Pages {
-    public abstract class AbstractPage {
+    internal abstract class AbstractPage {
         private EPageStatus _status;
 
         private uint _layoutId;
         internal uint LayoutId { get => _layoutId; }
 
-        public AbstractPage(uint layoutId)
+        internal AbstractPage(uint layoutId)
         {
             _status = EPageStatus.CLOSED;
             _layoutId = layoutId;
