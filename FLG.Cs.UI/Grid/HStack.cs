@@ -5,10 +5,6 @@ using System.Xml;
 
 namespace FLG.Cs.UI.Grid {
     internal class HStack : Stack {
-        internal HStack(RectXform rectXform, Size size, int order, float weight,
-            EGridDirection direction, EGridJustify justify, EGridAlignment alignment)
-            : base(rectXform, size, order, weight, direction, justify, alignment) { }
-
         internal HStack(XmlNode node) : base(node) { }
 
         protected override float GetChildMainMarginFirst(AbstractLayoutElement child) => child.RectXform.Margin.Left;

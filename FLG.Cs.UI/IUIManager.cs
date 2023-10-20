@@ -3,7 +3,7 @@
 namespace FLG.Cs.UI {
     public interface IUIManager {
         #region Layout
-        public void RegisterLayouts(string layoutsDir);
+        public void RegisterLayouts(string layoutsDir); //? TODO: string[]
         public IEnumerable<ILayout> GetLayouts();
         #endregion Layout
 

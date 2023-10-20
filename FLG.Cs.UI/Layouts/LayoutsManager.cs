@@ -42,7 +42,7 @@ namespace FLG.Cs.UI.Layouts {
             foreach (var layoutFile in layoutFiles)
             {
                 var layout = parser.Parse(layoutFile);
-                if (!parser.IsValid)
+                if (!parser.IsValid || layout == null)
                 {
                     Console.WriteLine($"Error parsing layout {layoutFile} - {parser.ErrorMsg} ");
                     return;

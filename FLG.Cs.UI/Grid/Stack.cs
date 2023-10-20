@@ -11,15 +11,6 @@ namespace FLG.Cs.UI.Grid {
         private EGridJustify _justify; // Along the main direction
         private EGridAlignment _alignment; // Along the other direction
 
-        internal Stack(RectXform rectXform, Size size, int order, float weight,
-            EGridDirection direction, EGridJustify justify, EGridAlignment alignment)
-            : base(rectXform, size, order, weight)
-        {
-            _direction = direction;
-            _justify = justify;
-            _alignment = alignment;
-        }
-
         internal Stack(XmlNode node) : base(node) {
             _direction = LayoutXMLParser.GetDirection(node);
             _justify = LayoutXMLParser.GetJustify(node);

@@ -6,9 +6,6 @@ namespace FLG.Cs.UI.Layouts {
         private List<AbstractLayoutElement> _childrens = new();
         protected List<AbstractLayoutElement> GetChildrensInternal() => _childrens;
 
-        internal AbstractLayoutElementComposite(RectXform rectXform, Size size, int order, float stretchWeight)
-            : base(rectXform, size, order, stretchWeight) { }
-
         internal AbstractLayoutElementComposite(XmlNode node) : base(node) { }
 
         internal override void AddChild(AbstractLayoutElement child)

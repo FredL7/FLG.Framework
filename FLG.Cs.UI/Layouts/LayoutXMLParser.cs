@@ -9,7 +9,7 @@ namespace FLG.Cs.UI.Layouts {
         internal bool IsValid {  get => !_error; }
         internal string ErrorMsg { get => _errorMsg; }
 
-        internal Layout Parse(string layoutPath)
+        internal Layout? Parse(string layoutPath)
         {
             ResetError();
 
@@ -19,7 +19,7 @@ namespace FLG.Cs.UI.Layouts {
             var layoutNode = xmlDoc.DocumentElement;
             if (layoutNode == null) {
                 Error("Top-level node must be <Layout>");
-                return new NullLayout();
+                return null;
             }
 
             var rootCount = layoutNode.ChildNodes.Count;
@@ -27,22 +27,23 @@ namespace FLG.Cs.UI.Layouts {
             if (rootCount == 0 || rootNode == null)
             {
                 Error("<layout> must have a child node");
-                return new NullLayout();
+                return null;
             }
             else if (rootCount > 1)
             {
                 Error("<layout> can only have 1 child (root)");
-                return new NullLayout();
+                return null;
             }
 
             var rootLayoutElement = ParseNode(rootNode);
-            if (_error)
+            if (_error || rootLayoutElement == null)
             {
-                return new NullLayout();
+                return null;
             }
             //?: Root must be Composite?
-            Layout layout = new(rootLayoutElement);
-            ParseRecursive(rootNode, rootLayoutElement);
+            Layout? layout = new(rootLayoutElement);
+            if (layout != null)
+                ParseRecursive(rootNode, rootLayoutElement);
 
             return layout;
         }
@@ -51,13 +52,16 @@ namespace FLG.Cs.UI.Layouts {
         {
             foreach (XmlNode node in parentNode.ChildNodes)
             {
-                AbstractLayoutElement layoutElement = ParseNode(node);
-                parentLayoutElement.AddChild(layoutElement);
-                ParseRecursive(node, layoutElement);
+                AbstractLayoutElement? layoutElement = ParseNode(node);
+                if (layoutElement != null)
+                {
+                    parentLayoutElement.AddChild(layoutElement);
+                    ParseRecursive(node, layoutElement);
+                }
             }
         }
 
-        private AbstractLayoutElement ParseNode(XmlNode node)
+        private AbstractLayoutElement? ParseNode(XmlNode node)
         {
             var name = node.Name;
             switch(name)
@@ -70,7 +74,7 @@ namespace FLG.Cs.UI.Layouts {
                     return new ProxyLayoutElementLeaf(node);
                 default:
                     Error($"Unrecognized node {name}");
-                    return new NullLayoutElement();
+                    return null;
             }
         }
 
