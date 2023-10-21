@@ -19,6 +19,7 @@ namespace FLG.Cs.UI {
             // TODO: Register window size change to compute on change
             _layoutsManager.RegisterLayouts(layoutsDir, defaultWindow);
         }
+
         public IEnumerable<ILayout> GetLayouts()
         {
             return _layoutsManager.GetLayouts();
@@ -30,11 +31,17 @@ namespace FLG.Cs.UI {
         {
             _pagesManager.RegisterPages(pagesDir);
         }
+
         public void OpenPage(uint pageId)
         {
             uint layoutId = _pagesManager.GetLayoutIdFromPageId(pageId);
             _layoutsManager.SetLayoutActive(layoutId);
             _pagesManager.OpenPage(pageId);
+        }
+
+        public IEnumerable<IPage> GetPages()
+        {
+            return _pagesManager.GetPages();
         }
         #endregion Page
     }

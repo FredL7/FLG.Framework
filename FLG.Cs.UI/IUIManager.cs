@@ -1,4 +1,5 @@
 ﻿using FLG.Cs.UI.Layouts;
+using FLG.Cs.UI.Pages;
 
 namespace FLG.Cs.UI {
     public interface IUIManager {
@@ -10,6 +11,7 @@ namespace FLG.Cs.UI {
         #region Page
         public void RegisterPages(string pagesDir);
         public void OpenPage(uint id);
+        public IEnumerable<IPage> GetPages();
         #endregion Page
     }
 }
