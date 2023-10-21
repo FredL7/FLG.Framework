@@ -12,6 +12,9 @@ namespace FLG.Cs.UI.Tests {
 
             foreach(var layout in uiManager.GetLayouts())
             {
+                if (layout.GetName() != "Sample")
+                    Assert.Fail();
+
                 var root = layout.GetRoot();
                 var rootDimensions = root.GetDimensions();
                 var rootPosition = root.GetPosition();
@@ -20,17 +23,16 @@ namespace FLG.Cs.UI.Tests {
 
                 Assert.IsTrue(root.HasChildren());
 
-                int count = 0;
                 foreach(var child in root.GetChildrens())
                 {
-                    if (count == 0)
+                    if (child.GetName() == "First")
                     {
                         var left1Dimensions = child.GetDimensions();
                         var left1Position = child.GetPosition();
                         Assert.IsTrue(left1Dimensions.Width == 140 && left1Dimensions.Height == 980);
                         Assert.IsTrue(left1Position.X == 50 && left1Position.Y == 40);
                     }
-                    else if (count == 1)
+                    else if (child.GetName() == "Second")
                     {
                         var left2Dimensions = child.GetDimensions();
                         var left2Position = child.GetPosition();
@@ -38,7 +40,6 @@ namespace FLG.Cs.UI.Tests {
                         Assert.IsTrue(left2Position.X == 265 && left2Position.Y == 80);
                     }
                     else { Assert.Fail(); }
-                    ++count;
                 }
             }
         }
