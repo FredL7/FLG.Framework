@@ -3,8 +3,8 @@ using System.Xml;
 
 namespace FLG.Cs.UI.Layouts {
     internal class AbstractLayoutElementLeaf : AbstractLayoutElement {
-        internal AbstractLayoutElementLeaf(XmlNode node)
-            : base(node) { }
+        internal AbstractLayoutElementLeaf(XmlNode node, string name)
+            : base(node, name) { }
 
         internal override void AddChild(AbstractLayoutElement child)
         {

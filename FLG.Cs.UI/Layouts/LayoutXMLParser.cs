@@ -9,7 +9,7 @@ namespace FLG.Cs.UI.Layouts {
         internal bool IsValid {  get => !_error; }
         internal string ErrorMsg { get => _errorMsg; }
 
-        internal Layout? Parse(string layoutPath)
+        internal Layout? Parse(string layoutPath, string filename)
         {
             ResetError();
 
@@ -40,8 +40,9 @@ namespace FLG.Cs.UI.Layouts {
             {
                 return null;
             }
+
             //?: Root must be Composite?
-            Layout? layout = new(rootLayoutElement);
+            Layout? layout = new(rootLayoutElement, filename);
             if (layout != null)
                 ParseRecursive(rootNode, rootLayoutElement);
 
@@ -63,21 +64,24 @@ namespace FLG.Cs.UI.Layouts {
 
         private AbstractLayoutElement? ParseNode(XmlNode node)
         {
-            var name = node.Name;
-            switch(name)
+            var nodeType = node.Name;
+            var name = GetName(node);
+            switch(nodeType)
             {
                 case "HStack":
-                    return new HStack(node);
+                    return new HStack(node, name);
                 case "VStack":
-                    return new VStack(node);
+                    return new VStack(node, name);
                 case "ProxyLayoutElement":
-                    return new ProxyLayoutElementLeaf(node);
+                    return new ProxyLayoutElementLeaf(node, name);
                 default:
+                    // TODO Search for a file with the same name and an extension of .component(?) (.template?)
                     Error($"Unrecognized node {name}");
                     return null;
             }
         }
 
+        internal static string GetName(XmlNode node) => GetStringAttribute(node, "name", node.Name);
         internal static Spacing GetMargin(XmlNode node) => GetSpacingAttribute(node, "margin");
         internal static Spacing GetPadding(XmlNode node) => GetSpacingAttribute(node, "padding");
         internal static float GetWidth(XmlNode node) => GetFloatAttribute(node, "width");
@@ -89,6 +93,26 @@ namespace FLG.Cs.UI.Layouts {
         internal static EGridAlignment GetAlignment(XmlNode node) => GetAlignmentAttribute(node);
 
         #region Converters
+        private static string GetStringAttribute(XmlNode node, string attr, string defaultValue = "")
+        {
+            if (node.Attributes?[attr]?.Value == null)
+            {
+                return defaultValue;
+            }
+            else
+            {
+                var value = node.Attributes[attr].Value;
+                if (value == "")
+                {
+                    return defaultValue;
+                }
+                else
+                {
+                    return value;
+                }
+            }
+        }
+
         private static int GetIntAttribute(XmlNode node, string attr, int defaultValue = 0)
         {
             if (node.Attributes?[attr]?.Value == null)

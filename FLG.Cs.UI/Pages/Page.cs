@@ -5,6 +5,9 @@
         private uint _layoutId;
         internal uint LayoutId { get => _layoutId; }
 
+        string _name;
+        public string GetName() => _name;
+
         #region Observer
         private List<IPageObserver> _observers;
         public void AddObserver(IPageObserver observer)
@@ -13,11 +16,12 @@
         }
         #endregion Observer
 
-        internal Page(uint layoutId)
+        internal Page(uint layoutId, string name)
         {
             _status = EPageStatus.CLOSED;
             _layoutId = layoutId;
             _observers = new();
+            _name = name;
         }
 
         internal void Open()

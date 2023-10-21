@@ -41,7 +41,7 @@ namespace FLG.Cs.UI.Layouts {
             uint count = 0;
             foreach (var layoutFile in layoutFiles)
             {
-                var layout = parser.Parse(layoutFile);
+                var layout = parser.Parse(layoutFile, Path.GetFileNameWithoutExtension(layoutFile));
                 if (!parser.IsValid || layout == null)
                 {
                     Console.WriteLine($"Error parsing layout {layoutFile} - {parser.ErrorMsg} ");

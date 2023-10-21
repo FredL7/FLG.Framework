@@ -7,6 +7,9 @@ namespace FLG.Cs.UI.Layouts {
         private AbstractLayoutElement _root;
         public ILayoutElement GetRoot() => _root;
 
+        string _name;
+        public string GetName() => _name;
+
         #region Observer
         private List<ILayoutObserver> _observers;
         public void AddObserver(ILayoutObserver observer)
@@ -15,11 +18,12 @@ namespace FLG.Cs.UI.Layouts {
         }
         #endregion Observer
 
-        internal Layout(AbstractLayoutElement root)
+        internal Layout(AbstractLayoutElement root, string name)
         {
             _active = false;
             _root = root;
             _observers = new();
+            _name = name;
         }
 
         internal void SetActive(bool active)

@@ -5,7 +5,7 @@ using System.Xml;
 
 namespace FLG.Cs.UI.Grid {
     internal class HStack : Stack {
-        internal HStack(XmlNode node) : base(node) { }
+        internal HStack(XmlNode node, string name) : base(node, name) { }
 
         protected override float GetChildMainMarginFirst(AbstractLayoutElement child) => child.RectXform.Margin.Left;
         protected override float GetChildMainMarginLast(AbstractLayoutElement child) => child.RectXform.Margin.Right;
