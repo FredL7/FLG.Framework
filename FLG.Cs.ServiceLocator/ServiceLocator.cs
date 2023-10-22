@@ -15,7 +15,7 @@ namespace FLG.Cs.ServiceLocator {
                 return;
             }
             _services.Add(typeof(T), service);
-            service.OnServiceRegistered();
+            // service.OnServiceRegistered();
         }
 
         public T Get<T>() where T : IServiceInstance
