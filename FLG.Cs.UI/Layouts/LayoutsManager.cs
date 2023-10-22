@@ -18,7 +18,11 @@ namespace FLG.Cs.UI.Layouts {
         {
             var layouts = LayoutXMLParser.Parse(layoutsDir);
             if (layouts != null)
-                _layouts = layouts;
+                foreach (var layout in layouts)
+                {
+                    _layouts.Add(layout.GetName(), layout);
+                    LogManager.Instance.Info($"Registered layout \"{layout.GetName()}\"");
+                }
             ComputeLayoutsRectXforms(window);
         }
 

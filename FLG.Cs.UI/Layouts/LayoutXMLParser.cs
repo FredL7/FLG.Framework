@@ -1,14 +1,12 @@
-﻿using System.ComponentModel;
-using System.Xml;
+﻿using System.Xml;
 
 using FLG.Cs.Logger;
 using FLG.Cs.Math;
-using FLG.Cs.ServiceLocator;
 using FLG.Cs.UI.Grid;
 
 namespace FLG.Cs.UI.Layouts {
     internal static class LayoutXMLParser {
-        internal static Dictionary<string, Layout>? Parse(string layoutDir)
+        internal static List<Layout>? Parse(string layoutDir)
         {
             if (!Directory.Exists(layoutDir))
             {
@@ -94,9 +92,9 @@ namespace FLG.Cs.UI.Layouts {
         #endregion Components
 
         #region Layouts
-        private static Dictionary<string, Layout>? ParseForLayouts(string layoutsDir, Dictionary<string, AbstractLayoutElement>? components)
+        private static List<Layout>? ParseForLayouts(string layoutsDir, Dictionary<string, AbstractLayoutElement>? components)
         {
-            Dictionary<string, Layout> result = new();
+            List<Layout> result = new();
 
             List<string> layoutFiles = GetFilePathsByExtension(layoutsDir, ".layout");
             if (layoutFiles.Count == 0)
@@ -109,7 +107,7 @@ namespace FLG.Cs.UI.Layouts {
             {
                 var layout = ParseLayout(file, components);
                 if (layout != null)
-                    result.Add(layout.GetName(), layout);
+                    result.Add(layout);
             }
 
             return result;

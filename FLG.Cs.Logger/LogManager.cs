@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace FLG.Cs.Logger {
     public class LogManager :  SingletonBase<LogManager> {
         private const string FILENAME_DATE_PATTERN = @"yyyyddM_HH-mm";
-        private const string LOGGING_DATE_PATTERN = @"HH:mm:ss";
+        private const string LOGGING_DATE_PATTERN = @"HH:mm:ss:fff";
         private const string UNKNOWN = "Unknown";
 
         private string _filepath = String.Empty; // TODO: Default location?

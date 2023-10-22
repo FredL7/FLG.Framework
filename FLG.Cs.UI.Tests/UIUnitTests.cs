@@ -13,9 +13,15 @@ namespace FLG.Cs.UI.Tests {
             LogManager.Instance.SetLogLocation("../../../../_logs");
 
             IUIManager uiManager = new UIManager();
+            SingletonManager.Instance.Register(uiManager);
+            RegisterLayoutsAndPages();
+        }
+
+        private static void RegisterLayoutsAndPages()
+        {
+            IUIManager uiManager = SingletonManager.Instance.Get<IUIManager>();
             uiManager.RegisterLayouts("../../../Layouts");
             uiManager.RegisterPages("../../../Pages");
-            SingletonManager.Instance.Register(uiManager);
         }
 
         [TestMethod]
