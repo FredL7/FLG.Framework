@@ -11,7 +11,7 @@ namespace FLG.Cs.UI {
 
         #region Page
         public void RegisterPages(string pagesDir);
-        public void OpenPage(uint id);
+        public void OpenPage(string id);
         public IEnumerable<IPage> GetPages();
         #endregion Page
     }

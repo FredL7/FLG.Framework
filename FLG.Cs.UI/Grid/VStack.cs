@@ -21,7 +21,7 @@ namespace FLG.Cs.UI.Grid {
 
         protected override Vector2[] GetFinalPositions(float[] mainMargins, float[] secondaryMargins, float[] mainDimensions)
         {
-            Vector2[] positions = new Vector2[mainMargins.Length];
+            Vector2[] positions = new Vector2[mainDimensions.Length];
             var accumulate = 0f;
             for (int i = 0; i < positions.Length; ++i)
             {
@@ -36,7 +36,7 @@ namespace FLG.Cs.UI.Grid {
         {
             Size[] sizes = new Size[mainDimensions.Length];
             for (int i = 0; i < sizes.Length; ++i)
-                sizes[i] = new Size(mainDimensions[i], secondaryDimensions[i]);
+                sizes[i] = new Size(secondaryDimensions[i], mainDimensions[i]);
             return sizes;
         }
     }

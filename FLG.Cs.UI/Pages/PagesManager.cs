@@ -1,6 +1,6 @@
 ﻿namespace FLG.Cs.UI.Pages {
     internal class PagesManager {
-        private Dictionary<uint, Page> _pages;
+        private Dictionary<string, Page> _pages;
         private Page? _current = null;
 
         internal PagesManager()
@@ -16,9 +16,9 @@
             Console.WriteLine(pagesDir);
         }
 
-        internal uint GetLayoutIdFromPageId(uint id) => _pages[id].LayoutId;
+        internal string GetLayoutIdFromPageId(string id) => _pages[id].LayoutId;
 
-        internal void OpenPage(uint id)
+        internal void OpenPage(string id)
         {
             _current?.Close();
             _current = _pages[id];

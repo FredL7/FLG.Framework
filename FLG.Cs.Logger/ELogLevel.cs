@@ -12,10 +12,10 @@
         {
             return level switch
             {
-                ELogLevel.ERROR => "Error",
-                ELogLevel.WARN => "Warning",
-                ELogLevel.INFO => "Info",
-                ELogLevel.DEBUG => "debug",
+                ELogLevel.ERROR => "ERROR",
+                ELogLevel.WARN => "WARNING",
+                ELogLevel.INFO => "INFO",
+                ELogLevel.DEBUG => "DEBUG",
                 _ => throw new NotImplementedException()
             };
         }

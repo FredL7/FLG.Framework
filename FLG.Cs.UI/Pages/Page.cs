@@ -2,8 +2,8 @@
     internal abstract class Page : IPage {
         private EPageStatus _status;
 
-        private uint _layoutId;
-        internal uint LayoutId { get => _layoutId; }
+        private string _layoutId;
+        internal string LayoutId { get => _layoutId; }
 
         string _name;
         public string GetName() => _name;
@@ -16,7 +16,7 @@
         }
         #endregion Observer
 
-        internal Page(uint layoutId, string name)
+        internal Page(string layoutId, string name)
         {
             _status = EPageStatus.CLOSED;
             _layoutId = layoutId;

@@ -25,7 +25,7 @@ namespace FLG.Cs.UI.Tests {
 
             foreach(var layout in uiManager.GetLayouts())
             {
-                if (layout.GetName() != "Sample")
+                if (layout.GetName() != "sample")
                     Assert.Fail();
 
                 var root = layout.GetRoot();
@@ -35,22 +35,38 @@ namespace FLG.Cs.UI.Tests {
                 Assert.IsTrue(rootPosition.X == 0 && rootPosition.Y == 0);
 
                 Assert.IsTrue(root.HasChildren());
+                Assert.IsTrue(root.GetName() == "main");
 
                 foreach(var child in root.GetChildrens())
                 {
-                    if (child.GetName() == "First")
+                    if (child.GetName() == "header")
                     {
-                        var left1Dimensions = child.GetDimensions();
-                        var left1Position = child.GetPosition();
-                        Assert.IsTrue(left1Dimensions.Width == 140 && left1Dimensions.Height == 980);
-                        Assert.IsTrue(left1Position.X == 50 && left1Position.Y == 40);
+                        var position = child.GetPosition();
+                        var dimensions = child.GetDimensions();
+                        Assert.IsTrue(position.X == 10 && position.Y == 10);
+                        Assert.IsTrue(dimensions.Width == 1900 && dimensions.Height == 20);
+                        // TODO: Other childrens
                     }
-                    else if (child.GetName() == "Second")
+                    else if (child.GetName() == "content")
                     {
-                        var left2Dimensions = child.GetDimensions();
-                        var left2Position = child.GetPosition();
-                        Assert.IsTrue(left2Dimensions.Width == 1585 && left2Dimensions.Height == 940);
-                        Assert.IsTrue(left2Position.X == 265 && left2Position.Y == 80);
+                        foreach (var child2 in child.GetChildrens())
+                        {
+                            if (child2.GetName() == "first")
+                            {
+                                var left1Dimensions = child2.GetDimensions();
+                                var left1Position = child2.GetPosition();
+                                Assert.IsTrue(left1Dimensions.Width == 140 && left1Dimensions.Height == 940);
+                                Assert.IsTrue(left1Position.X == 50 && left1Position.Y == 40);
+                            }
+                            else if (child2.GetName() == "second")
+                            {
+                                var left2Dimensions = child2.GetDimensions();
+                                var left2Position = child2.GetPosition();
+                                Assert.IsTrue(left2Dimensions.Width == 1585 && left2Dimensions.Height == 900);
+                                Assert.IsTrue(left2Position.X == 265 && left2Position.Y == 80);
+                            }
+                            else { Assert.Fail(); }
+                        }
                     }
                     else { Assert.Fail(); }
                 }

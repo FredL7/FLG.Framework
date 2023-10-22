@@ -32,9 +32,9 @@ namespace FLG.Cs.UI {
             _pagesManager.RegisterPages(pagesDir);
         }
 
-        public void OpenPage(uint pageId)
+        public void OpenPage(string pageId)
         {
-            uint layoutId = _pagesManager.GetLayoutIdFromPageId(pageId);
+            var layoutId = _pagesManager.GetLayoutIdFromPageId(pageId);
             _layoutsManager.SetLayoutActive(layoutId);
             _pagesManager.OpenPage(pageId);
         }
