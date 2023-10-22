@@ -1,6 +1,9 @@
-﻿using FLG.Cs.Math;
+﻿using System.Xml;
+
+using FLG.Cs.Logger;
+using FLG.Cs.Math;
+using FLG.Cs.ServiceLocator;
 using FLG.Cs.UI.Grid;
-using System.Xml;
 
 namespace FLG.Cs.UI.Layouts {
     internal class LayoutXMLParser {
@@ -186,7 +189,8 @@ namespace FLG.Cs.UI.Layouts {
                         case 4:
                             return new Spacing(intValues[0], intValues[1], intValues[2], intValues[3]);
                         default:
-                            // TODO: Log too many values
+                            var logger = SingletonManager.Instance.Get<ILogManager>();
+                            logger.Warn(typeof(LayoutXMLParser), "GetSpacingAttribute", "Spacing attribute has too many values");
                             return new Spacing(intValues[0], intValues[1], intValues[2], intValues[3]);
                     }
                 }

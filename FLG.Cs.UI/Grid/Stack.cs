@@ -1,9 +1,9 @@
-﻿using FLG.Cs.Math;
-using FLG.Cs.UI.Layouts;
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Numerics;
 using System.Xml;
+
+using FLG.Cs.Math;
+using FLG.Cs.UI.Layouts;
 
 namespace FLG.Cs.UI.Grid {
     internal abstract class Stack : AbstractLayoutElementComposite {

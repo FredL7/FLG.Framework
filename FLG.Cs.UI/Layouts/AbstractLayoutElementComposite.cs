@@ -1,5 +1,6 @@
-﻿using FLG.Cs.Math;
-using System.Xml;
+﻿using System.Xml;
+
+using FLG.Cs.Math;
 
 namespace FLG.Cs.UI.Layouts {
     internal abstract class AbstractLayoutElementComposite : AbstractLayoutElement {

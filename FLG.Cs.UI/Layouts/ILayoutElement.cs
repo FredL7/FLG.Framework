@@ -1,5 +1,6 @@
-﻿using FLG.Cs.Math;
-using System.Numerics;
+﻿using System.Numerics;
+
+using FLG.Cs.Math;
 
 namespace FLG.Cs.UI.Layouts {
     public interface ILayoutElement {

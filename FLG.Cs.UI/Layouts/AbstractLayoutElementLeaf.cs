@@ -1,5 +1,7 @@
-﻿using FLG.Cs.Math;
-using System.Xml;
+﻿using System.Xml;
+
+using FLG.Cs.Logger;
+using FLG.Cs.ServiceLocator;
 
 namespace FLG.Cs.UI.Layouts {
     internal class AbstractLayoutElementLeaf : AbstractLayoutElement {
@@ -8,15 +10,17 @@ namespace FLG.Cs.UI.Layouts {
 
         internal override void AddChild(AbstractLayoutElement child)
         {
+            var logger = SingletonManager.Instance.Get<ILogManager>();
+            logger.Error(typeof(AbstractLayoutElementLeaf), "AddChild", "Layout element leaf cannot contain childrens");
             throw new NotImplementedException();
-            // TODO: Better throw of error log
         }
 
         public override bool HasChildren() => false;
         public override IEnumerable<AbstractLayoutElement> GetChildrens()
         {
+            var logger = SingletonManager.Instance.Get<ILogManager>();
+            logger.Error(typeof(AbstractLayoutElementLeaf), "AddChild", "Layout element leaf cannot contain childrens");
             throw new NotImplementedException();
-            // TODO: Better throw of error log
         }
 
         internal override void ComputeRectXform() { }

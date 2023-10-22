@@ -1,7 +1,5 @@
-﻿using System.Diagnostics;
-using System.Numerics;
-
-using System.IO;
+﻿using FLG.Cs.Logger;
+using FLG.Cs.ServiceLocator;
 
 namespace FLG.Cs.UI.Layouts {
     internal class LayoutsManager {
@@ -19,8 +17,9 @@ namespace FLG.Cs.UI.Layouts {
         {
             if (!Directory.Exists(layoutsDir))
             {
-                // TODO: Replace by logger
-                Console.WriteLine($"Error, {Path.GetFullPath(layoutsDir)} does not exists");
+                var logger = SingletonManager.Instance.Get<ILogManager>();
+                logger.Error(typeof(LayoutsManager), "registerLayouts", $"{Path.GetFullPath(layoutsDir)} does not exists");
+                // TODO: Throw?
                 return;
             }
 

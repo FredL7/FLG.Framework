@@ -1,6 +1,7 @@
-﻿using FLG.Cs.Math;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Xml;
+
+using FLG.Cs.Math;
 
 namespace FLG.Cs.UI.Layouts {
     internal abstract class AbstractLayoutElement : ILayoutElement {
