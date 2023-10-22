@@ -10,16 +10,13 @@ namespace FLG.Cs.UI.Layouts {
 
         internal override void AddChild(AbstractLayoutElement child)
         {
-            var logger = SingletonManager.Instance.Get<ILogManager>();
-            logger.Error("Layout element leaf cannot contain childrens");
-            throw new NotImplementedException();
+            LogManager.Instance.Error("Layout element leaf cannot contain childrens");
         }
 
         public override bool HasChildren() => false;
         public override IEnumerable<AbstractLayoutElement> GetChildrens()
         {
-            var logger = SingletonManager.Instance.Get<ILogManager>();
-            logger.Error("Layout element leaf cannot contain childrens");
+            LogManager.Instance.Error("Layout element leaf cannot contain childrens");
             throw new NotImplementedException();
         }
 

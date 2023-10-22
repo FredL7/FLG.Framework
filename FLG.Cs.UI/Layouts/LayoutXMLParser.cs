@@ -12,7 +12,15 @@ namespace FLG.Cs.UI.Layouts {
         internal bool IsValid {  get => !_error; }
         internal string ErrorMsg { get => _errorMsg; }
 
-        internal Layout? Parse(string layoutPath, string filename)
+        /*internal AbstractLayoutElement ParseComponent(string componentPath, string filename)
+        {
+            ResetError();
+
+            XmlDocument xmlDoc = new();
+            xmlDoc.Load(componentPath);
+        }*/
+
+        internal Layout? ParseLayout(string layoutPath, string filename)
         {
             ResetError();
 
@@ -189,8 +197,7 @@ namespace FLG.Cs.UI.Layouts {
                         case 4:
                             return new Spacing(intValues[0], intValues[1], intValues[2], intValues[3]);
                         default:
-                            var logger = SingletonManager.Instance.Get<ILogManager>();
-                            logger.Warn("Spacing attribute has too many values");
+                            LogManager.Instance.Warn("Spacing attribute has too many values");
                             return new Spacing(intValues[0], intValues[1], intValues[2], intValues[3]);
                     }
                 }

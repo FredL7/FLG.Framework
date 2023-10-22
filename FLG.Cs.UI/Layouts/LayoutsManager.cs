@@ -17,9 +17,7 @@ namespace FLG.Cs.UI.Layouts {
         {
             if (!Directory.Exists(layoutsDir))
             {
-                var logger = SingletonManager.Instance.Get<ILogManager>();
-                logger.Error($"{Path.GetFullPath(layoutsDir)} does not exists");
-                // TODO: Throw?
+                LogManager.Instance.Error($"{Path.GetFullPath(layoutsDir)} does not exists");
                 return;
             }
 
@@ -42,7 +40,7 @@ namespace FLG.Cs.UI.Layouts {
             uint count = 0;
             foreach (var layoutFile in layoutFiles)
             {
-                var layout = parser.Parse(layoutFile, Path.GetFileNameWithoutExtension(layoutFile));
+                var layout = parser.ParseLayout(layoutFile, Path.GetFileNameWithoutExtension(layoutFile));
                 if (!parser.IsValid || layout == null)
                 {
                     Console.WriteLine($"Error parsing layout {layoutFile} - {parser.ErrorMsg} ");

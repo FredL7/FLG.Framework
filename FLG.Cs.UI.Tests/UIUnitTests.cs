@@ -10,8 +10,7 @@ namespace FLG.Cs.UI.Tests {
         [ClassInitialize]
         public static void Init(TestContext _)
         {
-            ILogManager logger = new LogManager("../../../../_logs");
-            SingletonManager.Instance.Register(logger);
+            LogManager.Instance.SetLogLocation("../../../../_logs");
 
             IUIManager uiManager = new UIManager();
             uiManager.RegisterLayouts("../../../Layouts");
