@@ -190,7 +190,7 @@ namespace FLG.Cs.UI.Layouts {
                             return new Spacing(intValues[0], intValues[1], intValues[2], intValues[3]);
                         default:
                             var logger = SingletonManager.Instance.Get<ILogManager>();
-                            logger.Warn(typeof(LayoutXMLParser), "GetSpacingAttribute", "Spacing attribute has too many values");
+                            logger.Warn("Spacing attribute has too many values");
                             return new Spacing(intValues[0], intValues[1], intValues[2], intValues[3]);
                     }
                 }

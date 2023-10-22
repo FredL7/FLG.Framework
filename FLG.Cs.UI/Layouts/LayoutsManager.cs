@@ -18,7 +18,7 @@ namespace FLG.Cs.UI.Layouts {
             if (!Directory.Exists(layoutsDir))
             {
                 var logger = SingletonManager.Instance.Get<ILogManager>();
-                logger.Error(typeof(LayoutsManager), "registerLayouts", $"{Path.GetFullPath(layoutsDir)} does not exists");
+                logger.Error($"{Path.GetFullPath(layoutsDir)} does not exists");
                 // TODO: Throw?
                 return;
             }

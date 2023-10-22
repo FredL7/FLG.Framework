@@ -8,7 +8,7 @@ namespace FLG.Cs.UI.Tests {
     public class UIUnitTests {
 
         [ClassInitialize]
-        public static void Init(TestContext context)
+        public static void Init(TestContext _)
         {
             ILogManager logger = new LogManager("../../../../_logs");
             SingletonManager.Instance.Register(logger);
