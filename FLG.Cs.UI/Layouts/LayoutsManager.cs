@@ -24,6 +24,8 @@ namespace FLG.Cs.UI.Layouts {
                 return;
             }
 
+            // TODO: Get Component files first and parse them, them pass the resulting AbstractLayoutElement[] to the XmlParser.Parse() fct
+
             var files = Directory.GetFiles(layoutsDir);
             List<string> layoutFiles = new();
             foreach (var file in files)

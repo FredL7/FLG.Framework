@@ -12,6 +12,8 @@ namespace FLG.Cs.UI {
             _pagesManager = new PagesManager();
         }
 
+        public void OnServiceRegistered() { }
+
         #region Layouts
         public void RegisterLayouts(string layoutsDir)
         {

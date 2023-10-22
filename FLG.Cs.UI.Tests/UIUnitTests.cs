@@ -1,14 +1,23 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FLG.Cs.ServiceLocator;
 
 namespace FLG.Cs.UI.Tests {
     [TestClass]
     public class UIUnitTests {
-        [TestMethod]
-        public void TestLayoutHStack()
+
+        [ClassInitialize]
+        public static void Init(TestContext context)
         {
             IUIManager uiManager = new UIManager();
             uiManager.RegisterLayouts("../../../Layouts");
             uiManager.RegisterPages("../../../Pages");
+            SingletonManager.Instance.Register(uiManager);
+        }
+
+        [TestMethod]
+        public void TestLayoutHStack()
+        {
+            IUIManager uiManager = SingletonManager.Instance.Get<IUIManager>();
 
             foreach(var layout in uiManager.GetLayouts())
             {

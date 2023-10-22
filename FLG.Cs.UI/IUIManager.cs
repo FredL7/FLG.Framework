@@ -1,8 +1,9 @@
-﻿using FLG.Cs.UI.Layouts;
+﻿using FLG.Cs.ServiceLocator;
+using FLG.Cs.UI.Layouts;
 using FLG.Cs.UI.Pages;
 
 namespace FLG.Cs.UI {
-    public interface IUIManager {
+    public interface IUIManager : IServiceInstance {
         #region Layout
         public void RegisterLayouts(string layoutsDir); //? TODO: string[]
         public IEnumerable<ILayout> GetLayouts();
