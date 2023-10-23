@@ -2,6 +2,7 @@
 using System.Diagnostics;
 
 namespace FLG.Cs.Logger {
+    // TODO: Write as csv instead?
     public class LogManager :  SingletonBase<LogManager> {
         private const string FILENAME_DATE_PATTERN = @"yyyyddM_HH-mm";
         private const string LOGGING_DATE_PATTERN = @"HH:mm:ss:fff";
@@ -17,6 +18,7 @@ namespace FLG.Cs.Logger {
             string filename = date.ToString(FILENAME_DATE_PATTERN);
             System.IO.Directory.CreateDirectory(logDir);
             _filepath = Path.Combine(logDir, filename + ".log");
+            Debug("LogManager start");
         }
 
         private void Log(string msg, ELogLevel level)
