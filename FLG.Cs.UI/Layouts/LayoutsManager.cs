@@ -58,13 +58,15 @@ namespace FLG.Cs.UI.Layouts
                 LogManager.Instance.Error($"Layout \"{layoutid}\" does not contain target with id {targetid}");
                 return;
             }
-            else
+
+            var target = _layouts[layoutid].GetTarget(targetid) as AbstractLayoutElementComposite;
+            if (target == null)
             {
-                RectXform xform = _layouts[layoutid].GetTarget(targetid).RectXform;
-                foreach (var element in content) {
-                    // element.ComputeRectXform();
-                }
+                LogManager.Instance.Error($"Target \"{targetid}\" cannot contain childrens");
+                return;
             }
+
+            target.ComputeContentSizesAndPositions(content);
         }
     }
 }

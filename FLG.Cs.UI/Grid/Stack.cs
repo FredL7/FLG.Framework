@@ -17,25 +17,35 @@ namespace FLG.Cs.UI.Grid {
             _alignment = XMLParser.GetAlignment(node);
         }
 
-        protected sealed override void ComputeChildrenSizesAndPositions(Size parentDimensions)
+        protected sealed override void ComputeChildrenSizesAndPositions()
         {
-            var childrens = GetChildrensInOrder();
-            if (childrens.Length == 0)
+            ComputeSizesAndPositions(GetChildrensInternal());
+        }
+
+        internal sealed override void ComputeContentSizesAndPositions(List<AbstractLayoutElement> content)
+        {
+            ComputeSizesAndPositions(content);
+        }
+
+        private void ComputeSizesAndPositions(List<AbstractLayoutElement> childrens)
+        {
+            var orderedChildrens = OrderChildrens(childrens);
+            if (orderedChildrens.Length == 0)
                 return;
 
-            var mainDimensionsAndMargins = ComputeDimensionsAndMarginsAlongMainAxis(childrens);
+            var mainDimensionsAndMargins = ComputeDimensionsAndMarginsAlongMainAxis(orderedChildrens);
             var mainDimensions = mainDimensionsAndMargins.Item1;
             var mainMargins = mainDimensionsAndMargins.Item2;
 
-            var secondaryDimensionsAndMargins = ComputeDimensionsAndMarginsAlongSecondaryAxis(childrens);
+            var secondaryDimensionsAndMargins = ComputeDimensionsAndMarginsAlongSecondaryAxis(orderedChildrens);
             var secondaryDimensions = secondaryDimensionsAndMargins.Item1;
             var secondaryMargins = secondaryDimensionsAndMargins.Item2;
 
             Size[] sizes = GetFinalSizes(mainDimensions, secondaryDimensions);
             Vector2[] positions = GetFinalPositions(mainMargins, secondaryMargins, mainDimensions);
 
-            for (int i = 0; i < childrens.Length; ++i)
-                childrens[i].RectXform.SetSizesAndPosition(sizes[i], positions[i]);
+            for (int i = 0; i < orderedChildrens.Length; ++i)
+                orderedChildrens[i].RectXform.SetSizesAndPosition(sizes[i], positions[i]);
         }
 
         protected abstract float GetChildSizeMain(AbstractLayoutElement child);
@@ -49,9 +59,8 @@ namespace FLG.Cs.UI.Grid {
         protected abstract Size[] GetFinalSizes(float[] mainDimensions, float[] secondaryDimensions);
         protected abstract Vector2[] GetFinalPositions(float[] mainMargins, float[] secondaryMargins, float[] mainDimensions);
 
-        private AbstractLayoutElement[] GetChildrensInOrder()
+        private AbstractLayoutElement[] OrderChildrens(List<AbstractLayoutElement> childrens)
         {
-            var childrens = GetChildrensInternal();
             var childrensOrdered = childrens.OrderBy(x => x.Order);
             if (_direction == EGridDirection.REVERSE)
                 return childrensOrdered.Reverse().ToArray();

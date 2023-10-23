@@ -20,10 +20,11 @@ namespace FLG.Cs.UI.Layouts {
 
         internal sealed override void ComputeRectXform()
         {
-            ComputeChildrenSizesAndPositions(RectXform.GetDimensions());
+            ComputeChildrenSizesAndPositions();
             foreach (var child in _childrens)
                 child.ComputeRectXform();
         }
-        protected abstract void ComputeChildrenSizesAndPositions(Size parentDimensions);
+        protected abstract void ComputeChildrenSizesAndPositions();
+        internal abstract void ComputeContentSizesAndPositions(List<AbstractLayoutElement> content);
     }
 }
