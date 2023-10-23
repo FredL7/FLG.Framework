@@ -1,4 +1,6 @@
-﻿namespace FLG.Cs.UI.Pages {
+﻿using FLG.Cs.Logger;
+
+namespace FLG.Cs.UI.Pages {
     internal class PagesManager {
         private Dictionary<string, Page> _pages;
         private Page? _current = null;
@@ -12,8 +14,13 @@
 
         internal void RegisterPages(string pagesDir)
         {
-            // _pages.Add(id, page);
-            Console.WriteLine(pagesDir);
+            var pages = PageXMLParser.Parse(pagesDir);
+            if (pages != null)
+                foreach (var page in pages)
+                {
+                    _pages.Add(page.GetName(), page);
+                    LogManager.Instance.Info($"Registered Page \"{page.GetName()}\"");
+                }
         }
 
         internal string GetLayoutIdFromPageId(string id) => _pages[id].LayoutId;

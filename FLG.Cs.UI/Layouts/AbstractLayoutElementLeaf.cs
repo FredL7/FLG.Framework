@@ -20,6 +20,6 @@ namespace FLG.Cs.UI.Layouts {
             throw new NotImplementedException();
         }
 
-        internal override void ComputeRectXform() { }
+        internal sealed override void ComputeRectXform() { }
     }
 }

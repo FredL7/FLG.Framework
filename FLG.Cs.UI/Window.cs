@@ -2,7 +2,7 @@
 
 using FLG.Cs.Math;
 
-namespace FLG.Cs.UI.Layouts {
+namespace FLG.Cs.UI {
     internal class Window {
         internal RectXform RectXform { get; private set; }
 

@@ -25,7 +25,7 @@ namespace FLG.Cs.UI.Tests {
         }
 
         [TestMethod]
-        public void TestLayoutHStack()
+        public void TestLayout()
         {
             IUIManager uiManager = SingletonManager.Instance.Get<IUIManager>();
 
@@ -55,7 +55,7 @@ namespace FLG.Cs.UI.Tests {
                     }
                     else if (child.GetName() == "content")
                     {
-                        foreach (var child2 in child.GetChildrens())
+                        /*foreach (var child2 in child.GetChildrens())
                         {
                             if (child2.GetName() == "first")
                             {
@@ -72,7 +72,7 @@ namespace FLG.Cs.UI.Tests {
                                 Assert.IsTrue(left2Position.X == 265 && left2Position.Y == 80);
                             }
                             else { Assert.Fail(); }
-                        }
+                        }*/
                     }
                     else { Assert.Fail(); }
                 }

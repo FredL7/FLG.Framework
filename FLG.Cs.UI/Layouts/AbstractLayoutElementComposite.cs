@@ -18,7 +18,7 @@ namespace FLG.Cs.UI.Layouts {
         public override bool HasChildren() => _childrens.Count > 0;
         public override IEnumerable<AbstractLayoutElement> GetChildrens() => _childrens;
 
-        internal override void ComputeRectXform()
+        internal sealed override void ComputeRectXform()
         {
             ComputeChildrenSizesAndPositions(RectXform.GetDimensions());
             foreach (var child in _childrens)

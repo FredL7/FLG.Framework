@@ -10,6 +10,19 @@ namespace FLG.Cs.UI.Layouts {
         string _name;
         public string GetName() => _name;
 
+        #region Targets
+        readonly private List<AbstractLayoutElement> _targets;
+        internal void AddTarget(AbstractLayoutElement target) { _targets.Add(target); }
+        internal AbstractLayoutElement? GetTarget(string name)
+        {
+            AbstractLayoutElement? target = null;
+            foreach (var element in _targets)
+                if (element.GetName() == name)
+                    target = element;
+            return target;
+        }
+        #endregion Targets
+
         #region Observer
         private List<ILayoutObserver> _observers;
         public void AddObserver(ILayoutObserver observer)
@@ -22,6 +35,7 @@ namespace FLG.Cs.UI.Layouts {
         {
             _active = false;
             _root = root;
+            _targets = new();
             _observers = new();
             _name = name;
         }

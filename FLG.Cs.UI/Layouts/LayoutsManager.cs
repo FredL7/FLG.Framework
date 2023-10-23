@@ -1,8 +1,10 @@
 ﻿using FLG.Cs.Logger;
+using FLG.Cs.Math;
 using FLG.Cs.ServiceLocator;
 using FLG.Cs.UI.Pages;
 
-namespace FLG.Cs.UI.Layouts {
+namespace FLG.Cs.UI.Layouts
+{
     internal class LayoutsManager {
         private Dictionary<string, Layout> _layouts;
         private Layout? _current = null;
@@ -41,6 +43,28 @@ namespace FLG.Cs.UI.Layouts {
         {
             foreach (var layout in _layouts)
                 layout.Value.ComputeRectXforms(window);
+        }
+
+        internal void ComputeTargetRectXforms(string layoutid, string targetid, List<AbstractLayoutElement> content)
+        {
+            if(!_layouts.ContainsKey(layoutid))
+            {
+                LogManager.Instance.Error($"No layout with it {layoutid}");
+                return;
+            }
+
+            if (_layouts[layoutid].GetTarget(targetid) == null)
+            {
+                LogManager.Instance.Error($"Layout \"{layoutid}\" does not contain target with id {targetid}");
+                return;
+            }
+            else
+            {
+                RectXform xform = _layouts[layoutid].GetTarget(targetid).RectXform;
+                foreach (var element in content) {
+                    // element.ComputeRectXform();
+                }
+            }
         }
     }
 }

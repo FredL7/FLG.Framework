@@ -5,8 +5,11 @@ using FLG.Cs.Math;
 
 namespace FLG.Cs.UI.Layouts {
     internal abstract class AbstractLayoutElement : ILayoutElement {
-        string _name;
+        private string _name;
         public string GetName() => _name;
+
+        private bool _isTarget;
+        public bool GetIsTarget() => _isTarget;
 
         internal RectXform RectXform { get; private set; }
         public Vector2 GetPosition() => RectXform.GetContainerPosition();
@@ -19,16 +22,17 @@ namespace FLG.Cs.UI.Layouts {
         internal AbstractLayoutElement(XmlNode node, string name)
         {
             _name = name;
+            _isTarget = XMLParser.GetTarget(node) != string.Empty;
 
-            var margin = LayoutXMLParser.GetMargin(node);
-            var padding = LayoutXMLParser.GetPadding(node);
-            var width = LayoutXMLParser.GetWidth(node);
-            var height = LayoutXMLParser.GetHeight(node);
+            var margin = XMLParser.GetMargin(node);
+            var padding = XMLParser.GetPadding(node);
+            var width = XMLParser.GetWidth(node);
+            var height = XMLParser.GetHeight(node);
 
             RectXform = new(margin, padding);
             Size = new(width, height);
-            Order = LayoutXMLParser.GetOrder(node);
-            Weight = LayoutXMLParser.GetWeight(node);
+            Order = XMLParser.GetOrder(node);
+            Weight = XMLParser.GetWeight(node);
         }
 
         internal abstract void AddChild(AbstractLayoutElement child);

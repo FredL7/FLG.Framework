@@ -12,9 +12,9 @@ namespace FLG.Cs.UI.Grid {
         private EGridAlignment _alignment; // Along the other direction
 
         internal Stack(XmlNode node, string name) : base(node, name) {
-            _direction = LayoutXMLParser.GetDirection(node);
-            _justify = LayoutXMLParser.GetJustify(node);
-            _alignment = LayoutXMLParser.GetAlignment(node);
+            _direction = XMLParser.GetDirection(node);
+            _justify = XMLParser.GetJustify(node);
+            _alignment = XMLParser.GetAlignment(node);
         }
 
         protected sealed override void ComputeChildrenSizesAndPositions(Size parentDimensions)
