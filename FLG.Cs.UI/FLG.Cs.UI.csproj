@@ -9,6 +9,12 @@
     <BaseIntermediateOutputPath>..\_build\obj\</BaseIntermediateOutputPath>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <AssemblyVersion>0.1.0</AssemblyVersion>
+    <FileVersion>$(AssemblyVersion)</FileVersion>
+    <Version>$(AssemblyVersion)</Version>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\FLG.Cs.Logger\FLG.Cs.Logger.csproj" />
     <ProjectReference Include="..\FLG.Cs.Math\FLG.Cs.Math.csproj" />
