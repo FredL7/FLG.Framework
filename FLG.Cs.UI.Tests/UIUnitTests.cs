@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using FLG.Cs.ServiceLocator;
 using FLG.Cs.Logger;
+using FLG.Cs.Factory;
 
 namespace FLG.Cs.UI.Tests {
     [TestClass]
@@ -10,14 +11,13 @@ namespace FLG.Cs.UI.Tests {
         [ClassInitialize]
         public static void Init(TestContext _)
         {
-            LogManager.Instance.SetLogLocation("../../../../_logs");
+            ManagerFactory.IncludeLogger("../../../../_logs");
+            ManagerFactory.IncludeUIManager();
 
-            IUIManager uiManager = new UIManager();
-            SingletonManager.Instance.Register(uiManager);
-            RegisterLayoutsAndPages();
+            SetupUIManager();
         }
 
-        private static void RegisterLayoutsAndPages()
+        private static void SetupUIManager()
         {
             IUIManager uiManager = SingletonManager.Instance.Get<IUIManager>();
             uiManager.RegisterLayouts("../../../Layouts");

@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace FLG.Cs.Logger {
     // TODO: Write as csv instead?
-    public class LogManager :  SingletonBase<LogManager> {
+    public class LogManager : SingletonBase<LogManager> {
         private const string FILENAME_DATE_PATTERN = @"yyyyddM_HH-mm";
         private const string LOGGING_DATE_PATTERN = @"HH:mm:ss:fff";
         private const string UNKNOWN = "Unknown";
@@ -35,7 +35,8 @@ namespace FLG.Cs.Logger {
             w.WriteLine($"[{date.ToString(LOGGING_DATE_PATTERN)}] [{level.ToPrettyString()}] [{(classname ?? UNKNOWN)}::{(methodname ?? UNKNOWN)}()] {msg}");
         }
 
-        public void Error(string msg) {
+        public void Error(string msg)
+        {
             Log(msg, ELogLevel.ERROR);
             throw new Exception(msg);
         }

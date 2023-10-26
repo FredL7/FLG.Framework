@@ -2,8 +2,7 @@
 using FLG.Cs.UI.Layouts;
 using FLG.Cs.UI.Pages;
 
-namespace FLG.Cs.UI
-{
+namespace FLG.Cs.UI {
     public class UIManager : IUIManager {
         private LayoutsManager _layoutsManager;
         private PagesManager _pagesManager;

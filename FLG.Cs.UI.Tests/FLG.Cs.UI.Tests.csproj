@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FLG.Cs.Factory\FLG.Cs.Factory.csproj" />
     <ProjectReference Include="..\FLG.Cs.Logger\FLG.Cs.Logger.csproj" />
     <ProjectReference Include="..\FLG.Cs.Math\FLG.Cs.Math.csproj" />
     <ProjectReference Include="..\FLG.Cs.ServiceLocator\FLG.Cs.ServiceLocator.csproj" />

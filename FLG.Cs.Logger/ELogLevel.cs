@@ -6,8 +6,7 @@
         DEBUG = 3
     }
 
-    internal static class ELogLevelExtension
-    {
+    internal static class ELogLevelExtension {
         public static string ToPrettyString(this ELogLevel level)
         {
             return level switch
