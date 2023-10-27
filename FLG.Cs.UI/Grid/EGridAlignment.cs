@@ -1,0 +1,17 @@
+﻿namespace FLG.Cs.UI.Grid {
+    internal enum EGridAlignment { START, END, CENTER, STRETCH }
+
+    internal class EGridAlignmentExtension {
+        internal static EGridAlignment FromString(string value)
+        {
+            return value.ToLower() switch
+            {
+                "start" => EGridAlignment.START,
+                "end" => EGridAlignment.END,
+                "center" => EGridAlignment.CENTER,
+                "stretch" => EGridAlignment.STRETCH,
+                _ => EGridAlignment.STRETCH,
+            };
+        }
+    }
+}
