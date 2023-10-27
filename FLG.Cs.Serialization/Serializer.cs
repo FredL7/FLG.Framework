@@ -4,15 +4,20 @@ using FLG.Cs.Logger;
 namespace FLG.Cs.Serialization {
     public abstract class Serializer : ISerializer {
         private const uint VERSION = 0;
+        private const string ID_VERSION = "Version";
+        private const string ID_NAME = "Name";
+        private const string ID_DATECREATED = "DateCreated";
+        private const string ID_DATELASTMODIFIED = "DateLastModifier";
 
-        private List<ISerializable> _serializableItems;
+        private readonly List<ISerializable> _serializableItems;
         public void AddSerializable(ISerializable serializable)
         {
             _serializableItems.Add(serializable);
         }
 
-        private string _saveDir;
-        private List<ISaveFile> _saveFiles;
+        private readonly string _saveDir;
+        private readonly List<ISaveFile> _saveFiles;
+        public IEnumerable<ISaveFile> GetSaveFiles() => _saveFiles;
 
         public Serializer(string saveDir)
         {
@@ -61,18 +66,18 @@ namespace FLG.Cs.Serialization {
         {
             saveFile.UpdateDateLastModified();
 
-            SaveUint(VERSION);
-            SaveString(saveFile.GetName());
-            SaveDateTime(saveFile.GetDateCreated());
-            SaveDateTime(saveFile.GetDateLastModified());
+            SaveUint(VERSION, ID_VERSION);
+            SaveString(saveFile.GetName(), ID_NAME);
+            SaveDateTime(saveFile.GetDateCreated(), ID_DATECREATED);
+            SaveDateTime(saveFile.GetDateLastModified(), ID_DATELASTMODIFIED);
         }
 
         protected SaveFileHeader LoadHeader()
         {
-            uint version = LoadUint();
-            string name = LoadString();
-            var dateCreated = LoadDateTime();
-            var dateLastModified = LoadDateTime();
+            uint version = LoadUint(ID_VERSION);
+            string name = LoadString(ID_NAME);
+            var dateCreated = LoadDateTime(ID_DATECREATED);
+            var dateLastModified = LoadDateTime(ID_DATELASTMODIFIED);
             return new()
             {
                 version = version,
@@ -98,25 +103,25 @@ namespace FLG.Cs.Serialization {
         }
 
         #region Primitive Types
-        public abstract void SaveBool(bool value);
-        public abstract bool LoadBool();
+        public abstract void SaveBool(bool value, string id);
+        public abstract bool LoadBool(string id);
 
-        public abstract void SaveUint(uint value);
-        public abstract uint LoadUint();
+        public abstract void SaveUint(uint value, string id);
+        public abstract uint LoadUint(string id);
 
-        public abstract void SaveInt(int value);
-        public abstract int LoadInt();
+        public abstract void SaveInt(int value, string id);
+        public abstract int LoadInt(string id);
 
-        public abstract void SaveFloat(float value);
-        public abstract float LoadFloat();
+        public abstract void SaveFloat(float value, string id);
+        public abstract float LoadFloat(string id);
 
-        public abstract void SaveString(string value);
-        public abstract string LoadString();
+        public abstract void SaveString(string value, string id);
+        public abstract string LoadString(string id);
         #endregion Promitive Types
 
         #region Complex Types
-        public abstract void SaveDateTime(DateTime value);
-        public abstract DateTime LoadDateTime();
+        public abstract void SaveDateTime(DateTime value, string id);
+        public abstract DateTime LoadDateTime(string id);
         #endregion Complex Types
     }
 }

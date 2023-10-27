@@ -1,6 +1,4 @@
-﻿using System.Reflection.PortableExecutable;
-
-namespace FLG.Cs.Serialization {
+﻿namespace FLG.Cs.Serialization {
     public class JsonSerializer : Serializer {
         public JsonSerializer(string saveDir) : base(saveDir) { }
         public sealed override void Serialize(ISaveFile saveFile)
@@ -15,58 +13,58 @@ namespace FLG.Cs.Serialization {
 
         #region Primitive Types
 
-        public override void SaveBool(bool value)
+        public override void SaveBool(bool value, string id)
         {
             throw new NotImplementedException();
         }
-        public override bool LoadBool()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void SaveUint(uint value)
-        {
-            throw new NotImplementedException();
-        }
-        public override uint LoadUint()
+        public override bool LoadBool(string id)
         {
             throw new NotImplementedException();
         }
 
-        public override void SaveInt(int value)
+        public override void SaveUint(uint value, string id)
         {
             throw new NotImplementedException();
         }
-        public override int LoadInt()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void SaveFloat(float value)
-        {
-            throw new NotImplementedException();
-        }
-        public override float LoadFloat()
+        public override uint LoadUint(string id)
         {
             throw new NotImplementedException();
         }
 
-        public override void SaveString(string value)
+        public override void SaveInt(int value, string id)
         {
             throw new NotImplementedException();
         }
-        public override string LoadString()
+        public override int LoadInt(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void SaveFloat(float value, string id)
+        {
+            throw new NotImplementedException();
+        }
+        public override float LoadFloat(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void SaveString(string value, string id)
+        {
+            throw new NotImplementedException();
+        }
+        public override string LoadString(string id)
         {
             throw new NotImplementedException();
         }
         #endregion Primitive Types
 
         #region Complex Types
-        public override void SaveDateTime(DateTime value)
+        public override void SaveDateTime(DateTime value, string id)
         {
             throw new NotImplementedException();
         }
-        public override DateTime LoadDateTime()
+        public override DateTime LoadDateTime(string id)
         {
             throw new NotImplementedException();
         }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FLG.Cs.Serialization {
+﻿namespace FLG.Cs.Serialization {
     public class BinarySerializer : Serializer {
         private BinaryReader? _reader = null;
         private BinaryWriter? _writer = null;
@@ -29,49 +27,49 @@ namespace FLG.Cs.Serialization {
 
         #region Primitive Types
 
-        public override void SaveBool(bool value)
+        public override void SaveBool(bool value, string _)
         {
             _writer.Write(value);
         }
-        public override bool LoadBool()
+        public override bool LoadBool(string _)
         {
             return _reader.ReadBoolean();
         }
 
-        public override void SaveUint(uint value)
+        public override void SaveUint(uint value, string _)
         {
             _writer.Write(value);
         }
-        public override uint LoadUint()
+        public override uint LoadUint(string _)
         {
             return _reader.ReadUInt32();
         }
 
-        public override void SaveInt(int value)
+        public override void SaveInt(int value, string _)
         {
             _writer.Write(value);
         }
-        public override int LoadInt()
+        public override int LoadInt(string _)
         {
             return _reader.ReadInt32();
         }
 
-        public override void SaveFloat(float value)
+        public override void SaveFloat(float value, string _)
         {
             _writer.Write(value);
         }
-        public override float LoadFloat()
+        public override float LoadFloat(string _)
         {
             return _reader.ReadSingle();
         }
 
-        public override void SaveString(string value)
+        public override void SaveString(string value, string _)
         {
             // var count = value.Length;
             //SaveInt(count);
             _writer.Write(value);
         }
-        public override string LoadString()
+        public override string LoadString(string _)
         {
             return _reader.ReadString();
         }
@@ -79,11 +77,11 @@ namespace FLG.Cs.Serialization {
 
         #region Complex Types
         // TODO: https://stackoverflow.com/questions/15919598/serialize-datetime-as-binary
-        public override void SaveDateTime(DateTime value)
+        public override void SaveDateTime(DateTime value, string _)
         {
             throw new NotImplementedException();
         }
-        public override DateTime LoadDateTime()
+        public override DateTime LoadDateTime(string _)
         {
             throw new NotImplementedException();
         }
