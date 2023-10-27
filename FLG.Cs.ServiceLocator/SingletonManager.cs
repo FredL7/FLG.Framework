@@ -15,10 +15,11 @@ namespace FLG.Cs.ServiceLocator {
             if (_services.ContainsKey(typeof(T)))
             {
                 Console.WriteLine($"Service locator already contains a service for {typeof(T)}");
+                // TODO: throw?
                 return;
             }
             _services.Add(typeof(T), service);
-            LogManager.Instance.Info($"Adding service of type {typeof(T)}");
+            LogManager.Instance.Info($"Register service of type {typeof(T)}");
             // service.OnServiceRegistered();
         }
 
