@@ -1,23 +1,14 @@
-﻿namespace FLG.Cs.Serialization {
+﻿using System.Reflection.PortableExecutable;
+
+namespace FLG.Cs.Serialization {
     public class JsonSerializer : Serializer {
         public JsonSerializer(string saveDir) : base(saveDir) { }
-
-        protected override void BeforeSerialize(string filepath)
+        public sealed override void Serialize(ISaveFile saveFile)
         {
             throw new NotImplementedException();
         }
 
-        protected override void AfterSerialize()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void BeforeDeserialize(string filepath)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void AfterDeserialize()
+        public sealed override void Deserialize(ISaveFile saveFile)
         {
             throw new NotImplementedException();
         }

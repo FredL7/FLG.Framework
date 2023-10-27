@@ -1,79 +1,84 @@
-﻿namespace FLG.Cs.Serialization {
+﻿using System;
+
+namespace FLG.Cs.Serialization {
     public class BinarySerializer : Serializer {
-        // private BinaryWriter _writer;
-        // private BinaryReader _reader;
+        private BinaryReader? _reader = null;
+        private BinaryWriter? _writer = null;
 
         public BinarySerializer(string saveDir) : base(saveDir) { }
 
-        protected override void BeforeSerialize(string filepath)
+        public sealed override void Serialize(ISaveFile saveFile)
         {
-            throw new NotImplementedException();
+            var filepath = saveFile.GetPath();
+            using (_writer = new(File.Open(filepath, FileMode.Create)))
+            {
+                SaveHeader(saveFile);
+                SerializeSerializables();
+            }
         }
 
-        protected override void AfterSerialize()
+        public sealed override void Deserialize(ISaveFile saveFile)
         {
-            throw new NotImplementedException();
-        }
-
-        protected override void BeforeDeserialize(string filepath)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void AfterDeserialize()
-        {
-            throw new NotImplementedException();
+            var filepath = saveFile.GetPath();
+            using (_reader = new(File.OpenRead(filepath)))
+            {
+                var header = LoadHeader();
+                DeserializeSerializables();
+            }
         }
 
         #region Primitive Types
 
         public override void SaveBool(bool value)
         {
-            throw new NotImplementedException();
+            _writer.Write(value);
         }
         public override bool LoadBool()
         {
-            throw new NotImplementedException();
+            return _reader.ReadBoolean();
         }
 
         public override void SaveUint(uint value)
         {
-            throw new NotImplementedException();
+            _writer.Write(value);
         }
         public override uint LoadUint()
         {
-            throw new NotImplementedException();
+            return _reader.ReadUInt32();
         }
 
         public override void SaveInt(int value)
         {
-            throw new NotImplementedException();
+            _writer.Write(value);
         }
         public override int LoadInt()
         {
-            throw new NotImplementedException();
+            return _reader.ReadInt32();
         }
 
         public override void SaveFloat(float value)
         {
-            throw new NotImplementedException();
+            _writer.Write(value);
         }
         public override float LoadFloat()
         {
-            throw new NotImplementedException();
+            return _reader.ReadSingle();
         }
 
         public override void SaveString(string value)
         {
-            throw new NotImplementedException();
+            // var count = value.Length;
+            //SaveInt(count);
+            _writer.Write(value);
         }
         public override string LoadString()
         {
-            throw new NotImplementedException();
+            return _reader.ReadString();
         }
         #endregion Primitive Types
 
         #region Complex Types
+        // TODO: https://stackoverflow.com/questions/15919598/serialize-datetime-as-binary
         public override void SaveDateTime(DateTime value)
         {
             throw new NotImplementedException();
