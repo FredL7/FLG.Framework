@@ -1,8 +1,7 @@
 ﻿using System.Xml;
 
 using FLG.Cs.Logger;
-using FLG.Cs.Math;
-using FLG.Cs.UI.Grid;
+using FLG.Cs.IO;
 
 namespace FLG.Cs.UI.Layouts {
     internal static class LayoutXMLParser {
@@ -23,7 +22,7 @@ namespace FLG.Cs.UI.Layouts {
         #region Components
         private static Dictionary<string, AbstractLayoutElement>? ParseForComponents(string layoutsDir)
         {
-            var componentFiles = XMLParser.GetFilePathsByExtension(layoutsDir, ".component");
+            var componentFiles = IOUtils.GetFilePathsByExtension(layoutsDir, ".component");
             if (componentFiles.Count == 0)
             {
                 LogManager.Instance.Debug($"Layout dir ({Path.GetFullPath(layoutsDir)}) does not contain any components (*.component)");
@@ -81,7 +80,7 @@ namespace FLG.Cs.UI.Layouts {
         #region Layouts
         private static List<Layout>? ParseForLayouts(string layoutsDir, Dictionary<string, AbstractLayoutElement>? components)
         {
-            List<string> layoutFiles = XMLParser.GetFilePathsByExtension(layoutsDir, ".layout");
+            List<string> layoutFiles = IOUtils.GetFilePathsByExtension(layoutsDir, ".layout");
             if (layoutFiles.Count == 0)
             {
                 LogManager.Instance.Error($"Layout dir ({Path.GetFullPath(layoutsDir)}) does not contain any layouts (*.layout)");

@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>FLG.Cs.UI</RootNamespace>
+    <RootNamespace>FLG.Cs.Serialization</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <BaseOutputPath>..\_build\bin</BaseOutputPath>
@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FLG.Cs.IO\FLG.Cs.IO.csproj" />
-    <ProjectReference Include="..\FLG.Cs.Math\FLG.Cs.Math.csproj" />
     <ProjectReference Include="..\FLG.Cs.ServiceLocator\FLG.Cs.ServiceLocator.csproj" />
   </ItemGroup>
 
