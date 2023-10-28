@@ -18,7 +18,7 @@ namespace FLG.Cs.Logger {
             string filename = date.ToString(FILENAME_DATE_PATTERN);
             System.IO.Directory.CreateDirectory(logDir);
             _filepath = Path.Combine(logDir, filename + ".log");
-            Debug("Begin Logging");
+            Debug("LogManager start");
         }
 
         private void Log(string msg, ELogLevel level)
