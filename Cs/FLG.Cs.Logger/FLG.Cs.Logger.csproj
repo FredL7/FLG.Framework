@@ -2,11 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>FLG.Cs.Math</RootNamespace>
+    <RootNamespace>FLG.Cs.Logger</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <BaseOutputPath>..\_build\bin</BaseOutputPath>
-    <BaseIntermediateOutputPath>..\_build\obj\</BaseIntermediateOutputPath>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -14,5 +12,9 @@
     <FileVersion>$(AssemblyVersion)</FileVersion>
     <Version>$(AssemblyVersion)</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FLG.Cs.Decorators\FLG.Cs.Decorators.csproj" />
+  </ItemGroup>
 
 </Project>
