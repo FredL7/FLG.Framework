@@ -5,8 +5,6 @@
     <RootNamespace>FLG.Cs.UI</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <BaseOutputPath>..\_build\bin</BaseOutputPath>
-    <BaseIntermediateOutputPath>..\_build\obj\</BaseIntermediateOutputPath>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -16,7 +14,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FLG.Cs.Decorators\FLG.Cs.Decorators.csproj" />
     <ProjectReference Include="..\FLG.Cs.IO\FLG.Cs.IO.csproj" />
+    <ProjectReference Include="..\FLG.Cs.Logger\FLG.Cs.Logger.csproj" />
     <ProjectReference Include="..\FLG.Cs.Math\FLG.Cs.Math.csproj" />
     <ProjectReference Include="..\FLG.Cs.ServiceLocator\FLG.Cs.ServiceLocator.csproj" />
   </ItemGroup>

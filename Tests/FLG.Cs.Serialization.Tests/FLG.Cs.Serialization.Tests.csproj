@@ -4,9 +4,16 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;CS8602;CS8604</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;CS8602;CS8604</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,11 +24,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FLG.Cs.Factory\FLG.Cs.Factory.csproj" />
-    <ProjectReference Include="..\FLG.Cs.Logger\FLG.Cs.Logger.csproj" />
-    <ProjectReference Include="..\FLG.Cs.Math\FLG.Cs.Math.csproj" />
-    <ProjectReference Include="..\FLG.Cs.ServiceLocator\FLG.Cs.ServiceLocator.csproj" />
-    <ProjectReference Include="..\FLG.Cs.UI\FLG.Cs.UI.csproj" />
+    <ProjectReference Include="..\..\FLG.Cs.Factory\FLG.Cs.Factory.csproj" />
+    <ProjectReference Include="..\..\FLG.Cs.Logger\FLG.Cs.Logger.csproj" />
+    <ProjectReference Include="..\..\FLG.Cs.Serialization\FLG.Cs.Serialization.csproj" />
+    <ProjectReference Include="..\..\FLG.Cs.ServiceLocator\FLG.Cs.ServiceLocator.csproj" />
   </ItemGroup>
 
 </Project>

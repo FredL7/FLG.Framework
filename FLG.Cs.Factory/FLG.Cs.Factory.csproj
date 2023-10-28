@@ -1,12 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>FLG.Cs.Factory</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <BaseOutputPath>..\_build\bin</BaseOutputPath>
-    <BaseIntermediateOutputPath>..\_build\obj\</BaseIntermediateOutputPath>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -16,6 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FLG.Cs.Decorators\FLG.Cs.Decorators.csproj" />
     <ProjectReference Include="..\FLG.Cs.Serialization\FLG.Cs.Serialization.csproj" />
     <ProjectReference Include="..\FLG.Cs.ServiceLocator\FLG.Cs.ServiceLocator.csproj" />
     <ProjectReference Include="..\FLG.Cs.UI\FLG.Cs.UI.csproj" />
