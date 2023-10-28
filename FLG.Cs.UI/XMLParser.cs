@@ -6,18 +6,6 @@ using System.Xml;
 
 namespace FLG.Cs.UI {
     internal static class XMLParser {
-        public static List<string> GetFilePathsByExtension(string dir, string extension)
-        {
-            var files = Directory.GetFiles(dir);
-            List<string> result = new();
-            foreach (var file in files)
-            {
-                if (Path.GetExtension(file) == extension)
-                    result.Add(Path.GetFullPath(file));
-            }
-            return result;
-        }
-
         #region XML
         // TODO Separate into 2 distinct methods, one with adding layout targets, the other without
         internal static void ConvertRecursive(XmlNode parentNode, AbstractLayoutElement parentLayoutElement, Dictionary<string, AbstractLayoutElement>? components = null, Layout? layout = null)
