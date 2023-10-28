@@ -1,8 +1,6 @@
-﻿using System.Xml;
-
-using FLG.Cs.IO;
-using FLG.Cs.Logger;
+﻿using FLG.Cs.Logger;
 using FLG.Cs.UI.Layouts;
+using System.Xml;
 
 namespace FLG.Cs.UI.Pages {
     internal static class PageXMLParser {
@@ -18,9 +16,21 @@ namespace FLG.Cs.UI.Pages {
             return pages;
         }
 
+        private static List<string> GetFilePathsByExtension(string dir, string extension)
+        {
+            var files = Directory.GetFiles(dir);
+            List<string> result = new();
+            foreach (var file in files)
+            {
+                if (Path.GetExtension(file) == extension)
+                    result.Add(Path.GetFullPath(file));
+            }
+            return result;
+        }
+
         private static List<Page>? ParseForPages(string pagesDir)
         {
-            List<string> pagesFiles = IOUtils.GetFilePathsByExtension(pagesDir, ".page");
+            List<string> pagesFiles = GetFilePathsByExtension(pagesDir, ".page");
             if (pagesFiles.Count == 0)
             {
                 LogManager.Instance.Error($"Page dir ({Path.GetFullPath(pagesDir)}) does not contain any pages (*.page)");

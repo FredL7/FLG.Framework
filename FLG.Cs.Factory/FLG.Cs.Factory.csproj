@@ -16,7 +16,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FLG.Cs.Serialization\FLG.Cs.Serialization.csproj" />
     <ProjectReference Include="..\FLG.Cs.ServiceLocator\FLG.Cs.ServiceLocator.csproj" />
     <ProjectReference Include="..\FLG.Cs.UI\FLG.Cs.UI.csproj" />
   </ItemGroup>
