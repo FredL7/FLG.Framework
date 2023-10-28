@@ -1,9 +1,19 @@
 ﻿namespace FLG.Cs.Serialization {
-    public class SaveFile : ISaveFile { 
+    public class SaveFile : ISaveFile {
         private readonly string _name;
         private readonly string _filepath;
         private readonly DateTime _dateCreated;
         private DateTime _dateLastModified;
+
+        public SaveFile(string name, string filepath)
+        {
+            _name = name;
+            _filepath = filepath;
+
+            DateTime now = GetDateTimeNow();
+            _dateCreated = now;
+            _dateLastModified = now;
+        }
 
         public SaveFile(string name, string filepath, DateTime dateCreated, DateTime dateLastModified)
         {
@@ -22,8 +32,11 @@
 
         public void UpdateDateLastModified()
         {
-            // TODO: UTC vs non-UTC
-            _dateLastModified = DateTime.UtcNow;
+
+            _dateLastModified = GetDateTimeNow();
         }
+
+        // TODO: UTC vs non-UTC
+        private DateTime GetDateTimeNow() => DateTime.UtcNow;
     }
 }

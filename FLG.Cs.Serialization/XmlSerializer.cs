@@ -1,6 +1,12 @@
-﻿namespace FLG.Cs.Serialization {
+﻿using System.Reflection.PortableExecutable;
+
+namespace FLG.Cs.Serialization {
     public class XmlSerializer : Serializer {
+        // TODO: Probably don't need id, simply use next child because order is predefined
         public XmlSerializer(string saveDir) : base(saveDir) { }
+
+        protected override string GetSaveExtension() => ".xmlsave";
+
         public sealed override void Serialize(ISaveFile saveFile)
         {
             throw new NotImplementedException();
@@ -11,8 +17,12 @@
             throw new NotImplementedException();
         }
 
-        #region Primitive Types
+        protected sealed override SaveFileHeader DeserializeHeader(string filepath)
+        {
+            throw new NotImplementedException();
+        }
 
+        #region Primitive Types
         public override void SaveBool(bool value, string id)
         {
             throw new NotImplementedException();
@@ -36,6 +46,15 @@
             throw new NotImplementedException();
         }
         public override int LoadInt(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void SaveLong(long value, string id)
+        {
+            throw new NotImplementedException();
+        }
+        public override long LoadLong(string id)
         {
             throw new NotImplementedException();
         }

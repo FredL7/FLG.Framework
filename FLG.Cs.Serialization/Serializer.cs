@@ -28,6 +28,8 @@ namespace FLG.Cs.Serialization {
             DiscoverSaveFiles();
         }
 
+        protected abstract string GetSaveExtension();
+
         private void DiscoverSaveFiles()
         {
             if (!Directory.Exists(_saveDir))
@@ -36,10 +38,11 @@ namespace FLG.Cs.Serialization {
                 return;
             }
 
-            List<string> saveFiles = IOUtils.GetFilePathsByExtension(_saveDir, ".save");
+            // TODO Parent serializer container that has one reader specified by the user upon creation (factory) but can read any type
+            List<string> saveFiles = IOUtils.GetFilePathsByExtension(_saveDir, GetSaveExtension());
             foreach (var file in saveFiles)
             {
-                var header = LoadHeader();
+                var header = DeserializeHeader(file);
                 var version = header.version;
                 if (version != VERSION)
                 {
@@ -88,6 +91,13 @@ namespace FLG.Cs.Serialization {
         }
         #endregion
 
+        public void Serialize(string filename)
+        {
+            ISaveFile saveFile = new SaveFile(filename, Path.Combine(_saveDir, filename + GetSaveExtension()));
+            _saveFiles.Add(saveFile);
+            Serialize(saveFile);
+        }
+
         public abstract void Serialize(ISaveFile saveFile);
         protected void SerializeSerializables()
         {
@@ -96,6 +106,7 @@ namespace FLG.Cs.Serialization {
         }
 
         public abstract void Deserialize(ISaveFile saveFile);
+        protected abstract SaveFileHeader DeserializeHeader(string filepath);
         protected void DeserializeSerializables()
         {
             foreach (var serializableItem in _serializableItems)
@@ -111,6 +122,9 @@ namespace FLG.Cs.Serialization {
 
         public abstract void SaveInt(int value, string id);
         public abstract int LoadInt(string id);
+
+        public abstract void SaveLong(long value, string id);
+        public abstract long LoadLong(string id);
 
         public abstract void SaveFloat(float value, string id);
         public abstract float LoadFloat(string id);

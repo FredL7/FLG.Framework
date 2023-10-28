@@ -5,6 +5,8 @@
 
         public BinarySerializer(string saveDir) : base(saveDir) { }
 
+        protected override string GetSaveExtension() => ".binsave";
+
         public sealed override void Serialize(ISaveFile saveFile)
         {
             var filepath = saveFile.GetPath();
@@ -20,9 +22,19 @@
             var filepath = saveFile.GetPath();
             using (_reader = new(File.OpenRead(filepath)))
             {
-                var header = LoadHeader();
+                LoadHeader();
                 DeserializeSerializables();
             }
+        }
+
+        protected sealed override SaveFileHeader DeserializeHeader(string filepath)
+        {
+            SaveFileHeader header;
+            using (_reader = new(File.OpenRead(filepath)))
+            {
+                header = LoadHeader();
+            }
+            return header;
         }
 
         #region Primitive Types
@@ -54,6 +66,15 @@
             return _reader.ReadInt32();
         }
 
+        public override void SaveLong(long value, string id)
+        {
+            _writer.Write(value);
+        }
+        public override long LoadLong(string id)
+        {
+            return _reader.ReadInt64();
+        }
+
         public override void SaveFloat(float value, string _)
         {
             _writer.Write(value);
@@ -76,14 +97,14 @@
         #endregion Primitive Types
 
         #region Complex Types
-        // TODO: https://stackoverflow.com/questions/15919598/serialize-datetime-as-binary
         public override void SaveDateTime(DateTime value, string _)
         {
-            throw new NotImplementedException();
+            SaveLong(value.Ticks, _);
         }
         public override DateTime LoadDateTime(string _)
         {
-            throw new NotImplementedException();
+            long value = LoadLong(_);
+            return new DateTime(value);
         }
         #endregion Complex Types
     }

@@ -3,6 +3,8 @@
 namespace FLG.Cs.Serialization {
     public interface ISerializer : IServiceInstance {
         public void AddSerializable(ISerializable serializable);
+
+        public void Serialize(string filename);
         public void Serialize(ISaveFile saveFile);
         public void Deserialize(ISaveFile saveFile);
 
@@ -17,6 +19,9 @@ namespace FLG.Cs.Serialization {
 
         public void SaveInt(int value, string id);
         public int LoadInt(string id);
+
+        public void SaveLong(long value, string id);
+        public long LoadLong(string id);
 
         public void SaveFloat(float value, string id);
         public float LoadFloat(string id);
