@@ -12,7 +12,7 @@ namespace FLG.Cs.UI.Tests {
         public static void Init(TestContext _)
         {
             LogManager.Instance.SetLogLocation("../../../../_logs");
-            ManagerFactory.IncludeUIManager();
+            ManagerFactory.CreateUIManager();
 
             SetupUIManager();
         }
