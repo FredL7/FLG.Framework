@@ -4,25 +4,25 @@ using System.Text.Json.Nodes;
 
 namespace FLG.Cs.Serialization {
     public class JsonSerializer : Serializer {
-        private Utf8JsonWriter? _writer = null;
-        private JsonObject? _properties = null;
+        private JsonObject _properties;
 
-        public JsonSerializer(string saveDir) : base(saveDir) { }
+        public JsonSerializer(string saveDir) : base(saveDir) {
+            _properties = new();
+        }
 
         protected override string GetSaveExtension() => ".jsonsave";
 
         public sealed override void Serialize(ISaveFile saveFile)
         {
+            _properties = new();
+            SaveHeader(saveFile);
+            SerializeSerializables();
+
             var filepath = saveFile.GetPath();
-            using var filestream = File.Create(filepath);
             var options = new JsonWriterOptions { Indented = true };
-            using (_writer = new(filestream, options))
-            {
-                _properties = new();
-                SaveHeader(saveFile);
-                SerializeSerializables();
-                _properties.WriteTo(_writer);
-            }
+            using var filestream = File.Create(filepath);
+            using Utf8JsonWriter writer = new(filestream, options);
+            _properties.WriteTo(writer);
         }
 
         public sealed override void Deserialize(ISaveFile saveFile)
@@ -34,7 +34,7 @@ namespace FLG.Cs.Serialization {
             DeserializeSerializables();
         }
 
-        protected sealed override SaveFileHeader DeserializeHeader(string filepath)
+        protected sealed override SaveFileHeader DeserializeHeaderOnly(string filepath)
         {
             using var filestream = File.OpenRead(filepath);
             _properties = System.Text.Json.JsonSerializer.Deserialize<JsonObject>(filestream);
@@ -42,7 +42,6 @@ namespace FLG.Cs.Serialization {
         }
 
         #region Primitive Types
-
         public override void SaveBool(bool value, string id)
         {
             _properties[id] = value;

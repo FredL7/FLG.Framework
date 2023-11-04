@@ -27,7 +27,7 @@
             }
         }
 
-        protected sealed override SaveFileHeader DeserializeHeader(string filepath)
+        protected sealed override SaveFileHeader DeserializeHeaderOnly(string filepath)
         {
             SaveFileHeader header;
             using (_reader = new(File.OpenRead(filepath)))
