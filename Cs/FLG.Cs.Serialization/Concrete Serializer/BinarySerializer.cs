@@ -1,11 +1,13 @@
 ﻿namespace FLG.Cs.Serialization {
-    public class BinarySerializer : Serializer {
+    internal class BinarySerializer : Serializer {
+        internal const string SAVE_EXTENSION = ".save";
+        protected override string GetSaveExtension() => SAVE_EXTENSION;
+        protected override ESerializerType GetSerializerType() => ESerializerType.BIN;
+
         private BinaryReader? _reader = null;
         private BinaryWriter? _writer = null;
 
-        public BinarySerializer(string saveDir) : base(saveDir) { }
-
-        protected override string GetSaveExtension() => ".binsave";
+        internal BinarySerializer(SerializerManager manager) : base(manager) { }
 
         public sealed override void Serialize(ISaveFile saveFile)
         {
@@ -27,7 +29,7 @@
             }
         }
 
-        protected sealed override SaveFileHeader DeserializeHeaderOnly(string filepath)
+        internal sealed override SaveFileHeader DeserializeHeaderOnly(string filepath)
         {
             SaveFileHeader header;
             using (_reader = new(File.OpenRead(filepath)))
@@ -38,7 +40,6 @@
         }
 
         #region Primitive Types
-
         public override void SaveBool(bool value, string _)
         {
             _writer.Write(value);
@@ -82,6 +83,15 @@
         public override float LoadFloat(string _)
         {
             return _reader.ReadSingle();
+        }
+
+        public override void SaveDouble(double value, string _)
+        {
+            _writer.Write(value);
+        }
+        public override double LoadDouble(string _)
+        {
+            return _reader.ReadDouble();
         }
 
         public override void SaveString(string value, string _)

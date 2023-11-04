@@ -7,17 +7,17 @@ namespace FLG.Cs.Factory {
         #region ISerializer
         public static void CreateBinarySerializer(string saveDir)
         {
-            ISerializer serializer = new BinarySerializer(saveDir);
-            SingletonManager.Instance.Register(serializer);
-        }
-        public static void CreateXMLSerializer(string saveDir)
-        {
-            ISerializer serializer = new XmlSerializer(saveDir);
+            ISerializerManager serializer = SerializerManager.CreateBinarySerializer(saveDir);
             SingletonManager.Instance.Register(serializer);
         }
         public static void CreateJSONSerializer(string saveDir)
         {
-            ISerializer serializer = new JsonSerializer(saveDir);
+            ISerializerManager serializer = SerializerManager.CreateJsonSerializer(saveDir);
+            SingletonManager.Instance.Register(serializer);
+        }
+        public static void CreateXmlSerializer(string saveDir)
+        {
+            ISerializerManager serializer = SerializerManager.CreateXmlSerializer(saveDir);
             SingletonManager.Instance.Register(serializer);
         }
         #endregion ISerializer

@@ -3,14 +3,16 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 
 namespace FLG.Cs.Serialization {
-    public class JsonSerializer : Serializer {
+    internal class JsonSerializer : Serializer {
+        internal const string SAVE_EXTENSION = ".jsave";
+        protected override string GetSaveExtension() => SAVE_EXTENSION;
+        protected override ESerializerType GetSerializerType() => ESerializerType.JSON;
+
         private JsonObject _properties;
 
-        public JsonSerializer(string saveDir) : base(saveDir) {
+        internal JsonSerializer(SerializerManager manager) : base(manager) {
             _properties = new();
         }
-
-        protected override string GetSaveExtension() => ".jsonsave";
 
         public sealed override void Serialize(ISaveFile saveFile)
         {
@@ -29,14 +31,16 @@ namespace FLG.Cs.Serialization {
         {
             var filepath = saveFile.GetPath();
             using var filestream = File.OpenRead(filepath);
+            _properties = new();
             _properties = System.Text.Json.JsonSerializer.Deserialize<JsonObject>(filestream);
             LoadHeader();
             DeserializeSerializables();
         }
 
-        protected sealed override SaveFileHeader DeserializeHeaderOnly(string filepath)
+        internal sealed override SaveFileHeader DeserializeHeaderOnly(string filepath)
         {
             using var filestream = File.OpenRead(filepath);
+            _properties = new();
             _properties = System.Text.Json.JsonSerializer.Deserialize<JsonObject>(filestream);
             return LoadHeader();
         }
@@ -85,6 +89,15 @@ namespace FLG.Cs.Serialization {
         public override float LoadFloat(string id)
         {
             return _properties[id].GetValue<float>();
+        }
+
+        public override void SaveDouble(double value, string id)
+        {
+            _properties[id] = value;
+        }
+        public override double LoadDouble(string id)
+        {
+            return _properties[id].GetValue<double>();
         }
 
         public override void SaveString(string value, string id)

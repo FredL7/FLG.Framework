@@ -2,20 +2,23 @@
 using System.Xml;
 
 namespace FLG.Cs.Serialization {
-    public class XmlSerializer : Serializer {
+    internal class XmlSerializer : Serializer {
+        internal const string SAVE_EXTENSION = ".xsave";
+        protected override string GetSaveExtension() => SAVE_EXTENSION;
+        protected override ESerializerType GetSerializerType() => ESerializerType.XML;
+
         private const string ROOT_NAME = "Root";
         private XmlDocument _document;
         private XmlElement _root;
 
-        public XmlSerializer(string saveDir) : base(saveDir) {
+        internal XmlSerializer(SerializerManager manager) : base(manager) {
             _document = new();
             _root = _document.CreateElement(ROOT_NAME);
         }
 
-        protected override string GetSaveExtension() => ".xmlsave";
-
         public sealed override void Serialize(ISaveFile saveFile)
         {
+            _document = new();
             _root = _document.CreateElement(ROOT_NAME);
             _document.AppendChild(_root);
 
@@ -38,7 +41,7 @@ namespace FLG.Cs.Serialization {
             DeserializeSerializables();
         }
 
-        protected sealed override SaveFileHeader DeserializeHeaderOnly(string filepath)
+        internal sealed override SaveFileHeader DeserializeHeaderOnly(string filepath)
         {
             _document = new();
             _document.Load(filepath);
@@ -105,6 +108,18 @@ namespace FLG.Cs.Serialization {
         {
             var value = _root[id].InnerText;
             return float.Parse(value);
+        }
+
+        public override void SaveDouble(double value, string id)
+        {
+            XmlElement myElement = _document.CreateElement(id);
+            myElement.InnerText = value.ToString();
+            _root.AppendChild(myElement);
+        }
+        public override double LoadDouble(string id)
+        {
+            var value = _root[id].InnerText;
+            return double.Parse(value);
         }
 
         public override void SaveString(string value, string id)
