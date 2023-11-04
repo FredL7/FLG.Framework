@@ -42,7 +42,7 @@ namespace FLG.Cs.Serialization {
             List<string> saveFiles = IOUtils.GetFilePathsByExtension(_saveDir, GetSaveExtension());
             foreach (var file in saveFiles)
             {
-                var header = DeserializeHeader(file);
+                var header = DeserializeHeaderOnly(file);
                 var version = header.version;
                 if (version != VERSION)
                 {
@@ -106,7 +106,7 @@ namespace FLG.Cs.Serialization {
         }
 
         public abstract void Deserialize(ISaveFile saveFile);
-        protected abstract SaveFileHeader DeserializeHeader(string filepath);
+        protected abstract SaveFileHeader DeserializeHeaderOnly(string filepath);
         protected void DeserializeSerializables()
         {
             foreach (var serializableItem in _serializableItems)
