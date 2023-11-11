@@ -7,12 +7,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <AssemblyVersion>0.1.0</AssemblyVersion>
-    <FileVersion>$(AssemblyVersion)</FileVersion>
-    <Version>$(AssemblyVersion)</Version>
-  </PropertyGroup>
-
   <ItemGroup>
     <Reference Include="GodotSharp">
       <HintPath>..\..\dependencies\$(Configuration)\GodotSharp.dll</HintPath>

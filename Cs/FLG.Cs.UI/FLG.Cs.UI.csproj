@@ -7,12 +7,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <AssemblyVersion>0.1.0</AssemblyVersion>
-    <FileVersion>$(AssemblyVersion)</FileVersion>
-    <Version>$(AssemblyVersion)</Version>
-  </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\FLG.Cs.Decorators\FLG.Cs.Decorators.csproj" />
     <ProjectReference Include="..\FLG.Cs.IO\FLG.Cs.IO.csproj" />
