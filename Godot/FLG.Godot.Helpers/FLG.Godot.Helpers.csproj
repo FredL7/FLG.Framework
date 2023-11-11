@@ -2,14 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>FLG.Cs.ServiceLocator</RootNamespace>
+    <RootNamespace>FLG.Godot.Helpers</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FLG.Cs.Decorators\FLG.Cs.Decorators.csproj" />
-    <ProjectReference Include="..\FLG.Cs.Logger\FLG.Cs.Logger.csproj" />
+    <Reference Include="GodotSharp">
+      <HintPath>..\..\dependencies\$(Configuration)\GodotSharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

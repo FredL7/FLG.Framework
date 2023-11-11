@@ -2,10 +2,10 @@
 using FLG.Cs.Logger;
 
 namespace FLG.Cs.ServiceLocator {
-    public class SingletonManager : SingletonBase<SingletonManager> {
+    public class Locator : SingletonBase<Locator> {
         private readonly Dictionary<object, IServiceInstance> _services;
 
-        private SingletonManager()
+        private Locator()
         {
             _services = new();
         }

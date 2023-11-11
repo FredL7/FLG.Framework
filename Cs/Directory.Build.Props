@@ -1,7 +1,0 @@
-<Project>
- <PropertyGroup>
-    <BaseOutputPath>$(SolutionDir)Cs\_build\bin</BaseOutputPath>
-    <BaseIntermediateOutputPath>$(SolutionDir)Cs\_build\obj</BaseIntermediateOutputPath>
-	<UseCommonOutputDirectory>true</UseCommonOutputDirectory>
-  </PropertyGroup>
-</Project>

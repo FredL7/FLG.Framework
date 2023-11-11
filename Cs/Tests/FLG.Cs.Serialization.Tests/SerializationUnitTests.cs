@@ -24,7 +24,7 @@ namespace FLG.Cs.Serialization.Tests {
             LogManager.Instance.SetLogLocation("../../../_logs");
             ManagerFactory.CreateBinarySerializer(savedir);
 
-            ISerializerManager serializer = SingletonManager.Instance.Get<ISerializerManager>();
+            ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();
             _datevalue = DateTime.Now;
             _item = new(_boolvalue, _uintvalue, _intvalue, _floatvalue, _stringvalue, _datevalue);
             serializer.AddSerializable(_item);
@@ -40,7 +40,7 @@ namespace FLG.Cs.Serialization.Tests {
 
         private static void Serialize(string filename)
         {
-            ISerializerManager serializer = SingletonManager.Instance.Get<ISerializerManager>();
+            ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();
             serializer.Serialize(filename);
         }
 
@@ -51,7 +51,7 @@ namespace FLG.Cs.Serialization.Tests {
 
         private static void Deserialize(string filename)
         {
-            ISerializerManager serializer = SingletonManager.Instance.Get<ISerializerManager>();
+            ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();
             foreach (var saveFile in serializer.GetSaveFiles())
                 if (saveFile.GetName() == filename)
                     serializer.Deserialize(saveFile);
@@ -61,7 +61,7 @@ namespace FLG.Cs.Serialization.Tests {
         [TestMethod]
         public void TestBinarySerialization()
         {
-            ISerializerManager serializer = SingletonManager.Instance.Get<ISerializerManager>();
+            ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();
             serializer.SetSerializerBinary();
 
             var filename = MakeFilename();
@@ -80,7 +80,7 @@ namespace FLG.Cs.Serialization.Tests {
         [TestMethod]
         public void TestJsonSerialization()
         {
-            ISerializerManager serializer = SingletonManager.Instance.Get<ISerializerManager>();
+            ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();
             serializer.SetSerializerJson();
 
             var filename = MakeFilename();
@@ -99,7 +99,7 @@ namespace FLG.Cs.Serialization.Tests {
         [TestMethod]
         public void TestXmlSerialization()
         {
-            ISerializerManager serializer = SingletonManager.Instance.Get<ISerializerManager>();
+            ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();
             serializer.SetSerializerXml();
 
             var filename = MakeFilename();
