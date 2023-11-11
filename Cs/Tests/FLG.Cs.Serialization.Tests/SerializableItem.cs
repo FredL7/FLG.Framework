@@ -45,7 +45,7 @@ namespace FLG.Cs.Serialization.Tests {
 
         public void Serialize()
         {
-            ISerializerManager serializer = SingletonManager.Instance.Get<ISerializerManager>();
+            ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();
             serializer.SaveBool(_boolValue, ID_BOOL);
             serializer.SaveUint(_uintValue, ID_UINT);
             serializer.SaveInt(_intValue, ID_INT);
@@ -56,7 +56,7 @@ namespace FLG.Cs.Serialization.Tests {
 
         public void Deserialize()
         {
-            ISerializerManager serializer = SingletonManager.Instance.Get<ISerializerManager>();
+            ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();
             _boolValue = serializer.LoadBool(ID_BOOL);
             _uintValue = serializer.LoadUint(ID_UINT);
             _intValue = serializer.LoadInt(ID_INT);

@@ -8,17 +8,17 @@ namespace FLG.Cs.Factory {
         public static void CreateBinarySerializer(string saveDir)
         {
             ISerializerManager serializer = SerializerManager.CreateBinarySerializer(saveDir);
-            SingletonManager.Instance.Register(serializer);
+            Locator.Instance.Register(serializer);
         }
         public static void CreateJSONSerializer(string saveDir)
         {
             ISerializerManager serializer = SerializerManager.CreateJsonSerializer(saveDir);
-            SingletonManager.Instance.Register(serializer);
+            Locator.Instance.Register(serializer);
         }
         public static void CreateXmlSerializer(string saveDir)
         {
             ISerializerManager serializer = SerializerManager.CreateXmlSerializer(saveDir);
-            SingletonManager.Instance.Register(serializer);
+            Locator.Instance.Register(serializer);
         }
         #endregion ISerializer
 
@@ -26,7 +26,7 @@ namespace FLG.Cs.Factory {
         public static void CreateUIManager()
         {
             IUIManager manager = new UIManager();
-            SingletonManager.Instance.Register(manager);
+            Locator.Instance.Register(manager);
         }
         #endregion IUIManager
     }

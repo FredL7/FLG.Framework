@@ -19,7 +19,7 @@ namespace FLG.Cs.UI.Tests {
 
         private static void SetupUIManager()
         {
-            IUIManager uiManager = SingletonManager.Instance.Get<IUIManager>();
+            IUIManager uiManager = Locator.Instance.Get<IUIManager>();
             uiManager.RegisterLayouts("../../../Layouts");
             uiManager.RegisterPages("../../../Pages");
         }
@@ -27,7 +27,7 @@ namespace FLG.Cs.UI.Tests {
         [TestMethod]
         public void TestLayout()
         {
-            IUIManager uiManager = SingletonManager.Instance.Get<IUIManager>();
+            IUIManager uiManager = Locator.Instance.Get<IUIManager>();
 
             foreach (var layout in uiManager.GetLayouts())
             {
