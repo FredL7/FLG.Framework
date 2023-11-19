@@ -1,4 +1,5 @@
 ﻿using FLG.Cs.Logger;
+using FLG.Cs.UI.Layouts;
 
 namespace FLG.Cs.UI.Pages {
     internal class PagesManager {
@@ -14,12 +15,20 @@ namespace FLG.Cs.UI.Pages {
 
         internal void RegisterPages(string pagesDir)
         {
+            _pages = new();
             var pages = PageXMLParser.Parse(pagesDir);
             if (pages != null)
                 foreach (var page in pages)
                 {
-                    _pages.Add(page.GetName(), page);
-                    LogManager.Instance.Info($"Registered Page \"{page.GetName()}\"");
+                    if (!_pages.ContainsKey(page.GetName()))
+                    {
+                        _pages.Add(page.GetName(), page);
+                        LogManager.Instance.Info($"Registered page \"{page.GetName()}\"");
+                    }
+                    else
+                    {
+                        LogManager.Instance.Warn($"Already has a page named \"{page.GetName()}\"");
+                    }
                 }
         }
 
