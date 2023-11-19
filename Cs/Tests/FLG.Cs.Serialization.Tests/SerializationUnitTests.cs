@@ -7,7 +7,7 @@ using FLG.Cs.ServiceLocator;
 namespace FLG.Cs.Serialization.Tests {
     [TestClass]
     public class SerializationUnitTests {
-        private const string savedir = "../../../_saves";
+        private const string savedir = "../../../../../../_saves";
 
         private const bool _boolvalue = true;
         private const uint _uintvalue = uint.MaxValue;
@@ -21,7 +21,7 @@ namespace FLG.Cs.Serialization.Tests {
         [ClassInitialize]
         public static void Init(TestContext _)
         {
-            LogManager.Instance.SetLogLocation("../../../_logs");
+            LogManager.Instance.SetLogLocation("../../../../../../_logs");
             ManagerFactory.CreateBinarySerializer(savedir);
 
             ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();
