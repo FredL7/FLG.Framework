@@ -14,11 +14,7 @@ namespace FLG.Cs.UI.Layouts {
         }
 
         public override bool HasChildren() => false;
-        public override IEnumerable<AbstractLayoutElement> GetChildrens()
-        {
-            LogManager.Instance.Error("Layout element leaf cannot contain childrens");
-            throw new NotImplementedException();
-        }
+        public override IEnumerable<AbstractLayoutElement> GetChildrens() => Enumerable.Empty<AbstractLayoutElement>();
 
         internal sealed override void ComputeRectXform() { }
     }

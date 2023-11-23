@@ -54,25 +54,29 @@ namespace FLG.Godot.UI {
 
         private void GenerateLayout(ILayout layout)
         {
-            Control layoutNode = new()
-            {
-                Name = "Layout " + layout.GetName()
-            };
-            AddNodePersist(layoutNode);
-
+            var layoutNode = AddNode("layout " + layout.GetName(), this);
             var root = layout.GetRoot();
             GenerateUIRecursive(layoutNode, root);
         }
 
-        private void AddNodePersist(Node node)
+        private Node AddNode(string name, Node parent)
         {
-            AddChild(node);
+            Control node = new()
+            {
+                Name = name
+            };
+            parent.AddChild(node);
             node.Owner = GetTree().EditedSceneRoot;
+            return node;
         }
 
         private void GenerateUIRecursive(Node parentNode, ILayoutElement layoutElementParent)
         {
-            // TODO
+            foreach (ILayoutElement child in layoutElementParent.GetChildrens())
+            {
+                var node = AddNode(child.GetName(), parentNode);
+                GenerateUIRecursive(node, child);
+            }
         }
     }
 }
