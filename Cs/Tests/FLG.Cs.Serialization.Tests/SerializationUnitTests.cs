@@ -21,7 +21,7 @@ namespace FLG.Cs.Serialization.Tests {
         [ClassInitialize]
         public static void Init(TestContext _)
         {
-            LogManager.Instance.SetLogLocation("../../../../../../_logs");
+            LogManager.Instance.Initialize("../../../../../../_logs");
             ManagerFactory.CreateBinarySerializer(savedir);
 
             ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();

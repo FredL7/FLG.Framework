@@ -38,7 +38,7 @@ namespace FLG.Godot.UI {
         {
 
             var logsPath = ProjectSettings.GlobalizePath("res://" + LOGS_RELATIVE_PATH);
-            LogManager.Instance.SetLogLocation(logsPath);
+            LogManager.Instance.Initialize(logsPath);
             ManagerFactory.CreateUIManager();
             _uiManager = Locator.Instance.Get<IUIManager>();
         }

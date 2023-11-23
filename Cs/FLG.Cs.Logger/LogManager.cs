@@ -8,23 +8,32 @@ namespace FLG.Cs.Logger {
         private const string LOGGING_DATE_PATTERN = @"HH:mm:ss:fff";
         private const string UNKNOWN = "Unknown";
 
+        private bool _initialized = false;
         private string _filepath = String.Empty; // TODO: Default location?
 
         private LogManager() { }
 
-        public void SetLogLocation(string logDir)
+        public void Initialize(string logDir)
         {
-            DateTime date = DateTime.Now;
-            string filename = date.ToString(FILENAME_DATE_PATTERN);
-            System.IO.Directory.CreateDirectory(logDir);
-            _filepath = Path.Combine(logDir, filename + ".log");
-            Debug("Begin Logging");
+            if (_initialized)
+            {
+                Warn("Log Manager already initialized");
+            }
+            else
+            {
+                DateTime date = DateTime.Now;
+                string filename = date.ToString(FILENAME_DATE_PATTERN);
+                System.IO.Directory.CreateDirectory(logDir);
+                _filepath = Path.Combine(logDir, filename + ".log");
+                Debug("Log Manager Initialized");
+                _initialized = string.IsNullOrEmpty(_filepath);
+            }
         }
 
         private void Log(string msg, ELogLevel level)
         {
-            if (string.IsNullOrEmpty(_filepath))
-                throw new Exception("No directory specified for logs, use SetLogLocation()");
+            if (_initialized)
+                throw new Exception("No directory specified for logs, use Initialize()");
 
             StackTrace stackTrace = new();
             string? methodname = stackTrace.GetFrame(2)?.GetMethod()?.Name;
