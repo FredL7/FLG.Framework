@@ -54,16 +54,22 @@ namespace FLG.Godot.UI {
 
         private void GenerateLayout(ILayout layout)
         {
-            var layoutNode = AddNode("layout " + layout.GetName(), this);
             var root = layout.GetRoot();
+            var layoutNode = AddNode("layout " + layout.GetName(), root, this);
             GenerateUIRecursive(layoutNode, root);
         }
 
-        private Node AddNode(string name, Node parent)
+        private Node AddNode(string name, ILayoutElement layoutElement, Node parent)
         {
+            var position = layoutElement.GetPosition();
+            var dimensions = layoutElement.GetDimensions();
+            GD.Print(name, position, dimensions);
+
             Control node = new()
             {
-                Name = name
+                Name = name,
+                Position = new(position.X, position.Y),
+                Size = new(dimensions.Width, dimensions.Height),
             };
             parent.AddChild(node);
             node.Owner = GetTree().EditedSceneRoot;
@@ -74,7 +80,7 @@ namespace FLG.Godot.UI {
         {
             foreach (ILayoutElement child in layoutElementParent.GetChildrens())
             {
-                var node = AddNode(child.GetName(), parentNode);
+                var node = AddNode(child.GetName(), child, parentNode);
                 GenerateUIRecursive(node, child);
             }
         }
