@@ -6,6 +6,7 @@ using FLG.Cs.ServiceLocator;
 using FLG.Cs.Factory;
 using FLG.Cs.UI;
 using FLG.Cs.UI.Layouts;
+using FLG.Cs.UI.Pages;
 
 namespace FLG.Godot.UI {
     [Tool]
@@ -19,13 +20,17 @@ namespace FLG.Godot.UI {
         public override void _Ready()
         {
             base._Ready();
+            InitializeFramework();
+            LoadUI();
 
             if (Engine.IsEditorHint())
             {
                 SceneHelper.RemoveAllChildrensImmediately(this);
-                InitializeFramework();
-                LoadUI();
-                GenerateUI();
+                DrawUI();
+            }
+            else
+            {
+                // TODO: Fetch UI nodes by name
             }
         }
 
@@ -46,24 +51,16 @@ namespace FLG.Godot.UI {
             _uiManager.RegisterPages(pagesPath);
         }
 
-        private void GenerateUI()
+        private void DrawUI()
         {
-            foreach (var layout in _uiManager.GetLayouts())
-                GenerateLayout(layout);
-        }
-
-        private void GenerateLayout(ILayout layout)
-        {
-            var root = layout.GetRoot();
-            var layoutNode = AddNode("layout " + layout.GetName(), root, this);
-            GenerateUIRecursive(layoutNode, root);
+            DrawLayouts();
+            DrawPages();
         }
 
         private Node AddNode(string name, ILayoutElement layoutElement, Node parent)
         {
             var position = layoutElement.GetPosition();
             var dimensions = layoutElement.GetDimensions();
-            GD.Print(name, position, dimensions);
 
             Control node = new()
             {
@@ -76,13 +73,41 @@ namespace FLG.Godot.UI {
             return node;
         }
 
-        private void GenerateUIRecursive(Node parentNode, ILayoutElement layoutElementParent)
+        #region Layouts
+        private void DrawLayouts()
+        {
+            foreach (var layout in _uiManager.GetLayouts())
+                DrawLayout(layout);
+        }
+
+        private void DrawLayout(ILayout layout)
+        {
+            var root = layout.GetRoot();
+            var layoutNode = AddNode("layout " + layout.GetName(), root, this);
+            DrawLayoutRecursive(layoutNode, root);
+        }
+
+        private void DrawLayoutRecursive(Node parentNode, ILayoutElement layoutElementParent)
         {
             foreach (ILayoutElement child in layoutElementParent.GetChildrens())
             {
                 var node = AddNode(child.GetName(), child, parentNode);
-                GenerateUIRecursive(node, child);
+                DrawLayoutRecursive(node, child);
             }
         }
+        #endregion Layouts
+
+        #region Pages
+        private void DrawPages()
+        {
+            foreach (var page in _uiManager.GetPages())
+                DrawPage(page);
+        }
+
+        private void DrawPage(IPage page)
+        {
+
+        }
+        #endregion Pages
     }
 }
