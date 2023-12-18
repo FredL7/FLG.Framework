@@ -35,9 +35,9 @@ namespace FLG.Cs.UI {
             var name = componentName == "" ? defaultName : componentName;
             switch (nodeType)
             {
-                case "HStack": return new HStack(node, name);
-                case "VStack": return new VStack(node, name);
-                case "ProxyLayoutElement": return new ProxyLayoutElementLeaf(node, name); // TODO: tmp
+                case "HStack": return new HStack(name, node);
+                case "VStack": return new VStack(name, node);
+                case "ProxyLayoutElement": return new ProxyLayoutElementLeaf(name, node); // TODO: tmp
                 default:
                     if (components != null && components.ContainsKey(name))
                         return components[name];

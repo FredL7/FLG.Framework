@@ -19,20 +19,31 @@ namespace FLG.Cs.UI.Layouts {
         internal int Order { get; private set; }
         internal float Weight { get; private set; }
 
-        internal AbstractLayoutElement(XmlNode node, string name)
+        internal AbstractLayoutElement(string name, XmlNode node)
         {
             _name = name;
             _isTarget = XMLParser.GetTarget(node) != string.Empty;
+
+            Order = XMLParser.GetOrder(node);
+            Weight = XMLParser.GetWeight(node);
 
             var margin = XMLParser.GetMargin(node);
             var padding = XMLParser.GetPadding(node);
             var width = XMLParser.GetWidth(node);
             var height = XMLParser.GetHeight(node);
+            RectXform = new(margin, padding);
+            Size = new(width, height);
+        }
+
+        public AbstractLayoutElement(string name, float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget)
+        {
+            _name = name;
+            _isTarget = isTarget;
+            Order = order;
+            Weight = weight;
 
             RectXform = new(margin, padding);
             Size = new(width, height);
-            Order = XMLParser.GetOrder(node);
-            Weight = XMLParser.GetWeight(node);
         }
 
         internal abstract void AddChild(AbstractLayoutElement child);

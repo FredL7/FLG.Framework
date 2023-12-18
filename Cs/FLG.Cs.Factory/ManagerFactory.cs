@@ -4,30 +4,17 @@ using FLG.Cs.UI;
 
 namespace FLG.Cs.Factory {
     public static class ManagerFactory {
-        #region ISerializer
-        public static void CreateBinarySerializer(string saveDir)
+        public static void CreateSerializer(ESerializerType t, string saveDir)
         {
-            ISerializerManager serializer = SerializerManager.CreateBinarySerializer(saveDir);
+            ISerializerManager serializer = new SerializerManager(t, saveDir);
             Locator.Instance.Register(serializer);
         }
-        public static void CreateJSONSerializer(string saveDir)
-        {
-            ISerializerManager serializer = SerializerManager.CreateJsonSerializer(saveDir);
-            Locator.Instance.Register(serializer);
-        }
-        public static void CreateXmlSerializer(string saveDir)
-        {
-            ISerializerManager serializer = SerializerManager.CreateXmlSerializer(saveDir);
-            Locator.Instance.Register(serializer);
-        }
-        #endregion ISerializer
 
-        #region IUIManager
-        public static void CreateUIManager()
+        public static void CreateUIManager(string layoutsDir, string pagesDir)
         {
+            // TODO: Use params
             IUIManager manager = new UIManager();
             Locator.Instance.Register(manager);
         }
-        #endregion IUIManager
     }
 }

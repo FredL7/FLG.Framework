@@ -7,6 +7,7 @@ using FLG.Cs.Factory;
 using FLG.Cs.UI;
 using FLG.Cs.UI.Layouts;
 using FLG.Cs.UI.Pages;
+using FLG.Cs.Framework;
 
 namespace FLG.Godot.UI {
     [Tool]
@@ -14,41 +15,36 @@ namespace FLG.Godot.UI {
         private const string LOGS_RELATIVE_PATH = "../../_logs";
         private const string LAYOUTS_RELATIVE_PATH = "UI/Layouts";
         private const string PAGES_RELATIVE_PATH = "UI/Pages";
+        private const string SAVES_RELATIVE_PATH = "../../_saves";
 
         private IUIManager _uiManager;
 
         public override void _Ready()
         {
             base._Ready();
-            InitializeFramework();
-            LoadUI();
 
             if (Engine.IsEditorHint())
             {
-                SceneHelper.RemoveAllChildrensImmediately(this);
-                DrawUI();
+                // Must initialize here because it was not called from Godot.Manager (to create)
+                Preferences p = new()
+                {
+                    logsDir = ProjectSettings.GlobalizePath("res://" + LOGS_RELATIVE_PATH),
+                    serializerType = Cs.Serialization.ESerializerType.BIN,
+                    savesDir = ProjectSettings.GlobalizePath("res://" + SAVES_RELATIVE_PATH),
+                    layoutsDir = ProjectSettings.GlobalizePath("res://" + LAYOUTS_RELATIVE_PATH),
+                    pagesDir = ProjectSettings.GlobalizePath("res://" + PAGES_RELATIVE_PATH)
+                };
+                FrameworkManager.Instance.Initialize(p);
             }
-            else
-            {
-                // TODO: Fetch UI nodes by name
-            }
+
+            // TODO: Register as UI observer
+            // TODO: Register additional pages and layouts (for Widgets / Controllers)
+            FrameworkManager.Instance.BootstrapUI();
         }
 
-        private void InitializeFramework()
+        private void Clear()
         {
-
-            var logsPath = ProjectSettings.GlobalizePath("res://" + LOGS_RELATIVE_PATH);
-            LogManager.Instance.Initialize(logsPath);
-            ManagerFactory.CreateUIManager();
-            _uiManager = Locator.Instance.Get<IUIManager>();
-        }
-
-        private void LoadUI()
-        {
-            var layoutsPath = ProjectSettings.GlobalizePath("res://" + LAYOUTS_RELATIVE_PATH);
-            var pagesPath = ProjectSettings.GlobalizePath("res://" + PAGES_RELATIVE_PATH);
-            _uiManager.RegisterLayouts(layoutsPath);
-            _uiManager.RegisterPages(pagesPath);
+            SceneHelper.RemoveAllChildrensImmediately(this);
         }
 
         private void DrawUI()
@@ -106,7 +102,8 @@ namespace FLG.Godot.UI {
 
         private void DrawPage(IPage page)
         {
-
+            // Name page content with: $"{content.Getname()} (Page {page.GetName()})"
+            // To make sure unique naming
         }
         #endregion Pages
     }

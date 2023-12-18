@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FLG.Godot.Helpers", "Godot\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FLG.Godot", "Godot\FLG.Godot\FLG.Godot.csproj", "{EA1774DC-BC62-4929-ACAD-BC19B0B126EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FLG.Cs.Framework", "Cs\FLG.Cs.Framework\FLG.Cs.Framework.csproj", "{8CC7B699-6A53-44A2-914B-E08566429AAF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -146,6 +148,14 @@ Global
 		{EA1774DC-BC62-4929-ACAD-BC19B0B126EC}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
 		{EA1774DC-BC62-4929-ACAD-BC19B0B126EC}.Release|Any CPU.ActiveCfg = ExportRelease|Any CPU
 		{EA1774DC-BC62-4929-ACAD-BC19B0B126EC}.Release|Any CPU.Build.0 = ExportRelease|Any CPU
+		{8CC7B699-6A53-44A2-914B-E08566429AAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CC7B699-6A53-44A2-914B-E08566429AAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CC7B699-6A53-44A2-914B-E08566429AAF}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CC7B699-6A53-44A2-914B-E08566429AAF}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{8CC7B699-6A53-44A2-914B-E08566429AAF}.ExportRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{8CC7B699-6A53-44A2-914B-E08566429AAF}.ExportRelease|Any CPU.Build.0 = Release|Any CPU
+		{8CC7B699-6A53-44A2-914B-E08566429AAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CC7B699-6A53-44A2-914B-E08566429AAF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -165,6 +175,7 @@ Global
 		{D678431D-2412-4C53-AEA2-594232A715A9} = {BBF8F31D-223B-46DC-84E5-E483F9734B16}
 		{E3738862-670A-4890-9EE8-151E49794418} = {4E7AF0D2-DFA3-4E3A-8C81-CD6B0A98EA06}
 		{EA1774DC-BC62-4929-ACAD-BC19B0B126EC} = {4E7AF0D2-DFA3-4E3A-8C81-CD6B0A98EA06}
+		{8CC7B699-6A53-44A2-914B-E08566429AAF} = {47D777C2-B23F-4270-B310-CC5E2E2D8B62}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {246693A2-ECDB-4309-9A0D-CDB090114039}

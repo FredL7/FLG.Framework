@@ -3,25 +3,31 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FLG.Cs.ServiceLocator;
 using FLG.Cs.Logger;
 using FLG.Cs.Factory;
+using FLG.Cs.Framework;
 
 namespace FLG.Cs.UI.Tests {
     [TestClass]
     public class UIUnitTests {
+        private const string LOGS_DIR = "../../../../../../_logs";
+        private const string LAYOUTS_DIR = "../../../Layouts";
+        private const string PAGES_DIR = "../../../Pages";
 
         [ClassInitialize]
         public static void Init(TestContext _)
         {
-            LogManager.Instance.Initialize("../../../../../../_logs");
-            ManagerFactory.CreateUIManager();
+            Preferences p = new()
+            {
+                logsDir = LOGS_DIR,
+                serializerType = Serialization.ESerializerType.BIN,
+                savesDir = string.Empty,
+                layoutsDir = LAYOUTS_DIR,
+                pagesDir = PAGES_DIR
+            };
+            FrameworkManager.Instance.Initialize(p);
 
-            SetupUIManager();
-        }
-
-        private static void SetupUIManager()
-        {
-            IUIManager uiManager = Locator.Instance.Get<IUIManager>();
-            uiManager.RegisterLayouts("../../../Layouts");
-            uiManager.RegisterPages("../../../Pages");
+            // TODO: Register as UI observer
+            // TODO: Register additional pages and layouts (for Widgets / Controllers)
+            FrameworkManager.Instance.BootstrapUI();
         }
 
         [TestMethod]

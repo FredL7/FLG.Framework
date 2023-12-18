@@ -21,7 +21,7 @@ namespace FLG.Cs.Serialization {
         public void AddSerializable(ISerializable serializable) { _serializableItems.Add(serializable); }
         public IEnumerable<ISerializable> GetSerializableItems() => _serializableItems;
 
-        private SerializerManager(ESerializerType t, string saveDir)
+        public SerializerManager(ESerializerType t, string saveDir)
         {
             _binSerializer = new BinarySerializer(this);
             _jsonSerializer = new JsonSerializer(this);
@@ -42,9 +42,6 @@ namespace FLG.Cs.Serialization {
             DiscoverSaveFile();
         }
 
-        public static SerializerManager CreateBinarySerializer(string saveDir) => new(ESerializerType.BIN, saveDir);
-        public static SerializerManager CreateXmlSerializer(string saveDir) => new(ESerializerType.JSON, saveDir);
-        public static SerializerManager CreateJsonSerializer(string saveDir) => new(ESerializerType.XML, saveDir);
         public void SetSerializerBinary() { _writeSerializer = _binSerializer; }
         public void SetSerializerJson() { _writeSerializer = _jsonSerializer; }
         public void SetSerializerXml() { _writeSerializer = _xmlSerializer; }
