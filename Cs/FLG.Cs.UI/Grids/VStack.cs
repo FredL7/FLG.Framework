@@ -6,7 +6,11 @@ using FLG.Cs.UI.Layouts;
 
 namespace FLG.Cs.UI.Grid {
     internal class VStack : Stack {
-        internal VStack(XmlNode node, string name) : base(node, name) { }
+        internal VStack(string name, XmlNode node) : base(name, node) { }
+        internal VStack(
+            string name, float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget,
+            EGridDirection direction, EGridJustify justify, EGridAlignment alignment
+        ) : base(name, width, height, margin, padding, order, weight, isTarget, direction, justify, alignment) { }
 
         protected override float GetChildMainMarginFirst(AbstractLayoutElement child) => child.RectXform.Margin.Top;
         protected override float GetChildMainMarginLast(AbstractLayoutElement child) => child.RectXform.Margin.Bottom;
