@@ -1,5 +1,5 @@
 ﻿namespace FLG.Cs.UI.Grid {
-    internal enum EGridDirection { NORMAL, REVERSE }
+    public enum EGridDirection { NORMAL, REVERSE }
 
     internal class EGridDirectionExtension {
         internal static EGridDirection FromString(string value)
