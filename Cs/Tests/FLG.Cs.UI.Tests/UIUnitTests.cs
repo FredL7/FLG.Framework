@@ -1,8 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using FLG.Cs.ServiceLocator;
-using FLG.Cs.Logger;
-using FLG.Cs.Factory;
 using FLG.Cs.Framework;
 
 namespace FLG.Cs.UI.Tests {
