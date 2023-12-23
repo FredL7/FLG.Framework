@@ -1,4 +1,5 @@
 ﻿using FLG.Cs.Logger;
+using FLG.Cs.ServiceLocator;
 using FLG.Cs.UI.Layouts;
 
 namespace FLG.Cs.UI.Pages {
@@ -13,7 +14,7 @@ namespace FLG.Cs.UI.Pages {
         internal List<AbstractLayoutElement> GetContentElements(string targetid)
         {
             if (!_content.ContainsKey(targetid))
-                LogManager.Instance.Error($"Page {_name} does not contain content for target {targetid}");
+                Locator.Instance.Get<ILogManager>().Error($"Page {_name} does not contain content for target {targetid}");
             return _content[targetid];
         }
 

@@ -1,14 +1,15 @@
-﻿using System.Xml;
-
-using FLG.Cs.Math;
+﻿using FLG.Cs.Math;
+using System.Xml;
 
 namespace FLG.Cs.UI.Layouts {
     internal abstract class AbstractLayoutElementComposite : AbstractLayoutElement {
         private List<AbstractLayoutElement> _childrens = new();
         protected List<AbstractLayoutElement> GetChildrensInternal() => _childrens;
 
-        internal AbstractLayoutElementComposite(XmlNode node, string name)
-            : base(node, name) { }
+        internal AbstractLayoutElementComposite(string name, XmlNode node)
+            : base(name, node) { }
+        internal AbstractLayoutElementComposite(string name, float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget)
+            : base(name, width, height, margin, padding, order, weight, isTarget) { }
 
         internal override void AddChild(AbstractLayoutElement child)
         {

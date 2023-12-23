@@ -37,7 +37,6 @@
             _dateLastModified = GetDateTimeNow();
         }
 
-        // TODO: UTC vs non-UTC
         private static DateTime GetDateTimeNow() => DateTime.UtcNow;
     }
 }

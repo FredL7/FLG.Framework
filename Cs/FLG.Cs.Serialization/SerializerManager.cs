@@ -1,6 +1,6 @@
 ﻿using FLG.Cs.IO;
 using FLG.Cs.Logger;
-using System;
+using FLG.Cs.ServiceLocator;
 
 namespace FLG.Cs.Serialization {
     public class SerializerManager : ISerializerManager {
@@ -21,7 +21,7 @@ namespace FLG.Cs.Serialization {
         public void AddSerializable(ISerializable serializable) { _serializableItems.Add(serializable); }
         public IEnumerable<ISerializable> GetSerializableItems() => _serializableItems;
 
-        private SerializerManager(ESerializerType t, string saveDir)
+        public SerializerManager(ESerializerType t, string saveDir)
         {
             _binSerializer = new BinarySerializer(this);
             _jsonSerializer = new JsonSerializer(this);
@@ -42,9 +42,12 @@ namespace FLG.Cs.Serialization {
             DiscoverSaveFile();
         }
 
-        public static SerializerManager CreateBinarySerializer(string saveDir) => new(ESerializerType.BIN, saveDir);
-        public static SerializerManager CreateXmlSerializer(string saveDir) => new(ESerializerType.JSON, saveDir);
-        public static SerializerManager CreateJsonSerializer(string saveDir) => new(ESerializerType.XML, saveDir);
+        #region IServiceInstance
+        public bool IsProxy() => false;
+        public void OnServiceRegistered() { Locator.Instance.Get<ILogManager>().Debug("Serialization Manager Registered"); }
+        public void OnServiceRegisteredFail() { Locator.Instance.Get<ILogManager>().Error("Serialization Manager Failed to register"); }
+        #endregion IServiceInstance
+
         public void SetSerializerBinary() { _writeSerializer = _binSerializer; }
         public void SetSerializerJson() { _writeSerializer = _jsonSerializer; }
         public void SetSerializerXml() { _writeSerializer = _xmlSerializer; }
@@ -78,7 +81,7 @@ namespace FLG.Cs.Serialization {
                         serializerType = ESerializerType.XML;
                         break;
                     default:
-                        LogManager.Instance.Warn($"Wrong extension for save file at \"{file}\"");
+                        Locator.Instance.Get<ILogManager>().Warn($"Wrong extension for save file at \"{file}\"");
                         return;
                 }
 
@@ -86,7 +89,8 @@ namespace FLG.Cs.Serialization {
                 var version = header.version;
                 if (version != VERSION)
                 {
-                    LogManager.Instance.Warn($"Save file version does not correspond. Got {version}, expected {VERSION}). For file at \"{file}\"");
+
+                    Locator.Instance.Get<ILogManager>().Warn($"Save file version does not correspond. Got {version}, expected {VERSION}). For file at \"{file}\"");
                     //? Upgrade/Convert
                 }
                 else
@@ -108,8 +112,8 @@ namespace FLG.Cs.Serialization {
                 case ESerializerType.JSON: _jsonSerializer.Deserialize(saveFile); break;
                 case ESerializerType.XML: _xmlSerializer.Deserialize(saveFile); break;
                 default:
-                    LogManager.Instance.Warn($"Could not deserialize save file {saveFile.GetName()}, unrecognized type {t}");
-                        break;
+                    Locator.Instance.Get<ILogManager>().Warn($"Could not deserialize save file {saveFile.GetName()}, unrecognized type {t}");
+                    break;
             }
         }
 

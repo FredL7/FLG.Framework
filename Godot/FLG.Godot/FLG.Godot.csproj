@@ -1,6 +1,16 @@
-<Project Sdk="Godot.NET.Sdk/4.1.1">
+﻿<Project Sdk="Godot.NET.Sdk/4.1.1">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Cs\FLG.Cs.Decorators\FLG.Cs.Decorators.csproj" />
+    <ProjectReference Include="..\..\Cs\FLG.Cs.Factory\FLG.Cs.Factory.csproj" />
+    <ProjectReference Include="..\..\Cs\FLG.Cs.Framework\FLG.Cs.Framework.csproj" />
+    <ProjectReference Include="..\..\Cs\FLG.Cs.Logger\FLG.Cs.Logger.csproj" />
+    <ProjectReference Include="..\..\Cs\FLG.Cs.ServiceLocator\FLG.Cs.ServiceLocator.csproj" />
+    <ProjectReference Include="..\..\Cs\FLG.Cs.UI\FLG.Cs.UI.csproj" />
+    <ProjectReference Include="..\FLG.Godot.Helpers\FLG.Godot.Helpers.csproj" />
+  </ItemGroup>
 </Project>

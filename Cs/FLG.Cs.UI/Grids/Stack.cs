@@ -11,10 +11,20 @@ namespace FLG.Cs.UI.Grid {
         private EGridJustify _justify; // Along the main direction
         private EGridAlignment _alignment; // Along the other direction
 
-        internal Stack(XmlNode node, string name) : base(node, name) {
+        internal Stack(string name, XmlNode node) : base(name, node)
+        {
             _direction = XMLParser.GetDirection(node);
             _justify = XMLParser.GetJustify(node);
             _alignment = XMLParser.GetAlignment(node);
+        }
+        internal Stack(
+            string name, float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget,
+            EGridDirection direction, EGridJustify justify, EGridAlignment alignment)
+            : base(name, width, height, margin, padding, order, weight, isTarget)
+        {
+            _direction = direction;
+            _justify = justify;
+            _alignment = alignment;
         }
 
         protected sealed override void ComputeChildrenSizesAndPositions()

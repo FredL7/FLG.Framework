@@ -1,5 +1,6 @@
 ﻿using FLG.Cs.Logger;
 using FLG.Cs.Math;
+using FLG.Cs.ServiceLocator;
 using FLG.Cs.UI.Grid;
 using FLG.Cs.UI.Layouts;
 using System.Xml;
@@ -35,9 +36,9 @@ namespace FLG.Cs.UI {
             var name = componentName == "" ? defaultName : componentName;
             switch (nodeType)
             {
-                case "HStack": return new HStack(node, name);
-                case "VStack": return new VStack(node, name);
-                case "ProxyLayoutElement": return new ProxyLayoutElementLeaf(node, name); // TODO: tmp
+                case "HStack": return new HStack(name, node);
+                case "VStack": return new VStack(name, node);
+                case "ProxyLayoutElement": return new ProxyLayoutElementLeaf(name, node); // TODO: tmp
                 default:
                     if (components != null && components.ContainsKey(name))
                         return components[name];
@@ -149,7 +150,7 @@ namespace FLG.Cs.UI {
                         case 4:
                             return new Spacing(intValues[0], intValues[1], intValues[2], intValues[3]);
                         default:
-                            LogManager.Instance.Warn("Spacing attribute has too many values");
+                            Locator.Instance.Get<ILogManager>().Warn("Spacing attribute has too many values");
                             return new Spacing(intValues[0], intValues[1], intValues[2], intValues[3]);
                     }
                 }

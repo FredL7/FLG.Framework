@@ -2,6 +2,7 @@
 
 using FLG.Cs.Logger;
 using FLG.Cs.IO;
+using FLG.Cs.ServiceLocator;
 
 namespace FLG.Cs.UI.Layouts {
     internal static class LayoutXMLParser {
@@ -9,7 +10,7 @@ namespace FLG.Cs.UI.Layouts {
         {
             if (!Directory.Exists(layoutDir))
             {
-                LogManager.Instance.Error($"{Path.GetFullPath(layoutDir)} does not exists");
+                Locator.Instance.Get<ILogManager>().Error($"{Path.GetFullPath(layoutDir)} does not exists");
                 return null;
             }
 
@@ -25,7 +26,7 @@ namespace FLG.Cs.UI.Layouts {
             var componentFiles = IOUtils.GetFilePathsByExtension(layoutsDir, ".component");
             if (componentFiles.Count == 0)
             {
-                LogManager.Instance.Debug($"Layout dir ({Path.GetFullPath(layoutsDir)}) does not contain any components (*.component)");
+                Locator.Instance.Get<ILogManager>().Debug($"Layout dir ({Path.GetFullPath(layoutsDir)}) does not contain any components (*.component)");
                 return null;
             }
 
@@ -48,19 +49,19 @@ namespace FLG.Cs.UI.Layouts {
             var rootNode = xmldoc.DocumentElement;
             if (rootNode == null)
             {
-                LogManager.Instance.Error("XML root node not found");
+                Locator.Instance.Get<ILogManager>().Error("XML root node not found");
                 return null;
             }
 
             var rootChildCount = rootNode.ChildNodes.Count;
             if (rootChildCount == 0)
             {
-                LogManager.Instance.Error("XML root node must have a child node");
+                Locator.Instance.Get<ILogManager>().Error("XML root node must have a child node");
                 return null;
             }
             else if (rootChildCount > 1)
             {
-                LogManager.Instance.Error("XML root node can only have one child node");
+                Locator.Instance.Get<ILogManager>().Error("XML root node can only have one child node");
                 return null;
             }
 
@@ -83,7 +84,7 @@ namespace FLG.Cs.UI.Layouts {
             List<string> layoutFiles = IOUtils.GetFilePathsByExtension(layoutsDir, ".layout");
             if (layoutFiles.Count == 0)
             {
-                LogManager.Instance.Error($"Layout dir ({Path.GetFullPath(layoutsDir)}) does not contain any layouts (*.layout)");
+                Locator.Instance.Get<ILogManager>().Error($"Layout dir ({Path.GetFullPath(layoutsDir)}) does not contain any layouts (*.layout)");
                 return null;
             }
 
@@ -106,19 +107,19 @@ namespace FLG.Cs.UI.Layouts {
             var rootNode = xmldoc.DocumentElement;
             if (rootNode == null)
             {
-                LogManager.Instance.Error("XML root node not found");
+                Locator.Instance.Get<ILogManager>().Error("XML root node not found");
                 return null;
             }
 
             var rootChildCount = rootNode.ChildNodes.Count;
             if (rootChildCount == 0)
             {
-                LogManager.Instance.Error("XML root node must have a child node");
+                Locator.Instance.Get<ILogManager>().Error("XML root node must have a child node");
                 return null;
             }
             else if (rootChildCount > 1)
             {
-                LogManager.Instance.Error("XML root node can only have one child node");
+                Locator.Instance.Get<ILogManager>().Error("XML root node can only have one child node");
                 return null;
             }
 

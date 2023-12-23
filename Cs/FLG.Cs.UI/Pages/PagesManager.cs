@@ -1,25 +1,37 @@
 ﻿using FLG.Cs.Logger;
+using FLG.Cs.ServiceLocator;
+using FLG.Cs.UI.Layouts;
 
 namespace FLG.Cs.UI.Pages {
     internal class PagesManager {
+        private string _pagesDir;
         private Dictionary<string, Page> _pages;
         private Page? _current = null;
 
-        internal PagesManager()
+        internal PagesManager(string pagesDir)
         {
+            _pagesDir = pagesDir;
             _pages = new();
         }
 
         public IEnumerable<Page> GetPages() => _pages.Values;
 
-        internal void RegisterPages(string pagesDir)
+        internal void RegisterPages()
         {
-            var pages = PageXMLParser.Parse(pagesDir);
+            _pages = new();
+            var pages = PageXMLParser.Parse(_pagesDir);
             if (pages != null)
                 foreach (var page in pages)
                 {
-                    _pages.Add(page.GetName(), page);
-                    LogManager.Instance.Info($"Registered Page \"{page.GetName()}\"");
+                    if (!_pages.ContainsKey(page.GetName()))
+                    {
+                        _pages.Add(page.GetName(), page);
+                        Locator.Instance.Get<ILogManager>().Info($"Registered page \"{page.GetName()}\"");
+                    }
+                    else
+                    {
+                        Locator.Instance.Get<ILogManager>().Warn($"Already has a page named \"{page.GetName()}\"");
+                    }
                 }
         }
 
