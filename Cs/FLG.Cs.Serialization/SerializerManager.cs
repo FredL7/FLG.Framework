@@ -38,14 +38,15 @@ namespace FLG.Cs.Serialization {
             _saveFiles = new();
 
             _serializableItems = new();
-
-            DiscoverSaveFile();
         }
 
         #region IServiceInstance
         public bool IsProxy() => false;
-        public void OnServiceRegistered() { Locator.Instance.Get<ILogManager>().Debug("Serialization Manager Registered"); }
         public void OnServiceRegisteredFail() { Locator.Instance.Get<ILogManager>().Error("Serialization Manager Failed to register"); }
+        public void OnServiceRegistered() {
+            Locator.Instance.Get<ILogManager>().Debug("Serialization Manager Registered");
+            DiscoverSaveFile();
+        }
         #endregion IServiceInstance
 
         public void SetSerializerBinary() { _writeSerializer = _binSerializer; }

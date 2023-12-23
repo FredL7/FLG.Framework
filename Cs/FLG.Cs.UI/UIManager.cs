@@ -16,33 +16,32 @@ namespace FLG.Cs.UI {
 
         #region IServiceInstance
         public bool IsProxy() => false;
-        public void OnServiceRegistered() { Locator.Instance.Get<ILogManager>().Debug("UI Manager Registered"); }
         public void OnServiceRegisteredFail() { Locator.Instance.Get<ILogManager>().Error("UI Manager Failed to register"); }
+        public void OnServiceRegistered() {
+            Locator.Instance.Get<ILogManager>().Debug("UI Manager Registered");
+            RegisterLayouts();
+            RegisterPages();
+        }
         #endregion IServiceInstance
 
         #region Layouts
-        public void RegisterLayouts()
+        public IEnumerable<ILayout> GetLayouts()
+        {
+            return _layoutsManager.GetLayouts();
+        }
+
+        private void RegisterLayouts()
         {
             Window defaultWindow = new(1920, 1080);
             // TODO: Register window size change to compute on change (also applies to pages)
             _layoutsManager.RegisterLayouts(defaultWindow);
         }
-
-        public IEnumerable<ILayout> GetLayouts()
-        {
-            return _layoutsManager.GetLayouts();
-        }
         #endregion Layouts
 
         #region Page
-        public void RegisterPages()
+        public IEnumerable<IPage> GetPages()
         {
-            foreach (var page in _pagesManager.GetPages())
-                foreach (var target in page.GetTargetsId())
-                {
-                    _layoutsManager.ComputeTargetRectXforms(page.LayoutId, target, page.GetContentElements(target));
-                    Locator.Instance.Get<ILogManager>().Info($"Page \"{page.GetName()}\": registered content for target \"{target}\" in layout \"{page.LayoutId}\"");
-                }
+            return _pagesManager.GetPages();
         }
 
         public void OpenPage(string pageId)
@@ -52,9 +51,14 @@ namespace FLG.Cs.UI {
             _pagesManager.OpenPage(pageId);
         }
 
-        public IEnumerable<IPage> GetPages()
+        private void RegisterPages()
         {
-            return _pagesManager.GetPages();
+            foreach (var page in _pagesManager.GetPages())
+                foreach (var target in page.GetTargetsId())
+                {
+                    _layoutsManager.ComputeTargetRectXforms(page.LayoutId, target, page.GetContentElements(target));
+                    Locator.Instance.Get<ILogManager>().Info($"Page \"{page.GetName()}\": registered content for target \"{target}\" in layout \"{page.LayoutId}\"");
+                }
         }
         #endregion Page
     }
