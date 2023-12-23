@@ -5,6 +5,7 @@ using FLG.Cs.UI;
 
 namespace FLG.Cs.Framework {
     public class FrameworkManager : SingletonBase<FrameworkManager> {
+        // TODO: replace ValidateDependencies with A call to the Dependency InitializeMethods
         private FrameworkManager() { }
 
         #region General

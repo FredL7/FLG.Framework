@@ -1,14 +1,10 @@
-﻿using FLG.Cs.Logger;
-using FLG.Cs.ServiceLocator;
-
-namespace FLG.Cs.Serialization {
+﻿namespace FLG.Cs.Serialization {
     public class SerializerManagerProxy : ISerializerManager {
         public bool IsProxy() => true;
-        public void OnServiceRegistered() { Locator.Instance.Get<ILogManager>().Debug("Serialization Manager Proxy Registered"); }
-        public void OnServiceRegisteredFail() { Locator.Instance.Get<ILogManager>().Error("Serialization Manager Proxy Failed to register"); }
+        public void OnServiceRegistered() { }
+        public void OnServiceRegisteredFail() {  }
 
-        // TODO: Don't return null;
-        public IEnumerable<ISaveFile> GetSaveFiles() { return default; }
+        public IEnumerable<ISaveFile> GetSaveFiles() { return new List<ISaveFile>(); }
         public void AddSerializable(ISerializable serializable) { }
         public void Serialize(string filename) { }
         public void Serialize(ISaveFile saveFile) { }
