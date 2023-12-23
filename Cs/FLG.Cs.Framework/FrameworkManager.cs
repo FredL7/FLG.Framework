@@ -1,30 +1,76 @@
 ﻿using FLG.Cs.Decorators;
 using FLG.Cs.Factory;
 using FLG.Cs.Logger;
-using FLG.Cs.ServiceLocator;
+using FLG.Cs.Serialization;
 using FLG.Cs.UI;
 
 namespace FLG.Cs.Framework {
     public class FrameworkManager : SingletonBase<FrameworkManager> {
-        private bool _initialized = false;
         private FrameworkManager() { }
 
-        public void Initialize(Preferences p)
+        #region General
+        private bool _initializedGeneral = false;
+        public void Initialize(Preferences pref)
         {
-            if (!_initialized)
+            if (!_initializedGeneral)
             {
-                _initialized = true;
-                LogManager.Instance.Initialize(p.logsDir);
-                ManagerFactory.CreateSerializer(p.serializerType, p.savesDir);
-                ManagerFactory.CreateUIManager(p.layoutsDir, p.pagesDir);
+                _initializedGeneral = true;
+            }
+        }
+        #endregion General
+
+        #region Logs
+        private bool _initializedLogs = false;
+        public void InitializeLogs(PreferencesLogs pref)
+        {
+            if (ValidateDependenciesLogs())
+                return;
+
+            if (!_initializedLogs)
+            {
+                LogManager.Instance.Initialize(pref.logsDir);
+                _initializedLogs = true;
             }
         }
 
-        public void BootstrapUI()
+        private bool ValidateDependenciesLogs() => _initializedGeneral;
+        #endregion Logs
+
+        #region Serialization
+        private bool _initializedSerializer = false;
+        public void InitializeSerializer(PreferencesSerialization pref)
         {
-            // TODO: Make sure you have registered pages content before calling this method
-            // Locator.Instance.Get<IUIManager>().LoadUI();
-            // Observer pattenr to call the observers to then draw()
+            if (ValidateDependenciesSerialization())
+                return;
+
+            if (!_initializedSerializer)
+            {
+                ManagerFactory.CreateSerializer(pref.serializerType, pref.savesDir);
+                _initializedSerializer = true;
+            }
         }
+
+        private bool ValidateDependenciesSerialization() => _initializedGeneral;
+        #endregion Serialization
+
+        #region UI
+        private bool _initializedUI = false;
+        public void InitializeUI(PreferencesUI pref)
+        {
+            if (ValidateDependenciesUI())
+                return;
+
+            if (!_initializedUI)
+            {
+                // TODO: Make sure you have registered pages content before calling this method
+                // Locator.Instance.Get<IUIManager>().LoadUI();
+                // Observer pattern to call the observers to then draw()
+                ManagerFactory.CreateUIManager(pref.layoutsDir, pref.pagesDir);
+                _initializedUI = true;
+            }
+        }
+
+        private bool ValidateDependenciesUI() => _initializedGeneral;
+        #endregion UI
     }
 }

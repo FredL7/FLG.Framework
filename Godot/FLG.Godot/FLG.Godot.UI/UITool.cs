@@ -12,10 +12,10 @@ using FLG.Cs.Framework;
 namespace FLG.Godot.UI {
     [Tool]
     public partial class UITool : Control {
-        private const string LOGS_RELATIVE_PATH = "../../_logs";
+        // private const string LOGS_RELATIVE_PATH = "../../_logs";
+        // private const string SAVES_RELATIVE_PATH = "../../_saves";
         private const string LAYOUTS_RELATIVE_PATH = "UI/Layouts";
         private const string PAGES_RELATIVE_PATH = "UI/Pages";
-        private const string SAVES_RELATIVE_PATH = "../../_saves";
 
         private IUIManager _uiManager;
 
@@ -25,21 +25,18 @@ namespace FLG.Godot.UI {
 
             if (Engine.IsEditorHint())
             {
-                // Must initialize here because it was not called from Godot.Manager (to create)
-                Preferences p = new()
-                {
-                    logsDir = ProjectSettings.GlobalizePath("res://" + LOGS_RELATIVE_PATH),
-                    serializerType = Cs.Serialization.ESerializerType.BIN,
-                    savesDir = ProjectSettings.GlobalizePath("res://" + SAVES_RELATIVE_PATH),
-                    layoutsDir = ProjectSettings.GlobalizePath("res://" + LAYOUTS_RELATIVE_PATH),
-                    pagesDir = ProjectSettings.GlobalizePath("res://" + PAGES_RELATIVE_PATH)
-                };
-                FrameworkManager.Instance.Initialize(p);
+                Preferences prefs = new();
+                FrameworkManager.Instance.Initialize(prefs);
             }
 
+            PreferencesUI prefsUI = new()
+            {
+                layoutsDir = ProjectSettings.GlobalizePath("res://" + LAYOUTS_RELATIVE_PATH),
+                pagesDir = ProjectSettings.GlobalizePath("res://" + PAGES_RELATIVE_PATH)
+            };
             // TODO: Register as UI observer
             // TODO: Register additional pages and layouts (for Widgets / Controllers)
-            FrameworkManager.Instance.BootstrapUI();
+            FrameworkManager.Instance.InitializeUI(prefsUI);
         }
 
         private void Clear()
