@@ -21,17 +21,14 @@ namespace FLG.Cs.Serialization.Tests {
         #region Test
         private static void Initialize(ESerializerType t)
         {
-            Preferences p = new() { };
-            FrameworkManager.Instance.Initialize(p);
-
-            /*
-             * 
-             * logsDir = LOGS_DIR,
-                serializerType = t,
+            Preferences pref = new();
+            PreferencesSerialization prefSerialization = new()
+            {
                 savesDir = SAVES_DIR,
-                layoutsDir = string.Empty,
-                pagesDir = string.Empty
-            */
+                serializerType = t
+            };
+            FrameworkManager.Instance.Initialize(pref);
+            FrameworkManager.Instance.InitializeSerializer(prefSerialization);
 
             ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();
             _datevalue = DateTime.Now;

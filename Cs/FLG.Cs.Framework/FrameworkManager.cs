@@ -14,8 +14,8 @@ namespace FLG.Cs.Framework {
         {
             if (!_initializedGeneral)
             {
-                _initializedGeneral = true;
                 ManagerFactory.CreateProxies();
+                _initializedGeneral = true;
             }
         }
         #endregion General
@@ -24,7 +24,7 @@ namespace FLG.Cs.Framework {
         private bool _initializedLogs = false;
         public void InitializeLogs(PreferencesLogs pref)
         {
-            if (ValidateDependenciesLogs())
+            if (!ValidateDependenciesLogs())
                 return;
 
             if (!_initializedLogs)
@@ -41,7 +41,7 @@ namespace FLG.Cs.Framework {
         private bool _initializedSerializer = false;
         public void InitializeSerializer(PreferencesSerialization pref)
         {
-            if (ValidateDependenciesSerialization())
+            if (!ValidateDependenciesSerialization())
                 return;
 
             if (!_initializedSerializer)
@@ -58,7 +58,7 @@ namespace FLG.Cs.Framework {
         private bool _initializedUI = false;
         public void InitializeUI(PreferencesUI pref)
         {
-            if (ValidateDependenciesUI())
+            if (!ValidateDependenciesUI())
                 return;
 
             if (!_initializedUI)

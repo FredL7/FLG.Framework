@@ -13,19 +13,23 @@ namespace FLG.Cs.ServiceLocator {
         {
             if (_services.ContainsKey(typeof(T)))
             {
-                if (service.IsProxy())
+                IServiceInstance potentialProxy = _services[typeof(T)];
+                if (potentialProxy.IsProxy())
                 {
                     _services[typeof(T)] = service;
+                    service.OnServiceRegistered();
                 }
                 else
                 {
                     service.OnServiceRegisteredFail();
                 }
-                // TODO: attempt to upgrade into non-void
                 return;
             }
-            _services.Add(typeof(T), service);
-            service.OnServiceRegistered();
+            else
+            {
+                _services.Add(typeof(T), service);
+                service.OnServiceRegistered();
+            }
         }
 
         public T Get<T>() where T : IServiceInstance
