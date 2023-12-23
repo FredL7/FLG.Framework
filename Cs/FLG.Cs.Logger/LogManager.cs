@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using FLG.Cs.ServiceLocator;
+using System.Diagnostics;
 
 namespace FLG.Cs.Logger {
     // TODO: Write as csv instead?
@@ -7,23 +8,24 @@ namespace FLG.Cs.Logger {
         private const string LOGGING_DATE_PATTERN = @"HH:mm:ss:fff";
         private const string UNKNOWN = "Unknown";
 
-        private bool _initialized = false;
-        private string _filepath = String.Empty; // TODO: Default location?
+        private string _filepath;
 
         public LogManager(string logDir) {
             DateTime date = DateTime.Now;
             string filename = date.ToString(FILENAME_DATE_PATTERN);
             System.IO.Directory.CreateDirectory(logDir);
             _filepath = Path.Combine(logDir, filename + ".log");
-            Debug("Log Manager Initialized");
-            _initialized = string.IsNullOrEmpty(_filepath);
+            Debug("Current log file: " + _filepath);
         }
+
+        #region IServiceInstance
+        public bool IsProxy() => false;
+        public void OnServiceRegistered() { Debug("Log Manager Registered"); }
+        public void OnServiceRegisteredFail() { Error("Log Manager Failed to register"); }
+        #endregion IServiceInstance
 
         private void Log(string msg, ELogLevel level)
         {
-            if (_initialized)
-                throw new Exception("No directory specified for logs, use Initialize()");
-
             StackTrace stackTrace = new();
             string? methodname = stackTrace.GetFrame(2)?.GetMethod()?.Name;
             string? classname = stackTrace.GetFrame(2)?.GetMethod()?.DeclaringType?.FullName;

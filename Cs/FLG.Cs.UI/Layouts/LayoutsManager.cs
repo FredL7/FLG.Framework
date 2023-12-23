@@ -5,20 +5,22 @@ using FLG.Cs.UI.Pages;
 
 namespace FLG.Cs.UI.Layouts {
     internal class LayoutsManager {
+        private string _layoutsDir;
         private Dictionary<string, Layout> _layouts;
         private Layout? _current = null;
 
-        internal LayoutsManager()
+        internal LayoutsManager(string layoutsDir)
         {
+            _layoutsDir = layoutsDir;
             _layouts = new();
         }
 
         public IEnumerable<ILayout> GetLayouts() => _layouts.Values;
 
-        internal void RegisterLayouts(string layoutsDir, Window window)
+        internal void RegisterLayouts(Window window)
         {
             _layouts = new();
-            var layouts = LayoutXMLParser.Parse(layoutsDir);
+            var layouts = LayoutXMLParser.Parse(_layoutsDir);
             if (layouts != null)
                 foreach (var layout in layouts)
                 {

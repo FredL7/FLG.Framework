@@ -15,6 +15,7 @@ namespace FLG.Cs.Framework {
             if (!_initializedGeneral)
             {
                 _initializedGeneral = true;
+                ManagerFactory.CreateProxies();
             }
         }
         #endregion General

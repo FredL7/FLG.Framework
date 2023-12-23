@@ -4,20 +4,22 @@ using FLG.Cs.UI.Layouts;
 
 namespace FLG.Cs.UI.Pages {
     internal class PagesManager {
+        private string _pagesDir;
         private Dictionary<string, Page> _pages;
         private Page? _current = null;
 
-        internal PagesManager()
+        internal PagesManager(string pagesDir)
         {
+            _pagesDir = pagesDir;
             _pages = new();
         }
 
         public IEnumerable<Page> GetPages() => _pages.Values;
 
-        internal void RegisterPages(string pagesDir)
+        internal void RegisterPages()
         {
             _pages = new();
-            var pages = PageXMLParser.Parse(pagesDir);
+            var pages = PageXMLParser.Parse(_pagesDir);
             if (pages != null)
                 foreach (var page in pages)
                 {

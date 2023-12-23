@@ -5,6 +5,18 @@ using FLG.Cs.UI;
 
 namespace FLG.Cs.Factory {
     public static class ManagerFactory {
+        public static void CreateProxies()
+        {
+            ILogManager logManager = new LogManagerProxy();
+            Locator.Instance.Register(logManager);
+
+            ISerializerManager serializer = new SerializerManagerProxy();
+            Locator.Instance.Register(serializer);
+
+            IUIManager manager = new UIManagerProxy();
+            Locator.Instance.Register(manager);
+        }
+
         public static void CreateLogger(string logsDir)
         {
             ILogManager logManager = new LogManager(logsDir);
@@ -19,8 +31,7 @@ namespace FLG.Cs.Factory {
 
         public static void CreateUIManager(string layoutsDir, string pagesDir)
         {
-            // TODO: Use params
-            IUIManager manager = new UIManager();
+            IUIManager manager = new UIManager(layoutsDir, pagesDir);
             Locator.Instance.Register(manager);
         }
     }

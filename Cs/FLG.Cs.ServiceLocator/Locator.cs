@@ -13,13 +13,19 @@ namespace FLG.Cs.ServiceLocator {
         {
             if (_services.ContainsKey(typeof(T)))
             {
-                Console.WriteLine($"Service locator already contains a service for {typeof(T)}");
-                // TODO: throw?
+                if (service.IsProxy())
+                {
+                    _services[typeof(T)] = service;
+                }
+                else
+                {
+                    service.OnServiceRegisteredFail();
+                }
+                // TODO: attempt to upgrade into non-void
                 return;
             }
             _services.Add(typeof(T), service);
-            // LogManager.Instance.Info($"Register service of type {typeof(T)}");
-            // service.OnServiceRegistered();
+            service.OnServiceRegistered();
         }
 
         public T Get<T>() where T : IServiceInstance

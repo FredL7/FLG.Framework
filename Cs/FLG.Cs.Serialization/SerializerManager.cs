@@ -42,6 +42,12 @@ namespace FLG.Cs.Serialization {
             DiscoverSaveFile();
         }
 
+        #region IServiceInstance
+        public bool IsProxy() => false;
+        public void OnServiceRegistered() { Locator.Instance.Get<ILogManager>().Debug("Serialization Manager Registered"); }
+        public void OnServiceRegisteredFail() { Locator.Instance.Get<ILogManager>().Error("Serialization Manager Failed to register"); }
+        #endregion IServiceInstance
+
         public void SetSerializerBinary() { _writeSerializer = _binSerializer; }
         public void SetSerializerJson() { _writeSerializer = _jsonSerializer; }
         public void SetSerializerXml() { _writeSerializer = _xmlSerializer; }

@@ -8,18 +8,24 @@ namespace FLG.Cs.UI {
         private LayoutsManager _layoutsManager;
         private PagesManager _pagesManager;
 
-        public UIManager()
+        public UIManager(string layoutsDir, string pagesDir)
         {
-            _layoutsManager = new LayoutsManager();
-            _pagesManager = new PagesManager();
+            _layoutsManager = new LayoutsManager(layoutsDir);
+            _pagesManager = new PagesManager(pagesDir);
         }
 
+        #region IServiceInstance
+        public bool IsProxy() => false;
+        public void OnServiceRegistered() { Locator.Instance.Get<ILogManager>().Debug("UI Manager Registered"); }
+        public void OnServiceRegisteredFail() { Locator.Instance.Get<ILogManager>().Error("UI Manager Failed to register"); }
+        #endregion IServiceInstance
+
         #region Layouts
-        public void RegisterLayouts(string layoutsDir)
+        public void RegisterLayouts()
         {
             Window defaultWindow = new(1920, 1080);
             // TODO: Register window size change to compute on change (also applies to pages)
-            _layoutsManager.RegisterLayouts(layoutsDir, defaultWindow);
+            _layoutsManager.RegisterLayouts(defaultWindow);
         }
 
         public IEnumerable<ILayout> GetLayouts()
@@ -29,9 +35,8 @@ namespace FLG.Cs.UI {
         #endregion Layouts
 
         #region Page
-        public void RegisterPages(string pagesDir)
+        public void RegisterPages()
         {
-            _pagesManager.RegisterPages(pagesDir);
             foreach (var page in _pagesManager.GetPages())
                 foreach (var target in page.GetTargetsId())
                 {
