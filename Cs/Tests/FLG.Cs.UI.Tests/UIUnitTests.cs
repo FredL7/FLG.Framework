@@ -15,19 +15,20 @@ namespace FLG.Cs.UI.Tests {
         [ClassInitialize]
         public static void Init(TestContext _)
         {
-            Preferences p = new()
-            {
+            Preferences p = new();
+            /*
+            
                 logsDir = LOGS_DIR,
                 serializerType = Serialization.ESerializerType.BIN,
                 savesDir = string.Empty,
                 layoutsDir = LAYOUTS_DIR,
                 pagesDir = PAGES_DIR
-            };
+            */
             FrameworkManager.Instance.Initialize(p);
 
             // TODO: Register as UI observer
             // TODO: Register additional pages and layouts (for Widgets / Controllers)
-            FrameworkManager.Instance.BootstrapUI();
+            // FrameworkManager.Instance.BootstrapUI();
         }
 
         [TestMethod]

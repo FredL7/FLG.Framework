@@ -1,5 +1,4 @@
 ﻿using FLG.Cs.Decorators;
-using FLG.Cs.Logger;
 
 namespace FLG.Cs.ServiceLocator {
     public class Locator : SingletonBase<Locator> {
@@ -19,7 +18,7 @@ namespace FLG.Cs.ServiceLocator {
                 return;
             }
             _services.Add(typeof(T), service);
-            LogManager.Instance.Info($"Register service of type {typeof(T)}");
+            // LogManager.Instance.Info($"Register service of type {typeof(T)}");
             // service.OnServiceRegistered();
         }
 

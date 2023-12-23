@@ -28,7 +28,7 @@ namespace FLG.Cs.Framework {
 
             if (!_initializedLogs)
             {
-                LogManager.Instance.Initialize(pref.logsDir);
+                ManagerFactory.CreateLogger(pref.logsDir);
                 _initializedLogs = true;
             }
         }

@@ -1,4 +1,5 @@
 ﻿using FLG.Cs.Logger;
+using FLG.Cs.ServiceLocator;
 using FLG.Cs.UI.Layouts;
 using FLG.Cs.UI.Pages;
 
@@ -35,7 +36,7 @@ namespace FLG.Cs.UI {
                 foreach (var target in page.GetTargetsId())
                 {
                     _layoutsManager.ComputeTargetRectXforms(page.LayoutId, target, page.GetContentElements(target));
-                    LogManager.Instance.Info($"Page \"{page.GetName()}\": registered content for target \"{target}\" in layout \"{page.LayoutId}\"");
+                    Locator.Instance.Get<ILogManager>().Info($"Page \"{page.GetName()}\": registered content for target \"{target}\" in layout \"{page.LayoutId}\"");
                 }
         }
 

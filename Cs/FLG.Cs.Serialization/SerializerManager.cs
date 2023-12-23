@@ -1,6 +1,6 @@
 ﻿using FLG.Cs.IO;
 using FLG.Cs.Logger;
-using System;
+using FLG.Cs.ServiceLocator;
 
 namespace FLG.Cs.Serialization {
     public class SerializerManager : ISerializerManager {
@@ -75,7 +75,7 @@ namespace FLG.Cs.Serialization {
                         serializerType = ESerializerType.XML;
                         break;
                     default:
-                        LogManager.Instance.Warn($"Wrong extension for save file at \"{file}\"");
+                        Locator.Instance.Get<ILogManager>().Warn($"Wrong extension for save file at \"{file}\"");
                         return;
                 }
 
@@ -83,7 +83,8 @@ namespace FLG.Cs.Serialization {
                 var version = header.version;
                 if (version != VERSION)
                 {
-                    LogManager.Instance.Warn($"Save file version does not correspond. Got {version}, expected {VERSION}). For file at \"{file}\"");
+
+                    Locator.Instance.Get<ILogManager>().Warn($"Save file version does not correspond. Got {version}, expected {VERSION}). For file at \"{file}\"");
                     //? Upgrade/Convert
                 }
                 else
@@ -105,8 +106,8 @@ namespace FLG.Cs.Serialization {
                 case ESerializerType.JSON: _jsonSerializer.Deserialize(saveFile); break;
                 case ESerializerType.XML: _xmlSerializer.Deserialize(saveFile); break;
                 default:
-                    LogManager.Instance.Warn($"Could not deserialize save file {saveFile.GetName()}, unrecognized type {t}");
-                        break;
+                    Locator.Instance.Get<ILogManager>().Warn($"Could not deserialize save file {saveFile.GetName()}, unrecognized type {t}");
+                    break;
             }
         }
 

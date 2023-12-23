@@ -2,6 +2,7 @@
 
 using FLG.Cs.Logger;
 using FLG.Cs.Math;
+using FLG.Cs.ServiceLocator;
 
 namespace FLG.Cs.UI.Layouts {
     internal class AbstractLayoutElementLeaf : AbstractLayoutElement {
@@ -12,7 +13,7 @@ namespace FLG.Cs.UI.Layouts {
 
         internal override void AddChild(AbstractLayoutElement child)
         {
-            LogManager.Instance.Error("Layout element leaf cannot contain childrens");
+            Locator.Instance.Get<ILogManager>().Error("Layout element leaf cannot contain childrens");
         }
 
         public override bool HasChildren() => false;
