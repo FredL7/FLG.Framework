@@ -53,6 +53,7 @@ namespace FLG.Cs.UI {
 
         private void RegisterPages()
         {
+            _pagesManager.RegisterPages();
             foreach (var page in _pagesManager.GetPages())
                 foreach (var target in page.GetTargetsId())
                 {

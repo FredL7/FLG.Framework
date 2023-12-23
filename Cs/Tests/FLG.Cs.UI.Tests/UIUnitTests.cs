@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using FLG.Cs.ServiceLocator;
 using FLG.Cs.Framework;
+using FLG.Cs.Logger;
 
 namespace FLG.Cs.UI.Tests {
     [TestClass]
@@ -15,6 +16,12 @@ namespace FLG.Cs.UI.Tests {
         {
             Preferences prefs = new();
             FrameworkManager.Instance.Initialize(prefs);
+
+            PreferencesLogs prefsLogs = new()
+            {
+                logsDir = LOGS_DIR
+            };
+            FrameworkManager.Instance.InitializeLogs(prefsLogs);
 
             // TODO: Register as UI observer
             // TODO: Register additional pages and layouts (for Widgets / Controllers)
