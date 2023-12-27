@@ -5,7 +5,8 @@ using FLG.Cs.UI;
 
 namespace FLG.Cs.Framework {
     public class FrameworkManager : SingletonBase<FrameworkManager> {
-        // TODO: replace ValidateDependencies with A call to the Dependency InitializeMethods
+        // TODO: Throw if can't be initialized
+
         private FrameworkManager() { }
 
         #region General
@@ -66,7 +67,7 @@ namespace FLG.Cs.Framework {
                 // TODO: Make sure you have registered pages content before calling this method
                 // Locator.Instance.Get<IUIManager>().LoadUI();
                 // Observer pattern to call the observers to then draw()
-                ManagersFactory.CreateUIManager(pref.layoutsDir, pref.pagesDir);
+                ManagersFactory.CreateUIManager(pref.layoutsDir);
                 _initializedUI = true;
             }
         }

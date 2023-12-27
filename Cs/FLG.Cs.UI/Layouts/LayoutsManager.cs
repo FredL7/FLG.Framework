@@ -1,7 +1,5 @@
 ﻿using FLG.Cs.Logger;
-using FLG.Cs.Math;
 using FLG.Cs.ServiceLocator;
-using FLG.Cs.UI.Pages;
 
 namespace FLG.Cs.UI.Layouts {
     internal class LayoutsManager {

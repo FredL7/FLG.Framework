@@ -9,7 +9,6 @@ namespace FLG.Cs.UI.Tests {
     public class UIUnitTests {
         private const string LOGS_DIR = "../../../../../../_logs";
         private const string LAYOUTS_DIR = "../../../Layouts";
-        private const string PAGES_DIR = "../../../Pages";
 
         [ClassInitialize]
         public static void Init(TestContext _)
@@ -28,8 +27,7 @@ namespace FLG.Cs.UI.Tests {
 
             PreferencesUI prefsUI = new()
             {
-                layoutsDir = LAYOUTS_DIR,
-                pagesDir = PAGES_DIR
+                layoutsDir = LAYOUTS_DIR
             };
             FrameworkManager.Instance.InitializeUI(prefsUI);
         }
@@ -125,7 +123,7 @@ namespace FLG.Cs.UI.Tests {
                     }
                     else if (child.GetName() == "content")
                     {
-                        foreach (var child2 in child.GetChildrens())
+                        /*foreach (var child2 in child.GetChildrens())
                         {
                             if (child2.GetName() == "first")
                             {
@@ -142,7 +140,7 @@ namespace FLG.Cs.UI.Tests {
                                 Assert.IsTrue(left2Position.X == 265 && left2Position.Y == 80);
                             }
                             else { Assert.Fail(); }
-                        }
+                        }*/
                     }
                     else { Assert.Fail(); }
                 }

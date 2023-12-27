@@ -29,9 +29,9 @@ namespace FLG.Cs.Framework {
             Locator.Instance.Register(serializer);
         }
 
-        internal static void CreateUIManager(string layoutsDir, string pagesDir)
+        internal static void CreateUIManager(string layoutsDir)
         {
-            IUIManager manager = new UIManager(layoutsDir, pagesDir);
+            IUIManager manager = new UIManager(layoutsDir);
             Locator.Instance.Register(manager);
         }
     }
