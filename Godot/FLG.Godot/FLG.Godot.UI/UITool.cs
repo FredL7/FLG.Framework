@@ -28,9 +28,9 @@ namespace FLG.Godot.UI {
             {
                 layoutsDir = ProjectSettings.GlobalizePath("res://" + LAYOUTS_RELATIVE_PATH)
             };
-            // TODO: Register as UI observer
-            // TODO: Register additional pages and layouts (for Widgets / Controllers)
             FrameworkManager.Instance.InitializeUI(prefsUI);
+
+            // TODO #3: Apply FLG.Cs.UI here
         }
 
         private void Clear()

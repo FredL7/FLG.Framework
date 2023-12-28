@@ -13,6 +13,7 @@ namespace FLG.Cs.UI.Tests {
         [ClassInitialize]
         public static void Init(TestContext _)
         {
+            // TODO #2: Apply FLG.Cs.UI here (revise and make sure it fails if it should)
             Preferences prefs = new();
             FrameworkManager.Instance.Initialize(prefs);
 

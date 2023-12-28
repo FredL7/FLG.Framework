@@ -17,42 +17,21 @@ namespace FLG.Cs.UI.Layouts {
 
         internal void RegisterLayouts(Window window)
         {
-            _layouts = new();
-            var layouts = LayoutXMLParser.Parse(_layoutsDir);
-            if (layouts != null)
-                foreach (var layout in layouts)
-                {
-                    if (!_layouts.ContainsKey(layout.GetName()))
-                    {
-                        _layouts.Add(layout.GetName(), layout);
-                        Locator.Instance.Get<ILogManager>().Info($"Registered layout \"{layout.GetName()}\"");
-                    }
-                    else
-                    {
-                        Locator.Instance.Get<ILogManager>().Warn($"Already has a layout named \"{layout.GetName()}\"");
-                    }
-                }
-            ComputeLayoutsRectXforms(window);
-        }
-
-        internal void SetLayoutActive(string id)
-        {
-            var target = _layouts[id];
-            if (target != _current)
+            XMLParser parser = new(_layoutsDir);
+            var result = parser.Parse();
+            if (!result)
             {
-                _current?.SetActive(false);
-                _current = target;
-                _current.SetActive(true);
+                result.Log();
             }
         }
 
-        internal void ComputeLayoutsRectXforms(Window window)
+        /*internal void ComputeLayoutsRectXforms(Window window)
         {
             foreach (var layout in _layouts)
                 layout.Value.ComputeRectXforms(window);
-        }
+        }*/
 
-        internal void ComputeTargetRectXforms(string layoutid, string targetid, List<AbstractLayoutElement> content)
+        /*internal void ComputeTargetRectXforms(string layoutid, string targetid, List<AbstractLayoutElement> content)
         {
             if (!_layouts.ContainsKey(layoutid))
             {
@@ -74,6 +53,6 @@ namespace FLG.Cs.UI.Layouts {
             }
 
             target.ComputeContentSizesAndPositions(content);
-        }
+        }*/
     }
 }

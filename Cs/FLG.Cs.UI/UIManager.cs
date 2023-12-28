@@ -28,6 +28,7 @@ namespace FLG.Cs.UI {
         private void RegisterLayouts()
         {
             Window defaultWindow = new(1920, 1080);
+            // TODO: Get actual window size (may via prefs or via watcher below vvvv)
             // TODO: Register window size change to compute on change (also applies to pages)
             _layoutsManager.RegisterLayouts(defaultWindow);
         }

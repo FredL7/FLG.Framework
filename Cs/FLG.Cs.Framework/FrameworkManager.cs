@@ -5,8 +5,6 @@ using FLG.Cs.UI;
 
 namespace FLG.Cs.Framework {
     public class FrameworkManager : SingletonBase<FrameworkManager> {
-        // TODO: Throw if can't be initialized
-
         private FrameworkManager() { }
 
         #region General

@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 
 namespace FLG.Cs.Logger {
-    // TODO: Write as csv instead?
     public class LogManager : ILogManager {
         private const string FILENAME_DATE_PATTERN = @"yyyyddM_HH-mm";
         private const string LOGGING_DATE_PATTERN = @"HH:mm:ss:fff";

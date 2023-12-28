@@ -1,8 +1,22 @@
 ﻿using FLG.Cs.Math;
 using FLG.Cs.UI.Grid;
+using FLG.Cs.UI.Layouts;
+using System.Xml;
 
 namespace FLG.Cs.UI {
     public static class UILibrary {
+        internal static AbstractLayoutElement? Xml(XmlNode node, string name)
+        {
+            var nodeType = node.Name;
+            return nodeType switch
+            {
+                "HStack" => new HStack(name, node),
+                "VStack" => new VStack(name, node),
+                "ProxyLayoutElement" => new ProxyLayoutElementLeaf(name, node),// TODO: tmp
+                _ => null,
+            };
+        }
+
         /* ============================= *
          * ========== layouts ========== *
          * ============================= */

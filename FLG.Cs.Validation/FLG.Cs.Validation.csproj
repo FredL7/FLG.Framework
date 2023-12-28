@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Cs\FLG.Cs.Decorators\FLG.Cs.Decorators.csproj" />
+    <ProjectReference Include="..\Cs\FLG.Cs.Logger\FLG.Cs.Logger.csproj" />
+    <ProjectReference Include="..\Cs\FLG.Cs.ServiceLocator\FLG.Cs.ServiceLocator.csproj" />
+  </ItemGroup>
+
 </Project>
