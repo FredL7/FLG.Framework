@@ -4,6 +4,7 @@ using FLG.Cs.ServiceLocator;
 using FLG.Cs.Framework;
 using FLG.Cs.Logger;
 
+
 namespace FLG.Cs.UI.Tests {
     [TestClass]
     public class UIUnitTests {

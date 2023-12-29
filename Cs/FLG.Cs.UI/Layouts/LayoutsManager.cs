@@ -1,6 +1,7 @@
 ﻿using FLG.Cs.Logger;
 using FLG.Cs.ServiceLocator;
 
+
 namespace FLG.Cs.UI.Layouts {
     internal class LayoutsManager {
         private string _layoutsDir;

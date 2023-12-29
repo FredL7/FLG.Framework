@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 
+
 namespace FLG.Cs.UI.Layouts {
     public class Layout : ILayout {
         private bool _active;

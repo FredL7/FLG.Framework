@@ -47,9 +47,9 @@ namespace FLG.Cs.UI.Layouts {
             Size = new(width, height);
         }
 
-        internal abstract void AddChild(AbstractLayoutElement child);
-        internal abstract void ComputeRectXform();
-        public abstract bool HasChildren();
-        public abstract IEnumerable<ILayoutElement> GetChildrens();
+        internal abstract void AddChild(AbstractLayoutElement child, string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER);
+        internal abstract void ComputeRectXform(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER);
+        public abstract bool HasChildren(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER);
+        public abstract IEnumerable<ILayoutElement> GetChildrens(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER);
     }
 }
