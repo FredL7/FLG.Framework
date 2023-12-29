@@ -4,13 +4,13 @@ using FLG.Godot.Helpers;
 using FLG.Cs.UI;
 using FLG.Cs.UI.Layouts;
 using FLG.Cs.Framework;
-
+using FLG.Cs.ServiceLocator;
+using FLG.Cs.Logger;
 
 namespace FLG.Godot.UI {
     [Tool]
     public partial class UITool : Control {
-        // private const string LOGS_RELATIVE_PATH = "../../_logs";
-        // private const string SAVES_RELATIVE_PATH = "../../_saves";
+        private const string LOGS_RELATIVE_PATH = "../../_logs";
         private const string LAYOUTS_RELATIVE_PATH = "UI/Layouts";
 
         private IUIManager _uiManager;
@@ -21,9 +21,23 @@ namespace FLG.Godot.UI {
 
             if (Engine.IsEditorHint())
             {
-                Preferences prefs = new();
-                FrameworkManager.Instance.Initialize(prefs);
+                InitializeFramework();
+
+                Clear();
+                DrawUI();
             }
+        }
+
+        private void InitializeFramework()
+        {
+            Preferences prefs = new();
+            FrameworkManager.Instance.Initialize(prefs);
+
+            PreferencesLogs prefsLogs = new()
+            {
+                logsDir = LOGS_RELATIVE_PATH
+            };
+            FrameworkManager.Instance.InitializeLogs(prefsLogs);
 
             PreferencesUI prefsUI = new()
             {
@@ -31,7 +45,7 @@ namespace FLG.Godot.UI {
             };
             FrameworkManager.Instance.InitializeUI(prefsUI);
 
-            // TODO #3: Apply FLG.Cs.UI here
+            _uiManager = Locator.Instance.Get<IUIManager>();
         }
 
         private void Clear()

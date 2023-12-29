@@ -6,7 +6,6 @@ namespace FLG.Cs.UI.Layouts {
     internal class LayoutsManager {
         private string _layoutsDir;
         private Dictionary<string, Layout> _layouts;
-        private Layout? _current = null;
 
         internal LayoutsManager(string layoutsDir)
         {
@@ -18,9 +17,12 @@ namespace FLG.Cs.UI.Layouts {
 
         internal void RegisterLayouts(Window window)
         {
+            var logger = Locator.Instance.Get<ILogManager>();
+            logger.Debug("Begin XML Parsing");
             XMLParser parser = new(_layoutsDir);
             var result = parser.Parse();
             if (!result) result.Log();
+            logger.Debug("Finished XML Parsing");
 
             _layouts = parser.GetPages();
             ComputeLayoutsRectXforms(window);

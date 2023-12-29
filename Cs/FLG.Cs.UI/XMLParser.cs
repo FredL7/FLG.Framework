@@ -19,6 +19,8 @@ namespace FLG.Cs.UI {
         private List<File> _pageFiles;
         private List<File> _layoutFiles;
 
+        ILogManager _log;
+
         public Dictionary<string, Layout> GetPages() => _pages;
 
         internal XMLParser(string layoutsDir)
@@ -30,6 +32,8 @@ namespace FLG.Cs.UI {
 
             _pageFiles = IOUtils.GetFilePathsByExtension(_layoutsDir, ".page");
             _layoutFiles = IOUtils.GetFilePathsByExtension(_layoutsDir, ".layout");
+
+            _log = Locator.Instance.Get<ILogManager>();
         }
 
         internal Result Parse()
@@ -50,8 +54,10 @@ namespace FLG.Cs.UI {
 
             foreach (var file in _pageFiles)
             {
+                _log.Debug($"Begin Parsing XML {file.filename}");
                 Result result = ParsePage(file);
                 if (!result) return result;
+                _log.Debug($"Finished Parsing XML {file.filename}");
             }
 
             return Result.SUCCESS;
@@ -64,8 +70,10 @@ namespace FLG.Cs.UI {
             result = ValidateXmlPage(layoutNode, out string layoutId);
             if (!result || layoutId == string.Empty) return result;
 
+            _log.Debug($"Begin Parsing layout with id {layoutId}");
             result = LoadLayout(layoutId);
             if (!result) return result;
+            _log.Debug($"Finished Parsing layout with id {layoutId}");
             var layout = _layouts[layoutId];
 
             result = GetTargetNodes(layout, layoutNode, out List<XmlNode> targetNodes, out List<AbstractLayoutElement> targetElements);
@@ -75,11 +83,9 @@ namespace FLG.Cs.UI {
                 result = ConvertNodeRecursiveForTarget(targetNodes[i], targetElements[i], targetElements[i].GetName());
                 if (!result) return result;
             }
-            // TODO: Compute Xforms
 
             // Watch out for reusable vs copy content
-
-            _pages.Add(layoutId, layout);
+            _pages.Add(file.file, layout);
             return Result.SUCCESS;
         }
 
@@ -125,8 +131,10 @@ namespace FLG.Cs.UI {
         private Result LoadLayout(string id)
         {
             if (_layouts.ContainsKey(id))
-                // Already loaded
+            {
+                _log.Debug($"Layout {id} already loaded OK");
                 return Result.SUCCESS;
+            }
 
             foreach (File file in _layoutFiles)
                 if (file.file == id)
@@ -137,6 +145,7 @@ namespace FLG.Cs.UI {
 
         private Result ParseLayout(File file, string id)
         {
+            _log.Debug($"Begin Parsing {file.filename}");
             Result result = ValidateXml(file, "layout", out XmlDocument _, out XmlNode? rootNode, out XmlNode? rootChild);
             if (!result || rootNode == null || rootChild == null) return result;
 
@@ -149,6 +158,7 @@ namespace FLG.Cs.UI {
 
             Layout layout = new(root, id, targets);
             _layouts.Add(id, layout);
+            _log.Debug($"Finished Parsing XML Layout {file.filename}");
             return Result.SUCCESS;
         }
         #endregion *.layout

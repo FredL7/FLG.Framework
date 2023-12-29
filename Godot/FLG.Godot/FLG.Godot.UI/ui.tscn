@@ -76,3 +76,61 @@ anchors_preset = 0
 offset_top = 40.0
 offset_right = 1920.0
 offset_bottom = 1080.0
+
+[node name="_Control_26424" type="Control" parent="Layouts"]
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="header" type="Control" parent="Layouts/_Control_26424"]
+anchors_preset = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 1910.0
+offset_bottom = 30.0
+
+[node name="header-title" type="Control" parent="Layouts/_Control_26424/header"]
+anchors_preset = 0
+offset_right = 950.0
+offset_bottom = 20.0
+
+[node name="header-title-icon" type="Control" parent="Layouts/_Control_26424/header/header-title"]
+anchors_preset = 0
+offset_right = 20.0
+offset_bottom = 20.0
+
+[node name="header-title-title" type="Control" parent="Layouts/_Control_26424/header/header-title"]
+anchors_preset = 0
+offset_left = 30.0
+offset_right = 950.0
+offset_bottom = 20.0
+
+[node name="header-controls" type="Control" parent="Layouts/_Control_26424/header"]
+anchors_preset = 0
+offset_left = 950.0
+offset_right = 1900.0
+offset_bottom = 20.0
+
+[node name="header-controls-minimize" type="Control" parent="Layouts/_Control_26424/header/header-controls"]
+anchors_preset = 0
+offset_left = 890.0
+offset_right = 910.0
+offset_bottom = 20.0
+
+[node name="header-controls-maximize" type="Control" parent="Layouts/_Control_26424/header/header-controls"]
+anchors_preset = 0
+offset_left = 910.0
+offset_right = 930.0
+offset_bottom = 20.0
+
+[node name="header-controls-quit" type="Control" parent="Layouts/_Control_26424/header/header-controls"]
+anchors_preset = 0
+offset_left = 930.0
+offset_right = 950.0
+offset_bottom = 20.0
+
+[node name="content" type="Control" parent="Layouts/_Control_26424"]
+anchors_preset = 0
+offset_top = 40.0
+offset_right = 1920.0
+offset_bottom = 1080.0
