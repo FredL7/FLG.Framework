@@ -1,5 +1,6 @@
 ﻿using FLG.Cs.UI.Layouts;
 
+
 namespace FLG.Cs.UI {
     public class UIManagerProxy : IUIManager {
         public bool IsProxy() => true;

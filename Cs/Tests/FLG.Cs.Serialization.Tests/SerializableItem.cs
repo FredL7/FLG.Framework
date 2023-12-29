@@ -1,5 +1,6 @@
 ﻿using FLG.Cs.ServiceLocator;
 
+
 namespace FLG.Cs.Serialization.Tests {
     internal class SerializableItem : ISerializable {
         private const string ID_BOOL = "bool";

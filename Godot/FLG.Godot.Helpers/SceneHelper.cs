@@ -1,5 +1,6 @@
 ﻿using Godot;
 
+
 namespace FLG.Godot.Helpers {
     public static class SceneHelper {
         public static void RemoveAllChildrens(Node parent)

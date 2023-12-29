@@ -1,6 +1,7 @@
 ﻿using FLG.Cs.Logger;
 using FLG.Cs.ServiceLocator;
 
+
 namespace FLG.Cs.Validation {
     public readonly struct Result {
         // TODO: Default to debug or info?

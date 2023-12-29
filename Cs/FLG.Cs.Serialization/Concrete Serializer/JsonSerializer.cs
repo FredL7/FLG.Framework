@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Nodes;
 
+
 namespace FLG.Cs.Serialization {
     internal class JsonSerializer : Serializer {
         internal const string SAVE_EXTENSION = ".jsave";

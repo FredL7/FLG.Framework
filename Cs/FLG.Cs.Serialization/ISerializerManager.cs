@@ -1,5 +1,6 @@
 ﻿using FLG.Cs.ServiceLocator;
 
+
 namespace FLG.Cs.Serialization {
     public interface ISerializerManager : ISerializer, IServiceInstance {
         public IEnumerable<ISaveFile> GetSaveFiles();

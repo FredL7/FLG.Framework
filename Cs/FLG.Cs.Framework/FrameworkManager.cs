@@ -3,6 +3,7 @@ using FLG.Cs.Logger;
 using FLG.Cs.Serialization;
 using FLG.Cs.UI;
 
+
 namespace FLG.Cs.Framework {
     public class FrameworkManager : SingletonBase<FrameworkManager> {
         private FrameworkManager() { }

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 
+
 namespace FLG.Cs.Logger {
     public class LogManager : ILogManager {
         private const string FILENAME_DATE_PATTERN = @"yyyyddM_HH-mm";
