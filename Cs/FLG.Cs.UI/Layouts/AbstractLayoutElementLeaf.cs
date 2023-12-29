@@ -20,6 +20,6 @@ namespace FLG.Cs.UI.Layouts {
         public override bool HasChildren(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => false;
         public override IEnumerable<AbstractLayoutElement> GetChildrens(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => Enumerable.Empty<AbstractLayoutElement>();
 
-        internal sealed override void ComputeRectXform(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) { }
+        internal sealed override void ComputeRectXform() { }
     }
 }

@@ -14,7 +14,6 @@ namespace FLG.Cs.UI.Tests {
         [ClassInitialize]
         public static void Init(TestContext _)
         {
-            // TODO #2: Apply FLG.Cs.UI here (revise and make sure it fails if it should)
             Preferences prefs = new();
             FrameworkManager.Instance.Initialize(prefs);
 
@@ -127,24 +126,35 @@ namespace FLG.Cs.UI.Tests {
                     }
                     else if (child.GetName() == "content")
                     {
-                        /*foreach (var child2 in child.GetChildrens())
+                        var contentDimensions = child.GetDimensions();
+                        var contentPosition = child.GetPosition();
+                        Assert.IsTrue(contentDimensions.Width == 1920 && contentDimensions.Height == 1040);
+                        Assert.IsTrue(contentPosition.X == 0 && contentPosition.Y == 40);
+
+                        Assert.IsFalse(child.HasChildren());
+                        Assert.IsTrue(child.HasChildren("content"));
+                        foreach (var child2 in child.GetChildrens("content"))
                         {
-                            if (child2.GetName() == "first")
+                            var name = child2.GetName();
+                            Assert.IsTrue(name == "page-test-1" || name == "page-test-2" || name == "page-test-3");
+                            var child2Dimensions = child2.GetDimensions();
+                            var child2Position = child2.GetPosition();
+                            Assert.IsTrue(child2Dimensions.Width == 640 && child2Dimensions.Height == 1040);
+                            float expectedX = 0;
+                            if (name == "page-test-1")
                             {
-                                var left1Dimensions = child2.GetDimensions();
-                                var left1Position = child2.GetPosition();
-                                Assert.IsTrue(left1Dimensions.Width == 140 && left1Dimensions.Height == 940);
-                                Assert.IsTrue(left1Position.X == 50 && left1Position.Y == 40);
+                                expectedX = 0;
                             }
-                            else if (child2.GetName() == "second")
+                            else if (name == "page-test-2")
                             {
-                                var left2Dimensions = child2.GetDimensions();
-                                var left2Position = child2.GetPosition();
-                                Assert.IsTrue(left2Dimensions.Width == 1585 && left2Dimensions.Height == 900);
-                                Assert.IsTrue(left2Position.X == 265 && left2Position.Y == 80);
+                                expectedX = 640;
                             }
-                            else { Assert.Fail(); }
-                        }*/
+                            else if (name == "page-test-3")
+                            {
+                                expectedX = 1280;
+                            }
+                            Assert.IsTrue(child2Position.X == expectedX && child2Position.Y == 0);
+                        }
                     }
                     else { Assert.Fail(); }
                 }

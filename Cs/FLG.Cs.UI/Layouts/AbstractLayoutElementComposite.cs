@@ -34,13 +34,16 @@ namespace FLG.Cs.UI.Layouts {
         public override bool HasChildren(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => _childrens[id].Count > 0;
         public override IEnumerable<AbstractLayoutElement> GetChildrens(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => _childrens[id];
 
-        internal sealed override void ComputeRectXform(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER)
+        internal sealed override void ComputeRectXform()
         {
-            ComputeChildrenSizesAndPositions();
-            foreach (var child in _childrens[id])
-                child.ComputeRectXform(id);
+            foreach (var container in _childrens)
+            {
+                ComputeChildrenSizesAndPositions(container.Key);
+                foreach (var child in container.Value)
+                    child.ComputeRectXform();
+            }
         }
-        protected abstract void ComputeChildrenSizesAndPositions();
+        protected abstract void ComputeChildrenSizesAndPositions(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER);
         internal abstract void ComputeContentSizesAndPositions(List<AbstractLayoutElement> content);
     }
 }
