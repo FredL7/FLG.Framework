@@ -226,7 +226,7 @@ namespace FLG.Cs.UI {
                     Result result = LoadLayout(nodeType);
                     if (!result) return result;
                 }
-                convertedNode = (AbstractLayoutElement)_layouts[nodeType].GetRoot(); // TODO: Way without cast?
+                convertedNode = (AbstractLayoutElement)_layouts[nodeType].GetRoot();
             }
 
             return Result.SUCCESS;

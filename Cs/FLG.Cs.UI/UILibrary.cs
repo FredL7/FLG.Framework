@@ -36,8 +36,6 @@ namespace FLG.Cs.UI {
             EGridAlignment alignment = EGridAlignment.START)
         {
             HStack hstack = new(name, width, height, margin, padding, order, weight, isTarget, direction, justify, alignment);
-            // TODO: Add result to pipeline and notify Front-end UI
-            // Also change it so ctor goes through here with XMLNode instead of directly using new?
         }
 
         public static void VStack(
@@ -54,7 +52,6 @@ namespace FLG.Cs.UI {
             EGridAlignment alignment = EGridAlignment.START)
         {
             VStack vstack = new(name, width, height, margin, padding, order, weight, isTarget, direction, justify, alignment);
-            // TODO: Add result to pipeline and notify Front-end UI
         }
 
 
@@ -66,7 +63,5 @@ namespace FLG.Cs.UI {
         {
 
         }
-
-        // TODO: Others
     }
 }

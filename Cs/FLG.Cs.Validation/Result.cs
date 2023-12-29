@@ -4,7 +4,6 @@ using FLG.Cs.ServiceLocator;
 
 namespace FLG.Cs.Validation {
     public readonly struct Result {
-        // TODO: Default to debug or info?
         public readonly static Result SUCCESS = new("SUCCESS", true, ELogLevel.DEBUG);
 
         public readonly string message;
