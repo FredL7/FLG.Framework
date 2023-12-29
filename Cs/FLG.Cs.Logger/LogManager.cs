@@ -1,27 +1,30 @@
-﻿using FLG.Cs.ServiceLocator;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+
 
 namespace FLG.Cs.Logger {
-    // TODO: Write as csv instead?
     public class LogManager : ILogManager {
         private const string FILENAME_DATE_PATTERN = @"yyyyddM_HH-mm";
         private const string LOGGING_DATE_PATTERN = @"HH:mm:ss:fff";
         private const string UNKNOWN = "Unknown";
 
+        private string _logsDir;
         private string _filepath;
 
-        public LogManager(string logDir) {
+        public LogManager(string logsDir) {
+            _logsDir = logsDir;
+
             DateTime date = DateTime.Now;
             string filename = date.ToString(FILENAME_DATE_PATTERN);
-            System.IO.Directory.CreateDirectory(logDir);
-            _filepath = Path.Combine(logDir, filename + ".log");
-            Debug("Current log file: " + _filepath);
+            System.IO.Directory.CreateDirectory(_logsDir);
+            _filepath = Path.Combine(_logsDir, filename + ".log");
         }
 
         #region IServiceInstance
         public bool IsProxy() => false;
-        public void OnServiceRegistered() { Debug("Log Manager Registered"); }
         public void OnServiceRegisteredFail() { Error("Log Manager Failed to register"); }
+        public void OnServiceRegistered() {
+            Debug("Log Manager Registered");
+        }
         #endregion IServiceInstance
 
         private void Log(string msg, ELogLevel level)

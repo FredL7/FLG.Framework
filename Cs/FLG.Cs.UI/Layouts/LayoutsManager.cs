@@ -1,7 +1,6 @@
 ﻿using FLG.Cs.Logger;
-using FLG.Cs.Math;
 using FLG.Cs.ServiceLocator;
-using FLG.Cs.UI.Pages;
+
 
 namespace FLG.Cs.UI.Layouts {
     internal class LayoutsManager {
@@ -19,33 +18,12 @@ namespace FLG.Cs.UI.Layouts {
 
         internal void RegisterLayouts(Window window)
         {
-            _layouts = new();
-            var layouts = LayoutXMLParser.Parse(_layoutsDir);
-            if (layouts != null)
-                foreach (var layout in layouts)
-                {
-                    if (!_layouts.ContainsKey(layout.GetName()))
-                    {
-                        _layouts.Add(layout.GetName(), layout);
-                        Locator.Instance.Get<ILogManager>().Info($"Registered layout \"{layout.GetName()}\"");
-                    }
-                    else
-                    {
-                        Locator.Instance.Get<ILogManager>().Warn($"Already has a layout named \"{layout.GetName()}\"");
-                    }
-                }
-            ComputeLayoutsRectXforms(window);
-        }
+            XMLParser parser = new(_layoutsDir);
+            var result = parser.Parse();
+            if (!result) result.Log();
 
-        internal void SetLayoutActive(string id)
-        {
-            var target = _layouts[id];
-            if (target != _current)
-            {
-                _current?.SetActive(false);
-                _current = target;
-                _current.SetActive(true);
-            }
+            _layouts = parser.GetPages();
+            ComputeLayoutsRectXforms(window);
         }
 
         internal void ComputeLayoutsRectXforms(Window window)
@@ -54,7 +32,7 @@ namespace FLG.Cs.UI.Layouts {
                 layout.Value.ComputeRectXforms(window);
         }
 
-        internal void ComputeTargetRectXforms(string layoutid, string targetid, List<AbstractLayoutElement> content)
+        /*internal void ComputeTargetRectXforms(string layoutid, string targetid, List<AbstractLayoutElement> content)
         {
             if (!_layouts.ContainsKey(layoutid))
             {
@@ -76,6 +54,6 @@ namespace FLG.Cs.UI.Layouts {
             }
 
             target.ComputeContentSizesAndPositions(content);
-        }
+        }*/
     }
 }

@@ -1,5 +1,5 @@
 ﻿namespace FLG.Cs.UI.Grid {
-    internal enum EGridAlignment { START, END, CENTER, STRETCH }
+    public enum EGridAlignment { START, END, CENTER, STRETCH }
 
     internal class EGridAlignmentExtension {
         internal static EGridAlignment FromString(string value)

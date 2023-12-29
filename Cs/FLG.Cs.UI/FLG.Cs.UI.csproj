@@ -13,6 +13,7 @@
     <ProjectReference Include="..\FLG.Cs.Logger\FLG.Cs.Logger.csproj" />
     <ProjectReference Include="..\FLG.Cs.Math\FLG.Cs.Math.csproj" />
     <ProjectReference Include="..\FLG.Cs.ServiceLocator\FLG.Cs.ServiceLocator.csproj" />
+    <ProjectReference Include="..\FLG.Cs.Validation\FLG.Cs.Validation.csproj" />
   </ItemGroup>
 
 </Project>

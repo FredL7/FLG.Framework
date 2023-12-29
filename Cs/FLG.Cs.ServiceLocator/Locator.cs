@@ -1,5 +1,6 @@
 ﻿using FLG.Cs.Decorators;
 
+
 namespace FLG.Cs.ServiceLocator {
     public class Locator : SingletonBase<Locator> {
         private readonly Dictionary<object, IServiceInstance> _services;

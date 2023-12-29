@@ -1,16 +1,15 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using FLG.Cs.ServiceLocator;
-using FLG.Cs.Logger;
-using FLG.Cs.Factory;
 using FLG.Cs.Framework;
+using FLG.Cs.Logger;
+
 
 namespace FLG.Cs.UI.Tests {
     [TestClass]
     public class UIUnitTests {
         private const string LOGS_DIR = "../../../../../../_logs";
         private const string LAYOUTS_DIR = "../../../Layouts";
-        private const string PAGES_DIR = "../../../Pages";
 
         [ClassInitialize]
         public static void Init(TestContext _)
@@ -18,13 +17,18 @@ namespace FLG.Cs.UI.Tests {
             Preferences prefs = new();
             FrameworkManager.Instance.Initialize(prefs);
 
+            PreferencesLogs prefsLogs = new()
+            {
+                logsDir = LOGS_DIR
+            };
+            FrameworkManager.Instance.InitializeLogs(prefsLogs);
+
             // TODO: Register as UI observer
             // TODO: Register additional pages and layouts (for Widgets / Controllers)
 
             PreferencesUI prefsUI = new()
             {
-                layoutsDir = LAYOUTS_DIR,
-                pagesDir = PAGES_DIR
+                layoutsDir = LAYOUTS_DIR
             };
             FrameworkManager.Instance.InitializeUI(prefsUI);
         }
@@ -34,7 +38,9 @@ namespace FLG.Cs.UI.Tests {
         {
             IUIManager uiManager = Locator.Instance.Get<IUIManager>();
 
-            foreach (var layout in uiManager.GetLayouts())
+            var layouts = uiManager.GetLayouts();
+            Assert.IsTrue(layouts.Count() > 0);
+            foreach (var layout in layouts)
             {
                 if (layout.GetName() != "sample")
                     Assert.Fail();
@@ -46,7 +52,7 @@ namespace FLG.Cs.UI.Tests {
                 Assert.IsTrue(rootPosition.X == 0 && rootPosition.Y == 0);
 
                 Assert.IsTrue(root.HasChildren());
-                Assert.IsTrue(root.GetName() == "main");
+                Assert.IsTrue(root.GetName() == "sample");
 
                 foreach (var child in root.GetChildrens())
                 {
@@ -120,23 +126,34 @@ namespace FLG.Cs.UI.Tests {
                     }
                     else if (child.GetName() == "content")
                     {
-                        foreach (var child2 in child.GetChildrens())
+                        var contentDimensions = child.GetDimensions();
+                        var contentPosition = child.GetPosition();
+                        Assert.IsTrue(contentDimensions.Width == 1920 && contentDimensions.Height == 1040);
+                        Assert.IsTrue(contentPosition.X == 0 && contentPosition.Y == 40);
+
+                        Assert.IsFalse(child.HasChildren());
+                        Assert.IsTrue(child.HasChildren("content"));
+                        foreach (var child2 in child.GetChildrens("content"))
                         {
-                            if (child2.GetName() == "first")
+                            var name = child2.GetName();
+                            Assert.IsTrue(name == "page-test-1" || name == "page-test-2" || name == "page-test-3");
+                            var child2Dimensions = child2.GetDimensions();
+                            var child2Position = child2.GetPosition();
+                            Assert.IsTrue(child2Dimensions.Width == 640 && child2Dimensions.Height == 1040);
+                            float expectedX = 0;
+                            if (name == "page-test-1")
                             {
-                                var left1Dimensions = child2.GetDimensions();
-                                var left1Position = child2.GetPosition();
-                                Assert.IsTrue(left1Dimensions.Width == 140 && left1Dimensions.Height == 940);
-                                Assert.IsTrue(left1Position.X == 50 && left1Position.Y == 40);
+                                expectedX = 0;
                             }
-                            else if (child2.GetName() == "second")
+                            else if (name == "page-test-2")
                             {
-                                var left2Dimensions = child2.GetDimensions();
-                                var left2Position = child2.GetPosition();
-                                Assert.IsTrue(left2Dimensions.Width == 1585 && left2Dimensions.Height == 900);
-                                Assert.IsTrue(left2Position.X == 265 && left2Position.Y == 80);
+                                expectedX = 640;
                             }
-                            else { Assert.Fail(); }
+                            else if (name == "page-test-3")
+                            {
+                                expectedX = 1280;
+                            }
+                            Assert.IsTrue(child2Position.X == expectedX && child2Position.Y == 0);
                         }
                     }
                     else { Assert.Fail(); }

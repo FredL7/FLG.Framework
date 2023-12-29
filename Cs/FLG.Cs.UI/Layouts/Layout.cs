@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 
+
 namespace FLG.Cs.UI.Layouts {
     public class Layout : ILayout {
         private bool _active;
@@ -11,16 +12,9 @@ namespace FLG.Cs.UI.Layouts {
         public string GetName() => _name;
 
         #region Targets
-        readonly private List<AbstractLayoutElement> _targets;
-        internal void AddTarget(AbstractLayoutElement target) { _targets.Add(target); }
-        internal AbstractLayoutElement? GetTarget(string name)
-        {
-            AbstractLayoutElement? target = null;
-            foreach (var element in _targets)
-                if (element.GetName() == name)
-                    target = element;
-            return target;
-        }
+        readonly private Dictionary<string, AbstractLayoutElement> _targets;
+        internal bool HasTarget(string id) => _targets.ContainsKey(id);
+        internal AbstractLayoutElement GetTarget(string id) => _targets[id];
         #endregion Targets
 
         #region Observer
@@ -31,13 +25,14 @@ namespace FLG.Cs.UI.Layouts {
         }
         #endregion Observer
 
-        internal Layout(AbstractLayoutElement root, string name)
+        internal Layout(AbstractLayoutElement root, string name, Dictionary<string, AbstractLayoutElement> targets)
         {
             _active = false;
             _root = root;
             _targets = new();
             _observers = new();
             _name = name;
+            _targets = targets;
         }
 
         internal void SetActive(bool active)

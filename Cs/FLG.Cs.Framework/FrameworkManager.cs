@@ -1,8 +1,8 @@
 ﻿using FLG.Cs.Decorators;
-using FLG.Cs.Factory;
 using FLG.Cs.Logger;
 using FLG.Cs.Serialization;
 using FLG.Cs.UI;
+
 
 namespace FLG.Cs.Framework {
     public class FrameworkManager : SingletonBase<FrameworkManager> {
@@ -14,7 +14,7 @@ namespace FLG.Cs.Framework {
         {
             if (!_initializedGeneral)
             {
-                ManagerFactory.CreateProxies();
+                ManagersFactory.CreateProxies();
                 _initializedGeneral = true;
             }
         }
@@ -29,7 +29,7 @@ namespace FLG.Cs.Framework {
 
             if (!_initializedLogs)
             {
-                ManagerFactory.CreateLogger(pref.logsDir);
+                ManagersFactory.CreateLogger(pref.logsDir);
                 _initializedLogs = true;
             }
         }
@@ -46,7 +46,7 @@ namespace FLG.Cs.Framework {
 
             if (!_initializedSerializer)
             {
-                ManagerFactory.CreateSerializer(pref.serializerType, pref.savesDir);
+                ManagersFactory.CreateSerializer(pref.serializerType, pref.savesDir);
                 _initializedSerializer = true;
             }
         }
@@ -66,7 +66,7 @@ namespace FLG.Cs.Framework {
                 // TODO: Make sure you have registered pages content before calling this method
                 // Locator.Instance.Get<IUIManager>().LoadUI();
                 // Observer pattern to call the observers to then draw()
-                ManagerFactory.CreateUIManager(pref.layoutsDir, pref.pagesDir);
+                ManagersFactory.CreateUIManager(pref.layoutsDir);
                 _initializedUI = true;
             }
         }

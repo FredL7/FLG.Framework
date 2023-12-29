@@ -1,13 +1,10 @@
 using Godot;
 
-using FLG.Cs.Logger;
 using FLG.Godot.Helpers;
-using FLG.Cs.ServiceLocator;
-using FLG.Cs.Factory;
 using FLG.Cs.UI;
 using FLG.Cs.UI.Layouts;
-using FLG.Cs.UI.Pages;
 using FLG.Cs.Framework;
+
 
 namespace FLG.Godot.UI {
     [Tool]
@@ -15,7 +12,6 @@ namespace FLG.Godot.UI {
         // private const string LOGS_RELATIVE_PATH = "../../_logs";
         // private const string SAVES_RELATIVE_PATH = "../../_saves";
         private const string LAYOUTS_RELATIVE_PATH = "UI/Layouts";
-        private const string PAGES_RELATIVE_PATH = "UI/Pages";
 
         private IUIManager _uiManager;
 
@@ -31,12 +27,11 @@ namespace FLG.Godot.UI {
 
             PreferencesUI prefsUI = new()
             {
-                layoutsDir = ProjectSettings.GlobalizePath("res://" + LAYOUTS_RELATIVE_PATH),
-                pagesDir = ProjectSettings.GlobalizePath("res://" + PAGES_RELATIVE_PATH)
+                layoutsDir = ProjectSettings.GlobalizePath("res://" + LAYOUTS_RELATIVE_PATH)
             };
-            // TODO: Register as UI observer
-            // TODO: Register additional pages and layouts (for Widgets / Controllers)
             FrameworkManager.Instance.InitializeUI(prefsUI);
+
+            // TODO #3: Apply FLG.Cs.UI here
         }
 
         private void Clear()
@@ -47,7 +42,6 @@ namespace FLG.Godot.UI {
         private void DrawUI()
         {
             DrawLayouts();
-            DrawPages();
         }
 
         private Node AddNode(string name, ILayoutElement layoutElement, Node parent)
@@ -66,7 +60,6 @@ namespace FLG.Godot.UI {
             return node;
         }
 
-        #region Layouts
         private void DrawLayouts()
         {
             foreach (var layout in _uiManager.GetLayouts())
@@ -88,20 +81,5 @@ namespace FLG.Godot.UI {
                 DrawLayoutRecursive(node, child);
             }
         }
-        #endregion Layouts
-
-        #region Pages
-        private void DrawPages()
-        {
-            foreach (var page in _uiManager.GetPages())
-                DrawPage(page);
-        }
-
-        private void DrawPage(IPage page)
-        {
-            // Name page content with: $"{content.Getname()} (Page {page.GetName()})"
-            // To make sure unique naming
-        }
-        #endregion Pages
     }
 }

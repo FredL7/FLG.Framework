@@ -3,6 +3,7 @@ global using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FLG.Cs.ServiceLocator;
 using FLG.Cs.Framework;
 
+
 namespace FLG.Cs.Serialization.Tests {
     [TestClass]
     public class SerializationUnitTests {

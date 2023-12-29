@@ -5,6 +5,7 @@ using System.Xml;
 using FLG.Cs.Math;
 using FLG.Cs.UI.Layouts;
 
+
 namespace FLG.Cs.UI.Grid {
     internal abstract class Stack : AbstractLayoutElementComposite {
         private EGridDirection _direction;
@@ -27,9 +28,9 @@ namespace FLG.Cs.UI.Grid {
             _alignment = alignment;
         }
 
-        protected sealed override void ComputeChildrenSizesAndPositions()
+        protected sealed override void ComputeChildrenSizesAndPositions(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER)
         {
-            ComputeSizesAndPositions(GetChildrensInternal());
+            ComputeSizesAndPositions(GetChildrensInternal(id));
         }
 
         internal sealed override void ComputeContentSizesAndPositions(List<AbstractLayoutElement> content)

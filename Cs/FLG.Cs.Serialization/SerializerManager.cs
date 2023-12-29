@@ -2,6 +2,9 @@
 using FLG.Cs.Logger;
 using FLG.Cs.ServiceLocator;
 
+using File = FLG.Cs.IO.File;
+
+
 namespace FLG.Cs.Serialization {
     public class SerializerManager : ISerializerManager {
         internal const uint VERSION = 0;
@@ -38,14 +41,15 @@ namespace FLG.Cs.Serialization {
             _saveFiles = new();
 
             _serializableItems = new();
-
-            DiscoverSaveFile();
         }
 
         #region IServiceInstance
         public bool IsProxy() => false;
-        public void OnServiceRegistered() { Locator.Instance.Get<ILogManager>().Debug("Serialization Manager Registered"); }
         public void OnServiceRegisteredFail() { Locator.Instance.Get<ILogManager>().Error("Serialization Manager Failed to register"); }
+        public void OnServiceRegistered() {
+            Locator.Instance.Get<ILogManager>().Debug("Serialization Manager Registered");
+            DiscoverSaveFile();
+        }
         #endregion IServiceInstance
 
         public void SetSerializerBinary() { _writeSerializer = _binSerializer; }
@@ -61,12 +65,12 @@ namespace FLG.Cs.Serialization {
             }
 
             string[] exts = { BinarySerializer.SAVE_EXTENSION, JsonSerializer.SAVE_EXTENSION, XmlSerializer.SAVE_EXTENSION };
-            List<string> saveFiles = IOUtils.GetFilePathsByExtensions(_saveDir, exts);
+            List<File> saveFiles = IOUtils.GetFilePathsByExtensions(_saveDir, exts);
             foreach (var file in saveFiles)
             {
                 Serializer serializer;
                 ESerializerType serializerType;
-                switch (Path.GetExtension(file))
+                switch (file.extension)
                 {
                     case BinarySerializer.SAVE_EXTENSION:
                         serializer = _binSerializer;
@@ -85,7 +89,7 @@ namespace FLG.Cs.Serialization {
                         return;
                 }
 
-                var header = serializer.DeserializeHeaderOnly(file);
+                var header = serializer.DeserializeHeaderOnly(file.fullpath);
                 var version = header.version;
                 if (version != VERSION)
                 {
@@ -95,7 +99,7 @@ namespace FLG.Cs.Serialization {
                 }
                 else
                 {
-                    ISaveFile saveFile = new SaveFile(header.name, file, serializerType, header.dateCreated, header.dateLastModified);
+                    ISaveFile saveFile = new SaveFile(header.name, file.fullpath, serializerType, header.dateCreated, header.dateLastModified);
                     _saveFiles.Add(saveFile);
                 }
             }

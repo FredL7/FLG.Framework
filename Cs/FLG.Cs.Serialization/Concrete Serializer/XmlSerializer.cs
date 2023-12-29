@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Xml;
 
+
 namespace FLG.Cs.Serialization {
     internal class XmlSerializer : Serializer {
         internal const string SAVE_EXTENSION = ".xsave";

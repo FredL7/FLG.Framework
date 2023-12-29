@@ -1,31 +1,49 @@
 ﻿using FLG.Cs.Math;
 using System.Xml;
 
+
 namespace FLG.Cs.UI.Layouts {
     internal abstract class AbstractLayoutElementComposite : AbstractLayoutElement {
-        private List<AbstractLayoutElement> _childrens = new();
-        protected List<AbstractLayoutElement> GetChildrensInternal() => _childrens;
+        private readonly Dictionary<string, List<AbstractLayoutElement>> _childrens = new();
+        protected List<AbstractLayoutElement> GetChildrensInternal(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => _childrens[id];
 
         internal AbstractLayoutElementComposite(string name, XmlNode node)
-            : base(name, node) { }
-        internal AbstractLayoutElementComposite(string name, float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget)
-            : base(name, width, height, margin, padding, order, weight, isTarget) { }
-
-        internal override void AddChild(AbstractLayoutElement child)
+            : base(name, node)
         {
-            _childrens.Add(child);
+            SetupDefaultChildrensContainer();
         }
 
-        public override bool HasChildren() => _childrens.Count > 0;
-        public override IEnumerable<AbstractLayoutElement> GetChildrens() => _childrens;
+        internal AbstractLayoutElementComposite(string name, float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget)
+            : base(name, width, height, margin, padding, order, weight, isTarget)
+        {
+            SetupDefaultChildrensContainer();
+        }
+
+        private void SetupDefaultChildrensContainer()
+        {
+            _childrens.Add(ILayoutElement.DEFAULT_CHILDREN_CONTAINER, new());
+        }
+
+        internal override void AddChild(AbstractLayoutElement child, string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER)
+        {
+            if (!_childrens.ContainsKey(id))
+                _childrens.Add(id, new());
+            _childrens[id].Add(child);
+        }
+
+        public override bool HasChildren(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => _childrens[id].Count > 0;
+        public override IEnumerable<AbstractLayoutElement> GetChildrens(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => _childrens[id];
 
         internal sealed override void ComputeRectXform()
         {
-            ComputeChildrenSizesAndPositions();
-            foreach (var child in _childrens)
-                child.ComputeRectXform();
+            foreach (var container in _childrens)
+            {
+                ComputeChildrenSizesAndPositions(container.Key);
+                foreach (var child in container.Value)
+                    child.ComputeRectXform();
+            }
         }
-        protected abstract void ComputeChildrenSizesAndPositions();
+        protected abstract void ComputeChildrenSizesAndPositions(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER);
         internal abstract void ComputeContentSizesAndPositions(List<AbstractLayoutElement> content);
     }
 }

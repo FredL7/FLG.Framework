@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<page>
+    <layout id="sample">
+        <target id="content">
+            <ProxyLayoutElement name="page-test-1" />
+            <ProxyLayoutElement name="page-test-2" />
+            <ProxyLayoutElement name="page-test-3" />
+        </target>
+    </layout>
+</page>
