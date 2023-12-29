@@ -19,6 +19,8 @@ namespace FLG.Cs.UI {
         private List<File> _pageFiles;
         private List<File> _layoutFiles;
 
+        public Dictionary<string, Layout> GetPages() => _pages;
+
         internal XMLParser(string layoutsDir)
         {
             _layoutsDir = layoutsDir;
@@ -57,36 +59,64 @@ namespace FLG.Cs.UI {
 
         private Result ParsePage(File file)
         {
-            Result result = ValidateXml(file, "page", out XmlDocument _, out XmlNode? rootNode, out XmlNode? rootChild);
-            if (!result || rootNode == null || rootChild == null) return result;
-
-            result = ValidateXmlPage(file, rootChild, out string layoutId);
+            Result result = ValidateXml(file, "page", out XmlDocument _, out XmlNode? rootNode, out XmlNode? layoutNode);
+            if (!result || rootNode == null || layoutNode == null) return result;
+            result = ValidateXmlPage(layoutNode, out string layoutId);
             if (!result || layoutId == string.Empty) return result;
 
             result = LoadLayout(layoutId);
             if (!result) return result;
             var layout = _layouts[layoutId];
-            // TODO #1: Register targets while loading
-            // TODO: LoadPage using Targets
+
+            result = GetTargetNodes(layout, layoutNode, out List<XmlNode> targetNodes, out List<AbstractLayoutElement> targetElements);
+            if (!result) return result;
+            for (int i = 0; i < targetNodes.Count; ++i)
+            {
+                result = ConvertNodeRecursive(targetNodes[i], targetElements[i], null);
+                if (!result) return result;
+
+                // TODO: Add conditional childrens
+            }
             // TODO: Compute Xforms
 
             // Watch out for reusable vs copy content
 
+            _pages.Add(layoutId, layout);
             return Result.SUCCESS;
         }
 
-        private static Result ValidateXmlPage(File file, XmlNode rootChild, out string layoutId)
+        private static Result ValidateXmlPage(XmlNode layoutNode, out string layoutId)
         {
             layoutId = string.Empty;
-            if (rootChild?.Name != "layout")
-            {
-                return new Result($"Root node in {file} must contain a child node named \"layout\"");
-            }
+            if (layoutNode?.Name != "layout")
+                return new Result($"Root node must contain a child node named \"layout\"");
 
-            layoutId = rootChild?.Attributes?["id"]?.Value ?? string.Empty;
+            layoutId = layoutNode?.Attributes?["id"]?.Value ?? string.Empty;
             if (layoutId == string.Empty)
+                return new Result($"Layout node Does not have an \"id\" attribute");
+
+            return Result.SUCCESS;
+        }
+
+        private Result GetTargetNodes(Layout layout, XmlNode layoutNode, out List<XmlNode> targetNodes, out List<AbstractLayoutElement> targetElements)
+        {
+            targetNodes = new();
+            targetElements = new();
+
+            foreach (XmlNode targetNode in layoutNode.ChildNodes)
             {
-                return new Result($"Layout node in {file} Does not have an \"id\" attribute");
+                if (targetNode.Name != "target")
+                    return new Result($"Unhandled node type: {targetNode.Name}");
+
+                string targetId = targetNode.Attributes?["id"]?.Value ?? string.Empty;
+                if (targetId == string.Empty)
+                    return new Result("Target node is missing the \"id\" attribute");
+
+                if (!layout.HasTarget(targetId))
+                    return new Result($"Layout {layout.GetName()} does not have a target with id=\"{targetId}\"");
+
+                targetNodes.Add(targetNode);
+                targetElements.Add(layout.GetTarget(targetId));
             }
 
             return Result.SUCCESS;
@@ -115,17 +145,18 @@ namespace FLG.Cs.UI {
             result = ConvertNode(rootChild, out AbstractLayoutElement? root, id);
             if (!result || root == null) return result;
 
-            result = ConvertNodeRecursive(rootChild, root);
+            Dictionary<string, AbstractLayoutElement> targets = new();
+            result = ConvertNodeRecursive(rootChild, root, targets);
             if (!result) return result;
 
-            Layout layout = new(root, id);
+            Layout layout = new(root, id, targets);
             _layouts.Add(id, layout);
             return Result.SUCCESS;
         }
         #endregion *.layout
 
         #region Conversion
-        private Result ConvertNodeRecursive(XmlNode parentNode, AbstractLayoutElement parentLayoutElement)
+        private Result ConvertNodeRecursive(XmlNode parentNode, AbstractLayoutElement parentLayoutElement, Dictionary<string, AbstractLayoutElement>? targets)
         {
             foreach (XmlNode node in parentNode.ChildNodes)
             {
@@ -133,8 +164,19 @@ namespace FLG.Cs.UI {
                 if (!result || layoutElement == null) return result;
 
                 parentLayoutElement.AddChild(layoutElement);
-                // TODO: Check for adding targets
-                ConvertNodeRecursive(node, layoutElement);
+
+                if (layoutElement.GetIsTarget())
+                {
+                    if (node.HasChildNodes)
+                        return new Result($"Target node {layoutElement.GetName()} cannot declare childrens");
+
+                    if (targets == null)
+                        return new Result("Cannot declare targets within *.page <target> nodes");
+
+                    targets.Add(layoutElement.GetName(), layoutElement);
+                }
+
+                ConvertNodeRecursive(node, layoutElement, targets);
             }
 
             return Result.SUCCESS;
@@ -152,7 +194,7 @@ namespace FLG.Cs.UI {
                     Result result = LoadLayout(nodeType);
                     if (!result) return result;
                 }
-                convertedNode = (AbstractLayoutElement)_layouts[nodeType].GetRoot();
+                convertedNode = (AbstractLayoutElement)_layouts[nodeType].GetRoot(); // TODO: Way without cast?
             }
 
             return Result.SUCCESS;

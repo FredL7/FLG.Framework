@@ -3,6 +3,7 @@ using System.Xml;
 
 using FLG.Cs.Math;
 
+
 namespace FLG.Cs.UI.Layouts {
     internal abstract class AbstractLayoutElement : ILayoutElement {
         private string _name;

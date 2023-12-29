@@ -19,17 +19,17 @@ namespace FLG.Cs.UI.Layouts {
         {
             XMLParser parser = new(_layoutsDir);
             var result = parser.Parse();
-            if (!result)
-            {
-                result.Log();
-            }
+            if (!result) result.Log();
+
+            _layouts = parser.GetPages();
+            ComputeLayoutsRectXforms(window);
         }
 
-        /*internal void ComputeLayoutsRectXforms(Window window)
+        internal void ComputeLayoutsRectXforms(Window window)
         {
             foreach (var layout in _layouts)
                 layout.Value.ComputeRectXforms(window);
-        }*/
+        }
 
         /*internal void ComputeTargetRectXforms(string layoutid, string targetid, List<AbstractLayoutElement> content)
         {

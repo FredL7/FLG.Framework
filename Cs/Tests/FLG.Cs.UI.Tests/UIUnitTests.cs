@@ -38,7 +38,9 @@ namespace FLG.Cs.UI.Tests {
         {
             IUIManager uiManager = Locator.Instance.Get<IUIManager>();
 
-            foreach (var layout in uiManager.GetLayouts())
+            var layouts = uiManager.GetLayouts();
+            Assert.IsTrue(layouts.Count() > 0);
+            foreach (var layout in layouts)
             {
                 if (layout.GetName() != "sample")
                     Assert.Fail();
@@ -50,7 +52,7 @@ namespace FLG.Cs.UI.Tests {
                 Assert.IsTrue(rootPosition.X == 0 && rootPosition.Y == 0);
 
                 Assert.IsTrue(root.HasChildren());
-                Assert.IsTrue(root.GetName() == "main");
+                Assert.IsTrue(root.GetName() == "sample");
 
                 foreach (var child in root.GetChildrens())
                 {
