@@ -7,9 +7,21 @@ namespace FLG.Cs.UI.Layouts {
         protected List<AbstractLayoutElement> GetChildrensInternal(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => _childrens[id];
 
         internal AbstractLayoutElementComposite(string name, XmlNode node)
-            : base(name, node) { }
+            : base(name, node)
+        {
+            SetupDefaultChildrensContainer();
+        }
+
         internal AbstractLayoutElementComposite(string name, float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget)
-            : base(name, width, height, margin, padding, order, weight, isTarget) { }
+            : base(name, width, height, margin, padding, order, weight, isTarget)
+        {
+            SetupDefaultChildrensContainer();
+        }
+
+        private void SetupDefaultChildrensContainer()
+        {
+            _childrens.Add(ILayoutElement.DEFAULT_CHILDREN_CONTAINER, new());
+        }
 
         internal override void AddChild(AbstractLayoutElement child, string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER)
         {

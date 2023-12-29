@@ -72,10 +72,8 @@ namespace FLG.Cs.UI {
             if (!result) return result;
             for (int i = 0; i < targetNodes.Count; ++i)
             {
-                result = ConvertNodeRecursive(targetNodes[i], targetElements[i], null);
+                result = ConvertNodeRecursiveForTarget(targetNodes[i], targetElements[i], targetElements[i].GetName());
                 if (!result) return result;
-
-                // TODO: Add conditional childrens
             }
             // TODO: Compute Xforms
 
@@ -156,7 +154,7 @@ namespace FLG.Cs.UI {
         #endregion *.layout
 
         #region Conversion
-        private Result ConvertNodeRecursive(XmlNode parentNode, AbstractLayoutElement parentLayoutElement, Dictionary<string, AbstractLayoutElement>? targets)
+        private Result ConvertNodeRecursive(XmlNode parentNode, AbstractLayoutElement parentLayoutElement, Dictionary<string, AbstractLayoutElement> targets)
         {
             foreach (XmlNode node in parentNode.ChildNodes)
             {
@@ -170,9 +168,6 @@ namespace FLG.Cs.UI {
                     if (node.HasChildNodes)
                         return new Result($"Target node {layoutElement.GetName()} cannot declare childrens");
 
-                    if (targets == null)
-                        return new Result("Cannot declare targets within *.page <target> nodes");
-
                     targets.Add(layoutElement.GetName(), layoutElement);
                 }
 
@@ -181,6 +176,33 @@ namespace FLG.Cs.UI {
 
             return Result.SUCCESS;
         }
+
+        private Result ConvertNodeRecursiveForTarget(XmlNode targetNode, AbstractLayoutElement targetLayoutElement, string targetId)
+        {
+            foreach (XmlNode node in targetNode.ChildNodes)
+            {
+                Result result = ConvertNode(node, out AbstractLayoutElement? layoutElement);
+                if (!result || layoutElement == null) return result;
+
+                targetLayoutElement.AddChild(layoutElement, targetId);
+
+                if (layoutElement.GetIsTarget())
+                {
+                    /*
+                    if (node.HasChildNodes)
+                        return new Result($"Target node {layoutElement.GetName()} cannot declare childrens");
+                    */
+
+                    return new Result("Cannot declare targets within *.page <target> nodes");
+                    // TODO: Will eventually want to add targets within pages for widgets (or find some other way)
+                }
+
+                ConvertNodeRecursiveForTarget(node, layoutElement, targetId);
+            }
+
+            return Result.SUCCESS;
+        }
+
         private Result ConvertNode(XmlNode node, out AbstractLayoutElement? convertedNode, string componentName = "")
         {
             var nodeType = node.Name;
