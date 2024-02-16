@@ -8,8 +8,9 @@ using FLG.Cs.Logger;
 namespace FLG.Cs.UI.Tests {
     [TestClass]
     public class UIUnitTests {
-        private const string LOGS_DIR = "../../../../../../_logs";
-        private const string LAYOUTS_DIR = "../../../Layouts";
+        private const string LOGS_DIR =     "../../../../../../_logs";
+        private const string LAYOUTS_DIR =  "../../../../../ProjectDefs/ProjectDefs.UI/Layouts";
+        private const string PAGES_DIR =    "../../../../../ProjectDefs/ProjectDefs.UI/Pages";
 
         [ClassInitialize]
         public static void Init(TestContext _)
@@ -23,12 +24,10 @@ namespace FLG.Cs.UI.Tests {
             };
             FrameworkManager.Instance.InitializeLogs(prefsLogs);
 
-            // TODO: Register as UI observer
-            // TODO: Register additional pages and layouts (for Widgets / Controllers)
-
             PreferencesUI prefsUI = new()
             {
-                layoutsDir = LAYOUTS_DIR
+                layoutsDir = LAYOUTS_DIR,
+                pagesDir = PAGES_DIR
             };
             FrameworkManager.Instance.InitializeUI(prefsUI);
         }

@@ -10,8 +10,9 @@ using FLG.Cs.Logger;
 namespace FLG.Godot.UI {
     [Tool]
     public partial class UITool : Control {
-        private const string LOGS_RELATIVE_PATH = "../../_logs";
-        private const string LAYOUTS_RELATIVE_PATH = "UI/Layouts";
+        private const string LOGS_RELATIVE_PATH = "../../_logs"; // TODO: Move to serialized field to appear in the inspector?
+        private const string LAYOUTS_RELATIVE_PATH = "../../ProjectDefs/ProjectDefs.UI/Layouts";
+        private const string PAGES_RELATIVE_PATH = "../../ProjectDefs/ProjectDefs.UI/Pages";
 
         private IUIManager _uiManager;
 
@@ -41,7 +42,8 @@ namespace FLG.Godot.UI {
 
             PreferencesUI prefsUI = new()
             {
-                layoutsDir = ProjectSettings.GlobalizePath("res://" + LAYOUTS_RELATIVE_PATH)
+                layoutsDir = ProjectSettings.GlobalizePath("res://" + LAYOUTS_RELATIVE_PATH),
+                pagesDir = ProjectSettings.GlobalizePath("res://" + PAGES_RELATIVE_PATH)
             };
             FrameworkManager.Instance.InitializeUI(prefsUI);
 

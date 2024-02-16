@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <page>
+    <binding class="Sample1" />
     <layout id="sample">
         <target id="content">
             <ProxyLayoutElement name="page1-test-1" />

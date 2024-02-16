@@ -13,7 +13,9 @@
     <ProjectReference Include="..\FLG.Cs.Logger\FLG.Cs.Logger.csproj" />
     <ProjectReference Include="..\FLG.Cs.Math\FLG.Cs.Math.csproj" />
     <ProjectReference Include="..\FLG.Cs.ServiceLocator\FLG.Cs.ServiceLocator.csproj" />
+    <ProjectReference Include="..\FLG.Cs.UI.Commons\FLG.Cs.UI.Commons.csproj" />
     <ProjectReference Include="..\FLG.Cs.Validation\FLG.Cs.Validation.csproj" />
+    <ProjectReference Include="..\ProjectDefs\ProjectDefs.UI\ProjectDefs.UI.csproj" />
   </ItemGroup>
 
 </Project>
