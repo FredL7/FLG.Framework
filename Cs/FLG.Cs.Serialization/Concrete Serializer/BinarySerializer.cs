@@ -1,4 +1,7 @@
-﻿namespace FLG.Cs.Serialization {
+﻿using FLG.Cs.IDatamodel;
+
+
+namespace FLG.Cs.Serialization {
     internal class BinarySerializer : Serializer {
         internal const string SAVE_EXTENSION = ".save";
         protected override string GetSaveExtension() => SAVE_EXTENSION;

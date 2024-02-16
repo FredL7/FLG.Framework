@@ -1,4 +1,6 @@
-﻿namespace FLG.Cs.Logger {
+﻿using FLG.Cs.IDatamodel;
+
+namespace FLG.Cs.Logger {
     public class LogManagerProxy : ILogManager {
         public bool IsProxy() => true;
         public void OnServiceRegistered() { }

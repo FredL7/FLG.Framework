@@ -1,7 +1,5 @@
 ﻿using FLG.Cs.Decorators;
-using FLG.Cs.Logger;
-using FLG.Cs.Serialization;
-using FLG.Cs.UI;
+using FLG.Cs.IDatamodel;
 
 
 namespace FLG.Cs.Framework {

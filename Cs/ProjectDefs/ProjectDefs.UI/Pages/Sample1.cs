@@ -1,4 +1,4 @@
-using FLG.Cs.UI.Commons;
+using FLG.Cs.IDatamodel;
 
 public class Sample1 : IPage {
     private const string _id = "Sample1";

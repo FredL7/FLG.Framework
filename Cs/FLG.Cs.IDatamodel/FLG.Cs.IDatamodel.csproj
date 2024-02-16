@@ -3,8 +3,11 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>FLG.Cs.UI.Commons</RootNamespace>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FLG.Cs.Math\FLG.Cs.Math.csproj" />
+  </ItemGroup>
 
 </Project>

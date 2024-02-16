@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.Serialization {
+﻿namespace FLG.Cs.IDatamodel {
     public interface ISaveFile {
         public string GetName();
         public string GetPath();
