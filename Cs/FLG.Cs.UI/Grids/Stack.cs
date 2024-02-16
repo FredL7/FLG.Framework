@@ -6,8 +6,8 @@ using FLG.Cs.Math;
 using FLG.Cs.UI.Layouts;
 
 
-namespace FLG.Cs.UI.Grid {
-    internal abstract class Stack : AbstractLayoutElementComposite {
+namespace FLG.Cs.UI.Grids {
+    public abstract class Stack : AbstractLayoutElementComposite {
         private EGridDirection _direction;
         private EGridJustify _justify; // Along the main direction
         private EGridAlignment _alignment; // Along the other direction

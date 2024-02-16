@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.UI.Grid {
+﻿namespace FLG.Cs.UI.Grids {
     public enum EGridJustify { START, END, CENTER, SPACE_BETWEEN, SPACE_AROUND, SPACE_EVENLY }
 
     internal class EGridJustifyExtension {
