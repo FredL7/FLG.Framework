@@ -1,5 +1,4 @@
-﻿using FLG.Cs.Logger;
-using FLG.Cs.ServiceLocator;
+﻿using FLG.Cs.IDatamodel;
 
 
 namespace FLG.Cs.UI.Layouts

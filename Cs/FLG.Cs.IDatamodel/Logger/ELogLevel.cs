@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.Logger {
+﻿namespace FLG.Cs.IDatamodel {
     public enum ELogLevel {
         ERROR = 0,
         WARN = 1,
@@ -6,7 +6,7 @@
         DEBUG = 3
     }
 
-    internal static class ELogLevelExtension {
+    public static class ELogLevelExtension {
         public static string ToPrettyString(this ELogLevel level)
         {
             return level switch

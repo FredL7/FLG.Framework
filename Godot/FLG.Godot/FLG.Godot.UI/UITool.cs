@@ -1,11 +1,9 @@
 using Godot;
 
-using FLG.Godot.Helpers;
-using FLG.Cs.UI;
-using FLG.Cs.UI.Layouts;
 using FLG.Cs.Framework;
+using FLG.Cs.IDatamodel;
 using FLG.Cs.ServiceLocator;
-using FLG.Cs.Logger;
+using FLG.Godot.Helpers;
 
 namespace FLG.Godot.UI {
     [Tool]

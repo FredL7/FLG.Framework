@@ -1,6 +1,4 @@
-﻿using FLG.Cs.UI.Layouts;
-using FLG.Cs.UI.Pages;
-using FLG.Cs.UI.Commons;
+﻿using FLG.Cs.IDatamodel;
 
 namespace FLG.Cs.UI {
     public class UIManagerProxy : IUIManager {

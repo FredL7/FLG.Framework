@@ -1,7 +1,4 @@
-using FLG.Cs.Logger;
-using FLG.Cs.ServiceLocator;
-using FLG.Cs.UI.Commons;
-using FLG.Cs.UI.Layouts;
+using FLG.Cs.IDatamodel;
 
 namespace FLG.Cs.UI.Pages {
     internal class PagesManager {

@@ -1,4 +1,6 @@
-﻿namespace FLG.Cs.Serialization {
+﻿using FLG.Cs.IDatamodel;
+
+namespace FLG.Cs.Serialization {
     public class SerializerManagerProxy : ISerializerManager {
         public bool IsProxy() => true;
         public void OnServiceRegistered() { }

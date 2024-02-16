@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 
+using FLG.Cs.IDatamodel;
+
 
 namespace FLG.Cs.Logger {
     public class LogManager : ILogManager {

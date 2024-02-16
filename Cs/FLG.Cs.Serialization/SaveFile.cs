@@ -1,4 +1,6 @@
-﻿namespace FLG.Cs.Serialization {
+﻿using FLG.Cs.IDatamodel;
+
+namespace FLG.Cs.Serialization {
     public class SaveFile : ISaveFile {
         private readonly string _name;
         private readonly string _filepath;
