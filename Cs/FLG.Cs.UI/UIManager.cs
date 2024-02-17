@@ -46,6 +46,9 @@ namespace FLG.Cs.UI {
             if (!result) result.Log();
             logger.Debug("Finished XML Parsing");
 
+            var fred1 = parser.GetLayouts();
+            var fred2 = parser.GetPages();
+
             _layoutsManager.setLayoutsFromParser(parser.GetLayouts());
             _pagesManager.setPagesFromParser(parser.GetPages());
 

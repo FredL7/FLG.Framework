@@ -78,7 +78,7 @@ namespace FLG.Cs.UI {
                 result = LoadPageLayout(layoutId);
                 if (!result) return result;
 
-                result = ParsePage(layoutId, layoutNode);
+                result = ParsePage(layoutId, layoutNode, binding);
                 if (!result) return result;
 
                 // TODO #1: Add layout Id to IPage
@@ -134,14 +134,14 @@ namespace FLG.Cs.UI {
             return Result.SUCCESS;
         }
 
-        private Result ParsePage(string layoutId, XmlNode layoutNode)
+        private Result ParsePage(string layoutId, XmlNode layoutNode, string pageId)
         {
             Layout layout = _layouts[layoutId];
             Result result = GetTargetNodes(layout, layoutNode, out List<XmlNode> targetNodes, out List<AbstractLayoutElement> targetElements);
             if (!result) return result;
             for (int i = 0; i < targetNodes.Count; ++i)
             {
-                result = ConvertNodeRecursiveForTarget(targetNodes[i], targetElements[i], targetElements[i].GetName());
+                result = ConvertNodeRecursiveForTarget(targetNodes[i], targetElements[i], targetElements[i].GetName(), pageId);
                 if (!result) return result;
             }
 
@@ -270,14 +270,14 @@ namespace FLG.Cs.UI {
             return Result.SUCCESS;
         }
 
-        private Result ConvertNodeRecursiveForTarget(XmlNode targetNode, AbstractLayoutElement targetLayoutElement, string targetId)
+        private Result ConvertNodeRecursiveForTarget(XmlNode targetNode, AbstractLayoutElement targetLayoutElement, string targetId, string pageId)
         {
             foreach (XmlNode node in targetNode.ChildNodes)
             {
                 Result result = ConvertNode(node, out AbstractLayoutElement? layoutElement);
                 if (!result || layoutElement == null) return result;
 
-                targetLayoutElement.AddChild(layoutElement, targetId);
+                targetLayoutElement.AddChild(layoutElement, pageId);
 
                 if (layoutElement.GetIsTarget())
                 {
@@ -289,7 +289,7 @@ namespace FLG.Cs.UI {
                     return new Result("Cannot declare targets within *.page <target> nodes");
                 }
 
-                ConvertNodeRecursiveForTarget(node, layoutElement, targetId);
+                ConvertNodeRecursiveForTarget(node, layoutElement, targetId, pageId);
             }
 
             return Result.SUCCESS;

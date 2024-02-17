@@ -17,6 +17,7 @@ namespace FLG.Cs.UI.Layouts {
             Locator.Instance.Get<ILogManager>().Error("Layout element leaf cannot contain childrens");
         }
 
+        public override IEnumerable<string> GetContainers() => Enumerable.Empty<string>();
         public override bool HasChildren(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => false;
         public override IEnumerable<AbstractLayoutElement> GetChildrens(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => Enumerable.Empty<AbstractLayoutElement>();
 

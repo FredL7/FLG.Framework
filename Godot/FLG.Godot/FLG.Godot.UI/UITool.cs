@@ -2,8 +2,12 @@ using Godot;
 
 using FLG.Cs.Framework;
 using FLG.Cs.IDatamodel;
+using FLG.Cs.Math;
 using FLG.Cs.ServiceLocator;
 using FLG.Godot.Helpers;
+
+using sysV2 = System.Numerics.Vector2;
+using gdV2 = Godot.Vector2;
 
 namespace FLG.Godot.UI {
     [Tool]
@@ -63,11 +67,16 @@ namespace FLG.Godot.UI {
             var position = layoutElement.GetPosition();
             var dimensions = layoutElement.GetDimensions();
 
+            return AddNode(name, position, dimensions, parent);
+        }
+
+        private Node AddNode(string name, sysV2 position, Size dimensions, Node parent)
+        {
             Control node = new()
             {
                 Name = name,
-                Position = new(position.X, position.Y),
-                Size = new(dimensions.Width, dimensions.Height),
+                Position = new gdV2(position.X, position.Y),
+                Size = new gdV2(dimensions.Width, dimensions.Height),
             };
             parent.AddChild(node);
             node.Owner = GetTree().EditedSceneRoot;
@@ -89,10 +98,26 @@ namespace FLG.Godot.UI {
 
         private void DrawLayoutRecursive(Node parentNode, ILayoutElement layoutElementParent)
         {
-            foreach (ILayoutElement child in layoutElementParent.GetChildrens())
+            var containers = layoutElementParent.GetContainers();
+            foreach (var container in containers)
             {
-                var node = AddNode(child.GetName(), child, parentNode);
-                DrawLayoutRecursive(node, child);
+                if(layoutElementParent.HasChildren(container))
+                {
+                    var parentForAddNode = parentNode;
+                    if (container != ILayoutElement.DEFAULT_CHILDREN_CONTAINER)
+                    {
+                        var containerNode = AddNode(container, sysV2.Zero, layoutElementParent.GetDimensions(), parentNode);
+                        containerNode.Set("visible", false);
+                        parentForAddNode = containerNode;
+                    }
+
+                    foreach (ILayoutElement child in layoutElementParent.GetChildrens(container))
+                    {
+                        var node = AddNode(child.GetName(), child, parentForAddNode);
+                        DrawLayoutRecursive(node, child);
+                    }
+
+                }
             }
         }
     }
