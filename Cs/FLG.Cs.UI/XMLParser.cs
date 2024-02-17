@@ -72,17 +72,14 @@ namespace FLG.Cs.UI {
                 result = ValidatePageXml(rootNode, out string binding, out string layoutId, out XmlNode? layoutNode);
                 if (!result || binding == string.Empty || layoutId == string.Empty || layoutNode == null) return result;
 
-                result = InstantiatePageCs(binding);
+                result = LoadPageLayout(layoutId);
                 if (!result) return result;
 
-                result = LoadPageLayout(layoutId);
+                result = InstantiatePageCs(binding, layoutId);
                 if (!result) return result;
 
                 result = ParsePage(layoutId, layoutNode, binding);
                 if (!result) return result;
-
-                foreach (IPage page in _pages.Values)
-                    page.Setup();
 
                 _log.Debug($"Finished Parsing XML {file.filename}");
             }
@@ -90,9 +87,33 @@ namespace FLG.Cs.UI {
             return Result.SUCCESS;
         }
 
-        private Result InstantiatePageCs(string binding)
+        private Result InstantiatePageCs(string binding, string layoutId)
         {
             IPage? page;
+            /*try
+            {
+                // var assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                var assemblyFolder = Path.GetDirectoryName(typeof(XMLParser).Assembly.Location);
+                _log.Debug($"FRED: {assemblyFolder}");
+                if (assemblyFolder == null) return new Result("Could not locate current assembly directory");
+
+                var assembly = System.Reflection.Assembly.LoadFile(Path.Combine(assemblyFolder, "ProjectDefs.UI.dll"));
+                if (assembly == null) return new Result("Could not load ProjectsDefs.UI.dll");
+
+                var type = assembly.GetType(binding);
+                if (type == null) return new Result($"Could not instantiate a class of type {binding}: type {binding} not found");
+
+                var pageObject = assembly.CreateInstance(binding);
+                if (pageObject == null) return new Result($"Could not instantiate a class of type {binding}: result is null");
+
+                page = pageObject as IPage;
+                _log.Debug($"Instantiated IPage of type {binding}");
+            }
+            catch (Exception e)
+            {
+                return new Result($"Could not instantiate a class of type {binding}: {e}");
+            }*/
+
             try
             {
                 var type = Type.GetType(binding + ", ProjectDefs.UI");
@@ -110,7 +131,8 @@ namespace FLG.Cs.UI {
             }
 
             if (page == null) return new Result($"Could not instantiate a class of type {binding}: result is null");
-            _pages.Add(page.GetID(), page);
+            page.SetLayoutId(layoutId);
+            _pages.Add(page.GetPageId(), page);
 
             return Result.SUCCESS;
         }
@@ -131,7 +153,7 @@ namespace FLG.Cs.UI {
         private Result ParsePage(string layoutId, XmlNode layoutNode, string pageId)
         {
             Layout layout = _layouts[layoutId];
-            Result result = GetTargetNodes(layout, layoutNode, out List<XmlNode> targetNodes, out List<AbstractLayoutElement> targetElements);
+            Result result = GetTargetNodes(layout, layoutNode, out List<XmlNode> targetNodes, out List<ILayoutElement> targetElements);
             if (!result) return result;
             for (int i = 0; i < targetNodes.Count; ++i)
             {
@@ -164,7 +186,7 @@ namespace FLG.Cs.UI {
             return Result.SUCCESS;
         }
 
-        private Result GetTargetNodes(Layout layout, XmlNode layoutNode, out List<XmlNode> targetNodes, out List<AbstractLayoutElement> targetElements)
+        private Result GetTargetNodes(Layout layout, XmlNode layoutNode, out List<XmlNode> targetNodes, out List<ILayoutElement> targetElements)
         {
             targetNodes = new();
             targetElements = new();
@@ -264,7 +286,7 @@ namespace FLG.Cs.UI {
             return Result.SUCCESS;
         }
 
-        private Result ConvertNodeRecursiveForTarget(XmlNode targetNode, AbstractLayoutElement targetLayoutElement, string targetId, string pageId)
+        private Result ConvertNodeRecursiveForTarget(XmlNode targetNode, ILayoutElement targetLayoutElement, string targetId, string pageId)
         {
             foreach (XmlNode node in targetNode.ChildNodes)
             {
@@ -293,7 +315,7 @@ namespace FLG.Cs.UI {
         {
             var nodeType = node.Name;
             string name = GetNodeName(node, componentName);
-            convertedNode = UILibrary.Xml(node, name);
+            convertedNode = UIFactory.Xml(node, name);
             if (convertedNode == null)
             {
                 // using UILibrary.Xml first => won't attempt to load a *.layout named after one of the concrete LayoutElement (HStack.layout for instance)

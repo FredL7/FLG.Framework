@@ -15,6 +15,8 @@ namespace FLG.Cs.Framework {
             ISerializerManager serializer = new SerializerManagerProxy();
             Locator.Instance.Register(serializer);
 
+            IUIFactory uIFactory = new UIFactoryProxy();
+            Locator.Instance.Register(uIFactory);
             IUIManager manager = new UIManagerProxy();
             Locator.Instance.Register(manager);
         }
@@ -33,6 +35,9 @@ namespace FLG.Cs.Framework {
 
         internal static void CreateUIManager(string layoutsDir, string pagesDir)
         {
+            IUIFactory uiFactory = new UIFactory();
+            Locator.Instance.Register(uiFactory);
+
             IUIManager manager = new UIManager(layoutsDir, pagesDir);
             Locator.Instance.Register(manager);
         }

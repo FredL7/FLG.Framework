@@ -34,12 +34,12 @@ namespace FLG.Cs.UI.Grids {
             ComputeSizesAndPositions(GetChildrensInternal(id));
         }
 
-        internal sealed override void ComputeContentSizesAndPositions(List<AbstractLayoutElement> content)
+        internal sealed override void ComputeContentSizesAndPositions(List<ILayoutElement> content)
         {
             ComputeSizesAndPositions(content);
         }
 
-        private void ComputeSizesAndPositions(List<AbstractLayoutElement> childrens)
+        private void ComputeSizesAndPositions(List<ILayoutElement> childrens)
         {
             var orderedChildrens = OrderChildrens(childrens);
             if (orderedChildrens.Length == 0)
@@ -57,29 +57,29 @@ namespace FLG.Cs.UI.Grids {
             Vector2[] positions = GetFinalPositions(mainMargins, secondaryMargins, mainDimensions);
 
             for (int i = 0; i < orderedChildrens.Length; ++i)
-                orderedChildrens[i].RectXform.SetSizesAndPosition(sizes[i], positions[i]);
+                orderedChildrens[i].GetRectXform().SetSizesAndPosition(sizes[i], positions[i]);
         }
 
-        protected abstract float GetChildSizeMain(AbstractLayoutElement child);
-        protected abstract float GetChildSizeSecondary(AbstractLayoutElement child);
-        protected abstract float GetChildMainMarginFirst(AbstractLayoutElement child);
-        protected abstract float GetChildMainMarginLast(AbstractLayoutElement child);
-        protected abstract float GetChildSecondaryMarginFirst(AbstractLayoutElement child);
-        protected abstract float GetChildSecondaryMarginLast(AbstractLayoutElement child);
+        protected abstract float GetChildSizeMain(ILayoutElement child);
+        protected abstract float GetChildSizeSecondary(ILayoutElement child);
+        protected abstract float GetChildMainMarginFirst(ILayoutElement child);
+        protected abstract float GetChildMainMarginLast(ILayoutElement child);
+        protected abstract float GetChildSecondaryMarginFirst(ILayoutElement child);
+        protected abstract float GetChildSecondaryMarginLast(ILayoutElement child);
         protected abstract float GetContainerDimensionMain(Size containerDimensions);
         protected abstract float GetContainerDimensionSecondary(Size containerDimensions);
         protected abstract Size[] GetFinalSizes(float[] mainDimensions, float[] secondaryDimensions);
         protected abstract Vector2[] GetFinalPositions(float[] mainMargins, float[] secondaryMargins, float[] mainDimensions);
 
-        private AbstractLayoutElement[] OrderChildrens(List<AbstractLayoutElement> childrens)
+        private ILayoutElement[] OrderChildrens(List<ILayoutElement> childrens)
         {
-            var childrensOrdered = childrens.OrderBy(x => x.Order);
+            var childrensOrdered = childrens.OrderBy(x => x.GetOrder());
             if (_direction == EGridDirection.REVERSE)
                 return childrensOrdered.Reverse().ToArray();
             return childrensOrdered.ToArray();
         }
 
-        private (float[], float[]) ComputeDimensionsAndMarginsAlongMainAxis(AbstractLayoutElement[] childrens)
+        private (float[], float[]) ComputeDimensionsAndMarginsAlongMainAxis(ILayoutElement[] childrens)
         {
             var expectedSizes = GetExpectedSizes(childrens);
             var expectedSizesSum = expectedSizes.Sum();
@@ -87,7 +87,7 @@ namespace FLG.Cs.UI.Grids {
             var margins = ComputeMargins(childrens);
             var marginsSum = margins.Sum();
 
-            var containerDimensions = RectXform.GetDimensions();
+            var containerDimensions = _rectXform.GetDimensions();
             var containerDimensionMain = GetContainerDimensionMain(containerDimensions);
             var spaceRequired = expectedSizesSum + marginsSum;
             var spaceAvailable = containerDimensionMain - spaceRequired;
@@ -108,9 +108,9 @@ namespace FLG.Cs.UI.Grids {
             return (stretchedSizes, justifiedMargins);
         }
 
-        private (float[], float[]) ComputeDimensionsAndMarginsAlongSecondaryAxis(AbstractLayoutElement[] childrens)
+        private (float[], float[]) ComputeDimensionsAndMarginsAlongSecondaryAxis(ILayoutElement[] childrens)
         {
-            var containerDimensions = RectXform.GetDimensions();
+            var containerDimensions = _rectXform.GetDimensions();
             var containerDimensionSecondary = GetContainerDimensionSecondary(containerDimensions);
 
             float[] margins = new float[childrens.Length];
@@ -155,7 +155,7 @@ namespace FLG.Cs.UI.Grids {
             return (dimensions, margins);
         }
 
-        private float[] GetExpectedSizes(AbstractLayoutElement[] childrens)
+        private float[] GetExpectedSizes(ILayoutElement[] childrens)
         {
             float[] sizes = new float[childrens.Length];
             for (int i = 0; i < childrens.Length; ++i)
@@ -163,7 +163,7 @@ namespace FLG.Cs.UI.Grids {
             return sizes;
         }
 
-        private float[] ComputeMargins(AbstractLayoutElement[] childrens)
+        private float[] ComputeMargins(ILayoutElement[] childrens)
         {
             float[] margins = new float[childrens.Length + 1];
             margins[0] = GetChildMainMarginFirst(childrens[0]);
@@ -181,7 +181,7 @@ namespace FLG.Cs.UI.Grids {
             return margins;
         }
 
-        private float[] GetSizesForStretch(AbstractLayoutElement[] childrens, float[] expectedSizes, float spaceAvailable)
+        private float[] GetSizesForStretch(ILayoutElement[] childrens, float[] expectedSizes, float spaceAvailable)
         {
             float[] sizesForStretch = expectedSizes;
             bool hasStretch = expectedSizes.Contains(0f);
@@ -190,11 +190,11 @@ namespace FLG.Cs.UI.Grids {
                 float weightSum = 0;
                 foreach (var child in childrens)
                     if (GetChildSizeMain(child) == 0f)
-                        weightSum += child.Weight;
+                        weightSum += child.GetWeight();
                 float stretchSizeSingle = spaceAvailable / weightSum;
                 for (int i = 0; i < childrens.Length; ++i)
                     if (GetChildSizeMain(childrens[i]) == 0f)
-                        sizesForStretch[i] = childrens[i].Weight * stretchSizeSingle;
+                        sizesForStretch[i] = childrens[i].GetWeight() * stretchSizeSingle;
             }
             return sizesForStretch;
         }
