@@ -33,11 +33,7 @@ namespace FLG.Cs.UI.Layouts {
             _childrens[id].Add(child);
         }
 
-        public override IEnumerable<string> GetContainers()
-        {
-            return _childrens.Keys;
-        }
-
+        public override IEnumerable<string> GetContainers() => _childrens.Keys;
         public override bool HasChildren(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => _childrens[id].Count > 0;
         public override IEnumerable<AbstractLayoutElement> GetChildrens(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => _childrens[id];
 
