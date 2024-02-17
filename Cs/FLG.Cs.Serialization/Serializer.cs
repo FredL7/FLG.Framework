@@ -1,4 +1,6 @@
-﻿namespace FLG.Cs.Serialization {
+﻿using FLG.Cs.IDatamodel;
+
+namespace FLG.Cs.Serialization {
     internal abstract class Serializer : ISerializer {
         private const string ID_VERSION = "Version";
         private const string ID_NAME = "Name";

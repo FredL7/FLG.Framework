@@ -1,10 +1,11 @@
-﻿using FLG.Cs.Math;
-using FLG.Cs.UI.Grid;
+﻿using System.Xml;
+
+using FLG.Cs.Math;
+using FLG.Cs.UI.Grids;
 using FLG.Cs.UI.Layouts;
-using System.Xml;
 
-
-namespace FLG.Cs.UI {
+namespace FLG.Cs.UI
+{
     public static class UILibrary {
         internal static AbstractLayoutElement? Xml(XmlNode node, string name)
         {
@@ -13,7 +14,7 @@ namespace FLG.Cs.UI {
             {
                 "HStack" => new HStack(name, node),
                 "VStack" => new VStack(name, node),
-                "ProxyLayoutElement" => new ProxyLayoutElementLeaf(name, node),// TODO: tmp
+                "ProxyLayoutElement" => new ProxyLayoutElementLeaf(name, node),
                 _ => null,
             };
         }
@@ -22,7 +23,7 @@ namespace FLG.Cs.UI {
          * ========== layouts ========== *
          * ============================= */
 
-        public static void HStack(
+        public static HStack HStack(
             string name,
             float width = 0,
             float height = 0,
@@ -34,13 +35,9 @@ namespace FLG.Cs.UI {
             EGridDirection direction = EGridDirection.NORMAL,
             EGridJustify justify = EGridJustify.START,
             EGridAlignment alignment = EGridAlignment.START)
-        {
-            HStack hstack = new(name, width, height, margin, padding, order, weight, isTarget, direction, justify, alignment);
-            // TODO: Add result to pipeline and notify Front-end UI
-            // Also change it so ctor goes through here with XMLNode instead of directly using new?
-        }
+                => new(name, width, height, margin, padding, order, weight, isTarget, direction, justify, alignment);
 
-        public static void VStack(
+        public static VStack VStack(
             string name,
             float width = 0,
             float height = 0,
@@ -52,21 +49,27 @@ namespace FLG.Cs.UI {
             EGridDirection direction = EGridDirection.NORMAL,
             EGridJustify justify = EGridJustify.START,
             EGridAlignment alignment = EGridAlignment.START)
-        {
-            VStack vstack = new(name, width, height, margin, padding, order, weight, isTarget, direction, justify, alignment);
-            // TODO: Add result to pipeline and notify Front-end UI
-        }
+                => new(name, width, height, margin, padding, order, weight, isTarget, direction, justify, alignment);
 
 
         /* ============================= *
          * ========== Widgets ========== *
          * ============================= */
 
+        public static ProxyLayoutElementLeaf ProxyLayoutElement(
+            string name,
+            float width = 0,
+            float height = 0,
+            Spacing margin = default,
+            Spacing padding = default,
+            int order = 0,
+            float weight = 1f,
+            bool isTarget = false) // TODO: Leaf element can't be target?
+            => new(name, width, height, margin, padding, order, weight, isTarget);
+
         public static void Button(string name)
         {
 
         }
-
-        // TODO: Others
     }
 }

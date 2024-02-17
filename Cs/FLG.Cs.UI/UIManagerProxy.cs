@@ -1,5 +1,4 @@
-﻿using FLG.Cs.UI.Layouts;
-
+﻿using FLG.Cs.IDatamodel;
 
 namespace FLG.Cs.UI {
     public class UIManagerProxy : IUIManager {
@@ -8,5 +7,6 @@ namespace FLG.Cs.UI {
         public void OnServiceRegistered() { }
 
         public IEnumerable<ILayout> GetLayouts() { return new List<ILayout>(); }
+        public void RegisterPage(IPage p) { }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Nodes;
 
+using FLG.Cs.IDatamodel;
+
 
 namespace FLG.Cs.Serialization {
     internal class JsonSerializer : Serializer {

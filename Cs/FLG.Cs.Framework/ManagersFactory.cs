@@ -1,4 +1,5 @@
-﻿using FLG.Cs.Logger;
+﻿using FLG.Cs.IDatamodel;
+using FLG.Cs.Logger;
 using FLG.Cs.Serialization;
 using FLG.Cs.ServiceLocator;
 using FLG.Cs.UI;
@@ -30,9 +31,9 @@ namespace FLG.Cs.Framework {
             Locator.Instance.Register(serializer);
         }
 
-        internal static void CreateUIManager(string layoutsDir)
+        internal static void CreateUIManager(string layoutsDir, string pagesDir)
         {
-            IUIManager manager = new UIManager(layoutsDir);
+            IUIManager manager = new UIManager(layoutsDir, pagesDir);
             Locator.Instance.Register(manager);
         }
     }

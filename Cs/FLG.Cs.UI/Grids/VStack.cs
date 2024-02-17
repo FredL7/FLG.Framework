@@ -5,8 +5,8 @@ using FLG.Cs.Math;
 using FLG.Cs.UI.Layouts;
 
 
-namespace FLG.Cs.UI.Grid {
-    internal class VStack : Stack {
+namespace FLG.Cs.UI.Grids {
+    public class VStack : Stack {
         internal VStack(string name, XmlNode node) : base(name, node) { }
         internal VStack(
             string name, float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget,

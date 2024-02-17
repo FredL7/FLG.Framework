@@ -1,10 +1,12 @@
-﻿using FLG.Cs.IO;
-using FLG.Cs.Logger;
+﻿using FLG.Cs.IDatamodel;
+using FLG.Cs.IO;
 using FLG.Cs.Math;
 using FLG.Cs.ServiceLocator;
-using FLG.Cs.UI.Grid;
+using FLG.Cs.UI.Grids;
 using FLG.Cs.UI.Layouts;
 using FLG.Cs.Validation;
+
+using System.Reflection;
 using System.Xml;
 
 using File = FLG.Cs.IO.File;
@@ -13,23 +15,33 @@ using File = FLG.Cs.IO.File;
 namespace FLG.Cs.UI {
     internal class XMLParser {
         private string _layoutsDir;
-        private Dictionary<string, Layout> _pages;
+        private string _pagesDir;
+
+        private Dictionary<string, IPage> _pages;
+        private Dictionary<string, Layout> _components;
         private Dictionary<string, Layout> _layouts;
 
-        private List<File> _pageFiles;
+        private List<File> _pageXMLFiles;
         private List<File> _layoutFiles;
 
-        public Dictionary<string, Layout> GetPages() => _pages;
+        private ILogManager _log;
 
-        internal XMLParser(string layoutsDir)
+        public Dictionary<string, IPage> GetPages() => _pages;
+        public Dictionary<string, Layout> GetLayouts() => _layouts;
+
+        internal XMLParser(string layoutsDir, string pagesDir)
         {
             _layoutsDir = layoutsDir;
+            _pagesDir = pagesDir;
 
             _pages = new();
+            _components = new();
             _layouts = new();
 
-            _pageFiles = IOUtils.GetFilePathsByExtension(_layoutsDir, ".page");
             _layoutFiles = IOUtils.GetFilePathsByExtension(_layoutsDir, ".layout");
+            _pageXMLFiles = IOUtils.GetFilePathsByExtension(_pagesDir, ".page");
+
+            _log = Locator.Instance.Get<ILogManager>();
         }
 
         internal Result Parse()
@@ -37,61 +49,117 @@ namespace FLG.Cs.UI {
             if (!Directory.Exists(_layoutsDir))
                 return new Result($"{Path.GetFullPath(_layoutsDir)} does not exists");
 
+            if (!Directory.Exists(_pagesDir))
+                return new Result($"{Path.GetFullPath(_pagesDir)} does not exists");
+
             return ParsePages();
         }
 
-        #region *.page
+        #region Pages
         private Result ParsePages()
         {
-            if (_pageFiles.Count == 0)
+            if (_pageXMLFiles.Count == 0)
             {
                 return new Result("No file with extension .page found");
             }
 
-            foreach (var file in _pageFiles)
+            foreach (var file in _pageXMLFiles)
             {
-                Result result = ParsePage(file);
+                _log.Debug($"Begin Parsing XML {file.filename}");
+
+                Result result = ValidateXml(file, "page", out XmlDocument _, out XmlNode? rootNode);
+                if (!result || rootNode == null) return result;
+                result = ValidatePageXml(rootNode, out string binding, out string layoutId, out XmlNode? layoutNode);
+                if (!result || binding == string.Empty || layoutId == string.Empty || layoutNode == null) return result;
+
+                result = InstantiatePageCs(binding);
                 if (!result) return result;
+
+                result = LoadPageLayout(layoutId);
+                if (!result) return result;
+
+                result = ParsePage(layoutId, layoutNode, binding);
+                if (!result) return result;
+
+                foreach (IPage page in _pages.Values)
+                    page.Setup();
+
+                _log.Debug($"Finished Parsing XML {file.filename}");
             }
 
             return Result.SUCCESS;
         }
 
-        private Result ParsePage(File file)
+        private Result InstantiatePageCs(string binding)
         {
-            Result result = ValidateXml(file, "page", out XmlDocument _, out XmlNode? rootNode, out XmlNode? layoutNode);
-            if (!result || rootNode == null || layoutNode == null) return result;
-            result = ValidateXmlPage(layoutNode, out string layoutId);
-            if (!result || layoutId == string.Empty) return result;
+            IPage? page;
+            try
+            {
+                var type = Type.GetType(binding + ", ProjectDefs.UI");
+                if (type == null) return new Result($"Could not instantiate a class of type {binding}: type {binding} not found");
 
-            result = LoadLayout(layoutId);
+                var pageObject = Activator.CreateInstance(type);
+                if (pageObject == null) return new Result($"Could not instantiate a class of type {binding}: could not create an instance of type {type}");
+
+                page = pageObject as IPage;
+                _log.Debug($"Instantiated IPage of type {binding}");
+            }
+            catch (Exception e)
+            {
+                return new Result($"Could not instantiate a class of type {binding}: {e}");
+            }
+
+            if (page == null) return new Result($"Could not instantiate a class of type {binding}: result is null");
+            _pages.Add(page.GetID(), page);
+
+            return Result.SUCCESS;
+        }
+
+        private Result LoadPageLayout(string layoutId)
+        {
+            _log.Debug($"Begin Parsing layout with id {layoutId}");
+            Result result = LoadLayout(layoutId);
             if (!result) return result;
-            var layout = _layouts[layoutId];
+            _log.Debug($"Finished Parsing layout with id {layoutId}");
 
-            result = GetTargetNodes(layout, layoutNode, out List<XmlNode> targetNodes, out List<AbstractLayoutElement> targetElements);
+            if (!_layouts.ContainsKey(layoutId))
+                _layouts.Add(layoutId, _components[layoutId]);
+
+            return Result.SUCCESS;
+        }
+
+        private Result ParsePage(string layoutId, XmlNode layoutNode, string pageId)
+        {
+            Layout layout = _layouts[layoutId];
+            Result result = GetTargetNodes(layout, layoutNode, out List<XmlNode> targetNodes, out List<AbstractLayoutElement> targetElements);
             if (!result) return result;
             for (int i = 0; i < targetNodes.Count; ++i)
             {
-                result = ConvertNodeRecursiveForTarget(targetNodes[i], targetElements[i], targetElements[i].GetName());
+                result = ConvertNodeRecursiveForTarget(targetNodes[i], targetElements[i], targetElements[i].GetName(), pageId);
                 if (!result) return result;
             }
-            // TODO: Compute Xforms
 
-            // Watch out for reusable vs copy content
-
-            _pages.Add(layoutId, layout);
             return Result.SUCCESS;
         }
 
-        private static Result ValidateXmlPage(XmlNode layoutNode, out string layoutId)
+        private static Result ValidatePageXml(XmlNode rootNode, out string binding, out string layoutId, out XmlNode? layoutNode)
         {
+            binding = string.Empty;
             layoutId = string.Empty;
-            if (layoutNode?.Name != "layout")
-                return new Result($"Root node must contain a child node named \"layout\"");
+            layoutNode = null;
 
+            var childNodes = rootNode.ChildNodes;
+            if (childNodes.Count != 2) return new Result("Root node must contain exactly 2 nodes, <binding> and <layout>");
+
+            var firstChildNode = childNodes[0];
+            if (firstChildNode?.Name != "binding") return new Result("First child of Root node must be named \"binding\"");
+            binding = firstChildNode?.Attributes?["class"]?.Value ?? string.Empty;
+            if (binding == string.Empty) return new Result($"<binding> node Does not have a \"class\" attribute");
+
+            layoutNode = childNodes[1];
+            if (layoutNode?.Name != "layout") return new Result("Second child of Root node must be named \"layout\"");
             layoutId = layoutNode?.Attributes?["id"]?.Value ?? string.Empty;
-            if (layoutId == string.Empty)
-                return new Result($"Layout node Does not have an \"id\" attribute");
+            if (layoutId == string.Empty) return new Result($"<layout> node Does not have an \"id\" attribute");
 
             return Result.SUCCESS;
         }
@@ -119,14 +187,16 @@ namespace FLG.Cs.UI {
 
             return Result.SUCCESS;
         }
-        #endregion *.page
+        #endregion Pages
 
-        #region *.layout
+        #region Layouts
         private Result LoadLayout(string id)
         {
-            if (_layouts.ContainsKey(id))
-                // Already loaded
+            if (_components.ContainsKey(id))
+            {
+                _log.Debug($"Layout {id} already loaded OK");
                 return Result.SUCCESS;
+            }
 
             foreach (File file in _layoutFiles)
                 if (file.file == id)
@@ -137,8 +207,11 @@ namespace FLG.Cs.UI {
 
         private Result ParseLayout(File file, string id)
         {
-            Result result = ValidateXml(file, "layout", out XmlDocument _, out XmlNode? rootNode, out XmlNode? rootChild);
-            if (!result || rootNode == null || rootChild == null) return result;
+            _log.Debug($"Begin Parsing {file.filename}");
+            Result result = ValidateXml(file, "layout", out XmlDocument _, out XmlNode? rootNode);
+            if (!result || rootNode == null) return result;
+            result = ValidateLayoutXml(rootNode, out XmlNode? rootChild);
+            if (!result || rootChild == null) return result;
 
             result = ConvertNode(rootChild, out AbstractLayoutElement? root, id);
             if (!result || root == null) return result;
@@ -148,10 +221,24 @@ namespace FLG.Cs.UI {
             if (!result) return result;
 
             Layout layout = new(root, id, targets);
-            _layouts.Add(id, layout);
+            _components.Add(id, layout);
+            _log.Debug($"Finished Parsing XML Layout {file.filename}");
+
             return Result.SUCCESS;
         }
-        #endregion *.layout
+
+        private Result ValidateLayoutXml(XmlNode rootNode, out XmlNode? rootChild)
+        {
+            rootChild = null;
+
+            var childNodes = rootNode.ChildNodes;
+            if (childNodes.Count != 1) return new Result("Root node must contain exactly 1 node");
+
+            rootChild = childNodes[0];
+
+            return Result.SUCCESS;
+        }
+        #endregion Layouts
 
         #region Conversion
         private Result ConvertNodeRecursive(XmlNode parentNode, AbstractLayoutElement parentLayoutElement, Dictionary<string, AbstractLayoutElement> targets)
@@ -177,14 +264,14 @@ namespace FLG.Cs.UI {
             return Result.SUCCESS;
         }
 
-        private Result ConvertNodeRecursiveForTarget(XmlNode targetNode, AbstractLayoutElement targetLayoutElement, string targetId)
+        private Result ConvertNodeRecursiveForTarget(XmlNode targetNode, AbstractLayoutElement targetLayoutElement, string targetId, string pageId)
         {
             foreach (XmlNode node in targetNode.ChildNodes)
             {
                 Result result = ConvertNode(node, out AbstractLayoutElement? layoutElement);
                 if (!result || layoutElement == null) return result;
 
-                targetLayoutElement.AddChild(layoutElement, targetId);
+                targetLayoutElement.AddChild(layoutElement, pageId);
 
                 if (layoutElement.GetIsTarget())
                 {
@@ -194,10 +281,9 @@ namespace FLG.Cs.UI {
                     */
 
                     return new Result("Cannot declare targets within *.page <target> nodes");
-                    // TODO: Will eventually want to add targets within pages for widgets (or find some other way)
                 }
 
-                ConvertNodeRecursiveForTarget(node, layoutElement, targetId);
+                ConvertNodeRecursiveForTarget(node, layoutElement, targetId, pageId);
             }
 
             return Result.SUCCESS;
@@ -211,12 +297,12 @@ namespace FLG.Cs.UI {
             if (convertedNode == null)
             {
                 // using UILibrary.Xml first => won't attempt to load a *.layout named after one of the concrete LayoutElement (HStack.layout for instance)
-                if (!_layouts.ContainsKey(nodeType))
+                if (!_components.ContainsKey(nodeType))
                 {
                     Result result = LoadLayout(nodeType);
                     if (!result) return result;
                 }
-                convertedNode = (AbstractLayoutElement)_layouts[nodeType].GetRoot(); // TODO: Way without cast?
+                convertedNode = (AbstractLayoutElement)_components[nodeType].GetRoot();
             }
 
             return Result.SUCCESS;
@@ -225,11 +311,10 @@ namespace FLG.Cs.UI {
 
         #region Helpers
         #region XML
-        private static Result ValidateXml(File file, string expectedRootName, out XmlDocument xmldoc, out XmlNode? rootNode, out XmlNode? rootChild)
+        private static Result ValidateXml(File file, string expectedRootName, out XmlDocument xmldoc, out XmlNode? rootNode)
         {
             xmldoc = new();
             rootNode = null;
-            rootChild = null;
 
             try
             {
@@ -249,18 +334,7 @@ namespace FLG.Cs.UI {
             if (rootNode.Name != expectedRootName)
             {
                 return new Result($"XML root node Should be named {expectedRootName}: {file}");
-            }
-
-            var rootChildCount = rootNode.ChildNodes.Count;
-            rootChild = rootNode.ChildNodes.Item(0);
-            if (rootChildCount == 0 || rootChild == null)
-            {
-                return new Result($"XML root node must have a child node named: {file}");
-            }
-            else if (rootChildCount > 1)
-            {
-                return new Result($"XML root node can only have one child node: {file}");
-            }
+            } // Technically optional
 
             return Result.SUCCESS;
         }

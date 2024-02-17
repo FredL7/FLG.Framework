@@ -1,7 +1,5 @@
 ﻿using FLG.Cs.Decorators;
-using FLG.Cs.Logger;
-using FLG.Cs.Serialization;
-using FLG.Cs.UI;
+using FLG.Cs.IDatamodel;
 
 
 namespace FLG.Cs.Framework {
@@ -63,10 +61,7 @@ namespace FLG.Cs.Framework {
 
             if (!_initializedUI)
             {
-                // TODO: Make sure you have registered pages content before calling this method
-                // Locator.Instance.Get<IUIManager>().LoadUI();
-                // Observer pattern to call the observers to then draw()
-                ManagersFactory.CreateUIManager(pref.layoutsDir);
+                ManagersFactory.CreateUIManager(pref.layoutsDir, pref.pagesDir);
                 _initializedUI = true;
             }
         }

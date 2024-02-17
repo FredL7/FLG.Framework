@@ -1,12 +1,12 @@
 ﻿using System.Xml;
 
-using FLG.Cs.Logger;
+using FLG.Cs.IDatamodel;
 using FLG.Cs.Math;
 using FLG.Cs.ServiceLocator;
 
 
 namespace FLG.Cs.UI.Layouts {
-    internal class AbstractLayoutElementLeaf : AbstractLayoutElement {
+    public class AbstractLayoutElementLeaf : AbstractLayoutElement {
         internal AbstractLayoutElementLeaf(string name, XmlNode node)
             : base(name, node) { }
         internal AbstractLayoutElementLeaf(string name, float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget)
@@ -17,6 +17,7 @@ namespace FLG.Cs.UI.Layouts {
             Locator.Instance.Get<ILogManager>().Error("Layout element leaf cannot contain childrens");
         }
 
+        public override IEnumerable<string> GetContainers() => Enumerable.Empty<string>();
         public override bool HasChildren(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => false;
         public override IEnumerable<AbstractLayoutElement> GetChildrens(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => Enumerable.Empty<AbstractLayoutElement>();
 

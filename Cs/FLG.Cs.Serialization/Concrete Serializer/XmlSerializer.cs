@@ -1,6 +1,8 @@
 ﻿using System.Globalization;
 using System.Xml;
 
+using FLG.Cs.IDatamodel;
+
 
 namespace FLG.Cs.Serialization {
     internal class XmlSerializer : Serializer {

@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.UI.Layouts {
+﻿namespace FLG.Cs.IDatamodel {
     public interface ILayout {
         void AddObserver(ILayoutObserver observer);
         string GetName();

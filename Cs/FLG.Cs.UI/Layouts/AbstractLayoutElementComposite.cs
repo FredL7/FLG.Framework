@@ -1,9 +1,11 @@
-﻿using FLG.Cs.Math;
-using System.Xml;
+﻿using System.Xml;
+
+using FLG.Cs.IDatamodel;
+using FLG.Cs.Math;
 
 
 namespace FLG.Cs.UI.Layouts {
-    internal abstract class AbstractLayoutElementComposite : AbstractLayoutElement {
+    public abstract class AbstractLayoutElementComposite : AbstractLayoutElement {
         private readonly Dictionary<string, List<AbstractLayoutElement>> _childrens = new();
         protected List<AbstractLayoutElement> GetChildrensInternal(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => _childrens[id];
 
@@ -31,6 +33,7 @@ namespace FLG.Cs.UI.Layouts {
             _childrens[id].Add(child);
         }
 
+        public override IEnumerable<string> GetContainers() => _childrens.Keys;
         public override bool HasChildren(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => _childrens[id].Count > 0;
         public override IEnumerable<AbstractLayoutElement> GetChildrens(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => _childrens[id];
 
