@@ -61,9 +61,6 @@ namespace FLG.Cs.Framework {
 
             if (!_initializedUI)
             {
-                // TODO: Make sure you have registered pages content before calling this method
-                // Locator.Instance.Get<IUIManager>().LoadUI();
-                // Observer pattern to call the observers to then draw()
                 ManagersFactory.CreateUIManager(pref.layoutsDir, pref.pagesDir);
                 _initializedUI = true;
             }

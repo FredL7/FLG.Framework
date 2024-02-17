@@ -81,12 +81,6 @@ namespace FLG.Cs.UI {
                 result = ParsePage(layoutId, layoutNode, binding);
                 if (!result) return result;
 
-                // TODO #1: Add layout Id to IPage
-                // TODO #2: Replace targetId in ConvertNodeRecursiveForTarget() by pageId?
-                // TODO #3: Populate Sample2.cs and make it work with the current flow
-                //              Meaning that the resulting layout of Setup() should be a dictionary<string=targetname, Layout>
-                //              And added to the corresponding layout with AddChild(layout, pageId) inside the foreach below
-                // TODO #4: Finish XMLParser and get the values where it's called
                 foreach (IPage page in _pages.Values)
                     page.Setup();
 
