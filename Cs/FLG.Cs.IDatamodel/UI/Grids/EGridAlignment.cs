@@ -1,8 +1,8 @@
-﻿namespace FLG.Cs.UI.Grids {
+﻿namespace FLG.Cs.IDatamodel {
     public enum EGridAlignment { START, END, CENTER, STRETCH }
 
-    internal class EGridAlignmentExtension {
-        internal static EGridAlignment FromString(string value)
+    public class EGridAlignmentExtension {
+        public static EGridAlignment FromString(string value)
         {
             return value.ToLower() switch
             {

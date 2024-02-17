@@ -1,8 +1,8 @@
-﻿namespace FLG.Cs.UI.Grids {
+﻿namespace FLG.Cs.IDatamodel {
     public enum EGridDirection { NORMAL, REVERSE }
 
-    internal class EGridDirectionExtension {
-        internal static EGridDirection FromString(string value)
+    public class EGridDirectionExtension {
+        public static EGridDirection FromString(string value)
         {
             return value.ToLower() switch
             {

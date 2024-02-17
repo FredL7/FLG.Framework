@@ -3,5 +3,6 @@
         void AddObserver(ILayoutObserver observer);
         string GetName();
         public ILayoutElement GetRoot();
+        public ILayoutElement GetTarget(string name);
     }
 }

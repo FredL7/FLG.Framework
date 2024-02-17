@@ -3,6 +3,7 @@
 using FLG.Cs.Math;
 using FLG.Cs.UI.Grids;
 using FLG.Cs.UI.Layouts;
+using FLG.Cs.UI.Widgets;
 
 namespace FLG.Cs.UI
 {
@@ -66,10 +67,5 @@ namespace FLG.Cs.UI
             float weight = 1f,
             bool isTarget = false) // TODO: Leaf element can't be target?
             => new(name, width, height, margin, padding, order, weight, isTarget);
-
-        public static void Button(string name)
-        {
-
-        }
     }
 }

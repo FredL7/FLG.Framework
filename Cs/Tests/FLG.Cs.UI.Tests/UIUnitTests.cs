@@ -131,24 +131,24 @@ namespace FLG.Cs.UI.Tests {
                         Assert.IsTrue(contentPosition.X == 0 && contentPosition.Y == 40);
 
                         Assert.IsFalse(child.HasChildren());
-                        Assert.IsTrue(child.HasChildren("content"));
-                        foreach (var child2 in child.GetChildrens("content"))
+                        Assert.IsTrue(child.HasChildren("Sample1"));
+                        foreach (var child2 in child.GetChildrens("Sample1"))
                         {
                             var name = child2.GetName();
-                            Assert.IsTrue(name == "page-test-1" || name == "page-test-2" || name == "page-test-3");
+                            Assert.IsTrue(name == "page1-test-1" || name == "page1-test-2" || name == "page1-test-3");
                             var child2Dimensions = child2.GetDimensions();
                             var child2Position = child2.GetPosition();
                             Assert.IsTrue(child2Dimensions.Width == 640 && child2Dimensions.Height == 1040);
                             float expectedX = 0;
-                            if (name == "page-test-1")
+                            if (name == "page1-test-1")
                             {
                                 expectedX = 0;
                             }
-                            else if (name == "page-test-2")
+                            else if (name == "page1-test-2")
                             {
                                 expectedX = 640;
                             }
-                            else if (name == "page-test-3")
+                            else if (name == "page1-test-3")
                             {
                                 expectedX = 1280;
                             }

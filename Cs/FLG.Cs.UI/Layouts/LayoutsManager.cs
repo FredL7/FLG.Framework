@@ -11,12 +11,14 @@ namespace FLG.Cs.UI.Layouts
             _layouts = new();
         }
 
-        internal void setLayoutsFromParser(Dictionary<string, Layout> layouts)
+        internal void SetLayoutsFromParser(Dictionary<string, Layout> layouts)
         {
             _layouts = layouts;
         }
 
         public IEnumerable<ILayout> GetLayouts() => _layouts.Values;
+
+        public ILayout GetLayout(string name) => _layouts[name];
 
         internal void ComputeLayoutsRectXforms(Window window)
         {

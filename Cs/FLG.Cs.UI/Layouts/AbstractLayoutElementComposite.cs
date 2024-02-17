@@ -6,8 +6,8 @@ using FLG.Cs.Math;
 
 namespace FLG.Cs.UI.Layouts {
     public abstract class AbstractLayoutElementComposite : AbstractLayoutElement {
-        private readonly Dictionary<string, List<AbstractLayoutElement>> _childrens = new();
-        protected List<AbstractLayoutElement> GetChildrensInternal(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => _childrens[id];
+        private readonly Dictionary<string, List<ILayoutElement>> _childrens = new();
+        protected List<ILayoutElement> GetChildrensInternal(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => _childrens[id];
 
         internal AbstractLayoutElementComposite(string name, XmlNode node)
             : base(name, node)
@@ -26,7 +26,7 @@ namespace FLG.Cs.UI.Layouts {
             _childrens.Add(ILayoutElement.DEFAULT_CHILDREN_CONTAINER, new());
         }
 
-        internal override void AddChild(AbstractLayoutElement child, string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER)
+        public override void AddChild(ILayoutElement child, string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER)
         {
             if (!_childrens.ContainsKey(id))
                 _childrens.Add(id, new());
@@ -35,9 +35,9 @@ namespace FLG.Cs.UI.Layouts {
 
         public override IEnumerable<string> GetContainers() => _childrens.Keys;
         public override bool HasChildren(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => _childrens[id].Count > 0;
-        public override IEnumerable<AbstractLayoutElement> GetChildrens(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => _childrens[id];
+        public override IEnumerable<ILayoutElement> GetChildrens(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => _childrens[id];
 
-        internal sealed override void ComputeRectXform()
+        public sealed override void ComputeRectXform()
         {
             foreach (var container in _childrens)
             {
@@ -47,6 +47,6 @@ namespace FLG.Cs.UI.Layouts {
             }
         }
         protected abstract void ComputeChildrenSizesAndPositions(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER);
-        internal abstract void ComputeContentSizesAndPositions(List<AbstractLayoutElement> content);
+        internal abstract void ComputeContentSizesAndPositions(List<ILayoutElement> content);
     }
 }

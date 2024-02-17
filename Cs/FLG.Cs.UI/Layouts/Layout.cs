@@ -16,7 +16,7 @@ namespace FLG.Cs.UI.Layouts {
         #region Targets
         readonly private Dictionary<string, AbstractLayoutElement> _targets;
         internal bool HasTarget(string id) => _targets.ContainsKey(id);
-        internal AbstractLayoutElement GetTarget(string id) => _targets[id];
+        public ILayoutElement GetTarget(string id) => _targets[id];
         #endregion Targets
 
         #region Observer
@@ -55,7 +55,7 @@ namespace FLG.Cs.UI.Layouts {
 
         internal void ComputeRectXforms(Window window)
         {
-            _root.RectXform.SetSizesAndPosition(window.RectXform.GetDimensions(), Vector2.Zero);
+            _root.GetRectXform().SetSizesAndPosition(window.RectXform.GetDimensions(), Vector2.Zero);
             _root.ComputeRectXform();
         }
     }

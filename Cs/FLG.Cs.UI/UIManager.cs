@@ -34,6 +34,11 @@ namespace FLG.Cs.UI {
         {
             return _layoutsManager.GetLayouts();
         }
+
+        public ILayout GetLayout(string name)
+        {
+            return _layoutsManager.GetLayout(name);
+        }
         #endregion
 
         private void ParseUI()
@@ -46,11 +51,8 @@ namespace FLG.Cs.UI {
             if (!result) result.Log();
             logger.Debug("Finished XML Parsing");
 
-            var fred1 = parser.GetLayouts();
-            var fred2 = parser.GetPages();
-
-            _layoutsManager.setLayoutsFromParser(parser.GetLayouts());
-            _pagesManager.setPagesFromParser(parser.GetPages());
+            _layoutsManager.SetLayoutsFromParser(parser.GetLayouts());
+            _pagesManager.SetPagesFromParser(parser.GetPages());
 
             Window defaultWindow = new(1920, 1080);
             // TODO: Get actual window size (may via prefs or via watcher below vvvv)

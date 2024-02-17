@@ -7,6 +7,11 @@ namespace FLG.Cs.UI {
         public void OnServiceRegistered() { }
 
         public IEnumerable<ILayout> GetLayouts() { return new List<ILayout>(); }
+        public ILayout GetLayout(string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public void RegisterPage(IPage p) { }
     }
 }
