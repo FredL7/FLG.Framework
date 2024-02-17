@@ -9,8 +9,8 @@ namespace FLG.Godot.UI {
     [Tool]
     public partial class UITool : Control {
         private const string LOGS_RELATIVE_PATH = "../../_logs"; // TODO: Move to serialized field to appear in the inspector?
-        private const string LAYOUTS_RELATIVE_PATH = "../../ProjectDefs/ProjectDefs.UI/Layouts";
-        private const string PAGES_RELATIVE_PATH = "../../ProjectDefs/ProjectDefs.UI/Pages";
+        private const string LAYOUTS_RELATIVE_PATH = "../../Cs/ProjectDefs/ProjectDefs.UI/Layouts";
+        private const string PAGES_RELATIVE_PATH = "../../Cs/ProjectDefs/ProjectDefs.UI/Pages";
 
         private IUIManager _uiManager;
 
