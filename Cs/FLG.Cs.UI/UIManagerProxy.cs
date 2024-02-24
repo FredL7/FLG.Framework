@@ -6,6 +6,7 @@ namespace FLG.Cs.UI {
         public void OnServiceRegisteredFail() { }
         public void OnServiceRegistered() { }
 
+        public void SetCurrentPage(string id) { }
         public IEnumerable<ILayout> GetLayouts() { return new List<ILayout>(); }
         public ILayout GetLayout(string name)
         {

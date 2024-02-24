@@ -30,15 +30,15 @@ namespace FLG.Cs.UI {
         #endregion IServiceInstance
 
         #region IUIManager
-        public IEnumerable<ILayout> GetLayouts()
+        public void SetCurrentPage(string id)
         {
-            return _layoutsManager.GetLayouts();
+            _pagesManager.SetCurrentPage(id);
+            _layoutsManager.SetCurrentLayout(_pagesManager.GetCurrentPageLayoutId());
+            // TODO: Notify Observers?
         }
 
-        public ILayout GetLayout(string name)
-        {
-            return _layoutsManager.GetLayout(name);
-        }
+        public IEnumerable<ILayout> GetLayouts() => _layoutsManager.GetLayouts();
+        public ILayout GetLayout(string name) => _layoutsManager.GetLayout(name);
         #endregion
 
         private void ParseUI()

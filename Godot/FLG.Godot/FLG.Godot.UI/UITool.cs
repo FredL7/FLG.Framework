@@ -28,6 +28,9 @@ namespace FLG.Godot.UI {
 
                 Clear();
                 DrawUI();
+
+                // TODO: Register layout observer
+                // TODO: Set current page
             }
         }
 
