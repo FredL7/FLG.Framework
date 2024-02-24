@@ -11,6 +11,8 @@ namespace FLG.Cs.UI {
         private LayoutsManager _layoutsManager;
         private PagesManager _pagesManager;
 
+        List<IUIObserver> _observers;
+
         public UIManager(string layoutsDir, string pagesDir)
         {
             _layoutsDir = layoutsDir;
@@ -18,27 +20,34 @@ namespace FLG.Cs.UI {
 
             _layoutsManager = new();
             _pagesManager = new();
+
+            _observers = new();
         }
 
         #region IServiceInstance
         public bool IsProxy() => false;
         public void OnServiceRegisteredFail() { Locator.Instance.Get<ILogManager>().Error("UI Manager Failed to register"); }
-        public void OnServiceRegistered() {
+        public void OnServiceRegistered()
+        {
             Locator.Instance.Get<ILogManager>().Debug("UI Manager Registered");
             ParseUI();
         }
         #endregion IServiceInstance
 
         #region IUIManager
-        public IEnumerable<ILayout> GetLayouts()
+        public void SetCurrentPage(string id)
         {
-            return _layoutsManager.GetLayouts();
+            _pagesManager.SetCurrentPage(id);
+            string layoutId = _pagesManager.GetCurrent().GetLayoutId();
+            _layoutsManager.SetCurrentLayout(layoutId);
+
+            NotifyObservers();
         }
 
-        public ILayout GetLayout(string name)
-        {
-            return _layoutsManager.GetLayout(name);
-        }
+        public void AddObserver(IUIObserver observer) { _observers.Add(observer); }
+
+        public IEnumerable<ILayout> GetLayouts() => _layoutsManager.GetLayouts();
+        public ILayout GetLayout(string name) => _layoutsManager.GetLayout(name);
         #endregion
 
         private void ParseUI()
@@ -58,6 +67,15 @@ namespace FLG.Cs.UI {
             // TODO: Get actual window size (may via prefs or via watcher below vvvv)
             // TODO: Register window size change to compute on change (also applies to pages)
             _layoutsManager.ComputeLayoutsRectXforms(defaultWindow);
+        }
+
+        private void NotifyObservers()
+        {
+            string pageId = _pagesManager.GetCurrent().GetPageId();
+            string layoutId = _layoutsManager.GetCurrent().GetName();
+
+            foreach (IUIObserver o in _observers)
+                o.OnCurrentPageChanged(pageId, layoutId);
         }
     }
 }
