@@ -26,7 +26,7 @@ namespace FLG.Cs.UI.Layouts
             _currentLayout = id;
         }
 
-        internal Layout GetCurrentPage()
+        internal Layout GetCurrent()
         {
             if (_currentLayout == string.Empty)
                 Locator.Instance.Get<ILogManager>().Error($"Current layout isn't set.");

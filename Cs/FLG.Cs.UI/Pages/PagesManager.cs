@@ -24,15 +24,13 @@ namespace FLG.Cs.UI.Pages {
             _currentPage = id;
         }
 
-        internal IPage GetCurrentPage()
+        internal IPage GetCurrent()
         {
             if (_currentPage == string.Empty)
                 Locator.Instance.Get<ILogManager>().Error($"Current page isn't set.");
 
             return _pages[_currentPage];
         }
-
-        internal string GetCurrentPageLayoutId() => GetCurrentPage().GetLayoutId();
 
         internal void SetPagesFromParser(Dictionary<string, IPage> pages)
         {
