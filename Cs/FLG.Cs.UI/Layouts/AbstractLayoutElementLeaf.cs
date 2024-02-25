@@ -6,7 +6,7 @@ using FLG.Cs.ServiceLocator;
 
 
 namespace FLG.Cs.UI.Layouts {
-    public class AbstractLayoutElementLeaf : AbstractLayoutElement {
+    public abstract class AbstractLayoutElementLeaf : AbstractLayoutElement {
         internal AbstractLayoutElementLeaf(string name, XmlNode node)
             : base(name, node) { }
         internal AbstractLayoutElementLeaf(string name, float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget)

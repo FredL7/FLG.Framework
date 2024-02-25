@@ -433,13 +433,13 @@ namespace FLG.Cs.UI {
                 {
                     return value;
                 }
-                else
+            }
+            else
+            {
+                var innerText = node.InnerText;
+                if (innerText != null && innerText != string.Empty)
                 {
-                    var content = node?.Value;
-                    if (content != null && content != string.Empty)
-                    {
-                        return content;
-                    }
+                    return innerText;
                 }
             }
 

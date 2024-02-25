@@ -53,7 +53,7 @@ namespace FLG.Cs.UI
         #region Widgets
         public ILayoutElement Label(string name, string text,
             float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget)
-            => new ProxyLayoutElementLeaf(name, width, height, margin, padding, order, weight, isTarget);
+            => new Label(name, text, width, height, margin, padding, order, weight, isTarget);
         #endregion Widgets
     }
 }

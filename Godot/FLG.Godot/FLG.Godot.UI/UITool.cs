@@ -1,4 +1,5 @@
 using Godot;
+using System.Collections.Generic;
 
 using FLG.Cs.Framework;
 using FLG.Cs.IDatamodel;
@@ -6,9 +7,11 @@ using FLG.Cs.Math;
 using FLG.Cs.ServiceLocator;
 using FLG.Godot.Helpers;
 
+
 using sysV2 = System.Numerics.Vector2;
 using gdV2 = Godot.Vector2;
-using System.Collections.Generic;
+using flgLabel = FLG.Godot.UI.Widgets.Label;
+
 
 namespace FLG.Godot.UI {
     [Tool]
@@ -150,11 +153,28 @@ namespace FLG.Godot.UI {
                     foreach (ILayoutElement child in layoutElementParent.GetChildrens(container))
                     {
                         // TODO: Here cast child from ILayoutElement to concrete type (e.g. Label)
+                        // Don't cast, ask the ILayoutElement itself to set the attributes to the node
+                        // But should be contained within the Godot namespace, not FLG.Cs
+                        // Need to duplicate the only widgets (probably don't need the others) in this namespace
+                        // un espece de container avec une fct get() => ILayoutElementChild &
                         var node = AddNode(child.Name, child, parentForAddNode);
+                        DrawNode(child, node);
                         DrawLayoutRecursive(node, child);
                     }
-
                 }
+            }
+        }
+
+        private void DrawNode(ILayoutElement layoutElement, Node node)
+        {
+            var root = GetTree().EditedSceneRoot;
+            switch (layoutElement.Type)
+            {
+                case ELayoutElement.LABEL:
+                    IWidget<ILabel> label = new flgLabel((ILabel)layoutElement);
+                    label.Draw(node, root);
+                    break;
+                default: break;
             }
         }
     }

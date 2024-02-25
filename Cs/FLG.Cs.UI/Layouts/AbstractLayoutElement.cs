@@ -9,6 +9,7 @@ namespace FLG.Cs.UI.Layouts
 {
     public abstract class AbstractLayoutElement : ILayoutElement {
         public string Name { get; private set; }
+        public abstract ELayoutElement Type { get; }
         public bool IsTarget { get; private set; }
         public RectXform RectXform { get; private set; }
         public Vector2 Position { get => RectXform.GetContainerPosition(); }

@@ -8,6 +8,8 @@ using FLG.Cs.UI.Layouts;
 
 namespace FLG.Cs.UI.Grids {
     public class HStack : Stack {
+        public override ELayoutElement Type { get => ELayoutElement.HSTACK; }
+
         public HStack(string name, XmlNode node) : base(name, node) { }
         public HStack(
             string name, float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget,

@@ -3,11 +3,12 @@ using System.Xml;
 
 using FLG.Cs.IDatamodel;
 using FLG.Cs.Math;
-using FLG.Cs.UI.Layouts;
 
 
 namespace FLG.Cs.UI.Grids {
     public class VStack : Stack {
+        public override ELayoutElement Type { get => ELayoutElement.VSTACK; }
+
         public VStack(string name, XmlNode node) : base(name, node) { }
         public VStack(
             string name, float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget,

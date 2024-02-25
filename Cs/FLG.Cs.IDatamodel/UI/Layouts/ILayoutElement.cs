@@ -8,6 +8,7 @@ namespace FLG.Cs.IDatamodel {
         public const string DEFAULT_CHILDREN_CONTAINER = "default";
 
         public string Name { get; }
+        public ELayoutElement Type { get; }
         public bool IsTarget { get; }
         public RectXform RectXform { get; }
         public Vector2 Position { get; }
