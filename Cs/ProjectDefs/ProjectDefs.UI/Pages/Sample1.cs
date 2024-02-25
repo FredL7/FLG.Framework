@@ -1,13 +1,10 @@
 using FLG.Cs.IDatamodel;
 
 public class Sample1 : IPage {
-    private const string _pageId = "Sample1";
+    private const string PAGE_ID = "Sample1";
 
-    public string GetPageId() => _pageId;
-
-    private string _layoutId = "";
-    public string GetLayoutId() => _layoutId;
-    public void SetLayoutId(string layoutId) { _layoutId = layoutId; }
+    public string PageId { get => PAGE_ID; }
+    public string LayoutId { get; set; } = "";
 
     public void Setup()
     {

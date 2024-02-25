@@ -1,8 +1,9 @@
 ﻿namespace FLG.Cs.IDatamodel {
     public interface ILayout {
+        public string Name { get; }
+        public ILayoutElement Root { get; }
+
         void AddObserver(ILayoutObserver observer);
-        string GetName();
-        public ILayoutElement GetRoot();
         public ILayoutElement GetTarget(string name);
     }
 }

@@ -93,8 +93,8 @@ namespace FLG.Godot.UI {
 
         private Node AddNode(string name, ILayoutElement layoutElement, Node parent)
         {
-            var position = layoutElement.GetPosition();
-            var dimensions = layoutElement.GetDimensions();
+            var position = layoutElement.Position;
+            var dimensions = layoutElement.Dimensions;
 
             return AddNode(name, position, dimensions, parent);
         }
@@ -120,8 +120,8 @@ namespace FLG.Godot.UI {
 
         private void DrawLayout(ILayout layout)
         {
-            string id = layout.GetName();
-            var root = layout.GetRoot();
+            string id = layout.Name;
+            var root = layout.Root;
             var layoutNode = AddNode("layout " + id, root, this);
             _layouts.Add(id, layoutNode);
             DrawLayoutRecursive(layoutNode, root);
@@ -137,7 +137,7 @@ namespace FLG.Godot.UI {
                     var parentForAddNode = parentNode;
                     if (container != ILayoutElement.DEFAULT_CHILDREN_CONTAINER)
                     {
-                        var containerNode = AddNode(container, sysV2.Zero, layoutElementParent.GetDimensions(), parentNode);
+                        var containerNode = AddNode(container, sysV2.Zero, layoutElementParent.Dimensions, parentNode);
 
                         if (!_pages.ContainsKey(container))
                             _pages.Add(container, new List<Node>());
@@ -149,7 +149,7 @@ namespace FLG.Godot.UI {
 
                     foreach (ILayoutElement child in layoutElementParent.GetChildrens(container))
                     {
-                        var node = AddNode(child.GetName(), child, parentForAddNode);
+                        var node = AddNode(child.Name, child, parentForAddNode);
                         DrawLayoutRecursive(node, child);
                     }
 
