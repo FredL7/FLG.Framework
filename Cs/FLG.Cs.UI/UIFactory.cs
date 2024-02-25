@@ -21,12 +21,22 @@ namespace FLG.Cs.UI
             var nodeType = node.Name;
             return nodeType switch
             {
+                // Layouts
                 "HStack" => new HStack(name, node),
                 "VStack" => new VStack(name, node),
+
+                // Widgets
+                "Label" => new Label(name, node),
+
+                // TMP
                 "ProxyLayoutElement" => new ProxyLayoutElementLeaf(name, node),
                 _ => null,
             };
         }
+
+        public ILayoutElement ProxyLayoutElement(string name,
+            float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget)
+            => new ProxyLayoutElementLeaf(name, width, height, margin, padding, order, weight, isTarget);
 
         #region Layouts
         public ILayoutElement HStack(string name,
@@ -41,7 +51,7 @@ namespace FLG.Cs.UI
         #endregion Layouts
 
         #region Widgets
-        public ILayoutElement ProxyLayoutElement(string name,
+        public ILayoutElement Label(string name, string text,
             float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget)
             => new ProxyLayoutElementLeaf(name, width, height, margin, padding, order, weight, isTarget);
         #endregion Widgets
