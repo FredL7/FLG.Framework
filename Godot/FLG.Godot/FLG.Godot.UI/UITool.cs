@@ -157,24 +157,24 @@ namespace FLG.Godot.UI {
                         // But should be contained within the Godot namespace, not FLG.Cs
                         // Need to duplicate the only widgets (probably don't need the others) in this namespace
                         // un espece de container avec une fct get() => ILayoutElementChild &
-                        var node = AddNode(child.Name, child, parentForAddNode);
-                        DrawNode(child, node);
+                        // var node = AddNode(child.Name, child, parentForAddNode);
+                        var node = DrawNode(child, parentForAddNode);
                         DrawLayoutRecursive(node, child);
                     }
                 }
             }
         }
 
-        private void DrawNode(ILayoutElement layoutElement, Node node)
+        private Node DrawNode(ILayoutElement layoutElement, Node parentNode)
         {
             var root = GetTree().EditedSceneRoot;
             switch (layoutElement.Type)
             {
                 case ELayoutElement.LABEL:
                     IWidget<ILabel> label = new flgLabel((ILabel)layoutElement);
-                    label.Draw(node, root);
-                    break;
-                default: break;
+                    return label.Draw(parentNode, root);
+                default:
+                    return AddNode(layoutElement.Name, layoutElement, parentNode);
             }
         }
     }

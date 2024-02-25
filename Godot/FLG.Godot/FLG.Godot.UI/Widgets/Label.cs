@@ -14,16 +14,18 @@ namespace FLG.Godot.UI.Widgets {
             Widget = widget;
         }
 
-        public void Draw(Node node, Node root)
+        public Node Draw(Node parent, Node root)
         {
             gd_Label label = new()
             {
-                Name = node.Name + " label",
+                Name = Widget.Name + " label",
+                Position = new Vector2(Widget.Position.X, Widget.Position.Y),
                 Size = new Vector2(Widget.Dimensions.Width, Widget.Dimensions.Height),
                 Text = Widget.Text,
             };
-            node.AddChild(label);
+            parent.AddChild(label);
             label.Owner = root;
+            return label;
         }
     }
 }
