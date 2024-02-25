@@ -3,7 +3,7 @@
   <HStack padding="10" height="40">
     <HStack name="header-title">
       <ProxyLayoutElement name="header-title-icon" width="20" margin="10 0 0 0" />
-      <ProxyLayoutElement name="header-title-title" />
+      <Label name="header-title-title">FLG.Framework</Label>
     </HStack>
     <HStack name="header-controls" justify="end">
       <ProxyLayoutElement name="header-controls-minimize" width="20" />

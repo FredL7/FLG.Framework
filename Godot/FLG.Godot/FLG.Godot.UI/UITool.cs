@@ -149,6 +149,7 @@ namespace FLG.Godot.UI {
 
                     foreach (ILayoutElement child in layoutElementParent.GetChildrens(container))
                     {
+                        // TODO: Here cast child from ILayoutElement to concrete type (e.g. Label)
                         var node = AddNode(child.Name, child, parentForAddNode);
                         DrawLayoutRecursive(node, child);
                     }

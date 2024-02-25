@@ -7,6 +7,12 @@ namespace FLG.Cs.UI {
         public void OnServiceRegisteredFail() { }
         public void OnServiceRegistered() { }
 
+        // TMP
+        public ILayoutElement ProxyLayoutElement(string name, float width = 0, float height = 0, Spacing margin = default, Spacing padding = default, int order = 0, float weight = 1, bool isTarget = false)
+        {
+            throw new NotImplementedException();
+        }
+
         #region Layouts
         public ILayoutElement HStack(string name, float width = 0, float height = 0, Spacing margin = default, Spacing padding = default, int order = 0, float weight = 1, bool isTarget = false, EGridDirection direction = EGridDirection.NORMAL, EGridJustify justify = EGridJustify.START, EGridAlignment alignment = EGridAlignment.START)
         {
@@ -20,7 +26,7 @@ namespace FLG.Cs.UI {
         #endregion Layouts
 
         #region Widgets
-        public ILayoutElement ProxyLayoutElement(string name, float width = 0, float height = 0, Spacing margin = default, Spacing padding = default, int order = 0, float weight = 1, bool isTarget = false)
+        public ILayoutElement Label(string name, string text, float width = 0, float height = 0, Spacing margin = default, Spacing padding = default, int order = 0, float weight = 1, bool isTarget = false)
         {
             throw new NotImplementedException();
         }
