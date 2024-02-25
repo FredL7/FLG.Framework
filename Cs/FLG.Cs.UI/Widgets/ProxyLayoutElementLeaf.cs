@@ -1,6 +1,7 @@
-﻿using FLG.Cs.Math;
+﻿using System.Xml;
+
+using FLG.Cs.Math;
 using FLG.Cs.UI.Layouts;
-using System.Xml;
 
 
 namespace FLG.Cs.UI.Widgets
