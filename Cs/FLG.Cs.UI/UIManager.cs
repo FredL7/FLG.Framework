@@ -38,7 +38,7 @@ namespace FLG.Cs.UI {
         public void SetCurrentPage(string id)
         {
             _pagesManager.SetCurrentPage(id);
-            string layoutId = _pagesManager.GetCurrent().GetLayoutId();
+            string layoutId = _pagesManager.GetCurrent().LayoutId;
             _layoutsManager.SetCurrentLayout(layoutId);
 
             NotifyObservers();
@@ -71,8 +71,8 @@ namespace FLG.Cs.UI {
 
         private void NotifyObservers()
         {
-            string pageId = _pagesManager.GetCurrent().GetPageId();
-            string layoutId = _layoutsManager.GetCurrent().GetName();
+            string pageId = _pagesManager.GetCurrent().PageId;
+            string layoutId = _layoutsManager.GetCurrent().Name;
 
             foreach (IUIObserver o in _observers)
                 o.OnCurrentPageChanged(pageId, layoutId);

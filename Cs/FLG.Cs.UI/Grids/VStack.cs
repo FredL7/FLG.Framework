@@ -14,13 +14,13 @@ namespace FLG.Cs.UI.Grids {
             EGridDirection direction, EGridJustify justify, EGridAlignment alignment
         ) : base(name, width, height, margin, padding, order, weight, isTarget, direction, justify, alignment) { }
 
-        protected override float GetChildMainMarginFirst(ILayoutElement child) => child.GetRectXform().Margin.Top;
-        protected override float GetChildMainMarginLast(ILayoutElement child) => child.GetRectXform().Margin.Bottom;
-        protected override float GetChildSecondaryMarginFirst(ILayoutElement child) => child.GetRectXform().Margin.Left;
-        protected override float GetChildSecondaryMarginLast(ILayoutElement child) => child.GetRectXform().Margin.Right;
+        protected override float GetChildMainMarginFirst(ILayoutElement child) => child.RectXform.Margin.Top;
+        protected override float GetChildMainMarginLast(ILayoutElement child) => child.RectXform.Margin.Bottom;
+        protected override float GetChildSecondaryMarginFirst(ILayoutElement child) => child.RectXform.Margin.Left;
+        protected override float GetChildSecondaryMarginLast(ILayoutElement child) => child.RectXform.Margin.Right;
 
-        protected override float GetChildSizeMain(ILayoutElement child) => child.GetSize().Height;
-        protected override float GetChildSizeSecondary(ILayoutElement child) => child.GetSize().Width;
+        protected override float GetChildSizeMain(ILayoutElement child) => child.Size.Height;
+        protected override float GetChildSizeSecondary(ILayoutElement child) => child.Size.Width;
 
         protected override float GetContainerDimensionMain(Size containerDimensions) => containerDimensions.Height;
         protected override float GetContainerDimensionSecondary(Size containerDimensions) => containerDimensions.Width;

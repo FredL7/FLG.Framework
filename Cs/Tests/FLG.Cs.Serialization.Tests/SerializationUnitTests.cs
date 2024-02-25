@@ -76,7 +76,7 @@ namespace FLG.Cs.Serialization.Tests {
         {
             ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();
             foreach (var saveFile in serializer.GetSaveFiles())
-                if (saveFile.GetName() == filename)
+                if (saveFile.Name == filename)
                     serializer.Deserialize(saveFile);
         }
         #endregion Utils

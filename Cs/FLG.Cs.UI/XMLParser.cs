@@ -131,8 +131,8 @@ namespace FLG.Cs.UI {
             }
 
             if (page == null) return new Result($"Could not instantiate a class of type {binding}: result is null");
-            page.SetLayoutId(layoutId);
-            _pages.Add(page.GetPageId(), page);
+            page.LayoutId = layoutId;
+            _pages.Add(page.PageId, page);
 
             return Result.SUCCESS;
         }
@@ -157,7 +157,7 @@ namespace FLG.Cs.UI {
             if (!result) return result;
             for (int i = 0; i < targetNodes.Count; ++i)
             {
-                result = ConvertNodeRecursiveForTarget(targetNodes[i], targetElements[i], targetElements[i].GetName(), pageId);
+                result = ConvertNodeRecursiveForTarget(targetNodes[i], targetElements[i], targetElements[i].Name, pageId);
                 if (!result) return result;
             }
 
@@ -201,7 +201,7 @@ namespace FLG.Cs.UI {
                     return new Result("Target node is missing the \"id\" attribute");
 
                 if (!layout.HasTarget(targetId))
-                    return new Result($"Layout {layout.GetName()} does not have a target with id=\"{targetId}\"");
+                    return new Result($"Layout {layout.Name} does not have a target with id=\"{targetId}\"");
 
                 targetNodes.Add(targetNode);
                 targetElements.Add(layout.GetTarget(targetId));
@@ -272,12 +272,12 @@ namespace FLG.Cs.UI {
 
                 parentLayoutElement.AddChild(layoutElement);
 
-                if (layoutElement.GetIsTarget())
+                if (layoutElement.IsTarget)
                 {
                     if (node.HasChildNodes)
-                        return new Result($"Target node {layoutElement.GetName()} cannot declare childrens");
+                        return new Result($"Target node {layoutElement.Name} cannot declare childrens");
 
-                    targets.Add(layoutElement.GetName(), layoutElement);
+                    targets.Add(layoutElement.Name, layoutElement);
                 }
 
                 ConvertNodeRecursive(node, layoutElement, targets);
@@ -295,7 +295,7 @@ namespace FLG.Cs.UI {
 
                 targetLayoutElement.AddChild(layoutElement, pageId);
 
-                if (layoutElement.GetIsTarget())
+                if (layoutElement.IsTarget)
                 {
                     /*
                     if (node.HasChildNodes)
@@ -324,7 +324,7 @@ namespace FLG.Cs.UI {
                     Result result = LoadLayout(nodeType);
                     if (!result) return result;
                 }
-                convertedNode = (AbstractLayoutElement)_components[nodeType].GetRoot();
+                convertedNode = (AbstractLayoutElement)_components[nodeType].Root;
             }
 
             return Result.SUCCESS;
