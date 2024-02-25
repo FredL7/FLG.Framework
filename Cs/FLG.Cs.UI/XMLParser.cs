@@ -390,6 +390,7 @@ namespace FLG.Cs.UI {
         }
 
         internal static string GetName(XmlNode node) => GetStringAttribute(node, "name", node.Name);
+        internal static string GetText(XmlNode node) => GetStringAttributeOrContent(node, "text");
         internal static string GetTarget(XmlNode node) => GetStringAttribute(node, "target", string.Empty);
         internal static Spacing GetMargin(XmlNode node) => GetSpacingAttribute(node, "margin");
         internal static Spacing GetPadding(XmlNode node) => GetSpacingAttribute(node, "padding");
@@ -412,7 +413,7 @@ namespace FLG.Cs.UI {
             else
             {
                 var value = node?.Attributes[attr]?.Value;
-                if (value == null || value == "")
+                if (value == null || value == string.Empty)
                 {
                     return defaultValue;
                 }
@@ -421,6 +422,28 @@ namespace FLG.Cs.UI {
                     return value;
                 }
             }
+        }
+
+        internal static string GetStringAttributeOrContent(XmlNode node, string attr, string defaultValue = "")
+        {
+            if (node.Attributes?[attr]?.Value != null)
+            {
+                var value = node?.Attributes[attr]?.Value;
+                if (value != null && value != string.Empty)
+                {
+                    return value;
+                }
+                else
+                {
+                    var content = node?.Value;
+                    if (content != null && content != string.Empty)
+                    {
+                        return content;
+                    }
+                }
+            }
+
+            return defaultValue;
         }
 
         internal static int GetIntAttribute(XmlNode node, string attr, int defaultValue = 0)
@@ -432,7 +455,7 @@ namespace FLG.Cs.UI {
             else
             {
                 var value = node?.Attributes[attr]?.Value;
-                if (value == null || value == "")
+                if (value == null || value == string.Empty)
                 {
                     return defaultValue;
                 }
@@ -452,7 +475,7 @@ namespace FLG.Cs.UI {
             else
             {
                 var value = node?.Attributes[attr]?.Value;
-                if (value == null || value == "")
+                if (value == null || value == string.Empty)
                 {
                     return defaultValue;
                 }
@@ -472,7 +495,7 @@ namespace FLG.Cs.UI {
             else
             {
                 var value = node?.Attributes[attr]?.Value;
-                if (value == null || value == "")
+                if (value == null || value == string.Empty)
                 {
                     return Spacing.Zero;
                 }
@@ -509,7 +532,7 @@ namespace FLG.Cs.UI {
             else
             {
                 var value = node?.Attributes["direction"]?.Value;
-                if (value == null || value == "")
+                if (value == null || value == string.Empty)
                 {
                     return EGridDirectionExtension.FromString("");
                 }
@@ -529,7 +552,7 @@ namespace FLG.Cs.UI {
             else
             {
                 var value = node?.Attributes["justify"]?.Value;
-                if (value == null || value == "")
+                if (value == null || value == string.Empty)
                 {
                     return EGridJustifyExtension.FromString("");
                 }
@@ -549,7 +572,7 @@ namespace FLG.Cs.UI {
             else
             {
                 var value = node?.Attributes["justify"]?.Value;
-                if (value == null || value == "")
+                if (value == null || value == string.Empty)
                 {
                     return EGridAlignmentExtension.FromString("");
                 }
