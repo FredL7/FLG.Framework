@@ -10,8 +10,7 @@ namespace FLG.Cs.IDatamodel {
             Spacing margin = default,
             Spacing padding = default,
             int order = 0,
-            float weight = 1f,
-            bool isTarget = false); // TODO: Leaf element can't be target?
+            float weight = 1f);
 
         #region Layouts
         public ILayoutElement HStack(
@@ -50,8 +49,17 @@ namespace FLG.Cs.IDatamodel {
             Spacing margin = default,
             Spacing padding = default,
             int order = 0,
-            float weight = 1f,
-            bool isTarget = false); // TODO: Leaf element can't be target?
+            float weight = 1f);
+
+        public ILayoutElement Sprite(
+            string name,
+            string source,
+            float width = 0,
+            float height = 0,
+            Spacing margin = default,
+            Spacing padding = default,
+            int order = 0,
+            float weight = 1f);
         #endregion Widgets
     }
 }

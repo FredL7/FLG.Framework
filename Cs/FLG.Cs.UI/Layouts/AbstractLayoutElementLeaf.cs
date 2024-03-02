@@ -9,8 +9,8 @@ namespace FLG.Cs.UI.Layouts {
     public abstract class AbstractLayoutElementLeaf : AbstractLayoutElement {
         internal AbstractLayoutElementLeaf(string name, XmlNode node)
             : base(name, node) { }
-        internal AbstractLayoutElementLeaf(string name, float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget)
-            : base(name, width, height, margin, padding, order, weight, isTarget) { }
+        internal AbstractLayoutElementLeaf(string name, float width, float height, Spacing margin, Spacing padding, int order, float weight)
+            : base(name, width, height, margin, padding, order, weight, false) { }
 
         public override void AddChild(ILayoutElement child, string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER)
         {

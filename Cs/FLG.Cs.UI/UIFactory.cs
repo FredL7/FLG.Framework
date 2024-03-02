@@ -27,6 +27,7 @@ namespace FLG.Cs.UI
 
                 // Widgets
                 "Label" => new Label(name, node),
+                "Sprite" => new Sprite(name, node),
 
                 // TMP
                 "ProxyLayoutElement" => new ProxyLayoutElementLeaf(name, node),
@@ -35,8 +36,8 @@ namespace FLG.Cs.UI
         }
 
         public ILayoutElement ProxyLayoutElement(string name,
-            float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget)
-            => new ProxyLayoutElementLeaf(name, width, height, margin, padding, order, weight, isTarget);
+            float width, float height, Spacing margin, Spacing padding, int order, float weight)
+            => new ProxyLayoutElementLeaf(name, width, height, margin, padding, order, weight);
 
         #region Layouts
         public ILayoutElement HStack(string name,
@@ -52,8 +53,12 @@ namespace FLG.Cs.UI
 
         #region Widgets
         public ILayoutElement Label(string name, string text,
-            float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget)
-            => new Label(name, text, width, height, margin, padding, order, weight, isTarget);
+            float width, float height, Spacing margin, Spacing padding, int order, float weight)
+            => new Label(name, text, width, height, margin, padding, order, weight);
+
+        public ILayoutElement Sprite(string name, string source,
+            float width, float height, Spacing margin, Spacing padding, int order, float weight)
+            => new Sprite(name, source, width, height, margin, padding, order, weight);
         #endregion Widgets
     }
 }

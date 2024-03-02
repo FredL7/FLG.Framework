@@ -11,6 +11,7 @@ using FLG.Godot.Helpers;
 using sysV2 = System.Numerics.Vector2;
 using gdV2 = Godot.Vector2;
 using flgLabel = FLG.Godot.UI.Widgets.Label;
+using FLG.Godot.UI.Widgets;
 
 
 namespace FLG.Godot.UI {
@@ -173,6 +174,9 @@ namespace FLG.Godot.UI {
                 case ELayoutElement.LABEL:
                     IWidget<ILabel> label = new flgLabel((ILabel)layoutElement);
                     return label.Draw(parentNode, root);
+                case ELayoutElement.SPRITE:
+                    IWidget<ISprite> sprite = new Sprite((ISprite)layoutElement);
+                    return sprite.Draw(parentNode, root);
                 default:
                     return AddNode(layoutElement.Name, layoutElement, parentNode);
             }

@@ -8,7 +8,7 @@ namespace FLG.Cs.UI {
         public void OnServiceRegistered() { }
 
         // TMP
-        public ILayoutElement ProxyLayoutElement(string name, float width = 0, float height = 0, Spacing margin = default, Spacing padding = default, int order = 0, float weight = 1, bool isTarget = false)
+        public ILayoutElement ProxyLayoutElement(string name, float width = 0, float height = 0, Spacing margin = default, Spacing padding = default, int order = 0, float weight = 1)
         {
             throw new NotImplementedException();
         }
@@ -26,7 +26,12 @@ namespace FLG.Cs.UI {
         #endregion Layouts
 
         #region Widgets
-        public ILayoutElement Label(string name, string text, float width = 0, float height = 0, Spacing margin = default, Spacing padding = default, int order = 0, float weight = 1, bool isTarget = false)
+        public ILayoutElement Label(string name, string text, float width = 0, float height = 0, Spacing margin = default, Spacing padding = default, int order = 0, float weight = 1)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ILayoutElement Sprite(string name, string source, float width = 0, float height = 0, Spacing margin = default, Spacing padding = default, int order = 0, float weight = 1)
         {
             throw new NotImplementedException();
         }

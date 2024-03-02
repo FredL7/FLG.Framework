@@ -15,8 +15,8 @@ namespace FLG.Cs.UI.Widgets {
         {
             Text = XMLParser.GetText(node);
         }
-        public Label(string name, string text, float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget)
-            : base(name, width, height, margin, padding, order, weight, isTarget)
+        public Label(string name, string text, float width, float height, Spacing margin, Spacing padding, int order, float weight)
+            : base(name, width, height, margin, padding, order, weight)
         {
             Text = text;
         }
