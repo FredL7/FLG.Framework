@@ -15,8 +15,8 @@ namespace FLG.Cs.UI.Widgets {
         {
             Source = XMLParser.GetStringAttribute(node, "source", string.Empty);
         }
-        public Sprite(string name, string source, float width, float height, Spacing margin, Spacing padding, int order, float weight)
-            : base(name, width, height, margin, padding, order, weight)
+        public Sprite(string name, string source, LayoutAttributes attributes)
+            : base(name, attributes)
         {
             Source = source;
         }

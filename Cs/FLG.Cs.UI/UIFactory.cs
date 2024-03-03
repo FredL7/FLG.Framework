@@ -36,34 +36,26 @@ namespace FLG.Cs.UI
             };
         }
 
-        public ILayoutElement ProxyLayoutElement(string name,
-            float width, float height, Spacing margin, Spacing padding, int order, float weight)
-            => new ProxyLayoutElementLeaf(name, width, height, margin, padding, order, weight);
+        public ILayoutElement ProxyLayoutElement(string name, LayoutAttributes attributes)
+            => new ProxyLayoutElementLeaf(name, attributes);
 
         #region Layouts
-        public ILayoutElement HStack(string name,
-            float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget,
-            EGridDirection direction, EGridJustify justify, EGridAlignment alignment)
-                => new HStack(name, width, height, margin, padding, order, weight, isTarget, direction, justify, alignment);
+        public ILayoutElement HStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget)
+                => new HStack(name, layoutAttr, gridAttr, isTarget);
 
-        public ILayoutElement VStack(string name,
-            float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget,
-            EGridDirection direction, EGridJustify justify, EGridAlignment alignment)
-                => new VStack(name, width, height, margin, padding, order, weight, isTarget, direction, justify, alignment);
+        public ILayoutElement VStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget)
+                => new VStack(name, layoutAttr, gridAttr, isTarget);
         #endregion Layouts
 
         #region Widgets
-        public ILayoutElement Button(string name, string source, Action action,
-            float width, float height, Spacing margin, Spacing padding, int order, float weight)
-            => new Button(name, source, action, width, height, margin, padding, order, weight);
+        public ILayoutElement Button(string name, string source, Action action, LayoutAttributes attributes)
+            => new Button(name, source, action, attributes);
 
-        public ILayoutElement Label(string name, string text,
-            float width, float height, Spacing margin, Spacing padding, int order, float weight)
-            => new Label(name, text, width, height, margin, padding, order, weight);
+        public ILayoutElement Label(string name, string text, LayoutAttributes attributes)
+            => new Label(name, text, attributes);
 
-        public ILayoutElement Sprite(string name, string source,
-            float width, float height, Spacing margin, Spacing padding, int order, float weight)
-            => new Sprite(name, source, width, height, margin, padding, order, weight);
+        public ILayoutElement Sprite(string name, string source, LayoutAttributes attributes)
+            => new Sprite(name, source, attributes);
         #endregion Widgets
     }
 }

@@ -8,38 +8,17 @@ namespace FLG.Cs.UI {
         public void OnServiceRegistered() { }
 
         // TMP
-        public ILayoutElement ProxyLayoutElement(string name, float width = 0, float height = 0, Spacing margin = default, Spacing padding = default, int order = 0, float weight = 1)
-        {
-            throw new NotImplementedException();
-        }
+        public ILayoutElement ProxyLayoutElement(string name, LayoutAttributes attributes) { throw new NotImplementedException(); }
 
         #region Layouts
-        public ILayoutElement HStack(string name, float width = 0, float height = 0, Spacing margin = default, Spacing padding = default, int order = 0, float weight = 1, bool isTarget = false, EGridDirection direction = EGridDirection.NORMAL, EGridJustify justify = EGridJustify.START, EGridAlignment alignment = EGridAlignment.START)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ILayoutElement VStack(string name, float width = 0, float height = 0, Spacing margin = default, Spacing padding = default, int order = 0, float weight = 1, bool isTarget = false, EGridDirection direction = EGridDirection.NORMAL, EGridJustify justify = EGridJustify.START, EGridAlignment alignment = EGridAlignment.START)
-        {
-            throw new NotImplementedException();
-        }
+        public ILayoutElement HStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget) { throw new NotImplementedException(); }
+        public ILayoutElement VStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget) { throw new NotImplementedException(); }
         #endregion Layouts
 
         #region Widgets
-        public ILayoutElement Button(string name, string text, Action action, float width = 0, float height = 0, Spacing margin = default, Spacing padding = default, int order = 0, float weight = 1)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ILayoutElement Label(string name, string text, float width = 0, float height = 0, Spacing margin = default, Spacing padding = default, int order = 0, float weight = 1)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ILayoutElement Sprite(string name, string source, float width = 0, float height = 0, Spacing margin = default, Spacing padding = default, int order = 0, float weight = 1)
-        {
-            throw new NotImplementedException();
-        }
+        public ILayoutElement Button(string name, string text, Action action, LayoutAttributes attributes) { throw new NotImplementedException(); }
+        public ILayoutElement Label(string name, string text, LayoutAttributes attributes) { throw new NotImplementedException(); }
+        public ILayoutElement Sprite(string name, string source, LayoutAttributes attributes) { throw new NotImplementedException(); }
         #endregion Widgets
     }
 }

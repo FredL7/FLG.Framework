@@ -17,8 +17,8 @@ namespace FLG.Cs.UI.Widgets {
             throw new NotImplementedException();
         }
 
-        public Button(string name, string text, Action action, float width, float height, Spacing margin, Spacing padding, int order, float weight)
-            : base(name, width, height, margin, padding, order, weight)
+        public Button(string name, string text, Action action, LayoutAttributes attributes)
+            : base(name, attributes)
         {
             Text = text;
             Action = action;

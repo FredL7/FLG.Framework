@@ -11,10 +11,10 @@ public class Sample2 : IPage {
     {
         var factory = Locator.Instance.Get<IUIFactory>();
 
-        var page2test1 = factory.ProxyLayoutElement("page2-test-1");
-        var label = factory.Label("page2-test-label", "Hello World!");
-        var sprite = factory.Sprite("page2-test-sprite", "FLG.Godot.UI/Spritesheets/spritesheet-cards-alpha.png");
-        var btn = factory.Button("page2-test-button", "Click Me!", OnBtnClicked);
+        var page2test1 = factory.ProxyLayoutElement("page2-test-1", new());
+        var label = factory.Label("page2-test-label", "Hello World!", new());
+        var sprite = factory.Sprite("page2-test-sprite", "FLG.Godot.UI/Spritesheets/spritesheet-cards-alpha.png", new());
+        var btn = factory.Button("page2-test-button", "Click Me!", OnBtnClicked, new());
 
         var ui = Locator.Instance.Get<IUIManager>();
         var layout = ui.GetLayout(LayoutId);

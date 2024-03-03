@@ -20,13 +20,12 @@ namespace FLG.Cs.UI.Grids {
             _alignment = XMLParser.GetAlignment(node);
         }
         internal Stack(
-            string name, float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget,
-            EGridDirection direction, EGridJustify justify, EGridAlignment alignment)
-            : base(name, width, height, margin, padding, order, weight, isTarget)
+            string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget)
+            : base(name, layoutAttr, isTarget)
         {
-            _direction = direction;
-            _justify = justify;
-            _alignment = alignment;
+            _direction = gridAttr.Direction;
+            _justify = gridAttr.Justify;
+            _alignment = gridAttr.Alignment;
         }
 
         protected sealed override void ComputeChildrenSizesAndPositions(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER)

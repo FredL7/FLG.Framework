@@ -31,7 +31,6 @@ namespace FLG.Godot.UI {
 
         public override void _Ready()
         {
-            GD.Print("_Ready");
             base._Ready();
 
             //if (Engine.IsEditorHint()) // TODO: Add back when we have a proper game manager to initialize the framework

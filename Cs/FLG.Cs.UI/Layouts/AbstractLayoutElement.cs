@@ -34,15 +34,15 @@ namespace FLG.Cs.UI.Layouts
             Size = new(width, height);
         }
 
-        public AbstractLayoutElement(string name, float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget)
+        public AbstractLayoutElement(string name, LayoutAttributes attributes, bool isTarget)
         {
             Name = name;
             IsTarget = isTarget;
-            Order = order;
-            Weight = weight;
+            Order = attributes.Order;
+            Weight = attributes.Weight;
 
-            RectXform = new(margin, padding);
-            Size = new(width, height);
+            RectXform = new(attributes.Margin, attributes.Padding);
+            Size = new(attributes.Width, attributes.Height);
         }
 
         public abstract void AddChild(ILayoutElement child, string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER);

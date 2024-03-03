@@ -11,10 +11,7 @@ namespace FLG.Cs.UI.Grids {
         public override ELayoutElement Type { get => ELayoutElement.HSTACK; }
 
         public HStack(string name, XmlNode node) : base(name, node) { }
-        public HStack(
-            string name, float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget,
-            EGridDirection direction, EGridJustify justify, EGridAlignment alignment
-        ) : base(name, width, height, margin, padding, order, weight, isTarget, direction, justify, alignment) { }
+        public HStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget) : base(name, layoutAttr, gridAttr, isTarget) { }
 
         protected override float GetChildMainMarginFirst(ILayoutElement child) => child.RectXform.Margin.Left;
         protected override float GetChildMainMarginLast(ILayoutElement child) => child.RectXform.Margin.Right;
