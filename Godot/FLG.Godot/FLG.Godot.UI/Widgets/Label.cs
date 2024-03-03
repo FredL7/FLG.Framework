@@ -15,7 +15,7 @@ namespace FLG.Godot.UI.Widgets {
             Widget = widget;
         }
 
-        public Node Draw(Node parent, Node root, bool _)
+        public Node Draw(Node parent, bool _)
         {
             gd_Label label = new()
             {
@@ -24,8 +24,6 @@ namespace FLG.Godot.UI.Widgets {
                 Size = new Vector2(Widget.Dimensions.Width, Widget.Dimensions.Height),
                 Text = Widget.Text,
             };
-            parent.AddChild(label);
-            label.Owner = root;
             return label;
         }
     }

@@ -10,7 +10,7 @@ namespace FLG.Godot.UI.Widgets {
             Widget = widget;
         }
 
-        public Node Draw(Node parent, Node root, bool _)
+        public Node Draw(Node parent, bool _)
         {
             var image = Image.LoadFromFile("res://" + Widget.Source);
             var texture = ImageTexture.CreateFromImage(image);
@@ -20,8 +20,6 @@ namespace FLG.Godot.UI.Widgets {
                 Position = new Vector2(Widget.Position.X, Widget.Position.Y),
                 Texture = texture,
             };
-            parent.AddChild(sprite);
-            sprite.Owner = root;
             return sprite;
         }
     }

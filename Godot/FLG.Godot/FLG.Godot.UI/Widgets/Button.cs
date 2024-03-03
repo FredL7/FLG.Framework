@@ -15,7 +15,7 @@ namespace FLG.Godot.UI.Widgets {
             Widget = widget;
         }
 
-        public Node Draw(Node parent, Node root, bool fromEditor)
+        public Node Draw(Node parent, bool fromEditor)
         {
             gd_Button btn = new()
             {
@@ -29,8 +29,7 @@ namespace FLG.Godot.UI.Widgets {
             {
                 btn.Pressed += Widget.Action;
             }
-            parent.AddChild(btn);
-            btn.Owner = root;
+
             return btn;
         }
     }

@@ -35,7 +35,7 @@ namespace FLG.Godot.UI {
 
             //if (Engine.IsEditorHint()) // TODO: Add back when we have a proper game manager to initialize the framework
             //{
-                InitializeFramework();
+            InitializeFramework();
             //}
             _uiManager = Locator.Instance.Get<IUIManager>();
 
@@ -170,25 +170,41 @@ namespace FLG.Godot.UI {
 
         private Node DrawNode(ILayoutElement layoutElement, Node parentNode)
         {
+            Node node;
             var root = GetTree().EditedSceneRoot;
             var fromEditor = Engine.IsEditorHint();
+            bool parentSetter = true;
             switch (layoutElement.Type)
             {
                 case ELayoutElement.BUTTON:
                     IWidget<IButton> btn = new flgButton((IButton)layoutElement);
-                    return btn.Draw(parentNode, root, fromEditor);
+                    node = btn.Draw(parentNode, fromEditor);
+                    break;
                 case ELayoutElement.LABEL:
                     IWidget<ILabel> label = new flgLabel((ILabel)layoutElement);
-                    return label.Draw(parentNode, root, fromEditor);
+                    node = label.Draw(parentNode, fromEditor);
+                    break;
                 case ELayoutElement.SPRITE:
                     IWidget<ISprite> sprite = new Sprite((ISprite)layoutElement);
-                    return sprite.Draw(parentNode, root, fromEditor);
+                    node = sprite.Draw(parentNode, fromEditor);
+                    break;
                 case ELayoutElement.TEXT:
                     IWidget<IText> text = new Text((IText)layoutElement);
-                    return text.Draw(parentNode, root, fromEditor);
+                    node = text.Draw(parentNode, fromEditor);
+                    break;
                 default:
-                    return AddNode(layoutElement.Name, layoutElement, parentNode);
+                    node = AddNode(layoutElement.Name, layoutElement, parentNode);
+                    parentSetter = false;
+                    break;
             }
+
+            if (parentSetter)
+            {
+                parentNode.AddChild(node);
+                node.Owner = root;
+            }
+
+            return node;
         }
     }
 }

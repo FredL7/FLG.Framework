@@ -11,7 +11,7 @@ namespace FLG.Godot.UI.Widgets {
             this.Widget = Widget;
         }
 
-        public Node Draw(Node parent, Node root, bool _)
+        public Node Draw(Node parent, bool _)
         {
             RichTextLabel label = new()
             {
@@ -21,8 +21,6 @@ namespace FLG.Godot.UI.Widgets {
                 Size = new Vector2(Widget.Dimensions.Width, Widget.Dimensions.Height),
                 Text = Widget.Value,
             };
-            parent.AddChild(label);
-            label.Owner = root;
             return label;
         }
     }
