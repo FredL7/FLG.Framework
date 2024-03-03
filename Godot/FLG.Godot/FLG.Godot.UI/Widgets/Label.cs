@@ -14,7 +14,7 @@ namespace FLG.Godot.UI.Widgets {
             Widget = widget;
         }
 
-        public Node Draw(Node parent, Node root)
+        public Node Draw(Node parent, Node root, bool _)
         {
             gd_Label label = new()
             {

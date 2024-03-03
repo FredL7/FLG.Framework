@@ -6,12 +6,13 @@ using FLG.Cs.IDatamodel;
 using FLG.Cs.Math;
 using FLG.Cs.ServiceLocator;
 using FLG.Godot.Helpers;
+using FLG.Godot.UI.Widgets;
 
 
 using sysV2 = System.Numerics.Vector2;
 using gdV2 = Godot.Vector2;
 using flgLabel = FLG.Godot.UI.Widgets.Label;
-using FLG.Godot.UI.Widgets;
+using flgButton = FLG.Godot.UI.Widgets.Button;
 
 
 namespace FLG.Godot.UI {
@@ -32,8 +33,8 @@ namespace FLG.Godot.UI {
         {
             base._Ready();
 
-            if (Engine.IsEditorHint())
-            {
+            //if (Engine.IsEditorHint())
+            //{
                 InitializeFramework();
 
                 Clear();
@@ -42,7 +43,7 @@ namespace FLG.Godot.UI {
                 _uiManager.AddObserver(this);
                 _uiManager.SetCurrentPage("Sample1"); // TODO: TMP
                 _uiManager.SetCurrentPage("Sample2"); // TODO: TMP
-            }
+            //}
         }
         public void OnCurrentPageChanged(string pageId, string layoutId)
         {
@@ -71,7 +72,7 @@ namespace FLG.Godot.UI {
 
             PreferencesLogs prefsLogs = new()
             {
-                logsDir = LOGS_RELATIVE_PATH
+                logsDir = LOGS_RELATIVE_PATH,
             };
             FrameworkManager.Instance.InitializeLogs(prefsLogs);
 
@@ -153,12 +154,6 @@ namespace FLG.Godot.UI {
 
                     foreach (ILayoutElement child in layoutElementParent.GetChildrens(container))
                     {
-                        // TODO: Here cast child from ILayoutElement to concrete type (e.g. Label)
-                        // Don't cast, ask the ILayoutElement itself to set the attributes to the node
-                        // But should be contained within the Godot namespace, not FLG.Cs
-                        // Need to duplicate the only widgets (probably don't need the others) in this namespace
-                        // un espece de container avec une fct get() => ILayoutElementChild &
-                        // var node = AddNode(child.Name, child, parentForAddNode);
                         var node = DrawNode(child, parentForAddNode);
                         DrawLayoutRecursive(node, child);
                     }
@@ -169,14 +164,18 @@ namespace FLG.Godot.UI {
         private Node DrawNode(ILayoutElement layoutElement, Node parentNode)
         {
             var root = GetTree().EditedSceneRoot;
+            var fromEditor = Engine.IsEditorHint();
             switch (layoutElement.Type)
             {
+                case ELayoutElement.BUTTON:
+                    IWidget<IButton> btn = new flgButton((IButton)layoutElement);
+                    return btn.Draw(parentNode, root, fromEditor);
                 case ELayoutElement.LABEL:
                     IWidget<ILabel> label = new flgLabel((ILabel)layoutElement);
-                    return label.Draw(parentNode, root);
+                    return label.Draw(parentNode, root, fromEditor);
                 case ELayoutElement.SPRITE:
                     IWidget<ISprite> sprite = new Sprite((ISprite)layoutElement);
-                    return sprite.Draw(parentNode, root);
+                    return sprite.Draw(parentNode, root, fromEditor);
                 default:
                     return AddNode(layoutElement.Name, layoutElement, parentNode);
             }

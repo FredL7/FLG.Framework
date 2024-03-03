@@ -7,6 +7,6 @@
         HSTACK, VSTACK,
 
         // Widgets
-        LABEL, SPRITE
+        BUTTON, LABEL, SPRITE
     }
 }

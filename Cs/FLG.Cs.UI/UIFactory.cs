@@ -26,6 +26,7 @@ namespace FLG.Cs.UI
                 "VStack" => new VStack(name, node),
 
                 // Widgets
+                "Button" => new Button(name, node), // Should throw in ctor
                 "Label" => new Label(name, node),
                 "Sprite" => new Sprite(name, node),
 
@@ -52,6 +53,10 @@ namespace FLG.Cs.UI
         #endregion Layouts
 
         #region Widgets
+        public ILayoutElement Button(string name, string source, Action action,
+            float width, float height, Spacing margin, Spacing padding, int order, float weight)
+            => new Button(name, source, action, width, height, margin, padding, order, weight);
+
         public ILayoutElement Label(string name, string text,
             float width, float height, Spacing margin, Spacing padding, int order, float weight)
             => new Label(name, text, width, height, margin, padding, order, weight);

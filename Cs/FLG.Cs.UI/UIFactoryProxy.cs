@@ -26,6 +26,11 @@ namespace FLG.Cs.UI {
         #endregion Layouts
 
         #region Widgets
+        public ILayoutElement Button(string name, string text, Action action, float width = 0, float height = 0, Spacing margin = default, Spacing padding = default, int order = 0, float weight = 1)
+        {
+            throw new NotImplementedException();
+        }
+
         public ILayoutElement Label(string name, string text, float width = 0, float height = 0, Spacing margin = default, Spacing padding = default, int order = 0, float weight = 1)
         {
             throw new NotImplementedException();
