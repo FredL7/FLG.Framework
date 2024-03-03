@@ -7,16 +7,25 @@ namespace FLG.Cs.UI.Widgets {
     internal class Text : AbstractLayoutElementLeaf, IText {
         public override ELayoutElement Type { get => ELayoutElement.TEXT; }
 
-        public string Value { get; private set; }
+        private string _content;
+        public string Content {
+            get => _content;
+            set {
+                _content = value;
+                TextChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public event EventHandler? TextChanged;
 
         public Text(string name, XmlNode node) : base(name, node)
         {
-            Value = XMLParser.GetText(node);
+            _content = XMLParser.GetText(node);
         }
-        public Text(string name, string value, LayoutAttributes attributes)
+        public Text(string name, string content, LayoutAttributes attributes)
             :base(name, attributes)
         {
-            Value = value;
+            _content = content;
         }
     }
 }

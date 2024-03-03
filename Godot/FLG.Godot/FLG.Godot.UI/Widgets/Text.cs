@@ -1,27 +1,36 @@
 ﻿using Godot;
 
 using FLG.Cs.IDatamodel;
+using System;
 
 namespace FLG.Godot.UI.Widgets {
     internal class Text : IWidget<IText> {
         public IText Widget { get; private set; }
 
-        public Text(IText Widget)
+        private RichTextLabel label;
+
+        public Text(IText widget)
         {
-            this.Widget = Widget;
+            Widget = widget;
+            Widget.TextChanged += UpdateText;
         }
 
         public Node Draw(Node parent, bool _)
         {
-            RichTextLabel label = new()
+            label = new()
             {
                 Name = Widget.Name + " text",
                 BbcodeEnabled = true,
                 Position = new Vector2(Widget.Position.X, Widget.Position.Y),
                 Size = new Vector2(Widget.Dimensions.Width, Widget.Dimensions.Height),
-                Text = Widget.Value,
+                Text = Widget.Content,
             };
             return label;
+        }
+
+        public void UpdateText(object sender, EventArgs e)
+        {
+            label.Text = Widget.Content;
         }
     }
 }
