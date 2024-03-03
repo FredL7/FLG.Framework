@@ -38,13 +38,18 @@ namespace FLG.Cs.UI {
         public void SetCurrentPage(string id)
         {
             _pagesManager.SetCurrentPage(id);
-            string layoutId = _pagesManager.GetCurrent().GetLayoutId();
+            string layoutId = _pagesManager.GetCurrent().LayoutId;
             _layoutsManager.SetCurrentLayout(layoutId);
 
             NotifyObservers();
         }
 
         public void AddObserver(IUIObserver observer) { _observers.Add(observer); }
+        public void RemoveObserver(IUIObserver observer)
+        {
+            if (_observers.Contains(observer))
+                _observers.Remove(observer);
+        }
 
         public IEnumerable<ILayout> GetLayouts() => _layoutsManager.GetLayouts();
         public ILayout GetLayout(string name) => _layoutsManager.GetLayout(name);
@@ -71,8 +76,8 @@ namespace FLG.Cs.UI {
 
         private void NotifyObservers()
         {
-            string pageId = _pagesManager.GetCurrent().GetPageId();
-            string layoutId = _layoutsManager.GetCurrent().GetName();
+            string pageId = _pagesManager.GetCurrent().PageId;
+            string layoutId = _layoutsManager.GetCurrent().Name;
 
             foreach (IUIObserver o in _observers)
                 o.OnCurrentPageChanged(pageId, layoutId);

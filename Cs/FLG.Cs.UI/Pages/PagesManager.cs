@@ -3,7 +3,7 @@ using FLG.Cs.ServiceLocator;
 
 namespace FLG.Cs.UI.Pages {
     internal class PagesManager {
-        Dictionary<string, IPage> _pages;
+        private Dictionary<string, IPage> _pages;
 
         private string _currentPage;
 

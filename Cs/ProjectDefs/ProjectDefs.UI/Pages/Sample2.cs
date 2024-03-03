@@ -2,29 +2,43 @@ using FLG.Cs.IDatamodel;
 using FLG.Cs.ServiceLocator;
 
 public class Sample2 : IPage {
-    private const string _pageId = "Sample2";
+    private const string PAGE_ID = "Sample2";
 
-    public string GetPageId() => _pageId;
+    public string PageId { get => PAGE_ID; }
+    public string LayoutId { get; set; } = "";
 
-    private string _layoutId = "";
-    public string GetLayoutId() => _layoutId;
-    public void SetLayoutId(string layoutId) { _layoutId = layoutId; }
+    private IText _text;
+    private int _index = 0;
 
     public void Setup()
     {
         var factory = Locator.Instance.Get<IUIFactory>();
 
-        var page2test1 = factory.ProxyLayoutElement("page2-test-1");
-        var page2test2 = factory.ProxyLayoutElement("page2-test-2");
-        var page2test3 = factory.ProxyLayoutElement("page2-test-3");
+        var page2test1 = factory.ProxyLayoutElement("page2-test-1", new());
+        var label = factory.Label("page2-test-label", "Hello World!", new());
+        var sprite = factory.Sprite("page2-test-sprite", "FLG.Godot.UI/Spritesheets/spritesheet-cards-alpha.png", new());
+        var btn = factory.Button("page2-test-button", "Click Me!", OnBtnClicked, new());
+        _text = (IText)factory.Text("page2-test-text", "My Cards: [img region=0,0,64,64]FLG.Godot.UI/SpriteSheets/spritesheet-cards-alpha.png[/img]", new());
 
         var ui = Locator.Instance.Get<IUIManager>();
-        var layout = ui.GetLayout(_layoutId);
+        var layout = ui.GetLayout(LayoutId);
         var target = layout.GetTarget("content");
-        target.AddChild(page2test1, _pageId);
-        target.AddChild(page2test2, _pageId);
-        target.AddChild(page2test3, _pageId);
+        target.AddChild(page2test1, PageId);
+        target.AddChild(label, PageId);
+        target.AddChild(sprite, PageId);
+        target.AddChild(btn, PageId);
+        target.AddChild(_text, PageId);
+    }
 
-        // TODO add the above to the layout under the target "content"
+    public void OnBtnClicked()
+    {
+        _index++;
+        var logger = Locator.Instance.Get<ILogManager>();
+        logger.Info("OnBtnClicked");
+
+        int index = _index % 52;
+        int x = (index % 8) * 64;
+        int y = (index / 8) * 64;
+        _text.Content = $"My Cards: [img region={x},{y},64,64]FLG.Godot.UI/SpriteSheets/spritesheet-cards-alpha.png[/img]";
     }
 }

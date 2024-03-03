@@ -15,5 +15,6 @@ namespace FLG.Cs.UI {
 
         public void RegisterPage(IPage p) { }
         public void AddObserver(IUIObserver observer) { }
+        public void RemoveObserver(IUIObserver observer) { }
     }
 }

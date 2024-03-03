@@ -8,47 +8,41 @@ using FLG.Cs.Math;
 namespace FLG.Cs.UI.Layouts
 {
     public abstract class AbstractLayoutElement : ILayoutElement {
-        private string _name;
-        private bool _isTarget;
-        internal RectXform _rectXform;
-        internal Size _size;
-        internal int _order;
-        internal float _weight;
-
-        public string GetName() => _name;
-        public bool GetIsTarget() => _isTarget;
-        public RectXform GetRectXform() => _rectXform;
-        public Vector2 GetPosition() => _rectXform.GetContainerPosition();
-        public Size GetDimensions() => _rectXform.GetDimensions();
-        public Size GetSize() => _size;
-        public int GetOrder() => _order;
-        public float GetWeight() => _weight;
+        public string Name { get; private set; }
+        public abstract ELayoutElement Type { get; }
+        public bool IsTarget { get; private set; }
+        public RectXform RectXform { get; private set; }
+        public Vector2 Position { get => RectXform.GetContainerPosition(); }
+        public Size Dimensions { get => RectXform.GetDimensions(); }
+        public Size Size { get; private set; }
+        public int Order { get; private set; }
+        public float Weight { get; private set; }
 
         internal AbstractLayoutElement(string name, XmlNode node)
         {
-            _name = name;
-            _isTarget = XMLParser.GetTarget(node) != string.Empty;
+            Name = name;
+            IsTarget = XMLParser.GetTarget(node) != string.Empty;
 
-            _order = XMLParser.GetOrder(node);
-            _weight = XMLParser.GetWeight(node);
+            Order = XMLParser.GetOrder(node);
+            Weight = XMLParser.GetWeight(node);
 
             var margin = XMLParser.GetMargin(node);
             var padding = XMLParser.GetPadding(node);
             var width = XMLParser.GetWidth(node);
             var height = XMLParser.GetHeight(node);
-            _rectXform = new(margin, padding);
-            _size = new(width, height);
+            RectXform = new(margin, padding);
+            Size = new(width, height);
         }
 
-        public AbstractLayoutElement(string name, float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget)
+        public AbstractLayoutElement(string name, LayoutAttributes attributes, bool isTarget)
         {
-            _name = name;
-            _isTarget = isTarget;
-            _order = order;
-            _weight = weight;
+            Name = name;
+            IsTarget = isTarget;
+            Order = attributes.Order;
+            Weight = attributes.Weight;
 
-            _rectXform = new(margin, padding);
-            _size = new(width, height);
+            RectXform = new(attributes.Margin, attributes.Padding);
+            Size = new(attributes.Width, attributes.Height);
         }
 
         public abstract void AddChild(ILayoutElement child, string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER);

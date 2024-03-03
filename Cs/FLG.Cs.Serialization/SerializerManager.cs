@@ -109,14 +109,14 @@ namespace FLG.Cs.Serialization {
         public void Serialize(ISaveFile saveFile) { _writeSerializer.Serialize(saveFile); }
         public void Deserialize(ISaveFile saveFile)
         {
-            ESerializerType t = saveFile.GetSerializerType();
+            ESerializerType t = saveFile.Type;
             switch (t)
             {
                 case ESerializerType.BIN: _binSerializer.Deserialize(saveFile); break;
                 case ESerializerType.JSON: _jsonSerializer.Deserialize(saveFile); break;
                 case ESerializerType.XML: _xmlSerializer.Deserialize(saveFile); break;
                 default:
-                    Locator.Instance.Get<ILogManager>().Warn($"Could not deserialize save file {saveFile.GetName()}, unrecognized type {t}");
+                    Locator.Instance.Get<ILogManager>().Warn($"Could not deserialize save file {saveFile.Name}, unrecognized type {t}");
                     break;
             }
         }

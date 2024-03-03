@@ -7,11 +7,9 @@ namespace FLG.Cs.UI.Layouts {
     public class Layout : ILayout {
         private bool _active;
 
-        private AbstractLayoutElement _root;
-        public ILayoutElement GetRoot() => _root;
-
-        string _name;
-        public string GetName() => _name;
+        public string Name { get; private set; }
+        public AbstractLayoutElement _root;
+        public ILayoutElement Root { get { return _root; } }
 
         #region Targets
         readonly private Dictionary<string, AbstractLayoutElement> _targets;
@@ -33,7 +31,7 @@ namespace FLG.Cs.UI.Layouts {
             _root = root;
             _targets = new();
             _observers = new();
-            _name = name;
+            Name = name;
             _targets = targets;
         }
 
@@ -55,7 +53,7 @@ namespace FLG.Cs.UI.Layouts {
 
         internal void ComputeRectXforms(Window window)
         {
-            _root.GetRectXform().SetSizesAndPosition(window.RectXform.GetDimensions(), Vector2.Zero);
+            _root.RectXform.SetSizesAndPosition(window.RectXform.GetDimensions(), Vector2.Zero);
             _root.ComputeRectXform();
         }
     }

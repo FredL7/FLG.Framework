@@ -15,8 +15,8 @@ namespace FLG.Cs.UI.Layouts {
             SetupDefaultChildrensContainer();
         }
 
-        internal AbstractLayoutElementComposite(string name, float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget)
-            : base(name, width, height, margin, padding, order, weight, isTarget)
+        internal AbstractLayoutElementComposite(string name, LayoutAttributes attributes, bool isTarget)
+            : base(name, attributes, isTarget)
         {
             SetupDefaultChildrensContainer();
         }

@@ -1,14 +1,19 @@
 using Godot;
+using System.Collections.Generic;
 
 using FLG.Cs.Framework;
 using FLG.Cs.IDatamodel;
 using FLG.Cs.Math;
 using FLG.Cs.ServiceLocator;
 using FLG.Godot.Helpers;
+using FLG.Godot.UI.Widgets;
+
 
 using sysV2 = System.Numerics.Vector2;
 using gdV2 = Godot.Vector2;
-using System.Collections.Generic;
+using flgLabel = FLG.Godot.UI.Widgets.Label;
+using flgButton = FLG.Godot.UI.Widgets.Button;
+
 
 namespace FLG.Godot.UI {
     [Tool]
@@ -28,32 +33,41 @@ namespace FLG.Godot.UI {
         {
             base._Ready();
 
-            if (Engine.IsEditorHint())
-            {
-                InitializeFramework();
+            //if (Engine.IsEditorHint()) // TODO: Add back when we have a proper game manager to initialize the framework
+            //{
+            InitializeFramework();
+            //}
+            _uiManager = Locator.Instance.Get<IUIManager>();
 
-                Clear();
-                DrawUI();
+            Clear();
+            DrawUI();
 
-                _uiManager.AddObserver(this);
-                _uiManager.SetCurrentPage("Sample1"); // TODO: TMP
-                _uiManager.SetCurrentPage("Sample2"); // TODO: TMP
-            }
+            _uiManager.AddObserver(this);
+            _uiManager.SetCurrentPage("Sample1"); // TODO: TMP
+            _uiManager.SetCurrentPage("Sample2"); // TODO: TMP
         }
+
+        public override void _ExitTree()
+        {
+            if (Engine.IsEditorHint())
+                _uiManager.RemoveObserver(this);
+            base._ExitTree();
+        }
+
         public void OnCurrentPageChanged(string pageId, string layoutId)
         {
             if (_currentPage != pageId)
             {
-                foreach(var page in _pages)
-                    foreach(var pageItem in page.Value)
+                foreach (var page in _pages)
+                    foreach (var pageItem in page.Value)
                         pageItem.Set("visible", false);
 
-                foreach(var pageItem in _pages[pageId])
+                foreach (var pageItem in _pages[pageId])
                     pageItem.Set("visible", true);
 
                 if (_currentLayout != layoutId)
                 {
-                    foreach(var layout in _layouts)
+                    foreach (var layout in _layouts)
                         layout.Value.Set("visible", false);
                     _layouts[layoutId].Set("visible", true);
                 }
@@ -67,7 +81,7 @@ namespace FLG.Godot.UI {
 
             PreferencesLogs prefsLogs = new()
             {
-                logsDir = LOGS_RELATIVE_PATH
+                logsDir = LOGS_RELATIVE_PATH,
             };
             FrameworkManager.Instance.InitializeLogs(prefsLogs);
 
@@ -77,8 +91,6 @@ namespace FLG.Godot.UI {
                 pagesDir = ProjectSettings.GlobalizePath("res://" + PAGES_RELATIVE_PATH)
             };
             FrameworkManager.Instance.InitializeUI(prefsUI);
-
-            _uiManager = Locator.Instance.Get<IUIManager>();
         }
 
         private void Clear()
@@ -93,8 +105,8 @@ namespace FLG.Godot.UI {
 
         private Node AddNode(string name, ILayoutElement layoutElement, Node parent)
         {
-            var position = layoutElement.GetPosition();
-            var dimensions = layoutElement.GetDimensions();
+            var position = layoutElement.Position;
+            var dimensions = layoutElement.Dimensions;
 
             return AddNode(name, position, dimensions, parent);
         }
@@ -120,8 +132,8 @@ namespace FLG.Godot.UI {
 
         private void DrawLayout(ILayout layout)
         {
-            string id = layout.GetName();
-            var root = layout.GetRoot();
+            string id = layout.Name;
+            var root = layout.Root;
             var layoutNode = AddNode("layout " + id, root, this);
             _layouts.Add(id, layoutNode);
             DrawLayoutRecursive(layoutNode, root);
@@ -132,12 +144,12 @@ namespace FLG.Godot.UI {
             var containers = layoutElementParent.GetContainers();
             foreach (var container in containers)
             {
-                if(layoutElementParent.HasChildren(container))
+                if (layoutElementParent.HasChildren(container))
                 {
                     var parentForAddNode = parentNode;
                     if (container != ILayoutElement.DEFAULT_CHILDREN_CONTAINER)
                     {
-                        var containerNode = AddNode(container, sysV2.Zero, layoutElementParent.GetDimensions(), parentNode);
+                        var containerNode = AddNode(container, sysV2.Zero, layoutElementParent.Dimensions, parentNode);
 
                         if (!_pages.ContainsKey(container))
                             _pages.Add(container, new List<Node>());
@@ -149,12 +161,50 @@ namespace FLG.Godot.UI {
 
                     foreach (ILayoutElement child in layoutElementParent.GetChildrens(container))
                     {
-                        var node = AddNode(child.GetName(), child, parentForAddNode);
+                        var node = DrawNode(child, parentForAddNode);
                         DrawLayoutRecursive(node, child);
                     }
-
                 }
             }
+        }
+
+        private Node DrawNode(ILayoutElement layoutElement, Node parentNode)
+        {
+            Node node;
+            var root = GetTree().EditedSceneRoot;
+            var fromEditor = Engine.IsEditorHint();
+            bool parentSetter = true;
+            switch (layoutElement.Type)
+            {
+                case ELayoutElement.BUTTON:
+                    IWidget<IButton> btn = new flgButton((IButton)layoutElement);
+                    node = btn.Draw(parentNode, fromEditor);
+                    break;
+                case ELayoutElement.LABEL:
+                    IWidget<ILabel> label = new flgLabel((ILabel)layoutElement);
+                    node = label.Draw(parentNode, fromEditor);
+                    break;
+                case ELayoutElement.SPRITE:
+                    IWidget<ISprite> sprite = new Sprite((ISprite)layoutElement);
+                    node = sprite.Draw(parentNode, fromEditor);
+                    break;
+                case ELayoutElement.TEXT:
+                    IWidget<IText> text = new Text((IText)layoutElement);
+                    node = text.Draw(parentNode, fromEditor);
+                    break;
+                default:
+                    node = AddNode(layoutElement.Name, layoutElement, parentNode);
+                    parentSetter = false;
+                    break;
+            }
+
+            if (parentSetter)
+            {
+                parentNode.AddChild(node);
+                node.Owner = root;
+            }
+
+            return node;
         }
     }
 }

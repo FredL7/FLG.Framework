@@ -21,29 +21,45 @@ namespace FLG.Cs.UI
             var nodeType = node.Name;
             return nodeType switch
             {
+                // Layouts
                 "HStack" => new HStack(name, node),
                 "VStack" => new VStack(name, node),
+
+                // Widgets
+                "Button" => new Button(name, node), // Should throw in ctor
+                "Label" => new Label(name, node),
+                "Sprite" => new Sprite(name, node),
+                "Text" => new Text(name, node),
+
+                // TMP
                 "ProxyLayoutElement" => new ProxyLayoutElementLeaf(name, node),
                 _ => null,
             };
         }
 
-        #region Layouts
-        public ILayoutElement HStack(string name,
-            float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget,
-            EGridDirection direction, EGridJustify justify, EGridAlignment alignment)
-                => new HStack(name, width, height, margin, padding, order, weight, isTarget, direction, justify, alignment);
+        public ILayoutElement ProxyLayoutElement(string name, LayoutAttributes attributes)
+            => new ProxyLayoutElementLeaf(name, attributes);
 
-        public ILayoutElement VStack(string name,
-            float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget,
-            EGridDirection direction, EGridJustify justify, EGridAlignment alignment)
-                => new VStack(name, width, height, margin, padding, order, weight, isTarget, direction, justify, alignment);
+        #region Layouts
+        public ILayoutElement HStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget)
+                => new HStack(name, layoutAttr, gridAttr, isTarget);
+
+        public ILayoutElement VStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget)
+                => new VStack(name, layoutAttr, gridAttr, isTarget);
         #endregion Layouts
 
         #region Widgets
-        public ILayoutElement ProxyLayoutElement(string name,
-            float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget)
-            => new ProxyLayoutElementLeaf(name, width, height, margin, padding, order, weight, isTarget);
+        public ILayoutElement Button(string name, string source, Action action, LayoutAttributes attributes)
+            => new Button(name, source, action, attributes);
+
+        public ILayoutElement Label(string name, string text, LayoutAttributes attributes)
+            => new Label(name, text, attributes);
+
+        public ILayoutElement Sprite(string name, string source, LayoutAttributes attributes)
+            => new Sprite(name, source, attributes);
+
+        public ILayoutElement Text(string name, string source, LayoutAttributes attributes)
+            => new Text(name, source, attributes);
         #endregion Widgets
     }
 }
