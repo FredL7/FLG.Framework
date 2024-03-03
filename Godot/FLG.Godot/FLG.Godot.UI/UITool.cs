@@ -49,9 +49,9 @@ namespace FLG.Godot.UI {
 
         public override void _ExitTree()
         {
-            base._ExitTree();
             if (Engine.IsEditorHint())
                 _uiManager.RemoveObserver(this);
+            base._ExitTree();
         }
 
         public void OnCurrentPageChanged(string pageId, string layoutId)
@@ -183,6 +183,9 @@ namespace FLG.Godot.UI {
                 case ELayoutElement.SPRITE:
                     IWidget<ISprite> sprite = new Sprite((ISprite)layoutElement);
                     return sprite.Draw(parentNode, root, fromEditor);
+                case ELayoutElement.TEXT:
+                    IWidget<IText> text = new Text((IText)layoutElement);
+                    return text.Draw(parentNode, root, fromEditor);
                 default:
                     return AddNode(layoutElement.Name, layoutElement, parentNode);
             }

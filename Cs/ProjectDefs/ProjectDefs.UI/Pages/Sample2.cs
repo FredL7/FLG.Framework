@@ -15,6 +15,7 @@ public class Sample2 : IPage {
         var label = factory.Label("page2-test-label", "Hello World!", new());
         var sprite = factory.Sprite("page2-test-sprite", "FLG.Godot.UI/Spritesheets/spritesheet-cards-alpha.png", new());
         var btn = factory.Button("page2-test-button", "Click Me!", OnBtnClicked, new());
+        var text = factory.Text("page2-test-text", "My Cards: [img region=0,0,64,64]FLG.Godot.UI/SpriteSheets/spritesheet-cards-alpha.png[/img]", new());
 
         var ui = Locator.Instance.Get<IUIManager>();
         var layout = ui.GetLayout(LayoutId);
@@ -23,6 +24,7 @@ public class Sample2 : IPage {
         target.AddChild(label, PageId);
         target.AddChild(sprite, PageId);
         target.AddChild(btn, PageId);
+        target.AddChild(text, PageId);
     }
 
     public void OnBtnClicked()

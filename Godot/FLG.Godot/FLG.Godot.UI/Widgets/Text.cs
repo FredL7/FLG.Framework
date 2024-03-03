@@ -2,27 +2,24 @@
 
 using FLG.Cs.IDatamodel;
 
-
-using gd_Label = Godot.Label;
-
-
 namespace FLG.Godot.UI.Widgets {
-    internal class Label : IWidget<ILabel> {
-        public ILabel Widget { get; private set; }
+    internal class Text : IWidget<IText> {
+        public IText Widget { get; private set; }
 
-        public Label(ILabel widget)
+        public Text(IText Widget)
         {
-            Widget = widget;
+            this.Widget = Widget;
         }
 
         public Node Draw(Node parent, Node root, bool _)
         {
-            gd_Label label = new()
+            RichTextLabel label = new()
             {
-                Name = Widget.Name + " label",
+                Name = Widget.Name + " text",
+                BbcodeEnabled = true,
                 Position = new Vector2(Widget.Position.X, Widget.Position.Y),
                 Size = new Vector2(Widget.Dimensions.Width, Widget.Dimensions.Height),
-                Text = Widget.Text,
+                Text = Widget.Value,
             };
             parent.AddChild(label);
             label.Owner = root;

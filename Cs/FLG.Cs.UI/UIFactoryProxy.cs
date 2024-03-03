@@ -19,6 +19,7 @@ namespace FLG.Cs.UI {
         public ILayoutElement Button(string name, string text, Action action, LayoutAttributes attributes) { throw new NotImplementedException(); }
         public ILayoutElement Label(string name, string text, LayoutAttributes attributes) { throw new NotImplementedException(); }
         public ILayoutElement Sprite(string name, string source, LayoutAttributes attributes) { throw new NotImplementedException(); }
+        public ILayoutElement Text(string name, string source, LayoutAttributes attributes) { throw new NotImplementedException(); }
         #endregion Widgets
     }
 }

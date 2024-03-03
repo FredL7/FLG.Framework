@@ -29,6 +29,7 @@ namespace FLG.Cs.UI
                 "Button" => new Button(name, node), // Should throw in ctor
                 "Label" => new Label(name, node),
                 "Sprite" => new Sprite(name, node),
+                "Text" => new Text(name, node),
 
                 // TMP
                 "ProxyLayoutElement" => new ProxyLayoutElementLeaf(name, node),
@@ -56,6 +57,9 @@ namespace FLG.Cs.UI
 
         public ILayoutElement Sprite(string name, string source, LayoutAttributes attributes)
             => new Sprite(name, source, attributes);
+
+        public ILayoutElement Text(string name, string source, LayoutAttributes attributes)
+            => new Text(name, source, attributes);
         #endregion Widgets
     }
 }
