@@ -45,6 +45,11 @@ namespace FLG.Cs.UI {
         }
 
         public void AddObserver(IUIObserver observer) { _observers.Add(observer); }
+        public void RemoveObserver(IUIObserver observer)
+        {
+            if (_observers.Contains(observer))
+                _observers.Remove(observer);
+        }
 
         public IEnumerable<ILayout> GetLayouts() => _layoutsManager.GetLayouts();
         public ILayout GetLayout(string name) => _layoutsManager.GetLayout(name);

@@ -31,34 +31,44 @@ namespace FLG.Godot.UI {
 
         public override void _Ready()
         {
+            GD.Print("_Ready");
             base._Ready();
 
-            //if (Engine.IsEditorHint())
+            //if (Engine.IsEditorHint()) // TODO: Add back when we have a proper game manager to initialize the framework
             //{
                 InitializeFramework();
-
-                Clear();
-                DrawUI();
-
-                _uiManager.AddObserver(this);
-                _uiManager.SetCurrentPage("Sample1"); // TODO: TMP
-                _uiManager.SetCurrentPage("Sample2"); // TODO: TMP
             //}
+            _uiManager = Locator.Instance.Get<IUIManager>();
+
+            Clear();
+            DrawUI();
+
+            _uiManager.AddObserver(this);
+            _uiManager.SetCurrentPage("Sample1"); // TODO: TMP
+            _uiManager.SetCurrentPage("Sample2"); // TODO: TMP
         }
+
+        public override void _ExitTree()
+        {
+            base._ExitTree();
+            if (Engine.IsEditorHint())
+                _uiManager.RemoveObserver(this);
+        }
+
         public void OnCurrentPageChanged(string pageId, string layoutId)
         {
             if (_currentPage != pageId)
             {
-                foreach(var page in _pages)
-                    foreach(var pageItem in page.Value)
+                foreach (var page in _pages)
+                    foreach (var pageItem in page.Value)
                         pageItem.Set("visible", false);
 
-                foreach(var pageItem in _pages[pageId])
+                foreach (var pageItem in _pages[pageId])
                     pageItem.Set("visible", true);
 
                 if (_currentLayout != layoutId)
                 {
-                    foreach(var layout in _layouts)
+                    foreach (var layout in _layouts)
                         layout.Value.Set("visible", false);
                     _layouts[layoutId].Set("visible", true);
                 }
@@ -82,8 +92,6 @@ namespace FLG.Godot.UI {
                 pagesDir = ProjectSettings.GlobalizePath("res://" + PAGES_RELATIVE_PATH)
             };
             FrameworkManager.Instance.InitializeUI(prefsUI);
-
-            _uiManager = Locator.Instance.Get<IUIManager>();
         }
 
         private void Clear()
@@ -137,7 +145,7 @@ namespace FLG.Godot.UI {
             var containers = layoutElementParent.GetContainers();
             foreach (var container in containers)
             {
-                if(layoutElementParent.HasChildren(container))
+                if (layoutElementParent.HasChildren(container))
                 {
                     var parentForAddNode = parentNode;
                     if (container != ILayoutElement.DEFAULT_CHILDREN_CONTAINER)
