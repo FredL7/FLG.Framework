@@ -1,5 +1,6 @@
-﻿using FLG.Cs.IDatamodel;
-using Godot;
+﻿using Godot;
+
+using FLG.Cs.IDatamodel;
 
 namespace FLG.Godot.UI.Widgets {
     internal class Sprite : IWidget<ISprite> {
@@ -12,15 +13,18 @@ namespace FLG.Godot.UI.Widgets {
 
         public Node Draw(Node parent, bool _)
         {
-            var image = Image.LoadFromFile("res://" + Widget.Source);
-            var texture = ImageTexture.CreateFromImage(image);
-            Sprite2D sprite = new()
+            var rect = new TextureRect
             {
                 Name = Widget.Name + " sprite",
                 Position = new Vector2(Widget.Position.X, Widget.Position.Y),
-                Texture = texture,
+                Texture = ResourceLoader.Load<Texture2D>("res://" + Widget.Source),
+                AnchorLeft = 0f,
+                AnchorRight = 0f,
+                AnchorTop = 0f,
+                AnchorBottom = 0f,
             };
-            return sprite;
+
+            return rect;
         }
     }
 }

@@ -43,8 +43,7 @@ namespace FLG.Godot.UI {
             DrawUI();
 
             _uiManager.AddObserver(this);
-            _uiManager.SetCurrentPage("Sample1"); // TODO: TMP
-            _uiManager.SetCurrentPage("Sample2"); // TODO: TMP
+            _uiManager.SetCurrentPage("Sample1");
         }
 
         public override void _ExitTree()

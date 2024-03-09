@@ -565,13 +565,13 @@ namespace FLG.Cs.UI {
 
         internal static EGridAlignment GetAlignmentAttribute(XmlNode node)
         {
-            if (node.Attributes?["justify"]?.Value == null)
+            if (node.Attributes?["align"]?.Value == null)
             {
                 return EGridAlignmentExtension.FromString("");
             }
             else
             {
-                var value = node?.Attributes["justify"]?.Value;
+                var value = node?.Attributes["align"]?.Value;
                 if (value == null || value == string.Empty)
                 {
                     return EGridAlignmentExtension.FromString("");

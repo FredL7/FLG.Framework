@@ -12,10 +12,9 @@ namespace FLG.Godot.UI.Widgets {
         public Text(IText widget)
         {
             Widget = widget;
-            Widget.TextChanged += UpdateText;
         }
 
-        public Node Draw(Node parent, bool _)
+        public Node Draw(Node parent, bool fromEditor)
         {
             label = new()
             {
@@ -25,6 +24,12 @@ namespace FLG.Godot.UI.Widgets {
                 Size = new Vector2(Widget.Dimensions.Width, Widget.Dimensions.Height),
                 Text = Widget.Content,
             };
+
+            if (!fromEditor)
+            {
+                Widget.TextChanged += UpdateText;
+            }
+
             return label;
         }
 

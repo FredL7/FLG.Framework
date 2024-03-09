@@ -2,6 +2,6 @@
 <layout>
   <VStack name="main">
     <header />
-    <HStack target="content" />
+    <VStack target="content" justify="center" align="center" />
   </VStack>
 </layout>
