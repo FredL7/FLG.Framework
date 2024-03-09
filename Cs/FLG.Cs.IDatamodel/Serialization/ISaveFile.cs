@@ -1,10 +1,10 @@
 ﻿namespace FLG.Cs.IDatamodel {
     public interface ISaveFile {
-        public string GetName();
-        public string GetPath();
-        public ESerializerType GetSerializerType();
-        public DateTime GetDateCreated();
-        public DateTime GetDateLastModified();
+        public string Name { get; }
+        public string Path { get; }
+        public ESerializerType Type { get; }
+        public DateTime DateCreated { get; }
+        public DateTime DateLastModified { get; }
 
         public void UpdateDateLastModified();
     }

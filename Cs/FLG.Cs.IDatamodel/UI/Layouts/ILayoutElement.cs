@@ -7,14 +7,15 @@ namespace FLG.Cs.IDatamodel {
     public interface ILayoutElement {
         public const string DEFAULT_CHILDREN_CONTAINER = "default";
 
-        public string GetName();
-        public bool GetIsTarget();
-        public RectXform GetRectXform();
-        public Vector2 GetPosition();
-        public Size GetDimensions();
-        public Size GetSize();
-        public int GetOrder();
-        public float GetWeight();
+        public string Name { get; }
+        public ELayoutElement Type { get; }
+        public bool IsTarget { get; }
+        public RectXform RectXform { get; }
+        public Vector2 Position { get; }
+        public Size Dimensions { get; }
+        public Size Size { get; }
+        public int Order { get; }
+        public float Weight { get; }
 
         public void ComputeRectXform();
         public IEnumerable<string> GetContainers();

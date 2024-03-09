@@ -20,13 +20,12 @@ namespace FLG.Cs.UI.Grids {
             _alignment = XMLParser.GetAlignment(node);
         }
         internal Stack(
-            string name, float width, float height, Spacing margin, Spacing padding, int order, float weight, bool isTarget,
-            EGridDirection direction, EGridJustify justify, EGridAlignment alignment)
-            : base(name, width, height, margin, padding, order, weight, isTarget)
+            string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget)
+            : base(name, layoutAttr, isTarget)
         {
-            _direction = direction;
-            _justify = justify;
-            _alignment = alignment;
+            _direction = gridAttr.Direction;
+            _justify = gridAttr.Justify;
+            _alignment = gridAttr.Alignment;
         }
 
         protected sealed override void ComputeChildrenSizesAndPositions(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER)
@@ -57,7 +56,7 @@ namespace FLG.Cs.UI.Grids {
             Vector2[] positions = GetFinalPositions(mainMargins, secondaryMargins, mainDimensions);
 
             for (int i = 0; i < orderedChildrens.Length; ++i)
-                orderedChildrens[i].GetRectXform().SetSizesAndPosition(sizes[i], positions[i]);
+                orderedChildrens[i].RectXform.SetSizesAndPosition(sizes[i], positions[i]);
         }
 
         protected abstract float GetChildSizeMain(ILayoutElement child);
@@ -73,7 +72,7 @@ namespace FLG.Cs.UI.Grids {
 
         private ILayoutElement[] OrderChildrens(List<ILayoutElement> childrens)
         {
-            var childrensOrdered = childrens.OrderBy(x => x.GetOrder());
+            var childrensOrdered = childrens.OrderBy(x => x.Order);
             if (_direction == EGridDirection.REVERSE)
                 return childrensOrdered.Reverse().ToArray();
             return childrensOrdered.ToArray();
@@ -87,7 +86,7 @@ namespace FLG.Cs.UI.Grids {
             var margins = ComputeMargins(childrens);
             var marginsSum = margins.Sum();
 
-            var containerDimensions = _rectXform.GetDimensions();
+            var containerDimensions = RectXform.GetDimensions();
             var containerDimensionMain = GetContainerDimensionMain(containerDimensions);
             var spaceRequired = expectedSizesSum + marginsSum;
             var spaceAvailable = containerDimensionMain - spaceRequired;
@@ -110,7 +109,7 @@ namespace FLG.Cs.UI.Grids {
 
         private (float[], float[]) ComputeDimensionsAndMarginsAlongSecondaryAxis(ILayoutElement[] childrens)
         {
-            var containerDimensions = _rectXform.GetDimensions();
+            var containerDimensions = RectXform.GetDimensions();
             var containerDimensionSecondary = GetContainerDimensionSecondary(containerDimensions);
 
             float[] margins = new float[childrens.Length];
@@ -190,11 +189,11 @@ namespace FLG.Cs.UI.Grids {
                 float weightSum = 0;
                 foreach (var child in childrens)
                     if (GetChildSizeMain(child) == 0f)
-                        weightSum += child.GetWeight();
+                        weightSum += child.Weight;
                 float stretchSizeSingle = spaceAvailable / weightSum;
                 for (int i = 0; i < childrens.Length; ++i)
                     if (GetChildSizeMain(childrens[i]) == 0f)
-                        sizesForStretch[i] = childrens[i].GetWeight() * stretchSizeSingle;
+                        sizesForStretch[i] = childrens[i].Weight * stretchSizeSingle;
             }
             return sizesForStretch;
         }
@@ -211,6 +210,7 @@ namespace FLG.Cs.UI.Grids {
                     break;
                 case EGridJustify.CENTER:
                     justifiedMargin[0] += spaceAvailable / 2f;
+                    justifiedMargin[margins.Length - 1] += spaceAvailable / 2f;
                     break;
                 case EGridJustify.SPACE_BETWEEN:
                     var spaceBetween = spaceAvailable / (justifiedMargin.Length - 1);

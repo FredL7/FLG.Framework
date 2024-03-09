@@ -131,8 +131,8 @@ namespace FLG.Cs.UI {
             }
 
             if (page == null) return new Result($"Could not instantiate a class of type {binding}: result is null");
-            page.SetLayoutId(layoutId);
-            _pages.Add(page.GetPageId(), page);
+            page.LayoutId = layoutId;
+            _pages.Add(page.PageId, page);
 
             return Result.SUCCESS;
         }
@@ -157,7 +157,7 @@ namespace FLG.Cs.UI {
             if (!result) return result;
             for (int i = 0; i < targetNodes.Count; ++i)
             {
-                result = ConvertNodeRecursiveForTarget(targetNodes[i], targetElements[i], targetElements[i].GetName(), pageId);
+                result = ConvertNodeRecursiveForTarget(targetNodes[i], targetElements[i], targetElements[i].Name, pageId);
                 if (!result) return result;
             }
 
@@ -201,7 +201,7 @@ namespace FLG.Cs.UI {
                     return new Result("Target node is missing the \"id\" attribute");
 
                 if (!layout.HasTarget(targetId))
-                    return new Result($"Layout {layout.GetName()} does not have a target with id=\"{targetId}\"");
+                    return new Result($"Layout {layout.Name} does not have a target with id=\"{targetId}\"");
 
                 targetNodes.Add(targetNode);
                 targetElements.Add(layout.GetTarget(targetId));
@@ -272,12 +272,12 @@ namespace FLG.Cs.UI {
 
                 parentLayoutElement.AddChild(layoutElement);
 
-                if (layoutElement.GetIsTarget())
+                if (layoutElement.IsTarget)
                 {
                     if (node.HasChildNodes)
-                        return new Result($"Target node {layoutElement.GetName()} cannot declare childrens");
+                        return new Result($"Target node {layoutElement.Name} cannot declare childrens");
 
-                    targets.Add(layoutElement.GetName(), layoutElement);
+                    targets.Add(layoutElement.Name, layoutElement);
                 }
 
                 ConvertNodeRecursive(node, layoutElement, targets);
@@ -295,7 +295,7 @@ namespace FLG.Cs.UI {
 
                 targetLayoutElement.AddChild(layoutElement, pageId);
 
-                if (layoutElement.GetIsTarget())
+                if (layoutElement.IsTarget)
                 {
                     /*
                     if (node.HasChildNodes)
@@ -324,7 +324,7 @@ namespace FLG.Cs.UI {
                     Result result = LoadLayout(nodeType);
                     if (!result) return result;
                 }
-                convertedNode = (AbstractLayoutElement)_components[nodeType].GetRoot();
+                convertedNode = (AbstractLayoutElement)_components[nodeType].Root;
             }
 
             return Result.SUCCESS;
@@ -390,6 +390,7 @@ namespace FLG.Cs.UI {
         }
 
         internal static string GetName(XmlNode node) => GetStringAttribute(node, "name", node.Name);
+        internal static string GetText(XmlNode node) => GetStringAttributeOrContent(node, "text");
         internal static string GetTarget(XmlNode node) => GetStringAttribute(node, "target", string.Empty);
         internal static Spacing GetMargin(XmlNode node) => GetSpacingAttribute(node, "margin");
         internal static Spacing GetPadding(XmlNode node) => GetSpacingAttribute(node, "padding");
@@ -412,7 +413,7 @@ namespace FLG.Cs.UI {
             else
             {
                 var value = node?.Attributes[attr]?.Value;
-                if (value == null || value == "")
+                if (value == null || value == string.Empty)
                 {
                     return defaultValue;
                 }
@@ -421,6 +422,28 @@ namespace FLG.Cs.UI {
                     return value;
                 }
             }
+        }
+
+        internal static string GetStringAttributeOrContent(XmlNode node, string attr, string defaultValue = "")
+        {
+            if (node.Attributes?[attr]?.Value != null)
+            {
+                var value = node?.Attributes[attr]?.Value;
+                if (value != null && value != string.Empty)
+                {
+                    return value;
+                }
+            }
+            else
+            {
+                var innerText = node.InnerText;
+                if (innerText != null && innerText != string.Empty)
+                {
+                    return innerText;
+                }
+            }
+
+            return defaultValue;
         }
 
         internal static int GetIntAttribute(XmlNode node, string attr, int defaultValue = 0)
@@ -432,7 +455,7 @@ namespace FLG.Cs.UI {
             else
             {
                 var value = node?.Attributes[attr]?.Value;
-                if (value == null || value == "")
+                if (value == null || value == string.Empty)
                 {
                     return defaultValue;
                 }
@@ -452,7 +475,7 @@ namespace FLG.Cs.UI {
             else
             {
                 var value = node?.Attributes[attr]?.Value;
-                if (value == null || value == "")
+                if (value == null || value == string.Empty)
                 {
                     return defaultValue;
                 }
@@ -472,7 +495,7 @@ namespace FLG.Cs.UI {
             else
             {
                 var value = node?.Attributes[attr]?.Value;
-                if (value == null || value == "")
+                if (value == null || value == string.Empty)
                 {
                     return Spacing.Zero;
                 }
@@ -509,7 +532,7 @@ namespace FLG.Cs.UI {
             else
             {
                 var value = node?.Attributes["direction"]?.Value;
-                if (value == null || value == "")
+                if (value == null || value == string.Empty)
                 {
                     return EGridDirectionExtension.FromString("");
                 }
@@ -529,7 +552,7 @@ namespace FLG.Cs.UI {
             else
             {
                 var value = node?.Attributes["justify"]?.Value;
-                if (value == null || value == "")
+                if (value == null || value == string.Empty)
                 {
                     return EGridJustifyExtension.FromString("");
                 }
@@ -542,14 +565,14 @@ namespace FLG.Cs.UI {
 
         internal static EGridAlignment GetAlignmentAttribute(XmlNode node)
         {
-            if (node.Attributes?["justify"]?.Value == null)
+            if (node.Attributes?["align"]?.Value == null)
             {
                 return EGridAlignmentExtension.FromString("");
             }
             else
             {
-                var value = node?.Attributes["justify"]?.Value;
-                if (value == null || value == "")
+                var value = node?.Attributes["align"]?.Value;
+                if (value == null || value == string.Empty)
                 {
                     return EGridAlignmentExtension.FromString("");
                 }

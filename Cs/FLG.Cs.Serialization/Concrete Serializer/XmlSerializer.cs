@@ -28,7 +28,7 @@ namespace FLG.Cs.Serialization {
             SaveHeader(saveFile);
             SerializeSerializables();
 
-            var filepath = saveFile.GetPath();
+            var filepath = saveFile.Path;
             using TextWriter writer = new StreamWriter(filepath);
             System.Xml.Serialization.XmlSerializer ser = new(typeof(XmlElement));
             ser.Serialize(writer, _document);
@@ -36,7 +36,7 @@ namespace FLG.Cs.Serialization {
 
         public sealed override void Deserialize(ISaveFile saveFile)
         {
-            var filepath = saveFile.GetPath();
+            var filepath = saveFile.Path;
             _document = new();
             _document.Load(filepath);
             _root = _document[ROOT_NAME];

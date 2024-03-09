@@ -14,7 +14,7 @@ namespace FLG.Cs.Serialization {
 
         public sealed override void Serialize(ISaveFile saveFile)
         {
-            var filepath = saveFile.GetPath();
+            var filepath = saveFile.Path;
             using (_writer = new(File.Open(filepath, FileMode.Create)))
             {
                 SaveHeader(saveFile);
@@ -24,7 +24,7 @@ namespace FLG.Cs.Serialization {
 
         public sealed override void Deserialize(ISaveFile saveFile)
         {
-            var filepath = saveFile.GetPath();
+            var filepath = saveFile.Path;
             using (_reader = new(File.OpenRead(filepath)))
             {
                 LoadHeader();
