@@ -6,8 +6,8 @@ using FLG.Cs.IDatamodel;
 using gd_Label = Godot.Label;
 
 
-namespace FLG.Godot.UI.Widgets {
-    internal class Label : IWidget<ILabel> {
+namespace FLG.Godot.UI {
+    public class Label : IWidget<ILabel> {
         public ILabel Widget { get; private set; }
 
         public Label(ILabel widget)

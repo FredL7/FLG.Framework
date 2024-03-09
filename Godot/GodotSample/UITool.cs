@@ -5,17 +5,17 @@ using FLG.Cs.Framework;
 using FLG.Cs.IDatamodel;
 using FLG.Cs.Math;
 using FLG.Cs.ServiceLocator;
+using FLG.Godot.UI;
 using FLG.Godot.Helpers;
-using FLG.Godot.UI.Widgets;
 
 
 using sysV2 = System.Numerics.Vector2;
 using gdV2 = Godot.Vector2;
-using flgLabel = FLG.Godot.UI.Widgets.Label;
-using flgButton = FLG.Godot.UI.Widgets.Button;
+using flgLabel = FLG.Godot.UI.Label;
+using flgButton = FLG.Godot.UI.Button;
 
 
-namespace FLG.Godot.UI {
+namespace FLG.Godot {
     [Tool]
     public partial class UITool : Control, IUIObserver {
         private const string LOGS_RELATIVE_PATH = "../../_logs"; // TODO: Move to serialized field to appear in the inspector?

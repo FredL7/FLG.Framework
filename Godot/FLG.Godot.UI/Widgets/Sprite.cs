@@ -2,8 +2,8 @@
 
 using FLG.Cs.IDatamodel;
 
-namespace FLG.Godot.UI.Widgets {
-    internal class Sprite : IWidget<ISprite> {
+namespace FLG.Godot.UI {
+    public class Sprite : IWidget<ISprite> {
         public ISprite Widget { get; private set; }
 
         public Sprite(ISprite widget)
