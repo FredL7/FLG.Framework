@@ -1,10 +1,9 @@
 ﻿using Godot;
 
 using FLG.Cs.IDatamodel;
-using System;
 
-namespace FLG.Godot.UI.Widgets {
-    internal class Text : IWidget<IText> {
+namespace FLG.Godot.UI {
+    public class Text : IWidget<IText> {
         public IText Widget { get; private set; }
 
         private RichTextLabel label;

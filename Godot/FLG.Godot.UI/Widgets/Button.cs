@@ -6,8 +6,8 @@ using FLG.Cs.IDatamodel;
 using gd_Button = Godot.Button;
 
 
-namespace FLG.Godot.UI.Widgets {
-    internal class Button : IWidget<IButton> {
+namespace FLG.Godot.UI {
+    public class Button : IWidget<IButton> {
         public IButton Widget { get; private set; }
 
         public Button(IButton widget)

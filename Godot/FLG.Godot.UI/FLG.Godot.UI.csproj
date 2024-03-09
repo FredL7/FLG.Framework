@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Cs\FLG.Cs.IDatamodel\FLG.Cs.IDatamodel.csproj" />
+    <ProjectReference Include="..\..\Cs\FLG.Cs.Math\FLG.Cs.Math.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="GodotSharp">
+      <HintPath>..\..\dependencies\Release\GodotSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
