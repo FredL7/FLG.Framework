@@ -19,7 +19,7 @@ namespace FLG.Godot.UI.Widgets {
         {
             gd_Button btn = new()
             {
-                Name = Widget.Name + " button",
+                Name = Widget.Name,
                 Position = new Vector2(Widget.Position.X, Widget.Position.Y),
                 Size = new Vector2(Widget.Dimensions.Width, Widget.Dimensions.Height),
                 Text = Widget.Text,

@@ -210,6 +210,7 @@ namespace FLG.Cs.UI.Grids {
                     break;
                 case EGridJustify.CENTER:
                     justifiedMargin[0] += spaceAvailable / 2f;
+                    justifiedMargin[margins.Length - 1] += spaceAvailable / 2f;
                     break;
                 case EGridJustify.SPACE_BETWEEN:
                     var spaceBetween = spaceAvailable / (justifiedMargin.Length - 1);

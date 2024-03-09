@@ -18,7 +18,7 @@ namespace FLG.Godot.UI.Widgets {
         {
             label = new()
             {
-                Name = Widget.Name + " text",
+                Name = Widget.Name,
                 BbcodeEnabled = true,
                 Position = new Vector2(Widget.Position.X, Widget.Position.Y),
                 Size = new Vector2(Widget.Dimensions.Width, Widget.Dimensions.Height),

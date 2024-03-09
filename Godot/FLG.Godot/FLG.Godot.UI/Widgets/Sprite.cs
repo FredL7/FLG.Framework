@@ -15,7 +15,7 @@ namespace FLG.Godot.UI.Widgets {
         {
             var rect = new TextureRect
             {
-                Name = Widget.Name + " sprite",
+                Name = Widget.Name,
                 Position = new Vector2(Widget.Position.X, Widget.Position.Y),
                 Texture = ResourceLoader.Load<Texture2D>("res://" + Widget.Source),
                 AnchorLeft = 0f,

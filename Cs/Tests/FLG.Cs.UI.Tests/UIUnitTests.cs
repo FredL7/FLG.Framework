@@ -129,30 +129,74 @@ namespace FLG.Cs.UI.Tests {
                         var contentPosition = child.Position;
                         Assert.IsTrue(contentDimensions.Width == 1920 && contentDimensions.Height == 1040);
                         Assert.IsTrue(contentPosition.X == 0 && contentPosition.Y == 40);
+                        Assert.IsFalse(child.HasChildren()); // No children in default container
 
-                        Assert.IsFalse(child.HasChildren());
-                        Assert.IsTrue(child.HasChildren("Sample1"));
-                        foreach (var child2 in child.GetChildrens("Sample1"))
                         {
-                            var name = child2.Name;
-                            Assert.IsTrue(name == "page1-test-1" || name == "page1-test-2" || name == "page1-test-3");
-                            var child2Dimensions = child2.Dimensions;
-                            var child2Position = child2.Position;
-                            Assert.IsTrue(child2Dimensions.Width == 640 && child2Dimensions.Height == 1040);
-                            float expectedX = 0;
-                            if (name == "page1-test-1")
+                            Assert.IsTrue(child.HasChildren("Sample1"));
+                            foreach (var child2 in child.GetChildrens("Sample1"))
                             {
-                                expectedX = 0;
+                                var name = child2.Name;
+                                switch (name)
+                                {
+                                    case "page1-test-1":
+                                        Assert.IsTrue(child2.Dimensions.Width == 128 && child2.Dimensions.Height == 40);
+                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 336);
+                                        break;
+                                    case "page1-test-label":
+                                        Assert.IsTrue(child2.Dimensions.Width == 128 && child2.Dimensions.Height == 40);
+                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 396);
+                                        break;
+                                    case "page1-test-sprite":
+                                        Assert.IsTrue(child2.Dimensions.Width == 128 && child2.Dimensions.Height == 128);
+                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 456);
+                                        break;
+                                    case "page1-test-button":
+                                        Assert.IsTrue(child2.Dimensions.Width == 128 && child2.Dimensions.Height == 40);
+                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 604);
+                                        break;
+                                    case "page1-test-text":
+                                        Assert.IsTrue(child2.Dimensions.Width == 128 && child2.Dimensions.Height == 40);
+                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 664);
+                                        break;
+                                    default:
+                                        Assert.Fail();
+                                        break;
+                                }
                             }
-                            else if (name == "page1-test-2")
+                        }
+
+                        {
+                            Assert.IsTrue(child.HasChildren("Sample2"));
+                            foreach (var child2 in child.GetChildrens("Sample2"))
                             {
-                                expectedX = 640;
+                                var name = child2.Name;
+                                switch (name)
+                                {
+                                    case "page2-test-1":
+                                        Assert.IsTrue(child2.Dimensions.Width == 128 && child2.Dimensions.Height == 40);
+                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 336);
+                                        break;
+                                    case "page2-test-label":
+                                        Assert.IsTrue(child2.Dimensions.Width == 128 && child2.Dimensions.Height == 40);
+                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 396);
+                                        break;
+                                    case "page2-test-sprite":
+                                        Assert.IsTrue(child2.Dimensions.Width == 128 && child2.Dimensions.Height == 128);
+                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 456);
+                                        break;
+                                    case "page2-test-button":
+                                        Assert.IsTrue(child2.Dimensions.Width == 128 && child2.Dimensions.Height == 40);
+                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 604);
+                                        break;
+                                    case "page2-test-text":
+                                        Assert.IsTrue(child2.Dimensions.Width == 128 && child2.Dimensions.Height == 40);
+                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 664);
+                                        break;
+                                    default:
+                                        Assert.Fail();
+                                        break;
+                                }
                             }
-                            else if (name == "page1-test-3")
-                            {
-                                expectedX = 1280;
-                            }
-                            Assert.IsTrue(child2Position.X == expectedX && child2Position.Y == 0);
                         }
                     }
                     else { Assert.Fail(); }

@@ -10,7 +10,12 @@ public class Sample1 : IPage {
     public void Setup()
     {
         var factory = Locator.Instance.Get<IUIFactory>();
-        var btn = factory.Button("page1-test-button", "Click Me!", OnBtnClicked, new() { Order = 4 });
+        var btn = factory.Button("page1-test-button", "Click Me!", OnBtnClicked, new() { Order=4, Width=128, Height=40, Margin=new(0, 0, 0, 20) });
+
+        var ui = Locator.Instance.Get<IUIManager>();
+        var layout = ui.GetLayout(LayoutId);
+        var target = layout.GetTarget("content");
+        target.AddChild(btn, PageId);
     }
 
     public void OnBtnClicked()
