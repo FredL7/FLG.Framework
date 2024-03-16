@@ -21,6 +21,6 @@ namespace FLG.Cs.UI.Layouts {
         public override bool HasChildren(string id = ILayoutElement.DEFAULT_CHILDREN_TARGET) => false;
         public override IEnumerable<ILayoutElement> GetChildrens(string id = ILayoutElement.DEFAULT_CHILDREN_TARGET) => Enumerable.Empty<ILayoutElement>();
 
-        public sealed override void ComputeRectXform() { }
+        public sealed override void ComputeRectXform() { /* Parent will drive the size */ }
     }
 }

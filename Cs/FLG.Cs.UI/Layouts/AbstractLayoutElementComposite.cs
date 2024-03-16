@@ -46,9 +46,12 @@ namespace FLG.Cs.UI.Layouts {
         {
             foreach (var target in _childrens)
             {
-                ComputeChildrenSizesAndPositions(target.Key);
-                foreach (var child in target.Value)
-                    child.ComputeRectXform();
+                if (target.Value.Count > 0)
+                {
+                    ComputeChildrenSizesAndPositions(target.Key);
+                    foreach (var child in target.Value)
+                        child.ComputeRectXform();
+                }
             }
         }
         protected abstract void ComputeChildrenSizesAndPositions(string id = ILayoutElement.DEFAULT_CHILDREN_TARGET);

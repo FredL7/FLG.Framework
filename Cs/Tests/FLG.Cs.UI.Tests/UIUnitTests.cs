@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FLG.Cs.Framework;
 using FLG.Cs.IDatamodel;
 using FLG.Cs.ServiceLocator;
+using FLG.Cs.Math;
 
 
 namespace FLG.Cs.UI.Tests {
@@ -27,7 +28,8 @@ namespace FLG.Cs.UI.Tests {
             PreferencesUI prefsUI = new()
             {
                 layoutsDir = LAYOUTS_DIR,
-                pagesDir = PAGES_DIR
+                pagesDir = PAGES_DIR,
+                windowSize = new Size(1920, 1080)
             };
             FrameworkManager.Instance.InitializeUI(prefsUI);
         }

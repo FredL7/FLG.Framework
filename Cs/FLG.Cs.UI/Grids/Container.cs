@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
+using System.Numerics;
 using System.Xml;
 using FLG.Cs.IDatamodel;
+using FLG.Cs.Math;
 using FLG.Cs.UI.Layouts;
 
 namespace FLG.Cs.UI.Grids {
@@ -28,7 +30,9 @@ namespace FLG.Cs.UI.Grids {
 
         private void ComputeSizesAndPositions(List<ILayoutElement> childrens)
         {
-
+            var children = childrens[0]; // Assert only 1 child
+            // TODO: Include margin and padding
+            children.RectXform.SetSizesAndPosition(Dimensions, Vector2.Zero);
         }
     }
 }
