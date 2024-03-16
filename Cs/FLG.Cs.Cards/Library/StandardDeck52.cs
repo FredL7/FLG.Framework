@@ -2,7 +2,7 @@
 
 namespace FLG.Cs.Cards {
     public class StandardDeck52 : Deck {
-        public StandardDeck52()
+        public StandardDeck52(int nbPlayers = 1) : base(nbPlayers)
         {
             List<ICard> cards = new();
             string[] colors = { EBaseColors.CLUBS.ToString(), EBaseColors.DIAMONDS.ToString(), EBaseColors.HEARTS.ToString(), EBaseColors.SPADES.ToString() };
