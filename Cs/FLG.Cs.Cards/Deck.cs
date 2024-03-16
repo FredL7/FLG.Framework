@@ -17,6 +17,8 @@ namespace FLG.Cs.Cards {
         private List<ICard> _hand;
         private List<ICard> _graveyard;
 
+        public List<ICard> Hand { get => _hand; }
+
         public Deck()
         {
             _cards = new();
@@ -61,6 +63,30 @@ namespace FLG.Cs.Cards {
         {
             _hand.Remove(card);
             _graveyard.Add(card);
+        }
+
+        public ICard Search(string name, bool searchEverywhere)
+        {
+            var card = _library.Find(x => x.Name == name);
+            if (card != null)
+            {
+                _library.Remove(card);
+                _hand.Add(card);
+                return card;
+            }
+
+            if (searchEverywhere)
+            {
+                card = _graveyard.Find(x => x.Name == name);
+                if (card != null)
+                {
+                    _graveyard.Remove(card);
+                    _hand.Add(card);
+                    return card;
+                }
+            }
+
+            throw new KeyNotFoundException($"Could not find card named {name}");
         }
 
         public void Reset()

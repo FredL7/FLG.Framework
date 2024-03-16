@@ -14,20 +14,22 @@ namespace FLG.Cs.Cards {
                     string name = i.ToString();
                     if (i == 1)
                     {
-                        name = "Ace of";
+                        name = "Ace";
                     }
                     else if (i == 11)
                     {
-                        name = "Jack of";
+                        name = "Jack";
                     }
                     else if (i == 12)
                     {
-                        name = "Queen of";
+                        name = "Queen";
                     }
                     else if (i == 13)
                     {
-                        name = "King of";
+                        name = "King";
                     }
+
+                    name += " of " + color;
 
                     Card c = new(name, i, color);
                     cards.Add(c);

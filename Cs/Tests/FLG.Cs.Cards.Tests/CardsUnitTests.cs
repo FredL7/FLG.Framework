@@ -21,7 +21,8 @@ namespace FLG.Cs.Cards.Tests {
             Assert.IsTrue(deck.CountHand() == 0);
             Assert.IsTrue(deck.CountGraveyard() == 0);
 
-            var hand = deck.Draw(7);
+            deck.Draw(7);
+            var hand = deck.Hand;
             Assert.IsTrue(deck.CountCards() == 52 - 7);
             Assert.IsTrue(deck.CountLibrary() == 52 - 7);
             Assert.IsTrue(deck.CountHand() == 7);
@@ -33,6 +34,19 @@ namespace FLG.Cs.Cards.Tests {
             Assert.IsTrue(deck.CountLibrary() == 52 - 7);
             Assert.IsTrue(deck.CountHand() == 7 - 3);
             Assert.IsTrue(deck.CountGraveyard() == 3);
+        }
+
+        [TestMethod]
+        public void MultipleAces()
+        {
+            IDeck deck = new StandardDeck52();
+            deck.Search("King of SPADES");
+            deck.Search("Ace of SPADES");
+            deck.Search("Ace of HEARTS");
+            var hand = deck.Hand;
+            var value = HandTotal(hand);
+
+            Assert.IsTrue(value == 12);
         }
 
         [TestMethod]
@@ -128,8 +142,6 @@ namespace FLG.Cs.Cards.Tests {
             foreach (var card in hand)
             {
                 sb.Append(card.Name);
-                sb.Append(' ');
-                sb.Append(card.Color);
                 sb.Append(", ");
             }
             sb.Append("SUM: ");

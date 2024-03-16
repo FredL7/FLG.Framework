@@ -3,5 +3,8 @@
         public string PageId { get; }
         public string LayoutId { get; set; }
         public void Setup();
+
+        public void OnOpen();
+        public void OnClose();
     }
 }
