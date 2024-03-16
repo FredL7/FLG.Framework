@@ -1,4 +1,5 @@
 ﻿using FLG.Cs.IDatamodel;
+using FLG.Cs.Math;
 using FLG.Cs.ServiceLocator;
 
 
@@ -42,10 +43,10 @@ namespace FLG.Cs.UI.Layouts
             _layouts = layouts;
         }
 
-        internal void ComputeLayoutsRectXforms(Window window)
+        internal void ComputeLayoutsRectXforms(Size windowSize)
         {
             foreach (var layout in _layouts)
-                layout.Value.ComputeRectXforms(window);
+                layout.Value.ComputeRectXforms(windowSize);
         }
     }
 }

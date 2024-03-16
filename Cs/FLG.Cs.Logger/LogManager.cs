@@ -12,8 +12,8 @@ namespace FLG.Cs.Logger {
         private string _logsDir;
         private string _filepath;
 
-        public LogManager(string logsDir) {
-            _logsDir = logsDir;
+        public LogManager(PreferencesLogs prefs) {
+            _logsDir = prefs.logsDir;
 
             DateTime date = DateTime.Now;
             string filename = date.ToString(FILENAME_DATE_PATTERN);

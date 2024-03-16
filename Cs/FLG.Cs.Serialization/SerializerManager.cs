@@ -24,12 +24,12 @@ namespace FLG.Cs.Serialization {
         public void AddSerializable(ISerializable serializable) { _serializableItems.Add(serializable); }
         public IEnumerable<ISerializable> GetSerializableItems() => _serializableItems;
 
-        public SerializerManager(ESerializerType t, string saveDir)
+        public SerializerManager(PreferencesSerialization prefs)
         {
             _binSerializer = new BinarySerializer(this);
             _jsonSerializer = new JsonSerializer(this);
             _xmlSerializer = new XmlSerializer(this);
-            _writeSerializer = t switch
+            _writeSerializer = prefs.serializerType switch
             {
                 ESerializerType.BIN => _binSerializer,
                 ESerializerType.JSON => _jsonSerializer,
@@ -37,7 +37,7 @@ namespace FLG.Cs.Serialization {
                 _ => _binSerializer,
             };
 
-            _saveDir = saveDir;
+            _saveDir = prefs.savesDir;
             _saveFiles = new();
 
             _serializableItems = new();

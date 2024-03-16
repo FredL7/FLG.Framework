@@ -10,6 +10,7 @@
     <ProjectReference Include="..\FLG.Cs.Decorators\FLG.Cs.Decorators.csproj" />
     <ProjectReference Include="..\FLG.Cs.IDatamodel\FLG.Cs.IDatamodel.csproj" />
     <ProjectReference Include="..\FLG.Cs.Logger\FLG.Cs.Logger.csproj" />
+    <ProjectReference Include="..\FLG.Cs.Math\FLG.Cs.Math.csproj" />
     <ProjectReference Include="..\FLG.Cs.Serialization\FLG.Cs.Serialization.csproj" />
     <ProjectReference Include="..\FLG.Cs.ServiceLocator\FLG.Cs.ServiceLocator.csproj" />
     <ProjectReference Include="..\FLG.Cs.UI\FLG.Cs.UI.csproj" />

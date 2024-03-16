@@ -1,4 +1,5 @@
 ﻿using FLG.Cs.IDatamodel;
+using FLG.Cs.Math;
 using FLG.Cs.ServiceLocator;
 using FLG.Cs.UI.Layouts;
 using FLG.Cs.UI.Pages;
@@ -7,16 +8,18 @@ namespace FLG.Cs.UI {
     public class UIManager : IUIManager {
         private string _layoutsDir;
         private string _pagesDir;
+        private Size _windowSize;
 
         private LayoutsManager _layoutsManager;
         private PagesManager _pagesManager;
 
         List<IUIObserver> _observers;
 
-        public UIManager(string layoutsDir, string pagesDir)
+        public UIManager(PreferencesUI prefs)
         {
-            _layoutsDir = layoutsDir;
-            _pagesDir = pagesDir;
+            _layoutsDir = prefs.layoutsDir;
+            _pagesDir = prefs.pagesDir;
+            _windowSize = prefs.windowSize;
 
             _layoutsManager = new();
             _pagesManager = new();
@@ -68,10 +71,8 @@ namespace FLG.Cs.UI {
             _layoutsManager.SetLayoutsFromParser(parser.GetLayouts());
             _pagesManager.SetPagesFromParser(parser.GetPages());
 
-            Window defaultWindow = new(1920, 1080);
-            // TODO: Get actual window size (may via prefs or via watcher below vvvv)
             // TODO: Register window size change to compute on change (also applies to pages)
-            _layoutsManager.ComputeLayoutsRectXforms(defaultWindow);
+            _layoutsManager.ComputeLayoutsRectXforms(_windowSize);
         }
 
         private void NotifyObservers()

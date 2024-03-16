@@ -87,7 +87,8 @@ namespace FLG.Godot {
             PreferencesUI prefsUI = new()
             {
                 layoutsDir = ProjectSettings.GlobalizePath("res://" + LAYOUTS_RELATIVE_PATH),
-                pagesDir = ProjectSettings.GlobalizePath("res://" + PAGES_RELATIVE_PATH)
+                pagesDir = ProjectSettings.GlobalizePath("res://" + PAGES_RELATIVE_PATH),
+                windowSize = new Size(GetWindow().Size.X, GetWindow().Size.Y)
             };
             FrameworkManager.Instance.InitializeUI(prefsUI);
         }
