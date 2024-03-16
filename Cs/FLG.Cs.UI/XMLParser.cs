@@ -20,6 +20,7 @@ namespace FLG.Cs.UI {
         private Dictionary<string, IPage> _pages;
         private Dictionary<string, Layout> _components;
         private Dictionary<string, Layout> _layouts;
+        private Dictionary<string, AbstractLayoutElement> _targets;
 
         private List<File> _pageXMLFiles;
         private List<File> _layoutFiles;
@@ -37,6 +38,7 @@ namespace FLG.Cs.UI {
             _pages = new();
             _components = new();
             _layouts = new();
+            _targets = new();
 
             _layoutFiles = IOUtils.GetFilePathsByExtension(_layoutsDir, ".layout");
             _pageXMLFiles = IOUtils.GetFilePathsByExtension(_pagesDir, ".page");
@@ -238,11 +240,10 @@ namespace FLG.Cs.UI {
             result = ConvertNode(rootChild, out AbstractLayoutElement? root, id);
             if (!result || root == null) return result;
 
-            Dictionary<string, AbstractLayoutElement> targets = new();
-            result = ConvertNodeRecursive(rootChild, root, targets);
+            result = ConvertNodeRecursive(rootChild, root);
             if (!result) return result;
 
-            Layout layout = new(root, id, targets);
+            Layout layout = new(root, id, _targets);
             _components.Add(id, layout);
             _log.Debug($"Finished Parsing XML Layout {file.filename}");
 
@@ -263,7 +264,7 @@ namespace FLG.Cs.UI {
         #endregion Layouts
 
         #region Conversion
-        private Result ConvertNodeRecursive(XmlNode parentNode, AbstractLayoutElement parentLayoutElement, Dictionary<string, AbstractLayoutElement> targets)
+        private Result ConvertNodeRecursive(XmlNode parentNode, AbstractLayoutElement parentLayoutElement)
         {
             foreach (XmlNode node in parentNode.ChildNodes)
             {
@@ -277,10 +278,10 @@ namespace FLG.Cs.UI {
                     if (node.HasChildNodes)
                         return new Result($"Target node {layoutElement.Name} cannot declare childrens");
 
-                    targets.Add(layoutElement.Name, layoutElement);
+                    _targets.Add(layoutElement.Name, layoutElement);
                 }
 
-                ConvertNodeRecursive(node, layoutElement, targets);
+                ConvertNodeRecursive(node, layoutElement);
             }
 
             return Result.SUCCESS;
@@ -297,12 +298,10 @@ namespace FLG.Cs.UI {
 
                 if (layoutElement.IsTarget)
                 {
-                    /*
                     if (node.HasChildNodes)
-                        return new Result($"Target node {layoutElement.GetName()} cannot declare childrens");
-                    */
+                        return new Result($"Target node {layoutElement.Name} cannot declare childrens");
 
-                    return new Result("Cannot declare targets within *.page <target> nodes");
+                    _targets.Add(layoutElement.Name, layoutElement);
                 }
 
                 ConvertNodeRecursiveForTarget(node, layoutElement, targetId, pageId);

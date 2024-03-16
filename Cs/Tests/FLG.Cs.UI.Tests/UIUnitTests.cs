@@ -40,7 +40,7 @@ namespace FLG.Cs.UI.Tests {
             IUIManager uiManager = Locator.Instance.Get<IUIManager>();
 
             var layouts = uiManager.GetLayouts();
-            Assert.IsTrue(layouts.Count() > 0);
+            Assert.IsTrue(layouts.Any());
             foreach (var layout in layouts)
             {
                 if (layout.Name != "sample")
