@@ -34,4 +34,7 @@ public class Sample2 : IPage {
         var _uiManager = Locator.Instance.Get<IUIManager>();
         _uiManager.SetCurrentPage("Sample1");
     }
+
+    public void OnOpen() { }
+    public void OnClose() { }
 }

@@ -21,7 +21,10 @@ namespace FLG.Cs.UI.Pages {
                 return;
             }
 
+            _pages[id].OnClose();
+
             _currentPage = id;
+            _pages[id].OnOpen();
         }
 
         internal IPage GetCurrent()
