@@ -8,6 +8,10 @@ using FLG.Cs.UI;
 
 namespace FLG.Cs.Framework {
     internal static class ManagersFactory {
+        internal static void CreateGeneric(IServiceInstance service) {
+            Locator.Instance.Register(service);
+        }
+
         internal static void CreateProxies()
         {
             ILogManager logManager = new LogManagerProxy();

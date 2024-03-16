@@ -29,7 +29,7 @@ namespace FLG.Cs.Serialization.Tests {
                 savesDir = SAVES_DIR,
                 serializerType = t
             };
-            FrameworkManager.Instance.Initialize(pref);
+            FrameworkManager.Instance.InitializeFramework(pref);
             FrameworkManager.Instance.InitializeSerializer(prefSerialization);
 
             ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();

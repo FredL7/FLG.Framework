@@ -17,7 +17,7 @@ namespace FLG.Cs.UI.Tests {
         public static void Init(TestContext _)
         {
             Preferences prefs = new();
-            FrameworkManager.Instance.Initialize(prefs);
+            FrameworkManager.Instance.InitializeFramework(prefs);
 
             PreferencesLogs prefsLogs = new()
             {

@@ -8,13 +8,18 @@ namespace FLG.Cs.Framework {
 
         #region General
         private bool _initializedGeneral = false;
-        public void Initialize(Preferences pref)
+        public void InitializeFramework(Preferences pref)
         {
             if (!_initializedGeneral)
             {
                 ManagersFactory.CreateProxies();
                 _initializedGeneral = true;
             }
+        }
+
+        public void Initialize(IServiceInstance service)
+        {
+            ManagersFactory.CreateGeneric(service);
         }
         #endregion General
 

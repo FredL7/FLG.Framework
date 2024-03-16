@@ -61,7 +61,7 @@ namespace FLG.Cs.Cards.Tests {
             {
                 logsDir = LOGS_DIR
             };
-            FrameworkManager.Instance.Initialize(pref);
+            FrameworkManager.Instance.InitializeFramework(pref);
             FrameworkManager.Instance.InitializeLogs(prefsLogs);
             var logger = Locator.Instance.Get<ILogManager>();
 

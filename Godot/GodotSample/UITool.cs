@@ -76,7 +76,7 @@ namespace FLG.Godot {
         private void InitializeFramework()
         {
             Preferences prefs = new();
-            FrameworkManager.Instance.Initialize(prefs);
+            FrameworkManager.Instance.InitializeFramework(prefs);
 
             PreferencesLogs prefsLogs = new()
             {
