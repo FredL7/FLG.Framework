@@ -23,14 +23,14 @@ namespace FLG.Cs.Cards.Tests {
 
             deck.DrawMultiple(7);
             var hand = deck.GetHand();
-            Assert.IsTrue(deck.CountCards() == 52 - 7);
+            Assert.IsTrue(deck.CountCards() == 52);
             Assert.IsTrue(deck.CountLibrary() == 52 - 7);
             Assert.IsTrue(deck.CountHand() == 7);
             Assert.IsTrue(deck.CountGraveyard() == 0);
 
             for (int i = 0; i < 3; ++i)
                 deck.Discard(hand[i]);
-            Assert.IsTrue(deck.CountCards() == 52 - 7);
+            Assert.IsTrue(deck.CountCards() == 52);
             Assert.IsTrue(deck.CountLibrary() == 52 - 7);
             Assert.IsTrue(deck.CountHand() == 7 - 3);
             Assert.IsTrue(deck.CountGraveyard() == 3);

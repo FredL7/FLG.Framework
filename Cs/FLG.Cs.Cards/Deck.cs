@@ -96,7 +96,7 @@ namespace FLG.Cs.Cards {
         {
             _library.Clear();
             _graveyard.Clear();
-            _library = _cards;
+            _library = new(_cards);
 
             foreach(var hand in _hand)
                 hand.Clear();
