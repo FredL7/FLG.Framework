@@ -12,14 +12,14 @@ namespace FLG.Cs.UI.Layouts {
         internal AbstractLayoutElementLeaf(string name, LayoutAttributes attributes)
             : base(name, attributes, false) { }
 
-        public override void AddChild(ILayoutElement child, string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER)
+        public override void AddChild(ILayoutElement child, string id = ILayoutElement.DEFAULT_CHILDREN_TARGET)
         {
             Locator.Instance.Get<ILogManager>().Error("Layout element leaf cannot contain childrens");
         }
 
-        public override IEnumerable<string> GetContainers() => Enumerable.Empty<string>();
-        public override bool HasChildren(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => false;
-        public override IEnumerable<ILayoutElement> GetChildrens(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER) => Enumerable.Empty<ILayoutElement>();
+        public override IEnumerable<string> GetTargets() => Enumerable.Empty<string>();
+        public override bool HasChildren(string id = ILayoutElement.DEFAULT_CHILDREN_TARGET) => false;
+        public override IEnumerable<ILayoutElement> GetChildrens(string id = ILayoutElement.DEFAULT_CHILDREN_TARGET) => Enumerable.Empty<ILayoutElement>();
 
         public sealed override void ComputeRectXform() { }
     }

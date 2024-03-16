@@ -1,5 +1,4 @@
 ﻿using FLG.Cs.IDatamodel;
-using FLG.Cs.Math;
 
 namespace FLG.Cs.UI {
     public class UIFactoryProxy : IUIFactory {
@@ -11,6 +10,7 @@ namespace FLG.Cs.UI {
         public ILayoutElement ProxyLayoutElement(string name, LayoutAttributes attributes) { throw new NotImplementedException(); }
 
         #region Layouts
+        public ILayoutElement Container(string name, LayoutAttributes layoutAttr, bool isTarget) { throw new NotImplementedException(); }
         public ILayoutElement HStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget) { throw new NotImplementedException(); }
         public ILayoutElement VStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget) { throw new NotImplementedException(); }
         #endregion Layouts

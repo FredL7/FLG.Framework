@@ -5,7 +5,7 @@ using FLG.Cs.Math;
 
 namespace FLG.Cs.IDatamodel {
     public interface ILayoutElement {
-        public const string DEFAULT_CHILDREN_CONTAINER = "default";
+        public const string DEFAULT_CHILDREN_TARGET = "default";
 
         public string Name { get; }
         public ELayoutElement Type { get; }
@@ -18,9 +18,9 @@ namespace FLG.Cs.IDatamodel {
         public float Weight { get; }
 
         public void ComputeRectXform();
-        public IEnumerable<string> GetContainers();
-        public void AddChild(ILayoutElement child, string id = DEFAULT_CHILDREN_CONTAINER);
-        public bool HasChildren(string id = DEFAULT_CHILDREN_CONTAINER);
-        public IEnumerable<ILayoutElement> GetChildrens(string id = DEFAULT_CHILDREN_CONTAINER);
+        public IEnumerable<string> GetTargets();
+        public void AddChild(ILayoutElement child, string id = DEFAULT_CHILDREN_TARGET);
+        public bool HasChildren(string id = DEFAULT_CHILDREN_TARGET);
+        public IEnumerable<ILayoutElement> GetChildrens(string id = DEFAULT_CHILDREN_TARGET);
     }
 }

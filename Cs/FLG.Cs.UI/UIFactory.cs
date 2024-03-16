@@ -22,6 +22,7 @@ namespace FLG.Cs.UI
             return nodeType switch
             {
                 // Layouts
+                "Container" => new Container(name, node),
                 "HStack" => new HStack(name, node),
                 "VStack" => new VStack(name, node),
 
@@ -41,11 +42,13 @@ namespace FLG.Cs.UI
             => new ProxyLayoutElementLeaf(name, attributes);
 
         #region Layouts
+        public ILayoutElement Container(string name, LayoutAttributes attributes, bool isTarget)
+            => new Container(name, attributes, isTarget);
         public ILayoutElement HStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget)
-                => new HStack(name, layoutAttr, gridAttr, isTarget);
+            => new HStack(name, layoutAttr, gridAttr, isTarget);
 
         public ILayoutElement VStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget)
-                => new VStack(name, layoutAttr, gridAttr, isTarget);
+            => new VStack(name, layoutAttr, gridAttr, isTarget);
         #endregion Layouts
 
         #region Widgets

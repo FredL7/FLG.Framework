@@ -12,7 +12,7 @@ namespace FLG.Cs.UI.Layouts
         public abstract ELayoutElement Type { get; }
         public bool IsTarget { get; private set; }
         public RectXform RectXform { get; private set; }
-        public Vector2 Position { get => RectXform.GetContainerPosition(); }
+        public Vector2 Position { get => RectXform.GetWrapperPosition(); }
         public Size Dimensions { get => RectXform.GetDimensions(); }
         public Size Size { get; private set; }
         public int Order { get; private set; }
@@ -45,10 +45,10 @@ namespace FLG.Cs.UI.Layouts
             Size = new(attributes.Width, attributes.Height);
         }
 
-        public abstract void AddChild(ILayoutElement child, string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER);
+        public abstract void AddChild(ILayoutElement child, string id = ILayoutElement.DEFAULT_CHILDREN_TARGET);
         public abstract void ComputeRectXform();
-        public abstract IEnumerable<string> GetContainers();
-        public abstract bool HasChildren(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER);
-        public abstract IEnumerable<ILayoutElement> GetChildrens(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER);
+        public abstract IEnumerable<string> GetTargets();
+        public abstract bool HasChildren(string id = ILayoutElement.DEFAULT_CHILDREN_TARGET);
+        public abstract IEnumerable<ILayoutElement> GetChildrens(string id = ILayoutElement.DEFAULT_CHILDREN_TARGET);
     }
 }

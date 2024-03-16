@@ -28,7 +28,7 @@ namespace FLG.Cs.UI.Grids {
             _alignment = gridAttr.Alignment;
         }
 
-        protected sealed override void ComputeChildrenSizesAndPositions(string id = ILayoutElement.DEFAULT_CHILDREN_CONTAINER)
+        protected sealed override void ComputeChildrenSizesAndPositions(string id = ILayoutElement.DEFAULT_CHILDREN_TARGET)
         {
             ComputeSizesAndPositions(GetChildrensInternal(id));
         }
@@ -65,8 +65,8 @@ namespace FLG.Cs.UI.Grids {
         protected abstract float GetChildMainMarginLast(ILayoutElement child);
         protected abstract float GetChildSecondaryMarginFirst(ILayoutElement child);
         protected abstract float GetChildSecondaryMarginLast(ILayoutElement child);
-        protected abstract float GetContainerDimensionMain(Size containerDimensions);
-        protected abstract float GetContainerDimensionSecondary(Size containerDimensions);
+        protected abstract float GetStackDimensionMain(Size stackDimensions);
+        protected abstract float GetStackDimensionSecondary(Size stackDimensions);
         protected abstract Size[] GetFinalSizes(float[] mainDimensions, float[] secondaryDimensions);
         protected abstract Vector2[] GetFinalPositions(float[] mainMargins, float[] secondaryMargins, float[] mainDimensions);
 
@@ -86,22 +86,22 @@ namespace FLG.Cs.UI.Grids {
             var margins = ComputeMargins(childrens);
             var marginsSum = margins.Sum();
 
-            var containerDimensions = RectXform.GetDimensions();
-            var containerDimensionMain = GetContainerDimensionMain(containerDimensions);
+            var stackDimensions = RectXform.GetDimensions();
+            var stackDimensionMain = GetStackDimensionMain(stackDimensions);
             var spaceRequired = expectedSizesSum + marginsSum;
-            var spaceAvailable = containerDimensionMain - spaceRequired;
+            var spaceAvailable = stackDimensionMain - spaceRequired;
             Debug.Assert(spaceAvailable >= 0);
 
             var stretchedSizes = GetSizesForStretch(childrens, expectedSizes, spaceAvailable);
             var stretchedSizeSum = stretchedSizes.Sum();
             var stretchedSpaceRequired = stretchedSizeSum + marginsSum;
-            var spaceAvailableAfterStretch = containerDimensionMain - stretchedSpaceRequired;
+            var spaceAvailableAfterStretch = stackDimensionMain - stretchedSpaceRequired;
             Debug.Assert(spaceAvailableAfterStretch >= 0);
 
             var justifiedMargins = UpdateMarginsForJustify(margins, spaceAvailableAfterStretch);
             var justifiedMarginsSum = justifiedMargins.Sum();
             var justifiedSpaceRequired = stretchedSizeSum + justifiedMarginsSum;
-            var spaceAvailableAfterJustify = containerDimensionMain - justifiedSpaceRequired;
+            var spaceAvailableAfterJustify = stackDimensionMain - justifiedSpaceRequired;
             Debug.Assert(MathF.Abs(spaceAvailableAfterJustify) < float.Epsilon);
 
             return (stretchedSizes, justifiedMargins);
@@ -109,8 +109,8 @@ namespace FLG.Cs.UI.Grids {
 
         private (float[], float[]) ComputeDimensionsAndMarginsAlongSecondaryAxis(ILayoutElement[] childrens)
         {
-            var containerDimensions = RectXform.GetDimensions();
-            var containerDimensionSecondary = GetContainerDimensionSecondary(containerDimensions);
+            var stackDimensions = RectXform.GetDimensions();
+            var stackDimensionSecondary = GetStackDimensionSecondary(stackDimensions);
 
             float[] margins = new float[childrens.Length];
             for (int i = 0; i < margins.Length; ++i) // TODO: Validate
@@ -127,7 +127,7 @@ namespace FLG.Cs.UI.Grids {
                 var secondaryMarginFirst = GetChildSecondaryMarginFirst(childrens[i]);
                 var secondaryMarginLast = GetChildSecondaryMarginLast(childrens[i]);
                 var dimension = GetChildSizeSecondary(childrens[i]);
-                var dimensionStretched = containerDimensionSecondary - (secondaryMarginFirst + secondaryMarginLast);
+                var dimensionStretched = stackDimensionSecondary - (secondaryMarginFirst + secondaryMarginLast);
                 if (dimension == 0)
                     dimension = dimensionStretched;
                 dimensions[i] = dimension;
@@ -138,10 +138,10 @@ namespace FLG.Cs.UI.Grids {
                         margins[i] = secondaryMarginFirst;
                         break;
                     case EGridAlignment.END:
-                        margins[i] = containerDimensionSecondary - (dimension + secondaryMarginLast);
+                        margins[i] = stackDimensionSecondary - (dimension + secondaryMarginLast);
                         break;
                     case EGridAlignment.CENTER:
-                        var spaceRemaining = containerDimensionSecondary - dimension;
+                        var spaceRemaining = stackDimensionSecondary - dimension;
                         margins[i] = spaceRemaining / 2;
                         break;
                     case EGridAlignment.STRETCH:

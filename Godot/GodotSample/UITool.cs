@@ -140,25 +140,25 @@ namespace FLG.Godot {
 
         private void DrawLayoutRecursive(Node parentNode, ILayoutElement layoutElementParent)
         {
-            var containers = layoutElementParent.GetContainers();
-            foreach (var container in containers)
+            var targets = layoutElementParent.GetTargets();
+            foreach (var target in targets)
             {
-                if (layoutElementParent.HasChildren(container))
+                if (layoutElementParent.HasChildren(target))
                 {
                     var parentForAddNode = parentNode;
-                    if (container != ILayoutElement.DEFAULT_CHILDREN_CONTAINER)
+                    if (target != ILayoutElement.DEFAULT_CHILDREN_TARGET)
                     {
-                        var containerNode = AddNode(container, sysV2.Zero, layoutElementParent.Dimensions, parentNode);
+                        var targetNode = AddNode(target, sysV2.Zero, layoutElementParent.Dimensions, parentNode);
 
-                        if (!_pages.ContainsKey(container))
-                            _pages.Add(container, new List<Node>());
-                        _pages[container].Add(containerNode);
+                        if (!_pages.ContainsKey(target))
+                            _pages.Add(target, new List<Node>());
+                        _pages[target].Add(targetNode);
 
-                        containerNode.Set("visible", false);
-                        parentForAddNode = containerNode;
+                        targetNode.Set("visible", false);
+                        parentForAddNode = targetNode;
                     }
 
-                    foreach (ILayoutElement child in layoutElementParent.GetChildrens(container))
+                    foreach (ILayoutElement child in layoutElementParent.GetChildrens(target))
                     {
                         var node = DrawNode(child, parentForAddNode);
                         DrawLayoutRecursive(node, child);

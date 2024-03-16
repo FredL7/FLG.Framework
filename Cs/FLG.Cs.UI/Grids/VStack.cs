@@ -20,8 +20,8 @@ namespace FLG.Cs.UI.Grids {
         protected override float GetChildSizeMain(ILayoutElement child) => child.Size.Height;
         protected override float GetChildSizeSecondary(ILayoutElement child) => child.Size.Width;
 
-        protected override float GetContainerDimensionMain(Size containerDimensions) => containerDimensions.Height;
-        protected override float GetContainerDimensionSecondary(Size containerDimensions) => containerDimensions.Width;
+        protected override float GetStackDimensionMain(Size stackDimensions) => stackDimensions.Height;
+        protected override float GetStackDimensionSecondary(Size stackDimensions) => stackDimensions.Width;
 
         protected override Vector2[] GetFinalPositions(float[] mainMargins, float[] secondaryMargins, float[] mainDimensions)
         {

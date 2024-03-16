@@ -111,7 +111,7 @@ namespace FLG.Cs.Math {
         public Spacing Margin { get; private set; }
         public Spacing Padding { get; private set; }
 
-        public Vector2 GetContainerPosition() => _position + new Vector2(Padding.Left, Padding.Top);
+        public Vector2 GetWrapperPosition() => _position + new Vector2(Padding.Left, Padding.Top);
         public Size GetDimensions() => _dimensions;
 
         public RectXform() { }

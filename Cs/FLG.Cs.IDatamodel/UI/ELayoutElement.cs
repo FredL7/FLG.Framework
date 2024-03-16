@@ -4,7 +4,7 @@
         PROXY_LAYOUT_ELEMENT,
 
         // Grids
-        HSTACK, VSTACK,
+        CONTAINER, HSTACK, VSTACK,
 
         // Widgets
         BUTTON, LABEL, SPRITE, TEXT
