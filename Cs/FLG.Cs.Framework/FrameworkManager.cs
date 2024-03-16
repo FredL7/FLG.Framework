@@ -17,7 +17,7 @@ namespace FLG.Cs.Framework {
             }
         }
 
-        public void Initialize(IServiceInstance service)
+        public void Initialize<T>(T service) where T : IServiceInstance
         {
             ManagersFactory.CreateGeneric(service);
         }
