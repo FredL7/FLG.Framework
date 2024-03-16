@@ -34,7 +34,12 @@ namespace FLG.Cs.UI.Layouts {
         }
 
         public override IEnumerable<string> GetTargets() => _childrens.Keys;
-        public override bool HasChildren(string id = ILayoutElement.DEFAULT_CHILDREN_TARGET) => _childrens[id].Count > 0;
+        public override bool HasChildren(string id = ILayoutElement.DEFAULT_CHILDREN_TARGET)
+        {
+            if (!_childrens.ContainsKey(id))
+                return false;
+            return _childrens[id].Count > 0;
+        }
         public override IEnumerable<ILayoutElement> GetChildrens(string id = ILayoutElement.DEFAULT_CHILDREN_TARGET) => _childrens[id];
 
         public sealed override void ComputeRectXform()

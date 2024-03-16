@@ -27,7 +27,7 @@ namespace FLG.Cs.Framework {
 
             if (!_initializedLogs)
             {
-                ManagersFactory.CreateLogger(pref.logsDir);
+                ManagersFactory.CreateLogger(pref);
                 _initializedLogs = true;
             }
         }
@@ -44,7 +44,7 @@ namespace FLG.Cs.Framework {
 
             if (!_initializedSerializer)
             {
-                ManagersFactory.CreateSerializer(pref.serializerType, pref.savesDir);
+                ManagersFactory.CreateSerializer(pref);
                 _initializedSerializer = true;
             }
         }
@@ -61,7 +61,7 @@ namespace FLG.Cs.Framework {
 
             if (!_initializedUI)
             {
-                ManagersFactory.CreateUIManager(pref.layoutsDir, pref.pagesDir);
+                ManagersFactory.CreateUIManager(pref);
                 _initializedUI = true;
             }
         }
