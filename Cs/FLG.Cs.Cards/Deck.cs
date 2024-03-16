@@ -14,17 +14,20 @@ namespace FLG.Cs.Cards {
         private List<ICard> _cards;
 
         private List<ICard> _library;
-        private List<ICard> _hand;
+        private List<List<ICard>> _hand;
         private List<ICard> _graveyard;
 
-        public List<ICard> Hand { get => _hand; }
+        public List<ICard> GetHand(int playerIndex) => _hand[playerIndex];
 
-        public Deck()
+        public Deck(int nbPlayers = 1)
         {
             _cards = new();
             _library = new();
-            _hand = new();
             _graveyard = new();
+
+            _hand = new(nbPlayers);
+            for(int i = 0; i < nbPlayers; ++i)
+                _hand.Add(new());
         }
 
         internal void SetCards(List<ICard> cards)
@@ -33,21 +36,21 @@ namespace FLG.Cs.Cards {
             Reset();
         }
 
-        public ICard Draw()
+        public ICard DrawTop(int playerIndex)
         {
             ICard card = _library.Last();
             _library.RemoveAt(_library.Count - 1);
-            _hand.Add(card);
+            _hand[playerIndex].Add(card);
             return card;
         }
 
-        public List<ICard> Draw(uint n)
+        public List<ICard> DrawMultiple(uint n, int playerIndex)
         {
             List<ICard> cards = new((Int32)n);
 
             for (int i = 0; i < n; ++i)
             {
-                var card = Draw();
+                var card = DrawTop(playerIndex);
                 cards.Add(card);
             }
 
@@ -59,19 +62,19 @@ namespace FLG.Cs.Cards {
             CollectionUtils.Shuffle(_library);
         }
 
-        public void Discard(ICard card)
+        public void Discard(ICard card, int playerIndex)
         {
-            _hand.Remove(card);
+            _hand[playerIndex].Remove(card);
             _graveyard.Add(card);
         }
 
-        public ICard Search(string name, bool searchEverywhere)
+        public ICard Search(string name, int playerIndex, bool searchEverywhere)
         {
             var card = _library.Find(x => x.Name == name);
             if (card != null)
             {
                 _library.Remove(card);
-                _hand.Add(card);
+                _hand[playerIndex].Add(card);
                 return card;
             }
 
@@ -81,7 +84,7 @@ namespace FLG.Cs.Cards {
                 if (card != null)
                 {
                     _graveyard.Remove(card);
-                    _hand.Add(card);
+                    _hand[playerIndex].Add(card);
                     return card;
                 }
             }
@@ -93,13 +96,15 @@ namespace FLG.Cs.Cards {
         {
             _library.Clear();
             _graveyard.Clear();
-            _hand.Clear();
             _library = _cards;
+
+            foreach(var hand in _hand)
+                hand.Clear();
         }
 
         public int CountCards() => _cards.Count;
         public int CountLibrary() => _library.Count;
-        public int CountHand() => _hand.Count;
+        public int CountHand(int playerIndex) => _hand[playerIndex].Count;
         public int CountGraveyard() => _graveyard.Count;
     }
 }

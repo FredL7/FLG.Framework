@@ -21,8 +21,8 @@ namespace FLG.Cs.Cards.Tests {
             Assert.IsTrue(deck.CountHand() == 0);
             Assert.IsTrue(deck.CountGraveyard() == 0);
 
-            deck.Draw(7);
-            var hand = deck.Hand;
+            deck.DrawMultiple(7);
+            var hand = deck.GetHand();
             Assert.IsTrue(deck.CountCards() == 52 - 7);
             Assert.IsTrue(deck.CountLibrary() == 52 - 7);
             Assert.IsTrue(deck.CountHand() == 7);
@@ -43,7 +43,7 @@ namespace FLG.Cs.Cards.Tests {
             deck.Search("King of SPADES");
             deck.Search("Ace of SPADES");
             deck.Search("Ace of HEARTS");
-            var hand = deck.Hand;
+            var hand = deck.GetHand();
             var value = HandTotal(hand);
 
             Assert.IsTrue(value == 12);
@@ -71,15 +71,15 @@ namespace FLG.Cs.Cards.Tests {
                 IDeck deck = new StandardDeck52();
                 deck.Shuffle();
 
-                List<ICard> playerHand = deck.Draw(2);
-                List<ICard> dealerHand = deck.Draw(2);
+                List<ICard> playerHand = deck.DrawMultiple(2);
+                List<ICard> dealerHand = deck.DrawMultiple(2);
 
                 int playerSum = HandTotal(playerHand);
                 int dealerSum = HandTotal(dealerHand);
 
                 while (playerSum < 17)
                 {
-                    var card = deck.Draw();
+                    var card = deck.DrawTop();
                     playerHand.Add(card);
                     playerSum = HandTotal(playerHand);
                 }
@@ -95,7 +95,7 @@ namespace FLG.Cs.Cards.Tests {
                     {
                         while (dealerSum < 17)
                         {
-                            var card = deck.Draw();
+                            var card = deck.DrawTop();
                             dealerHand.Add(card);
                             dealerSum = HandTotal(dealerHand);
                         }

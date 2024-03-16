@@ -1,17 +1,17 @@
 ﻿namespace FLG.Cs.IDatamodel {
     public interface IDeck {
-        public List<ICard> Hand { get; }
+        public List<ICard> GetHand(int playerIndex = 0);
 
-        public ICard Draw();
-        public List<ICard> Draw(uint n);
-        public ICard Search(string name, bool searchEverywhere = false);
+        public ICard DrawTop(int playerIndex = 0);
+        public List<ICard> DrawMultiple(uint n, int playerIndex = 0);
+        public ICard Search(string name, int playerIndex = 0, bool searchEverywhere = false);
         public void Shuffle();
-        public void Discard(ICard card);
+        public void Discard(ICard card, int playerIndex = 0);
         public void Reset();
 
         public int CountCards();
         public int CountLibrary();
-        public int CountHand();
+        public int CountHand(int playerIndex = 0);
         public int CountGraveyard();
     }
 }
