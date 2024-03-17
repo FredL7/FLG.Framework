@@ -1,5 +1,6 @@
 ﻿using FLG.Cs.Decorators;
-using FLG.Cs.Logger;
+using FLG.Cs.IDatamodel;
+
 
 namespace FLG.Cs.ServiceLocator {
     public class Locator : SingletonBase<Locator> {
@@ -14,13 +15,23 @@ namespace FLG.Cs.ServiceLocator {
         {
             if (_services.ContainsKey(typeof(T)))
             {
-                Console.WriteLine($"Service locator already contains a service for {typeof(T)}");
-                // TODO: throw?
+                IServiceInstance potentialProxy = _services[typeof(T)];
+                if (potentialProxy.IsProxy())
+                {
+                    _services[typeof(T)] = service;
+                    service.OnServiceRegistered();
+                }
+                else
+                {
+                    service.OnServiceRegisteredFail();
+                }
                 return;
             }
-            _services.Add(typeof(T), service);
-            LogManager.Instance.Info($"Register service of type {typeof(T)}");
-            // service.OnServiceRegistered();
+            else
+            {
+                _services.Add(typeof(T), service);
+                service.OnServiceRegistered();
+            }
         }
 
         public T Get<T>() where T : IServiceInstance

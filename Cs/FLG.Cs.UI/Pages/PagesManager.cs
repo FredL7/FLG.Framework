@@ -1,35 +1,45 @@
-﻿using FLG.Cs.Logger;
+using FLG.Cs.IDatamodel;
+using FLG.Cs.ServiceLocator;
 
 namespace FLG.Cs.UI.Pages {
     internal class PagesManager {
-        private Dictionary<string, Page> _pages;
-        private Page? _current = null;
+        private Dictionary<string, IPage> _pages;
+
+        private string _currentPage;
 
         internal PagesManager()
         {
             _pages = new();
+            _currentPage = string.Empty;
         }
 
-        public IEnumerable<Page> GetPages() => _pages.Values;
-
-        internal void RegisterPages(string pagesDir)
+        internal void SetCurrentPage(string id)
         {
-            var pages = PageXMLParser.Parse(pagesDir);
-            if (pages != null)
-                foreach (var page in pages)
-                {
-                    _pages.Add(page.GetName(), page);
-                    LogManager.Instance.Info($"Registered Page \"{page.GetName()}\"");
-                }
+            if (!_pages.ContainsKey(id))
+            {
+                Locator.Instance.Get<ILogManager>().Error($"Page with id {id} does not exists");
+                return;
+            }
+
+            _pages[id].OnClose();
+
+            _currentPage = id;
+            _pages[id].OnOpen();
         }
 
-        internal string GetLayoutIdFromPageId(string id) => _pages[id].LayoutId;
-
-        internal void OpenPage(string id)
+        internal IPage GetCurrent()
         {
-            _current?.Close();
-            _current = _pages[id];
-            _current.Open();
+            if (_currentPage == string.Empty)
+                Locator.Instance.Get<ILogManager>().Error($"Current page isn't set.");
+
+            return _pages[_currentPage];
+        }
+
+        internal void SetPagesFromParser(Dictionary<string, IPage> pages)
+        {
+            _pages = pages;
+            foreach (IPage page in _pages.Values)
+                page.Setup();
         }
     }
 }

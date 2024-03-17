@@ -1,43 +1,38 @@
-﻿namespace FLG.Cs.Serialization {
+﻿using FLG.Cs.IDatamodel;
+
+namespace FLG.Cs.Serialization {
     public class SaveFile : ISaveFile {
-        private readonly string _name;
-        private readonly string _filepath;
-        private ESerializerType _serializerType;
-        private readonly DateTime _dateCreated;
-        private DateTime _dateLastModified;
+        public string Name { get; private set; }
+        public string Path { get; private set; }
+        public ESerializerType Type { get; private set; }
+        public DateTime DateCreated { get; private set; }
+        public DateTime DateLastModified { get; private set; }
 
         internal SaveFile(string name, string filepath, ESerializerType serializerType)
         {
-            _name = name;
-            _filepath = filepath;
-            _serializerType = serializerType;
+            Name = name;
+            Path = filepath;
+            Type = serializerType;
 
             DateTime now = GetDateTimeNow();
-            _dateCreated = now;
-            _dateLastModified = now;
+            DateCreated = now;
+            DateLastModified = now;
         }
 
         internal SaveFile(string name, string filepath, ESerializerType serializerType, DateTime dateCreated, DateTime dateLastModified)
         {
-            _name = name;
-            _filepath = filepath;
-            _serializerType = serializerType;
-            _dateCreated = dateCreated;
-            _dateLastModified = dateLastModified;
+            Name = name;
+            Path = filepath;
+            Type = serializerType;
+            DateCreated = dateCreated;
+            DateLastModified = dateLastModified;
         }
-
-        public string GetName() => _name;
-        public string GetPath() => _filepath;
-        public ESerializerType GetSerializerType() => _serializerType;
-        public DateTime GetDateCreated() => _dateCreated;
-        public DateTime GetDateLastModified() => _dateLastModified;
 
         public void UpdateDateLastModified()
         {
-            _dateLastModified = GetDateTimeNow();
+            DateLastModified = GetDateTimeNow();
         }
 
-        // TODO: UTC vs non-UTC
         private static DateTime GetDateTimeNow() => DateTime.UtcNow;
     }
 }

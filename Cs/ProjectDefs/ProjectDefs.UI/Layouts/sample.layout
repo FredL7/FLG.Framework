@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<layout>
+  <VStack name="main">
+    <header />
+    <VStack target="content" justify="center" align="center" />
+  </VStack>
+</layout>

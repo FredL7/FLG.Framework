@@ -1,13 +1,15 @@
 global using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using FLG.Cs.Factory;
-using FLG.Cs.Logger;
+using FLG.Cs.IDatamodel;
+using FLG.Cs.Framework;
 using FLG.Cs.ServiceLocator;
+
 
 namespace FLG.Cs.Serialization.Tests {
     [TestClass]
     public class SerializationUnitTests {
-        private const string savedir = "../../../_saves";
+        private const string SAVES_DIR = "../../../../../../_saves";
+        private const string LOGS_DIR = "../../../../../../_logs";
 
         private const bool _boolvalue = true;
         private const uint _uintvalue = uint.MaxValue;
@@ -18,18 +20,39 @@ namespace FLG.Cs.Serialization.Tests {
 
         private static SerializableItem? _item;
 
-        [ClassInitialize]
-        public static void Init(TestContext _)
+        #region Test
+        private static void Initialize(ESerializerType t)
         {
-            LogManager.Instance.SetLogLocation("../../../_logs");
-            ManagerFactory.CreateBinarySerializer(savedir);
+            Preferences pref = new();
+            PreferencesSerialization prefSerialization = new()
+            {
+                savesDir = SAVES_DIR,
+                serializerType = t
+            };
+            FrameworkManager.Instance.InitializeFramework(pref);
+            FrameworkManager.Instance.InitializeSerializer(prefSerialization);
 
             ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();
             _datevalue = DateTime.Now;
             _item = new(_boolvalue, _uintvalue, _intvalue, _floatvalue, _stringvalue, _datevalue);
             serializer.AddSerializable(_item);
-
         }
+
+        private static void Test()
+        {
+            var filename = MakeFilename();
+            Serialize(filename);
+            ChangeItemValues();
+            Deserialize(filename);
+
+            Assert.IsTrue(_item.GetBoolValue() == _boolvalue);
+            Assert.IsTrue(_item.GetUintValue() == _uintvalue);
+            Assert.IsTrue(_item.GetIntValue() == _intvalue);
+            Assert.IsTrue(_item.GetFloatValue() == _floatvalue);
+            Assert.IsTrue(_item.GetStringValue() == _stringvalue);
+            Assert.IsTrue(_item.GetDateValue() == _datevalue);
+        }
+        #endregion Test
 
         #region Utils
         private static string MakeFilename()
@@ -53,7 +76,7 @@ namespace FLG.Cs.Serialization.Tests {
         {
             ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();
             foreach (var saveFile in serializer.GetSaveFiles())
-                if (saveFile.GetName() == filename)
+                if (saveFile.Name == filename)
                     serializer.Deserialize(saveFile);
         }
         #endregion Utils
@@ -61,58 +84,22 @@ namespace FLG.Cs.Serialization.Tests {
         [TestMethod]
         public void TestBinarySerialization()
         {
-            ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();
-            serializer.SetSerializerBinary();
-
-            var filename = MakeFilename();
-            Serialize(filename);
-            ChangeItemValues();
-            Deserialize(filename);
-
-            Assert.IsTrue(_item.GetBoolValue() == _boolvalue);
-            Assert.IsTrue(_item.GetUintValue() == _uintvalue);
-            Assert.IsTrue(_item.GetIntValue() == _intvalue);
-            Assert.IsTrue(_item.GetFloatValue() == _floatvalue);
-            Assert.IsTrue(_item.GetStringValue() == _stringvalue);
-            Assert.IsTrue(_item.GetDateValue() == _datevalue);
+            Initialize(ESerializerType.BIN);
+            Test();
         }
 
         [TestMethod]
         public void TestJsonSerialization()
         {
-            ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();
-            serializer.SetSerializerJson();
-
-            var filename = MakeFilename();
-            Serialize(filename);
-            ChangeItemValues();
-            Deserialize(filename);
-
-            Assert.IsTrue(_item.GetBoolValue() == _boolvalue);
-            Assert.IsTrue(_item.GetUintValue() == _uintvalue);
-            Assert.IsTrue(_item.GetIntValue() == _intvalue);
-            Assert.IsTrue(_item.GetFloatValue() == _floatvalue);
-            Assert.IsTrue(_item.GetStringValue() == _stringvalue);
-            Assert.IsTrue(_item.GetDateValue() == _datevalue);
+            Initialize(ESerializerType.JSON);
+            Test();
         }
 
         [TestMethod]
         public void TestXmlSerialization()
         {
-            ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();
-            serializer.SetSerializerXml();
-
-            var filename = MakeFilename();
-            Serialize(filename);
-            ChangeItemValues();
-            Deserialize(filename);
-
-            Assert.IsTrue(_item.GetBoolValue() == _boolvalue);
-            Assert.IsTrue(_item.GetUintValue() == _uintvalue);
-            Assert.IsTrue(_item.GetIntValue() == _intvalue);
-            Assert.IsTrue(_item.GetFloatValue() == _floatvalue);
-            Assert.IsTrue(_item.GetStringValue() == _stringvalue);
-            Assert.IsTrue(_item.GetDateValue() == _datevalue);
+            Initialize(ESerializerType.XML);
+            Test();
         }
     }
 }

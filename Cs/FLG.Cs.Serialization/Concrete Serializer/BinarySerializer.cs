@@ -1,4 +1,7 @@
-﻿namespace FLG.Cs.Serialization {
+﻿using FLG.Cs.IDatamodel;
+
+
+namespace FLG.Cs.Serialization {
     internal class BinarySerializer : Serializer {
         internal const string SAVE_EXTENSION = ".save";
         protected override string GetSaveExtension() => SAVE_EXTENSION;
@@ -11,7 +14,7 @@
 
         public sealed override void Serialize(ISaveFile saveFile)
         {
-            var filepath = saveFile.GetPath();
+            var filepath = saveFile.Path;
             using (_writer = new(File.Open(filepath, FileMode.Create)))
             {
                 SaveHeader(saveFile);
@@ -21,7 +24,7 @@
 
         public sealed override void Deserialize(ISaveFile saveFile)
         {
-            var filepath = saveFile.GetPath();
+            var filepath = saveFile.Path;
             using (_reader = new(File.OpenRead(filepath)))
             {
                 LoadHeader();

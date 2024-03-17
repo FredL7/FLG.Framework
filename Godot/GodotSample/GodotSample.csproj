@@ -1,0 +1,20 @@
+<Project Sdk="Godot.NET.Sdk/4.1.1">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Cs\FLG.Cs.Decorators\FLG.Cs.Decorators.csproj" />
+    <ProjectReference Include="..\..\Cs\FLG.Cs.Framework\FLG.Cs.Framework.csproj" />
+    <ProjectReference Include="..\..\Cs\FLG.Cs.IDatamodel\FLG.Cs.IDatamodel.csproj" />
+    <ProjectReference Include="..\..\Cs\FLG.Cs.Math\FLG.Cs.Math.csproj" />
+    <ProjectReference Include="..\..\Cs\FLG.Cs.ServiceLocator\FLG.Cs.ServiceLocator.csproj" />
+    <ProjectReference Include="..\FLG.Godot.Helpers\FLG.Godot.Helpers.csproj" />
+    <ProjectReference Include="..\FLG.Godot.UI\FLG.Godot.UI.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="GodotSharp">
+      <HintPath>..\..\dependencies\Release\GodotSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

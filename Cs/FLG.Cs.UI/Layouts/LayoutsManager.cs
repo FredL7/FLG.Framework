@@ -1,72 +1,52 @@
-﻿using FLG.Cs.Logger;
+﻿using FLG.Cs.IDatamodel;
 using FLG.Cs.Math;
 using FLG.Cs.ServiceLocator;
-using FLG.Cs.UI.Pages;
+
 
 namespace FLG.Cs.UI.Layouts
 {
     internal class LayoutsManager {
         private Dictionary<string, Layout> _layouts;
-        private Layout? _current = null;
+
+        private string _currentLayout;
 
         internal LayoutsManager()
         {
             _layouts = new();
+            _currentLayout = string.Empty;
+        }
+
+        internal void SetCurrentLayout(string id)
+        {
+            if (!_layouts.ContainsKey(id))
+            {
+                Locator.Instance.Get<ILogManager>().Error($"Layout with id {id} does not exists");
+                return;
+            }
+
+            _currentLayout = id;
+        }
+
+        internal Layout GetCurrent()
+        {
+            if (_currentLayout == string.Empty)
+                Locator.Instance.Get<ILogManager>().Error($"Current layout isn't set.");
+
+            return _layouts[_currentLayout];
         }
 
         public IEnumerable<ILayout> GetLayouts() => _layouts.Values;
+        public ILayout GetLayout(string name) => _layouts[name];
 
-        internal void RegisterLayouts(string layoutsDir, Window window)
+        internal void SetLayoutsFromParser(Dictionary<string, Layout> layouts)
         {
-            var layouts = LayoutXMLParser.Parse(layoutsDir);
-            if (layouts != null)
-                foreach (var layout in layouts)
-                {
-                    _layouts.Add(layout.GetName(), layout);
-                    LogManager.Instance.Info($"Registered layout \"{layout.GetName()}\"");
-                }
-            ComputeLayoutsRectXforms(window);
+            _layouts = layouts;
         }
 
-        internal void SetLayoutActive(string id)
-        {
-            var target = _layouts[id];
-            if (target != _current)
-            {
-                _current?.SetActive(false);
-                _current = target;
-                _current.SetActive(true);
-            }
-        }
-
-        internal void ComputeLayoutsRectXforms(Window window)
+        internal void ComputeLayoutsRectXforms(Size windowSize)
         {
             foreach (var layout in _layouts)
-                layout.Value.ComputeRectXforms(window);
-        }
-
-        internal void ComputeTargetRectXforms(string layoutid, string targetid, List<AbstractLayoutElement> content)
-        {
-            if(!_layouts.ContainsKey(layoutid))
-            {
-                LogManager.Instance.Error($"No layout with it {layoutid}");
-                return;
-            }
-
-            if (_layouts[layoutid].GetTarget(targetid) == null)
-            {
-                LogManager.Instance.Error($"Layout \"{layoutid}\" does not contain target with id {targetid}");
-                return;
-            }
-
-            var target = _layouts[layoutid].GetTarget(targetid) as AbstractLayoutElementComposite;
-            if (target == null)
-            {
-                LogManager.Instance.Error($"Target \"{targetid}\" cannot contain childrens");
-                return;
-            }
-
-            target.ComputeContentSizesAndPositions(content);
+                layout.Value.ComputeRectXforms(windowSize);
         }
     }
 }

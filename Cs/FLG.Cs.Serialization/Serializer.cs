@@ -1,4 +1,6 @@
-﻿namespace FLG.Cs.Serialization {
+﻿using FLG.Cs.IDatamodel;
+
+namespace FLG.Cs.Serialization {
     internal abstract class Serializer : ISerializer {
         private const string ID_VERSION = "Version";
         private const string ID_NAME = "Name";
@@ -17,9 +19,9 @@
             saveFile.UpdateDateLastModified();
 
             SaveUint(SerializerManager.VERSION, ID_VERSION);
-            SaveString(saveFile.GetName(), ID_NAME);
-            SaveDateTime(saveFile.GetDateCreated(), ID_DATECREATED);
-            SaveDateTime(saveFile.GetDateLastModified(), ID_DATELASTMODIFIED);
+            SaveString(saveFile.Name, ID_NAME);
+            SaveDateTime(saveFile.DateCreated, ID_DATECREATED);
+            SaveDateTime(saveFile.DateLastModified, ID_DATELASTMODIFIED);
         }
 
         protected SaveFileHeader LoadHeader()

@@ -19,11 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\FLG.Cs.Factory\FLG.Cs.Factory.csproj" />
+    <ProjectReference Include="..\..\FLG.Cs.Framework\FLG.Cs.Framework.csproj" />
     <ProjectReference Include="..\..\FLG.Cs.Logger\FLG.Cs.Logger.csproj" />
     <ProjectReference Include="..\..\FLG.Cs.Math\FLG.Cs.Math.csproj" />
     <ProjectReference Include="..\..\FLG.Cs.ServiceLocator\FLG.Cs.ServiceLocator.csproj" />
     <ProjectReference Include="..\..\FLG.Cs.UI\FLG.Cs.UI.csproj" />
+    <ProjectReference Include="..\..\ProjectDefs\ProjectDefs.UI\ProjectDefs.UI.csproj" />
   </ItemGroup>
 
 </Project>

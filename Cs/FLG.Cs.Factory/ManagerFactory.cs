@@ -1,33 +1,38 @@
-﻿using FLG.Cs.Serialization;
+﻿using FLG.Cs.Logger;
+using FLG.Cs.Serialization;
 using FLG.Cs.ServiceLocator;
 using FLG.Cs.UI;
 
 namespace FLG.Cs.Factory {
     public static class ManagerFactory {
-        #region ISerializer
-        public static void CreateBinarySerializer(string saveDir)
+        public static void CreateProxies()
         {
-            ISerializerManager serializer = SerializerManager.CreateBinarySerializer(saveDir);
-            Locator.Instance.Register(serializer);
-        }
-        public static void CreateJSONSerializer(string saveDir)
-        {
-            ISerializerManager serializer = SerializerManager.CreateJsonSerializer(saveDir);
-            Locator.Instance.Register(serializer);
-        }
-        public static void CreateXmlSerializer(string saveDir)
-        {
-            ISerializerManager serializer = SerializerManager.CreateXmlSerializer(saveDir);
-            Locator.Instance.Register(serializer);
-        }
-        #endregion ISerializer
+            ILogManager logManager = new LogManagerProxy();
+            Locator.Instance.Register(logManager);
 
-        #region IUIManager
-        public static void CreateUIManager()
-        {
-            IUIManager manager = new UIManager();
+            ISerializerManager serializer = new SerializerManagerProxy();
+            Locator.Instance.Register(serializer);
+
+            IUIManager manager = new UIManagerProxy();
             Locator.Instance.Register(manager);
         }
-        #endregion IUIManager
+
+        public static void CreateLogger(string logsDir)
+        {
+            ILogManager logManager = new LogManager(logsDir);
+            Locator.Instance.Register(logManager);
+        }
+
+        public static void CreateSerializer(ESerializerType t, string saveDir)
+        {
+            ISerializerManager serializer = new SerializerManager(t, saveDir);
+            Locator.Instance.Register(serializer);
+        }
+
+        public static void CreateUIManager(string layoutsDir, string pagesDir)
+        {
+            IUIManager manager = new UIManager(layoutsDir, pagesDir);
+            Locator.Instance.Register(manager);
+        }
     }
 }

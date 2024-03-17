@@ -1,26 +1,21 @@
 ﻿using System.Numerics;
 
+using FLG.Cs.IDatamodel;
+using FLG.Cs.Math;
+
+
 namespace FLG.Cs.UI.Layouts {
     public class Layout : ILayout {
         private bool _active;
 
-        private AbstractLayoutElement _root;
-        public ILayoutElement GetRoot() => _root;
-
-        string _name;
-        public string GetName() => _name;
+        public string Name { get; private set; }
+        public AbstractLayoutElement _root;
+        public ILayoutElement Root { get { return _root; } }
 
         #region Targets
-        readonly private List<AbstractLayoutElement> _targets;
-        internal void AddTarget(AbstractLayoutElement target) { _targets.Add(target); }
-        internal AbstractLayoutElement? GetTarget(string name)
-        {
-            AbstractLayoutElement? target = null;
-            foreach (var element in _targets)
-                if (element.GetName() == name)
-                    target = element;
-            return target;
-        }
+        readonly private Dictionary<string, AbstractLayoutElement> _targets;
+        internal bool HasTarget(string id) => _targets.ContainsKey(id);
+        public ILayoutElement GetTarget(string id) => _targets[id];
         #endregion Targets
 
         #region Observer
@@ -31,13 +26,14 @@ namespace FLG.Cs.UI.Layouts {
         }
         #endregion Observer
 
-        internal Layout(AbstractLayoutElement root, string name)
+        internal Layout(AbstractLayoutElement root, string name, Dictionary<string, AbstractLayoutElement> targets)
         {
             _active = false;
             _root = root;
             _targets = new();
             _observers = new();
-            _name = name;
+            Name = name;
+            _targets = targets;
         }
 
         internal void SetActive(bool active)
@@ -56,9 +52,9 @@ namespace FLG.Cs.UI.Layouts {
             }
         }
 
-        internal void ComputeRectXforms(Window window)
+        internal void ComputeRectXforms(Size windowSize)
         {
-            _root.RectXform.SetSizesAndPosition(window.RectXform.GetDimensions(), Vector2.Zero);
+            _root.RectXform.SetSizesAndPosition(windowSize, Vector2.Zero);
             _root.ComputeRectXform();
         }
     }

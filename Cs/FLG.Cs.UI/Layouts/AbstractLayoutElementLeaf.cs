@@ -1,25 +1,26 @@
 ﻿using System.Xml;
 
-using FLG.Cs.Logger;
+using FLG.Cs.IDatamodel;
+using FLG.Cs.Math;
 using FLG.Cs.ServiceLocator;
 
+
 namespace FLG.Cs.UI.Layouts {
-    internal class AbstractLayoutElementLeaf : AbstractLayoutElement {
-        internal AbstractLayoutElementLeaf(XmlNode node, string name)
-            : base(node, name) { }
+    public abstract class AbstractLayoutElementLeaf : AbstractLayoutElement {
+        internal AbstractLayoutElementLeaf(string name, XmlNode node)
+            : base(name, node) { }
+        internal AbstractLayoutElementLeaf(string name, LayoutAttributes attributes)
+            : base(name, attributes, false) { }
 
-        internal override void AddChild(AbstractLayoutElement child)
+        public override void AddChild(ILayoutElement child, string id = ILayoutElement.DEFAULT_CHILDREN_TARGET)
         {
-            LogManager.Instance.Error("Layout element leaf cannot contain childrens");
+            Locator.Instance.Get<ILogManager>().Error("Layout element leaf cannot contain childrens");
         }
 
-        public override bool HasChildren() => false;
-        public override IEnumerable<AbstractLayoutElement> GetChildrens()
-        {
-            LogManager.Instance.Error("Layout element leaf cannot contain childrens");
-            throw new NotImplementedException();
-        }
+        public override IEnumerable<string> GetTargets() => Enumerable.Empty<string>();
+        public override bool HasChildren(string id = ILayoutElement.DEFAULT_CHILDREN_TARGET) => false;
+        public override IEnumerable<ILayoutElement> GetChildrens(string id = ILayoutElement.DEFAULT_CHILDREN_TARGET) => Enumerable.Empty<ILayoutElement>();
 
-        internal sealed override void ComputeRectXform() { }
+        public sealed override void ComputeRectXform() { /* Parent will drive the size */ }
     }
 }

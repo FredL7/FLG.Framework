@@ -1,6 +1,8 @@
-﻿using System.Reflection.PortableExecutable;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Nodes;
+
+using FLG.Cs.IDatamodel;
+
 
 namespace FLG.Cs.Serialization {
     internal class JsonSerializer : Serializer {
@@ -20,7 +22,7 @@ namespace FLG.Cs.Serialization {
             SaveHeader(saveFile);
             SerializeSerializables();
 
-            var filepath = saveFile.GetPath();
+            var filepath = saveFile.Path;
             var options = new JsonWriterOptions { Indented = true };
             using var filestream = File.Create(filepath);
             using Utf8JsonWriter writer = new(filestream, options);
@@ -29,7 +31,7 @@ namespace FLG.Cs.Serialization {
 
         public sealed override void Deserialize(ISaveFile saveFile)
         {
-            var filepath = saveFile.GetPath();
+            var filepath = saveFile.Path;
             using var filestream = File.OpenRead(filepath);
             _properties = new();
             _properties = System.Text.Json.JsonSerializer.Deserialize<JsonObject>(filestream);

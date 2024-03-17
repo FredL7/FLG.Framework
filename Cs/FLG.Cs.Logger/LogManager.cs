@@ -1,31 +1,36 @@
-﻿using FLG.Cs.Decorators;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+
+using FLG.Cs.IDatamodel;
+
 
 namespace FLG.Cs.Logger {
-    // TODO: Write as csv instead?
-    public class LogManager : SingletonBase<LogManager> {
+    public class LogManager : ILogManager {
         private const string FILENAME_DATE_PATTERN = @"yyyyddM_HH-mm";
         private const string LOGGING_DATE_PATTERN = @"HH:mm:ss:fff";
         private const string UNKNOWN = "Unknown";
 
-        private string _filepath = String.Empty; // TODO: Default location?
+        private string _logsDir;
+        private string _filepath;
 
-        private LogManager() { }
+        public LogManager(PreferencesLogs prefs) {
+            _logsDir = prefs.logsDir;
 
-        public void SetLogLocation(string logDir)
-        {
             DateTime date = DateTime.Now;
             string filename = date.ToString(FILENAME_DATE_PATTERN);
-            System.IO.Directory.CreateDirectory(logDir);
-            _filepath = Path.Combine(logDir, filename + ".log");
-            Debug("Begin Logging");
+            System.IO.Directory.CreateDirectory(_logsDir);
+            _filepath = Path.Combine(_logsDir, filename + ".log");
         }
+
+        #region IServiceInstance
+        public bool IsProxy() => false;
+        public void OnServiceRegisteredFail() { Error("Log Manager Failed to register"); }
+        public void OnServiceRegistered() {
+            Debug("Log Manager Registered");
+        }
+        #endregion IServiceInstance
 
         private void Log(string msg, ELogLevel level)
         {
-            if (string.IsNullOrEmpty(_filepath))
-                throw new Exception("No directory specified for logs, use SetLogLocation()");
-
             StackTrace stackTrace = new();
             string? methodname = stackTrace.GetFrame(2)?.GetMethod()?.Name;
             string? classname = stackTrace.GetFrame(2)?.GetMethod()?.DeclaringType?.FullName;
