@@ -1,11 +1,10 @@
 using Godot;
-using System;
 using System.Collections.Generic;
 
-using FLG.Cs.Framework;
 using FLG.Cs.IDatamodel;
 using FLG.Cs.Math;
-using FLG.Cs.ServiceLocator;
+using FLG.Cs.UI;
+using FLG.Godot.Framework;
 using FLG.Godot.Helpers;
 using FLG.Godot.UI;
 
@@ -17,14 +16,15 @@ using flgButton = FLG.Godot.UI.Button;
 
 [Tool]
 public partial class UITool : Control, IUIObserver {
-    private const string LOGS_RELATIVE_PATH = "../../_logs"; // TODO: Move to serialized field to appear in the inspector?
+    // private const string LOGS_RELATIVE_PATH = "../../_logs"; // TODO: Move to serialized field to appear in the inspector?
     private const string LAYOUTS_RELATIVE_PATH = "../../Cs/ProjectDefs/ProjectDefs.UI/Layouts";
     private const string PAGES_RELATIVE_PATH = "../../Cs/ProjectDefs/ProjectDefs.UI/Pages";
 
 
     private Size _window = new(1920, 1080);
 
-    private IUIManager _uiManager;
+    private ILogManager _logger;
+    private IUIManager _ui;
 
     private Dictionary<string, Node> _layouts = new();
     private Dictionary<string, List<Node>> _pages = new();
@@ -42,21 +42,29 @@ public partial class UITool : Control, IUIObserver {
         }
     }
 
+    private void InitializeFramework()
+    {
+        _logger = new GodotLogger();
+
+        PreferencesUI prefsUI = new()
+        {
+            layoutsDir = ProjectSettings.GlobalizePath("res://" + LAYOUTS_RELATIVE_PATH),
+            pagesDir = ProjectSettings.GlobalizePath("res://" + PAGES_RELATIVE_PATH),
+            windowSize = _window,
+            logger = _logger
+        };
+        _ui = new UIManager(prefsUI);
+    }
+
     public void SetupUI()
     {
-        _uiManager = Locator.Instance.Get<IUIManager>();
-        Console.WriteLine(_uiManager);
-
         Clear();
         DrawUI();
 
-        _uiManager.AddObserver(this);
-    }
-
-    public override void _ExitTree()
-    {
-        _uiManager.RemoveObserver(this);
-        base._ExitTree();
+        if (!Engine.IsEditorHint())
+        {
+            _ui.AddObserver(this);
+        }
     }
 
     public void OnCurrentPageChanged(string pageId, string layoutId)
@@ -77,26 +85,6 @@ public partial class UITool : Control, IUIObserver {
                 _layouts[layoutId].Set("visible", true);
             }
         }
-    }
-
-    private void InitializeFramework()
-    {
-        Preferences prefs = new();
-        FrameworkManager.Instance.InitializeFramework(prefs);
-
-        PreferencesLogs prefsLogs = new()
-        {
-            logsDir = LOGS_RELATIVE_PATH,
-        };
-        FrameworkManager.Instance.InitializeLogs(prefsLogs);
-
-        PreferencesUI prefsUI = new()
-        {
-            layoutsDir = ProjectSettings.GlobalizePath("res://" + LAYOUTS_RELATIVE_PATH),
-            pagesDir = ProjectSettings.GlobalizePath("res://" + PAGES_RELATIVE_PATH),
-            windowSize = _window
-        };
-        FrameworkManager.Instance.InitializeUI(prefsUI);
     }
 
     private void Clear()
@@ -132,7 +120,7 @@ public partial class UITool : Control, IUIObserver {
 
     private void DrawLayouts()
     {
-        foreach (var layout in _uiManager.GetLayouts())
+        foreach (var layout in _ui.GetLayouts())
             DrawLayout(layout);
     }
 

@@ -1,7 +1,6 @@
 ﻿using System.Xml;
 
 using FLG.Cs.IDatamodel;
-using FLG.Cs.Math;
 using FLG.Cs.ServiceLocator;
 using FLG.Cs.UI.Grids;
 using FLG.Cs.UI.Layouts;

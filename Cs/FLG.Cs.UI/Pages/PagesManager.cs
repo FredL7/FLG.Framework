@@ -1,5 +1,4 @@
 using FLG.Cs.IDatamodel;
-using FLG.Cs.ServiceLocator;
 
 namespace FLG.Cs.UI.Pages {
     internal class PagesManager {
@@ -17,8 +16,7 @@ namespace FLG.Cs.UI.Pages {
         {
             if (!_pages.ContainsKey(id))
             {
-                Locator.Instance.Get<ILogManager>().Error($"Page with id {id} does not exists");
-                return;
+                throw new Exception($"Page with id {id} does not exists");
             }
 
             _pages[id].OnClose();
@@ -30,7 +28,7 @@ namespace FLG.Cs.UI.Pages {
         internal IPage GetCurrent()
         {
             if (_currentPage == string.Empty)
-                Locator.Instance.Get<ILogManager>().Error($"Current page isn't set.");
+                throw new Exception($"Current page isn't set.");
 
             return _pages[_currentPage];
         }

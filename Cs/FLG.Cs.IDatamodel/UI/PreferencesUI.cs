@@ -5,5 +5,7 @@ namespace FLG.Cs.IDatamodel {
         public string layoutsDir;
         public string pagesDir;
         public Size windowSize;
+
+        public ILogManager logger;
     }
 }

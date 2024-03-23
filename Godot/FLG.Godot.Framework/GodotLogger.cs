@@ -4,8 +4,8 @@ using Godot;
 
 using FLG.Cs.IDatamodel;
 
-namespace FLG.Godot.Helpers {
-    internal class GodotLogger : ILogManager {
+namespace FLG.Godot.Framework {
+    public class GodotLogger : ILogManager {
         #region IServiceInstance
         public bool IsProxy() { throw new NotImplementedException("Should not register Godot Logger"); }
         public void OnServiceRegisteredFail() { throw new NotImplementedException("Should not register Godot Logger"); }

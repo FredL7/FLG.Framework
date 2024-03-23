@@ -1,6 +1,5 @@
 ﻿using FLG.Cs.IDatamodel;
 using FLG.Cs.Math;
-using FLG.Cs.ServiceLocator;
 using FLG.Cs.UI.Layouts;
 using FLG.Cs.UI.Pages;
 
@@ -10,6 +9,7 @@ namespace FLG.Cs.UI {
         private string _pagesDir;
         private Size _windowSize;
 
+        private ILogManager _logger;
         private LayoutsManager _layoutsManager;
         private PagesManager _pagesManager;
 
@@ -21,6 +21,7 @@ namespace FLG.Cs.UI {
             _pagesDir = prefs.pagesDir;
             _windowSize = prefs.windowSize;
 
+            _logger = prefs.logger;
             _layoutsManager = new();
             _pagesManager = new();
 
@@ -29,10 +30,10 @@ namespace FLG.Cs.UI {
 
         #region IServiceInstance
         public bool IsProxy() => false;
-        public void OnServiceRegisteredFail() { Locator.Instance.Get<ILogManager>().Error("UI Manager Failed to register"); }
+        public void OnServiceRegisteredFail() { _logger.Error("UI Manager Failed to register"); }
         public void OnServiceRegistered()
         {
-            Locator.Instance.Get<ILogManager>().Debug("UI Manager Registered");
+            _logger.Debug("UI Manager Registered");
             ParseUI();
         }
         #endregion IServiceInstance
@@ -60,13 +61,12 @@ namespace FLG.Cs.UI {
 
         private void ParseUI()
         {
-            var logger = Locator.Instance.Get<ILogManager>();
-            logger.Debug("Begin XML Parsing");
+            _logger.Debug("Begin XML Parsing");
 
-            XMLParser parser = new(_layoutsDir, _pagesDir);
+            XMLParser parser = new(_layoutsDir, _pagesDir, _logger);
             var result = parser.Parse();
             if (!result) result.Log();
-            logger.Debug("Finished XML Parsing");
+            _logger.Debug("Finished XML Parsing");
 
             _layoutsManager.SetLayoutsFromParser(parser.GetLayouts());
             _pagesManager.SetPagesFromParser(parser.GetPages());
