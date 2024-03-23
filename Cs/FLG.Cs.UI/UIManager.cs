@@ -73,7 +73,7 @@ namespace FLG.Cs.UI {
             _logger.Debug("Finished XML Parsing");
 
             _layoutsManager.SetLayoutsFromParser(parser.GetLayouts());
-            _pagesManager.SetPagesFromParser(parser.GetPages(), _factory);
+            _pagesManager.SetPagesFromParser(parser.GetPages(), this, _factory);
 
             // TODO: Register window size change to compute on change (also applies to pages)
             _layoutsManager.ComputeLayoutsRectXforms(_windowSize);

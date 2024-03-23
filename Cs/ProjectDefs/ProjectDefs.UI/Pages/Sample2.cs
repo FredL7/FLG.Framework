@@ -9,7 +9,7 @@ public class Sample2 : IPage {
 
     private IText _text;
 
-    public void Setup(IUIFactory factory)
+    public void Setup(IUIManager ui, IUIFactory factory)
     {
         var proxy = factory.ProxyLayoutElement("page2-test-1", new() { Width=128, Height=40, Margin=new(0,0,0,20)});
         var label = factory.Label("page2-test-label", "Hello World!", new() { Width = 128, Height = 40, Margin = new(0, 0, 0, 20) });
@@ -17,7 +17,6 @@ public class Sample2 : IPage {
         var btn = factory.Button("page2-test-button", "Click Me!", OnBtnClicked, new() { Width = 128, Height = 40, Margin = new(0, 0, 0, 20) });
         _text = (IText)factory.Text("page2-test-text", "BBCode: [img width=40 height=40]icon.svg[/img]", new() { Width = 128, Height = 40 });
 
-        var ui = Locator.Instance.Get<IUIManager>();
         var layout = ui.GetLayout(LayoutId);
         var target = layout.GetTarget("content");
         target.AddChild(proxy, PageId);
