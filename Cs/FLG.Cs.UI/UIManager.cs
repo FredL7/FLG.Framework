@@ -10,6 +10,8 @@ namespace FLG.Cs.UI {
         private Size _windowSize;
 
         private ILogManager _logger;
+        private IUIFactory _factory;
+
         private LayoutsManager _layoutsManager;
         private PagesManager _pagesManager;
 
@@ -22,6 +24,8 @@ namespace FLG.Cs.UI {
             _windowSize = prefs.windowSize;
 
             _logger = prefs.logger;
+            _factory = prefs.factory;
+
             _layoutsManager = new();
             _pagesManager = new();
 
@@ -59,7 +63,7 @@ namespace FLG.Cs.UI {
         public ILayout GetLayout(string name) => _layoutsManager.GetLayout(name);
         #endregion
 
-        private void ParseUI()
+        public void ParseUI()
         {
             _logger.Debug("Begin XML Parsing");
 
@@ -69,7 +73,7 @@ namespace FLG.Cs.UI {
             _logger.Debug("Finished XML Parsing");
 
             _layoutsManager.SetLayoutsFromParser(parser.GetLayouts());
-            _pagesManager.SetPagesFromParser(parser.GetPages());
+            _pagesManager.SetPagesFromParser(parser.GetPages(), _factory);
 
             // TODO: Register window size change to compute on change (also applies to pages)
             _layoutsManager.ComputeLayoutsRectXforms(_windowSize);

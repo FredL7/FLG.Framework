@@ -33,11 +33,11 @@ namespace FLG.Cs.UI.Pages {
             return _pages[_currentPage];
         }
 
-        internal void SetPagesFromParser(Dictionary<string, IPage> pages)
+        internal void SetPagesFromParser(Dictionary<string, IPage> pages, IUIFactory factory)
         {
             _pages = pages;
             foreach (IPage page in _pages.Values)
-                page.Setup();
+                page.Setup(factory);
         }
     }
 }

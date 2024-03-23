@@ -7,5 +7,6 @@ namespace FLG.Cs.IDatamodel {
         public Size windowSize;
 
         public ILogManager logger;
+        public IUIFactory factory;
     }
 }

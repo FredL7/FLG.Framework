@@ -12,6 +12,7 @@ using sysV2 = System.Numerics.Vector2;
 using gdV2 = Godot.Vector2;
 using flgLabel = FLG.Godot.UI.Label;
 using flgButton = FLG.Godot.UI.Button;
+using FLG.Cs.ServiceLocator;
 
 
 [Tool]
@@ -24,7 +25,8 @@ public partial class UITool : Control, IUIObserver {
     private Size _window = new(1920, 1080);
 
     private ILogManager _logger;
-    private IUIManager _ui;
+    private IUIFactory _factory;
+    private UIManager _ui;
 
     private Dictionary<string, Node> _layouts = new();
     private Dictionary<string, List<Node>> _pages = new();
@@ -37,34 +39,45 @@ public partial class UITool : Control, IUIObserver {
 
         if (Engine.IsEditorHint())
         {
-            InitializeFramework();
             SetupUI();
         }
     }
 
     private void InitializeFramework()
     {
-        _logger = new GodotLogger();
-
-        PreferencesUI prefsUI = new()
+        if (Engine.IsEditorHint())
         {
-            layoutsDir = ProjectSettings.GlobalizePath("res://" + LAYOUTS_RELATIVE_PATH),
-            pagesDir = ProjectSettings.GlobalizePath("res://" + PAGES_RELATIVE_PATH),
-            windowSize = _window,
-            logger = _logger
-        };
-        _ui = new UIManager(prefsUI);
+            _logger = new GodotLogger();
+            _factory = new UIFactory();
+
+            PreferencesUI prefsUI = new()
+            {
+                layoutsDir = ProjectSettings.GlobalizePath("res://" + LAYOUTS_RELATIVE_PATH),
+                pagesDir = ProjectSettings.GlobalizePath("res://" + PAGES_RELATIVE_PATH),
+                windowSize = _window,
+
+                logger = _logger,
+                factory = _factory
+            };
+            _ui = new UIManager(prefsUI);
+            _ui.ParseUI();
+        }
+        else
+        {
+            _logger = Locator.Instance.Get<ILogManager>();
+            _factory = Locator.Instance.Get<UIFactory>();
+            _ui = Locator.Instance.Get<UIManager>();
+
+            _ui.AddObserver(this);
+        }
     }
 
     public void SetupUI()
     {
+        InitializeFramework();
+
         Clear();
         DrawUI();
-
-        if (!Engine.IsEditorHint())
-        {
-            _ui.AddObserver(this);
-        }
     }
 
     public void OnCurrentPageChanged(string pageId, string layoutId)
@@ -187,7 +200,7 @@ public partial class UITool : Control, IUIObserver {
                 node = text.Draw(parentNode, fromEditor);
                 break;
             default:
-                node = AddNode(layoutElement.Name + " (" + layoutElement.GetType() + ")", layoutElement, parentNode);
+                node = AddNode(layoutElement.Name/* + " (" + layoutElement.GetType() + ")"*/, layoutElement, parentNode);
                 parentSetter = false;
                 break;
         }

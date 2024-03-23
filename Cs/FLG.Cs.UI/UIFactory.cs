@@ -6,6 +6,7 @@ using FLG.Cs.UI.Grids;
 using FLG.Cs.UI.Layouts;
 using FLG.Cs.UI.Widgets;
 
+// TODO: Could be static class, no need for instance
 namespace FLG.Cs.UI
 {
     public class UIFactory : IUIFactory {

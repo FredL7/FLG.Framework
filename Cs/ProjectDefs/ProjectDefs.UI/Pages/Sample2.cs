@@ -9,10 +9,8 @@ public class Sample2 : IPage {
 
     private IText _text;
 
-    public void Setup()
+    public void Setup(IUIFactory factory)
     {
-        var factory = Locator.Instance.Get<IUIFactory>();
-
         var proxy = factory.ProxyLayoutElement("page2-test-1", new() { Width=128, Height=40, Margin=new(0,0,0,20)});
         var label = factory.Label("page2-test-label", "Hello World!", new() { Width = 128, Height = 40, Margin = new(0, 0, 0, 20) });
         var sprite = factory.Sprite("page2-test-sprite", "icon.svg", new() { Width = 128, Height = 128, Margin = new(0, 0, 0, 20) });

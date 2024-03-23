@@ -7,9 +7,8 @@ public class Sample1 : IPage {
     public string PageId { get => PAGE_ID; }
     public string LayoutId { get; set; } = "";
 
-    public void Setup()
+    public void Setup(IUIFactory factory)
     {
-        var factory = Locator.Instance.Get<IUIFactory>();
         var btn = factory.Button("page1-test-button", "Click Me!", OnBtnClicked, new() { Order=4, Width=128, Height=40, Margin=new(0, 0, 0, 20) });
 
         var ui = Locator.Instance.Get<IUIManager>();
