@@ -32,14 +32,9 @@ namespace FLG.Cs.UI
                 "Sprite" => new Sprite(name, node),
                 "Text" => new Text(name, node),
 
-                // TMP
-                "ProxyLayoutElement" => new ProxyLayoutElementLeaf(name, node),
                 _ => null,
             };
         }
-
-        public ILayoutElement ProxyLayoutElement(string name, LayoutAttributes attributes)
-            => new ProxyLayoutElementLeaf(name, attributes);
 
         #region Layouts
         public ILayoutElement Container(string name, LayoutAttributes attributes, bool isTarget)

@@ -12,23 +12,9 @@ namespace FLG.Cs.Framework {
             Locator.Instance.Register(service);
         }
 
-        internal static void CreateProxies()
+        internal static void CreateLogger(PreferencesLogs prefs, bool dummy)
         {
-            ILogManager logManager = new LogManagerProxy();
-            Locator.Instance.Register(logManager);
-
-            ISerializerManager serializer = new SerializerManagerProxy();
-            Locator.Instance.Register(serializer);
-
-            IUIFactory uIFactory = new UIFactoryProxy();
-            Locator.Instance.Register(uIFactory);
-            IUIManager manager = new UIManagerProxy();
-            Locator.Instance.Register(manager);
-        }
-
-        internal static void CreateLogger(PreferencesLogs prefs)
-        {
-            ILogManager logManager = new LogManager(prefs);
+            ILogManager logManager = dummy ? new LogManagerDummy() : new LogManager(prefs);
             Locator.Instance.Register(logManager);
         }
 
