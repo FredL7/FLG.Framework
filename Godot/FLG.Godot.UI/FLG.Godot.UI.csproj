@@ -7,13 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Godot.SourceGenerators" Version="4.1.1" />
+    <PackageReference Include="GodotSharp" Version="4.1.1" />
+    <PackageReference Include="GodotSharpEditor" Version="4.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Cs\FLG.Cs.IDatamodel\FLG.Cs.IDatamodel.csproj" />
     <ProjectReference Include="..\..\Cs\FLG.Cs.Math\FLG.Cs.Math.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="GodotSharp">
-      <HintPath>..\..\dependencies\Release\GodotSharp.dll</HintPath>
+      <HintPath>..\..\dependencies\$(Configuration)\GodotSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
 
