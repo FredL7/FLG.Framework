@@ -398,7 +398,19 @@ namespace FLG.Cs.UI {
         internal static EGridDirection GetDirection(XmlNode node) => GetDirectionAttribute(node);
         internal static EGridJustify GetJustify(XmlNode node) => GetJustifyAttribute(node);
         internal static EGridAlignment GetAlignment(XmlNode node) => GetAlignmentAttribute(node);
+        internal static ETextAlignHorizontal GetTextAlignHorizontal(XmlNode node) => getTextAlignHorzAttribute(node);
+        internal static ETextAlignVertical GetTextAlignVertical(XmlNode node) => getTextAlignVertAttribute(node);
         #endregion XML
+
+        private static string GetAttributeValue(XmlNode node, string attr)
+        {
+            var value = node.Attributes?[attr]?.Value;
+            if (value == null || value == string.Empty)
+            {
+                value = "";
+            }
+            return value;
+        }
 
         #region Converters
         internal static string GetStringAttribute(XmlNode node, string attr, string defaultValue = "")
@@ -445,139 +457,82 @@ namespace FLG.Cs.UI {
 
         internal static int GetIntAttribute(XmlNode node, string attr, int defaultValue = 0)
         {
-            if (node.Attributes?[attr]?.Value == null)
+            var value = GetAttributeValue(node, attr);
+            if (value == "")
             {
                 return defaultValue;
             }
             else
             {
-                var value = node?.Attributes[attr]?.Value;
-                if (value == null || value == string.Empty)
-                {
-                    return defaultValue;
-                }
-                else
-                {
-                    return int.TryParse(value, out var x) ? x : defaultValue;
-                }
+                return int.TryParse(value, out var x) ? x : defaultValue;
             }
         }
 
         internal static float GetFloatAttribute(XmlNode node, string attr, float defaultValue = 0f)
         {
-            if (node.Attributes?[attr]?.Value == null)
+            var value = GetAttributeValue(node, attr);
+            if (value == "")
             {
                 return defaultValue;
             }
             else
             {
-                var value = node?.Attributes[attr]?.Value;
-                if (value == null || value == string.Empty)
-                {
-                    return defaultValue;
-                }
-                else
-                {
-                    return float.TryParse(value, out var x) ? x : defaultValue;
-                }
+                return float.TryParse(value, out var x) ? x : defaultValue;
             }
         }
 
         internal static Spacing GetSpacingAttribute(XmlNode node, string attr)
         {
-            if (node.Attributes?[attr]?.Value == null)
+            var value = GetAttributeValue(node, attr);
+            if (value == "")
             {
                 return Spacing.Zero;
             }
             else
             {
-                var value = node?.Attributes[attr]?.Value;
-                if (value == null || value == string.Empty)
+                var splittedValue = value.Split(' ');
+                var intValues = Array.ConvertAll(splittedValue, x => int.TryParse(x, out var y) ? y : 0);
+                return intValues.Length switch
                 {
-                    return Spacing.Zero;
-                }
-                else
-                {
-                    var splittedValue = value.Split(' ');
-                    var intValues = Array.ConvertAll(splittedValue, x => int.TryParse(x, out var y) ? y : 0);
-                    switch (intValues.Length)
-                    {
-                        case 0:
-                            return Spacing.Zero;
-                        case 1:
-                            return new Spacing(intValues[0]);
-                        case 2:
-                            return new Spacing(intValues[0], intValues[1]);
-                        case 3:
-                            return new Spacing(intValues[0], intValues[1], intValues[2]);
-                        case 4:
-                            return new Spacing(intValues[0], intValues[1], intValues[2], intValues[3]);
-                        default:
-                            // TODO: Locator.Instance.Get<ILogManager>().Warn("Spacing attribute has too many values");
-                            return new Spacing(intValues[0], intValues[1], intValues[2], intValues[3]);
-                    }
-                }
+                    0 => Spacing.Zero,
+                    1 => new Spacing(intValues[0]),
+                    2 => new Spacing(intValues[0], intValues[1]),
+                    3 => new Spacing(intValues[0], intValues[1], intValues[2]),
+                    4 => new Spacing(intValues[0], intValues[1], intValues[2], intValues[3]),
+                    // TODO: Locator.Instance.Get<ILogManager>().Warn("Spacing attribute has too many values");
+                    _ => new Spacing(intValues[0], intValues[1], intValues[2], intValues[3]),
+                };
             }
         }
 
         internal static EGridDirection GetDirectionAttribute(XmlNode node)
         {
-            if (node.Attributes?["direction"]?.Value == null)
-            {
-                return EGridDirectionExtension.FromString("");
-            }
-            else
-            {
-                var value = node?.Attributes["direction"]?.Value;
-                if (value == null || value == string.Empty)
-                {
-                    return EGridDirectionExtension.FromString("");
-                }
-                else
-                {
-                    return EGridDirectionExtension.FromString(value);
-                }
-            }
+            var value = GetAttributeValue(node, "direction");
+            return EGridDirectionExtension.FromString(value);
         }
 
         internal static EGridJustify GetJustifyAttribute(XmlNode node)
         {
-            if (node.Attributes?["justify"]?.Value == null)
-            {
-                return EGridJustifyExtension.FromString("");
-            }
-            else
-            {
-                var value = node?.Attributes["justify"]?.Value;
-                if (value == null || value == string.Empty)
-                {
-                    return EGridJustifyExtension.FromString("");
-                }
-                else
-                {
-                    return EGridJustifyExtension.FromString(value);
-                }
-            }
+            var value = GetAttributeValue(node, "justify");
+            return EGridJustifyExtension.FromString(value);
         }
 
         internal static EGridAlignment GetAlignmentAttribute(XmlNode node)
         {
-            if (node.Attributes?["align"]?.Value == null)
-            {
-                return EGridAlignmentExtension.FromString("");
-            }
-            else
-            {
-                var value = node?.Attributes["align"]?.Value;
-                if (value == null || value == string.Empty)
-                {
-                    return EGridAlignmentExtension.FromString("");
-                }
-                else
-                {
-                    return EGridAlignmentExtension.FromString(value);
-                }
-            }
+            var value = GetAttributeValue(node, "align");
+            return EGridAlignmentExtension.FromString(value);
+        }
+
+        internal static ETextAlignHorizontal getTextAlignHorzAttribute(XmlNode node)
+        {
+            var value = GetAttributeValue(node, "text-align");
+            return ETextAlignHorizontalExtension.FromString(value);
+        }
+
+        internal static ETextAlignVertical getTextAlignVertAttribute(XmlNode node)
+        {
+            var value = GetAttributeValue(node, "text-align-vertical");
+            return ETextAlignVerticalExtension.FromString(value);
         }
         #endregion Converters
         #endregion Helpers

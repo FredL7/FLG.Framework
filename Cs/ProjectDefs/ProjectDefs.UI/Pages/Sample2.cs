@@ -9,10 +9,14 @@ public class Sample2 : IPage {
 
     public void Setup(IUIManager ui, IUIFactory factory)
     {
-        var label = factory.Label("page2-test-label", "Hello World!", new() { Width = 128, Height = 40, Margin = new(0, 0, 0, 20) });
+        var label = factory.Label("page2-test-label", "Hello World!", new() { Width = 128, Height = 40, Margin = new(0, 0, 0, 20) }, new());
         var sprite = factory.Sprite("page2-test-sprite", "icon.svg", new() { Width = 128, Height = 128, Margin = new(0, 0, 0, 20) });
         var btn = factory.Button("page2-test-button", "Click Me!", OnBtnClicked, new() { Width = 128, Height = 40, Margin = new(0, 0, 0, 20) });
-        var text = (IText)factory.Text("page2-test-text", "BBCode: [img width=40 height=40]icon.svg[/img]", new() { Width = 128, Height = 40 });
+        var text = (IText)factory.Text(
+            "page2-test-text", "BBCode: [img width=40 height=40]icon.svg[/img]",
+            new() { Width = 128, Height = 40 },
+            new() { AlignHorizontal = ETextAlignHorizontal.RIGHT }
+        );
 
         var layout = ui.GetLayout(LayoutId);
         var target = layout.GetTarget("content");
