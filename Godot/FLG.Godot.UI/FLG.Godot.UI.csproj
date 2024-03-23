@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Cs\FLG.Cs.IDatamodel\FLG.Cs.IDatamodel.csproj" />
     <ProjectReference Include="..\..\Cs\FLG.Cs.Math\FLG.Cs.Math.csproj" />
+    <ProjectReference Include="..\FLG.Godot.Helpers\FLG.Godot.Helpers.csproj" />
   </ItemGroup>
 
   <ItemGroup>

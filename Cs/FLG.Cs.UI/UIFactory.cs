@@ -50,14 +50,14 @@ namespace FLG.Cs.UI
         public ILayoutElement Button(string name, string source, Action action, LayoutAttributes attributes)
             => new Button(name, source, action, attributes);
 
-        public ILayoutElement Label(string name, string text, LayoutAttributes attributes)
-            => new Label(name, text, attributes);
+        public ILayoutElement Label(string name, string text, LayoutAttributes layoutAttr, TextAttributes textAttr)
+            => new Label(name, text, layoutAttr, textAttr);
 
         public ILayoutElement Sprite(string name, string source, LayoutAttributes attributes)
             => new Sprite(name, source, attributes);
 
-        public ILayoutElement Text(string name, string source, LayoutAttributes attributes)
-            => new Text(name, source, attributes);
+        public ILayoutElement Text(string name, string source, LayoutAttributes layoutAttr, TextAttributes textAttr)
+            => new Text(name, source, layoutAttr, textAttr);
         #endregion Widgets
     }
 }
