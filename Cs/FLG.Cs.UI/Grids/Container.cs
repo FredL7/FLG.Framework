@@ -2,7 +2,6 @@
 using System.Numerics;
 using System.Xml;
 using FLG.Cs.IDatamodel;
-using FLG.Cs.Math;
 using FLG.Cs.UI.Layouts;
 
 namespace FLG.Cs.UI.Grids {
@@ -10,7 +9,7 @@ namespace FLG.Cs.UI.Grids {
         public override ELayoutElement Type { get => ELayoutElement.CONTAINER; }
 
         internal Container(string name, XmlNode node) : base(name, node) { }
-        internal Container(string name, LayoutAttributes layoutAttributes, bool isTarget) : base(name, layoutAttributes, isTarget) { }
+        internal Container(string name, LayoutAttributes layoutAttributes) : base(name, layoutAttributes) { }
 
         public override sealed void AddChild(ILayoutElement child, string id = ILayoutElement.DEFAULT_CHILDREN_TARGET)
         {

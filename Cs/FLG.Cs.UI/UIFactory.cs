@@ -37,13 +37,13 @@ namespace FLG.Cs.UI
         }
 
         #region Layouts
-        public ILayoutElement Container(string name, LayoutAttributes attributes, bool isTarget)
-            => new Container(name, attributes, isTarget);
-        public ILayoutElement HStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget)
-            => new HStack(name, layoutAttr, gridAttr, isTarget);
+        public ILayoutElement Container(string name, LayoutAttributes attributes)
+            => new Container(name, attributes);
+        public ILayoutElement HStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr)
+            => new HStack(name, layoutAttr, gridAttr);
 
-        public ILayoutElement VStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget)
-            => new VStack(name, layoutAttr, gridAttr, isTarget);
+        public ILayoutElement VStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr)
+            => new VStack(name, layoutAttr, gridAttr);
         #endregion Layouts
 
         #region Widgets

@@ -20,8 +20,8 @@ namespace FLG.Cs.UI.Grids {
             _alignment = XMLParser.GetAlignment(node);
         }
         internal Stack(
-            string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget)
-            : base(name, layoutAttr, isTarget)
+            string name, LayoutAttributes layoutAttr, GridAttributes gridAttr)
+            : base(name, layoutAttr)
         {
             _direction = gridAttr.Direction;
             _justify = gridAttr.Justify;

@@ -15,8 +15,8 @@ namespace FLG.Cs.UI.Layouts {
             SetupDefaultChildrensTarget();
         }
 
-        internal AbstractLayoutElementComposite(string name, LayoutAttributes attributes, bool isTarget)
-            : base(name, attributes, isTarget)
+        internal AbstractLayoutElementComposite(string name, LayoutAttributes attributes)
+            : base(name, attributes, true)
         {
             SetupDefaultChildrensTarget();
         }

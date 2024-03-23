@@ -1,9 +1,9 @@
 ﻿namespace FLG.Cs.IDatamodel {
     public interface IUIFactory : IServiceInstance {
         #region Layouts
-        public ILayoutElement Container(string name, LayoutAttributes layoutAttr, bool isTarget = false);
-        public ILayoutElement HStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget = false);
-        public ILayoutElement VStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget = false);
+        public ILayoutElement Container(string name, LayoutAttributes layoutAttr);
+        public ILayoutElement HStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr);
+        public ILayoutElement VStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr);
         #endregion Layouts
 
         #region Widgets
