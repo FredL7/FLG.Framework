@@ -29,7 +29,7 @@ namespace FLG.Cs.UI.Tests {
             {
                 layoutsDir = LAYOUTS_DIR,
                 pagesDir = PAGES_DIR,
-                windowSize = new Size(1920, 1080)
+                windowSize = new Size(1920, 1080),
             };
             FrameworkManager.Instance.InitializeUI(prefsUI);
         }

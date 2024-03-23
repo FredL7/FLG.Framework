@@ -1,11 +1,10 @@
 using Godot;
-using System;
 using System.Collections.Generic;
 
-using FLG.Cs.Framework;
 using FLG.Cs.IDatamodel;
 using FLG.Cs.Math;
-using FLG.Cs.ServiceLocator;
+using FLG.Cs.UI;
+using FLG.Godot.Framework;
 using FLG.Godot.Helpers;
 using FLG.Godot.UI;
 
@@ -13,18 +12,21 @@ using sysV2 = System.Numerics.Vector2;
 using gdV2 = Godot.Vector2;
 using flgLabel = FLG.Godot.UI.Label;
 using flgButton = FLG.Godot.UI.Button;
+using FLG.Cs.ServiceLocator;
 
 
 [Tool]
 public partial class UITool : Control, IUIObserver {
-    private const string LOGS_RELATIVE_PATH = "../../_logs"; // TODO: Move to serialized field to appear in the inspector?
+    // private const string LOGS_RELATIVE_PATH = "../../_logs"; // TODO: Move to serialized field to appear in the inspector?
     private const string LAYOUTS_RELATIVE_PATH = "../../Cs/ProjectDefs/ProjectDefs.UI/Layouts";
     private const string PAGES_RELATIVE_PATH = "../../Cs/ProjectDefs/ProjectDefs.UI/Pages";
 
 
     private Size _window = new(1920, 1080);
 
-    private IUIManager _uiManager;
+    private ILogManager _logger;
+    private IUIFactory _factory;
+    private UIManager _ui;
 
     private Dictionary<string, Node> _layouts = new();
     private Dictionary<string, List<Node>> _pages = new();
@@ -37,26 +39,45 @@ public partial class UITool : Control, IUIObserver {
 
         if (Engine.IsEditorHint())
         {
-            InitializeFramework();
             SetupUI();
+        }
+    }
+
+    private void InitializeFramework()
+    {
+        if (Engine.IsEditorHint())
+        {
+            _logger = new GodotLogger();
+            _factory = new UIFactory();
+
+            PreferencesUI prefsUI = new()
+            {
+                layoutsDir = ProjectSettings.GlobalizePath("res://" + LAYOUTS_RELATIVE_PATH),
+                pagesDir = ProjectSettings.GlobalizePath("res://" + PAGES_RELATIVE_PATH),
+                windowSize = _window,
+
+                logger = _logger,
+                factory = _factory
+            };
+            _ui = new UIManager(prefsUI);
+            _ui.ParseUI();
+        }
+        else
+        {
+            _logger = Locator.Instance.Get<ILogManager>();
+            _factory = Locator.Instance.Get<UIFactory>();
+            _ui = Locator.Instance.Get<UIManager>();
+
+            _ui.AddObserver(this);
         }
     }
 
     public void SetupUI()
     {
-        _uiManager = Locator.Instance.Get<IUIManager>();
-        Console.WriteLine(_uiManager);
+        InitializeFramework();
 
         Clear();
         DrawUI();
-
-        _uiManager.AddObserver(this);
-    }
-
-    public override void _ExitTree()
-    {
-        _uiManager.RemoveObserver(this);
-        base._ExitTree();
     }
 
     public void OnCurrentPageChanged(string pageId, string layoutId)
@@ -77,26 +98,6 @@ public partial class UITool : Control, IUIObserver {
                 _layouts[layoutId].Set("visible", true);
             }
         }
-    }
-
-    private void InitializeFramework()
-    {
-        Preferences prefs = new();
-        FrameworkManager.Instance.InitializeFramework(prefs);
-
-        PreferencesLogs prefsLogs = new()
-        {
-            logsDir = LOGS_RELATIVE_PATH,
-        };
-        FrameworkManager.Instance.InitializeLogs(prefsLogs);
-
-        PreferencesUI prefsUI = new()
-        {
-            layoutsDir = ProjectSettings.GlobalizePath("res://" + LAYOUTS_RELATIVE_PATH),
-            pagesDir = ProjectSettings.GlobalizePath("res://" + PAGES_RELATIVE_PATH),
-            windowSize = _window
-        };
-        FrameworkManager.Instance.InitializeUI(prefsUI);
     }
 
     private void Clear()
@@ -132,7 +133,7 @@ public partial class UITool : Control, IUIObserver {
 
     private void DrawLayouts()
     {
-        foreach (var layout in _uiManager.GetLayouts())
+        foreach (var layout in _ui.GetLayouts())
             DrawLayout(layout);
     }
 
@@ -199,7 +200,7 @@ public partial class UITool : Control, IUIObserver {
                 node = text.Draw(parentNode, fromEditor);
                 break;
             default:
-                node = AddNode(layoutElement.Name + " (" + layoutElement.GetType() + ")", layoutElement, parentNode);
+                node = AddNode(layoutElement.Name/* + " (" + layoutElement.GetType() + ")"*/, layoutElement, parentNode);
                 parentSetter = false;
                 break;
         }

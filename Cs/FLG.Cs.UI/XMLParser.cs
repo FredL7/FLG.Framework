@@ -1,13 +1,11 @@
-﻿using FLG.Cs.IDatamodel;
+﻿using System.Xml;
+
+using FLG.Cs.IDatamodel;
 using FLG.Cs.IO;
 using FLG.Cs.Math;
-using FLG.Cs.ServiceLocator;
-using FLG.Cs.UI.Grids;
 using FLG.Cs.UI.Layouts;
 using FLG.Cs.Validation;
 
-using System.Reflection;
-using System.Xml;
 
 using File = FLG.Cs.IO.File;
 
@@ -25,12 +23,12 @@ namespace FLG.Cs.UI {
         private List<File> _pageXMLFiles;
         private List<File> _layoutFiles;
 
-        private ILogManager _log;
+        private ILogManager _logger;
 
         public Dictionary<string, IPage> GetPages() => _pages;
         public Dictionary<string, Layout> GetLayouts() => _layouts;
 
-        internal XMLParser(string layoutsDir, string pagesDir)
+        internal XMLParser(string layoutsDir, string pagesDir, ILogManager logger)
         {
             _layoutsDir = layoutsDir;
             _pagesDir = pagesDir;
@@ -43,7 +41,7 @@ namespace FLG.Cs.UI {
             _layoutFiles = IOUtils.GetFilePathsByExtension(_layoutsDir, ".layout");
             _pageXMLFiles = IOUtils.GetFilePathsByExtension(_pagesDir, ".page");
 
-            _log = Locator.Instance.Get<ILogManager>();
+            _logger = logger;
         }
 
         internal Result Parse()
@@ -67,7 +65,7 @@ namespace FLG.Cs.UI {
 
             foreach (var file in _pageXMLFiles)
             {
-                _log.Debug($"Begin Parsing XML {file.filename}");
+                _logger.Debug($"Begin Parsing XML {file.filename}");
 
                 Result result = ValidateXml(file, "page", out XmlDocument _, out XmlNode? rootNode);
                 if (!result || rootNode == null) return result;
@@ -83,7 +81,7 @@ namespace FLG.Cs.UI {
                 result = ParsePage(layoutId, layoutNode, binding);
                 if (!result) return result;
 
-                _log.Debug($"Finished Parsing XML {file.filename}");
+                _logger.Debug($"Finished Parsing XML {file.filename}");
             }
 
             return Result.SUCCESS;
@@ -96,7 +94,7 @@ namespace FLG.Cs.UI {
             {
                 // var assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 var assemblyFolder = Path.GetDirectoryName(typeof(XMLParser).Assembly.Location);
-                _log.Debug($"FRED: {assemblyFolder}");
+                _logger.Debug($"FRED: {assemblyFolder}");
                 if (assemblyFolder == null) return new Result("Could not locate current assembly directory");
 
                 var assembly = System.Reflection.Assembly.LoadFile(Path.Combine(assemblyFolder, "ProjectDefs.UI.dll"));
@@ -109,7 +107,7 @@ namespace FLG.Cs.UI {
                 if (pageObject == null) return new Result($"Could not instantiate a class of type {binding}: result is null");
 
                 page = pageObject as IPage;
-                _log.Debug($"Instantiated IPage of type {binding}");
+                _logger.Debug($"Instantiated IPage of type {binding}");
             }
             catch (Exception e)
             {
@@ -125,7 +123,7 @@ namespace FLG.Cs.UI {
                 if (pageObject == null) return new Result($"Could not instantiate a class of type {binding}: could not create an instance of type {type}");
 
                 page = pageObject as IPage;
-                _log.Debug($"Instantiated IPage of type {binding}");
+                _logger.Debug($"Instantiated IPage of type {binding}");
             }
             catch (Exception e)
             {
@@ -141,10 +139,10 @@ namespace FLG.Cs.UI {
 
         private Result LoadPageLayout(string layoutId)
         {
-            _log.Debug($"Begin Parsing layout with id {layoutId}");
+            _logger.Debug($"Begin Parsing layout with id {layoutId}");
             Result result = LoadLayout(layoutId);
             if (!result) return result;
-            _log.Debug($"Finished Parsing layout with id {layoutId}");
+            _logger.Debug($"Finished Parsing layout with id {layoutId}");
 
             if (!_layouts.ContainsKey(layoutId))
                 _layouts.Add(layoutId, _components[layoutId]);
@@ -218,7 +216,7 @@ namespace FLG.Cs.UI {
         {
             if (_components.ContainsKey(id))
             {
-                _log.Debug($"Layout {id} already loaded OK");
+                _logger.Debug($"Layout {id} already loaded OK");
                 return Result.SUCCESS;
             }
 
@@ -231,7 +229,7 @@ namespace FLG.Cs.UI {
 
         private Result ParseLayout(File file, string id)
         {
-            _log.Debug($"Begin Parsing {file.filename}");
+            _logger.Debug($"Begin Parsing {file.filename}");
             Result result = ValidateXml(file, "layout", out XmlDocument _, out XmlNode? rootNode);
             if (!result || rootNode == null) return result;
             result = ValidateLayoutXml(rootNode, out XmlNode? rootChild);
@@ -245,7 +243,7 @@ namespace FLG.Cs.UI {
 
             Layout layout = new(root, id, _targets);
             _components.Add(id, layout);
-            _log.Debug($"Finished Parsing XML Layout {file.filename}");
+            _logger.Debug($"Finished Parsing XML Layout {file.filename}");
 
             return Result.SUCCESS;
         }
@@ -515,7 +513,7 @@ namespace FLG.Cs.UI {
                         case 4:
                             return new Spacing(intValues[0], intValues[1], intValues[2], intValues[3]);
                         default:
-                            Locator.Instance.Get<ILogManager>().Warn("Spacing attribute has too many values");
+                            // TODO: Locator.Instance.Get<ILogManager>().Warn("Spacing attribute has too many values");
                             return new Spacing(intValues[0], intValues[1], intValues[2], intValues[3]);
                     }
                 }
