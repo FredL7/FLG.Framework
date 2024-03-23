@@ -3,10 +3,9 @@
   <binding class="Sample1" />
   <layout id="sample">
     <target id="content">
-      <ProxyLayoutElement name="page1-test-1" width="128" height="40" margin="0, 0, 0, 20" order="1" />
-      <Label name="page1-test-label" text="Hello World!" width="128" height="40" margin="0, 0, 0, 20" order="2" />
-      <Sprite name="page1-test-sprite" source="icon.svg" width="128" height="128" margin="0, 0, 0, 20" order="3" />
-      <Text name="page1-test-text" text="Foobar" width="128" height="40" order="5" />
+      <Label name="page1-test-label" text="Hello World!" width="128" height="40" margin="0, 0, 0, 20" order="1" />
+      <Sprite name="page1-test-sprite" source="icon.svg" width="128" height="128" margin="0, 0, 0, 20" order="2" />
+      <Text name="page1-test-text" text="Foobar" width="128" height="40" order="4" />
     </target>
   </layout>
 </page>

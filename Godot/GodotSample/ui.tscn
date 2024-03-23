@@ -25,74 +25,74 @@ anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
 
-[node name="header (FLG_Cs_UI_Grids_HStack)" type="Control" parent="Layouts/layout sample"]
+[node name="header" type="Control" parent="Layouts/layout sample"]
 anchors_preset = 0
 offset_left = 10.0
 offset_top = 10.0
 offset_right = 1910.0
 offset_bottom = 30.0
 
-[node name="header-title (FLG_Cs_UI_Grids_HStack)" type="Control" parent="Layouts/layout sample/header (FLG_Cs_UI_Grids_HStack)"]
+[node name="header-title" type="Control" parent="Layouts/layout sample/header"]
 anchors_preset = 0
 offset_right = 950.0
 offset_bottom = 20.0
 
-[node name="header-title-icon (FLG_Cs_UI_Widgets_ProxyLayoutElementLeaf)" type="Control" parent="Layouts/layout sample/header (FLG_Cs_UI_Grids_HStack)/header-title (FLG_Cs_UI_Grids_HStack)"]
+[node name="header-title-icon" type="Control" parent="Layouts/layout sample/header/header-title"]
 anchors_preset = 0
 offset_right = 20.0
 offset_bottom = 20.0
 
-[node name="header-title-title" type="Label" parent="Layouts/layout sample/header (FLG_Cs_UI_Grids_HStack)/header-title (FLG_Cs_UI_Grids_HStack)"]
+[node name="header-title-title" type="Label" parent="Layouts/layout sample/header/header-title"]
 layout_mode = 0
 offset_left = 30.0
 offset_right = 950.0
 offset_bottom = 23.0
 text = "FLG.Framework"
 
-[node name="header-controls (FLG_Cs_UI_Grids_HStack)" type="Control" parent="Layouts/layout sample/header (FLG_Cs_UI_Grids_HStack)"]
+[node name="header-controls" type="Control" parent="Layouts/layout sample/header"]
 anchors_preset = 0
 offset_left = 950.0
 offset_right = 1900.0
 offset_bottom = 20.0
 
-[node name="header-controls-minimize (FLG_Cs_UI_Widgets_ProxyLayoutElementLeaf)" type="Control" parent="Layouts/layout sample/header (FLG_Cs_UI_Grids_HStack)/header-controls (FLG_Cs_UI_Grids_HStack)"]
+[node name="header-controls-minimize" type="Control" parent="Layouts/layout sample/header/header-controls"]
 anchors_preset = 0
 offset_left = 890.0
 offset_right = 910.0
 offset_bottom = 20.0
 
-[node name="header-controls-maximize (FLG_Cs_UI_Widgets_ProxyLayoutElementLeaf)" type="Control" parent="Layouts/layout sample/header (FLG_Cs_UI_Grids_HStack)/header-controls (FLG_Cs_UI_Grids_HStack)"]
+[node name="header-controls-maximize" type="Control" parent="Layouts/layout sample/header/header-controls"]
 anchors_preset = 0
 offset_left = 910.0
 offset_right = 930.0
 offset_bottom = 20.0
 
-[node name="header-controls-quit (FLG_Cs_UI_Widgets_ProxyLayoutElementLeaf)" type="Control" parent="Layouts/layout sample/header (FLG_Cs_UI_Grids_HStack)/header-controls (FLG_Cs_UI_Grids_HStack)"]
+[node name="header-controls-quit" type="Control" parent="Layouts/layout sample/header/header-controls"]
 anchors_preset = 0
 offset_left = 930.0
 offset_right = 950.0
 offset_bottom = 20.0
 
-[node name="content (FLG_Cs_UI_Grids_VStack)" type="Control" parent="Layouts/layout sample"]
+[node name="content" type="Control" parent="Layouts/layout sample"]
 anchors_preset = 0
 offset_top = 40.0
 offset_right = 1920.0
 offset_bottom = 1080.0
 
-[node name="Sample1" type="Control" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)"]
+[node name="Sample1" type="Control" parent="Layouts/layout sample/content"]
 visible = false
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1040.0
 
-[node name="page1-test-1 (FLG_Cs_UI_Widgets_ProxyLayoutElementLeaf)" type="Control" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)/Sample1"]
+[node name="page1-test-1" type="Control" parent="Layouts/layout sample/content/Sample1"]
 anchors_preset = 0
 offset_left = 896.0
 offset_top = 336.0
 offset_right = 1024.0
 offset_bottom = 376.0
 
-[node name="page1-test-label" type="Label" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)/Sample1"]
+[node name="page1-test-label" type="Label" parent="Layouts/layout sample/content/Sample1"]
 layout_mode = 0
 offset_left = 896.0
 offset_top = 396.0
@@ -100,7 +100,7 @@ offset_right = 1024.0
 offset_bottom = 436.0
 text = "Hello World!"
 
-[node name="page1-test-sprite" type="TextureRect" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)/Sample1"]
+[node name="page1-test-sprite" type="TextureRect" parent="Layouts/layout sample/content/Sample1"]
 layout_mode = 0
 offset_left = 896.0
 offset_top = 456.0
@@ -108,7 +108,7 @@ offset_right = 896.0
 offset_bottom = 456.0
 texture = ExtResource("2_8ldko")
 
-[node name="page1-test-text" type="RichTextLabel" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)/Sample1"]
+[node name="page1-test-text" type="RichTextLabel" parent="Layouts/layout sample/content/Sample1"]
 layout_mode = 0
 offset_left = 896.0
 offset_top = 664.0
@@ -117,7 +117,7 @@ offset_bottom = 704.0
 bbcode_enabled = true
 text = "Foobar"
 
-[node name="page1-test-button" type="Button" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)/Sample1"]
+[node name="page1-test-button" type="Button" parent="Layouts/layout sample/content/Sample1"]
 layout_mode = 0
 offset_left = 896.0
 offset_top = 604.0
@@ -125,20 +125,20 @@ offset_right = 1024.0
 offset_bottom = 644.0
 text = "Click Me!"
 
-[node name="Sample2" type="Control" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)"]
+[node name="Sample2" type="Control" parent="Layouts/layout sample/content"]
 visible = false
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1040.0
 
-[node name="page2-test-1 (FLG_Cs_UI_Widgets_ProxyLayoutElementLeaf)" type="Control" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)/Sample2"]
+[node name="page2-test-1" type="Control" parent="Layouts/layout sample/content/Sample2"]
 anchors_preset = 0
 offset_left = 896.0
 offset_top = 336.0
 offset_right = 1024.0
 offset_bottom = 376.0
 
-[node name="page2-test-label" type="Label" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)/Sample2"]
+[node name="page2-test-label" type="Label" parent="Layouts/layout sample/content/Sample2"]
 layout_mode = 0
 offset_left = 896.0
 offset_top = 396.0
@@ -146,7 +146,7 @@ offset_right = 1024.0
 offset_bottom = 436.0
 text = "Hello World!"
 
-[node name="page2-test-sprite" type="TextureRect" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)/Sample2"]
+[node name="page2-test-sprite" type="TextureRect" parent="Layouts/layout sample/content/Sample2"]
 layout_mode = 0
 offset_left = 896.0
 offset_top = 456.0
@@ -154,7 +154,7 @@ offset_right = 896.0
 offset_bottom = 456.0
 texture = ExtResource("2_8ldko")
 
-[node name="page2-test-button" type="Button" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)/Sample2"]
+[node name="page2-test-button" type="Button" parent="Layouts/layout sample/content/Sample2"]
 layout_mode = 0
 offset_left = 896.0
 offset_top = 604.0
@@ -162,7 +162,7 @@ offset_right = 1024.0
 offset_bottom = 644.0
 text = "Click Me!"
 
-[node name="page2-test-text" type="RichTextLabel" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)/Sample2"]
+[node name="page2-test-text" type="RichTextLabel" parent="Layouts/layout sample/content/Sample2"]
 layout_mode = 0
 offset_left = 896.0
 offset_top = 664.0

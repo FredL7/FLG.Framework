@@ -30,6 +30,7 @@ namespace FLG.Cs.Serialization.Tests {
                 serializerType = t
             };
             FrameworkManager.Instance.InitializeFramework(pref);
+            FrameworkManager.Instance.InitializeLogs(new(), true);
             FrameworkManager.Instance.InitializeSerializer(prefSerialization);
 
             ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();

@@ -12,7 +12,6 @@ namespace FLG.Cs.Framework {
         {
             if (!_initializedGeneral)
             {
-                ManagersFactory.CreateProxies();
                 _initializedGeneral = true;
             }
         }
@@ -25,14 +24,14 @@ namespace FLG.Cs.Framework {
 
         #region Logs
         private bool _initializedLogs = false;
-        public void InitializeLogs(PreferencesLogs pref)
+        public void InitializeLogs(PreferencesLogs pref, bool dummy = false)
         {
             if (!ValidateDependenciesLogs())
                 return;
 
             if (!_initializedLogs)
             {
-                ManagersFactory.CreateLogger(pref);
+                ManagersFactory.CreateLogger(pref, dummy);
                 _initializedLogs = true;
             }
         }

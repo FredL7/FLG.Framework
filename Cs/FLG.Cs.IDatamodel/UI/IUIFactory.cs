@@ -1,8 +1,5 @@
 ﻿namespace FLG.Cs.IDatamodel {
     public interface IUIFactory : IServiceInstance {
-        // TMP
-        public ILayoutElement ProxyLayoutElement(string name, LayoutAttributes attributes);
-
         #region Layouts
         public ILayoutElement Container(string name, LayoutAttributes layoutAttr, bool isTarget = false);
         public ILayoutElement HStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget = false);
