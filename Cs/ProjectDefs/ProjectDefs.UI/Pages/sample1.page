@@ -3,9 +3,9 @@
   <binding class="Sample1" />
   <layout id="sample">
     <target id="content">
-      <Label name="page1-test-label" text="Hello World!" text-align="center" width="128" height="40" margin="0, 0, 0, 20" order="1" />
-      <Sprite name="page1-test-sprite" source="icon.svg" width="128" height="128" margin="0, 0, 0, 20" order="2" />
-      <Text name="page1-test-text" text="Foobar" width="128" height="40" order="4" />
+      <Label id="page1-test-label" text="Hello World!" text-align="center" width="128" height="40" margin="0, 0, 0, 20" order="1" />
+      <Sprite id="page1-test-sprite" source="icon.svg" width="128" height="128" margin="0, 0, 0, 20" order="2" />
+      <Text id="page1-test-text" text="Foobar" width="128" height="40" order="4" />
     </target>
   </layout>
 </page>

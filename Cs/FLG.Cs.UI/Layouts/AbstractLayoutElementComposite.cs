@@ -10,7 +10,7 @@ namespace FLG.Cs.UI.Layouts {
         protected List<ILayoutElement> GetChildrensInternal(string id = ILayoutElement.DEFAULT_CHILDREN_TARGET) => _childrens[id];
 
         internal AbstractLayoutElementComposite(string name, XmlNode node)
-            : base(name, node)
+            : base(name, node, true)
         {
             SetupDefaultChildrensTarget();
         }

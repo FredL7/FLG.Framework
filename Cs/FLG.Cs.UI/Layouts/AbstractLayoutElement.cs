@@ -18,10 +18,10 @@ namespace FLG.Cs.UI.Layouts
         public int Order { get; private set; }
         public float Weight { get; private set; }
 
-        internal AbstractLayoutElement(string name, XmlNode node)
+        internal AbstractLayoutElement(string name, XmlNode node, bool isTarget)
         {
             Name = name;
-            IsTarget = XMLParser.GetTarget(node) != string.Empty;
+            IsTarget = isTarget;
 
             Order = XMLParser.GetOrder(node);
             Weight = XMLParser.GetWeight(node);

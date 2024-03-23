@@ -273,8 +273,8 @@ namespace FLG.Cs.UI {
 
                 if (layoutElement.IsTarget)
                 {
-                    if (node.HasChildNodes)
-                        return new Result($"Target node {layoutElement.Name} cannot declare childrens");
+                    /*if (node.HasChildNodes)
+                        return new Result($"Target node {layoutElement.Name} cannot declare childrens");*/
 
                     _targets.Add(layoutElement.Name, layoutElement);
                 }
@@ -360,35 +360,16 @@ namespace FLG.Cs.UI {
 
         private static string GetNodeName(XmlNode node, string externalFileName = "")
         {
-            /*
-             * If the node is the root of an external file, use that file's name;
-             * Then if the node has a name attribute, use that value;
-             * Then if the node has a target attribute, use that value;
-             * Then return the XmlNode Name (which is the fallback value for GetName(node);
-             */
-            var targetName = GetTarget(node);
-            var nodeName = GetName(node);
             if (externalFileName != "")
             {
                 return externalFileName;
             }
-            else if (nodeName != node.Name)
-            {
-                return nodeName;
-            }
-            else if (targetName != "")
-            {
-                return targetName;
-            }
-            else
-            {
-                return nodeName;
-            }
+
+            return GetId(node);
         }
 
-        internal static string GetName(XmlNode node) => GetStringAttribute(node, "name", node.Name);
+        internal static string GetId(XmlNode node) => GetStringAttribute(node, "id", node.Name);
         internal static string GetText(XmlNode node) => GetStringAttributeOrContent(node, "text");
-        internal static string GetTarget(XmlNode node) => GetStringAttribute(node, "target", string.Empty);
         internal static Spacing GetMargin(XmlNode node) => GetSpacingAttribute(node, "margin");
         internal static Spacing GetPadding(XmlNode node) => GetSpacingAttribute(node, "padding");
         internal static float GetWidth(XmlNode node) => GetFloatAttribute(node, "width");

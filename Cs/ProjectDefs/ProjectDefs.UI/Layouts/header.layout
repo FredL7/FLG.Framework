@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <layout>
-  <HStack padding="10" height="40">
-    <HStack name="header-title">
-      <ProxyLayoutElement name="header-title-icon" width="20" margin="10 0 0 0" />
-      <Label name="header-title-title">FLG.Framework</Label>
+  <HStack id="root" padding="10" height="40">
+    <HStack id="header-title">
+      <Sprite id="header-title-icon" width="20" margin="10 0 0 0" />
+      <Label id="header-title-title">FLG.Framework</Label>
     </HStack>
-    <HStack name="header-controls" justify="end">
-      <ProxyLayoutElement name="header-controls-minimize" width="20" />
-      <ProxyLayoutElement name="header-controls-maximize" width="20" />
-      <ProxyLayoutElement name="header-controls-quit" width="20" />
+    <HStack id="header-controls" justify="end">
+      <ProxyLayoutElement id="header-controls-minimize" width="20" />
+      <ProxyLayoutElement id="header-controls-maximize" width="20" />
+      <ProxyLayoutElement id="header-controls-quit" width="20" />
     </HStack>
   </HStack>
 </layout>

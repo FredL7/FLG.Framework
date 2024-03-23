@@ -6,7 +6,7 @@ using FLG.Cs.IDatamodel;
 namespace FLG.Cs.UI.Layouts {
     public abstract class AbstractLayoutElementLeaf : AbstractLayoutElement {
         internal AbstractLayoutElementLeaf(string name, XmlNode node)
-            : base(name, node) { }
+            : base(name, node, false) { }
         internal AbstractLayoutElementLeaf(string name, LayoutAttributes attributes)
             : base(name, attributes, false) { }
 

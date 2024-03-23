@@ -37,6 +37,16 @@ anchors_preset = 0
 offset_right = 950.0
 offset_bottom = 20.0
 
+[node name="header-title-icon" type="TextureRect" parent="Layouts/layout sample/header/header-title"]
+layout_mode = 0
+
+[node name="header-title-title" type="Label" parent="Layouts/layout sample/header/header-title"]
+layout_mode = 0
+offset_left = 30.0
+offset_right = 950.0
+offset_bottom = 23.0
+text = "FLG.Framework"
+
 [node name="header-controls" type="Control" parent="Layouts/layout sample/header"]
 anchors_preset = 0
 offset_left = 950.0
@@ -90,6 +100,7 @@ offset_bottom = 614.0
 text = "Click Me!"
 
 [node name="Sample2" type="Control" parent="Layouts/layout sample/content"]
+visible = false
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1040.0
