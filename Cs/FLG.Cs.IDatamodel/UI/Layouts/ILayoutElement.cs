@@ -20,6 +20,7 @@ namespace FLG.Cs.IDatamodel {
         public void ComputeRectXform();
         public IEnumerable<string> GetTargets();
         public void AddChild(ILayoutElement child, string id = DEFAULT_CHILDREN_TARGET);
+        public void OnAddedToPage(string id);
         public bool HasChildren(string id = DEFAULT_CHILDREN_TARGET);
         public IEnumerable<ILayoutElement> GetChildrens(string id = DEFAULT_CHILDREN_TARGET);
     }

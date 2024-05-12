@@ -69,7 +69,7 @@ namespace FLG.Cs.UI {
 
             XMLParser parser = new(_layoutsDir, _pagesDir, _logger);
             var result = parser.Parse();
-            if (!result) result.Log();
+            if (!result) _logger.Log(result);
             _logger.Debug("Finished XML Parsing");
 
             _layoutsManager.SetLayoutsFromParser(parser.GetLayouts());

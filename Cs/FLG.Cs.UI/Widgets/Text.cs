@@ -3,6 +3,7 @@
 using FLG.Cs.IDatamodel;
 using FLG.Cs.UI.Layouts;
 
+
 namespace FLG.Cs.UI.Widgets {
     internal class Text : AbstractLayoutElementLeaf, IText {
         public override ELayoutElement Type { get => ELayoutElement.TEXT; }

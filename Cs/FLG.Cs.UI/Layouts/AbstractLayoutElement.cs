@@ -46,6 +46,7 @@ namespace FLG.Cs.UI.Layouts
         }
 
         public abstract void AddChild(ILayoutElement child, string id = ILayoutElement.DEFAULT_CHILDREN_TARGET);
+        public virtual void OnAddedToPage(string id) { }
         public abstract void ComputeRectXform();
         public abstract IEnumerable<string> GetTargets();
         public abstract bool HasChildren(string id = ILayoutElement.DEFAULT_CHILDREN_TARGET);

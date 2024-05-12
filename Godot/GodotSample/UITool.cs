@@ -199,6 +199,10 @@ public partial class UITool : Control, IUIObserver {
                 IWidget<IText> text = new Text((IText)layoutElement);
                 node = text.Draw(parentNode, fromEditor);
                 break;
+            case ELayoutElement.INPUTFIELD:
+                IWidget<IInputField> inputField = new InputField((IInputField)layoutElement);
+                node = inputField.Draw(parentNode, fromEditor);
+                break;
             default:
                 node = AddNode(layoutElement.Name/* + " (" + layoutElement.GetType() + ")"*/, layoutElement, parentNode);
                 parentSetter = false;

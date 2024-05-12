@@ -100,7 +100,6 @@ offset_bottom = 614.0
 text = "Click Me!"
 
 [node name="Sample2" type="Control" parent="Layouts/layout sample/content"]
-visible = false
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1040.0
@@ -108,32 +107,73 @@ offset_bottom = 1040.0
 [node name="page2-test-label" type="Label" parent="Layouts/layout sample/content/Sample2"]
 layout_mode = 0
 offset_left = 896.0
-offset_top = 366.0
 offset_right = 1024.0
-offset_bottom = 406.0
+offset_bottom = 40.0
 text = "Hello World!"
 
 [node name="page2-test-sprite" type="TextureRect" parent="Layouts/layout sample/content/Sample2"]
 layout_mode = 0
 offset_left = 896.0
-offset_top = 426.0
+offset_top = 60.0
 offset_right = 896.0
-offset_bottom = 426.0
+offset_bottom = 60.0
 texture = ExtResource("2_8ldko")
 
 [node name="page2-test-button" type="Button" parent="Layouts/layout sample/content/Sample2"]
 layout_mode = 0
 offset_left = 896.0
-offset_top = 574.0
+offset_top = 208.0
 offset_right = 1024.0
-offset_bottom = 614.0
+offset_bottom = 248.0
 text = "Click Me!"
 
 [node name="page2-test-text" type="RichTextLabel" parent="Layouts/layout sample/content/Sample2"]
 layout_mode = 0
 offset_left = 896.0
-offset_top = 634.0
+offset_top = 268.0
 offset_right = 1024.0
-offset_bottom = 674.0
+offset_bottom = 308.0
 bbcode_enabled = true
 text = "[right]BBCode: [img width=40 height=40]icon.svg[/img][/right]"
+
+[node name="page2-test-inputfield" type="LineEdit" parent="Layouts/layout sample/content/Sample2"]
+layout_mode = 0
+offset_left = 896.0
+offset_top = 308.0
+offset_right = 1024.0
+offset_bottom = 348.0
+placeholder_text = "my placeholder"
+
+[node name="page2-test-form" type="Control" parent="Layouts/layout sample/content/Sample2"]
+anchors_preset = 0
+offset_top = 348.0
+offset_right = 1920.0
+offset_bottom = 1040.0
+
+[node name="Sample2" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form"]
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 692.0
+
+[node name="page2-test-form-container" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2"]
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 692.0
+
+[node name="Sample2" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container"]
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 692.0
+
+[node name="page2-test-form-item-firsname" type="LineEdit" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2"]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 346.0
+placeholder_text = "my first name"
+
+[node name="page2-test-form-item-lastname" type="LineEdit" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2"]
+layout_mode = 0
+offset_top = 346.0
+offset_right = 1920.0
+offset_bottom = 692.0
+placeholder_text = "my first name"

@@ -113,7 +113,7 @@ namespace FLG.Cs.UI.Grids {
             var stackDimensionSecondary = GetStackDimensionSecondary(stackDimensions);
 
             float[] margins = new float[childrens.Length];
-            for (int i = 0; i < margins.Length; ++i) // TODO: Validate
+            for (int i = 0; i < margins.Length; ++i)
             {
                 var secondaryMarginFirst = GetChildSecondaryMarginFirst(childrens[i]);
                 var secondaryMarginLast = GetChildSecondaryMarginLast(childrens[i]);

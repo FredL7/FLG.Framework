@@ -30,5 +30,10 @@ namespace FLG.Godot.Framework {
         public void Warn(string msg) { Log(msg, ELogLevel.WARN); }
         public void Info(string msg) { Log(msg, ELogLevel.INFO); }
         public void Debug(string msg) { Log(msg, ELogLevel.DEBUG); }
+
+        public void Log(IResult result)
+        {
+            Log(result.GetMessage(), result.GetSeverity());
+        }
     }
 }
