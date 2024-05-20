@@ -9,7 +9,7 @@ public class Sample1 : IPage {
 
     public void Setup(IUIManager ui, IUIFactory factory)
     {
-        var btn = factory.Button("page1-test-button", "Click Me!", OnBtnClicked, new() { Order=3, Width=128, Height=40, Margin=new(0, 0, 0, 20) });
+        var btn = factory.Button("page1-test-button", "Click Me!", OnBtnClicked, new(order: 3, width: 128, height: 40, margin: new(0, 0, 0, 20)));
 
         var layout = ui.GetLayout(LayoutId);
         var target = layout.GetTarget("content");

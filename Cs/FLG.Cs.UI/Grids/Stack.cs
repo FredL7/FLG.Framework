@@ -23,9 +23,9 @@ namespace FLG.Cs.UI.Grids {
             string name, LayoutAttributes layoutAttr, GridAttributes gridAttr)
             : base(name, layoutAttr)
         {
-            _direction = gridAttr.Direction;
-            _justify = gridAttr.Justify;
-            _alignment = gridAttr.Alignment;
+            _direction = gridAttr.direction;
+            _justify = gridAttr.justify;
+            _alignment = gridAttr.alignment;
         }
 
         protected sealed override void ComputeChildrenSizesAndPositions(string id = ILayoutElement.DEFAULT_CHILDREN_TARGET)
@@ -113,13 +113,6 @@ namespace FLG.Cs.UI.Grids {
             var stackDimensionSecondary = GetStackDimensionSecondary(stackDimensions);
 
             float[] margins = new float[childrens.Length];
-            for (int i = 0; i < margins.Length; ++i)
-            {
-                var secondaryMarginFirst = GetChildSecondaryMarginFirst(childrens[i]);
-                var secondaryMarginLast = GetChildSecondaryMarginLast(childrens[i]);
-            }
-
-
             float[] dimensions = new float[childrens.Length];
 
             for (int i = 0; i < childrens.Length; ++i)

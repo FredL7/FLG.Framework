@@ -107,73 +107,105 @@ offset_bottom = 1040.0
 [node name="page2-test-label" type="Label" parent="Layouts/layout sample/content/Sample2"]
 layout_mode = 0
 offset_left = 896.0
+offset_top = 306.0
 offset_right = 1024.0
-offset_bottom = 40.0
+offset_bottom = 346.0
 text = "Hello World!"
 
 [node name="page2-test-sprite" type="TextureRect" parent="Layouts/layout sample/content/Sample2"]
 layout_mode = 0
 offset_left = 896.0
-offset_top = 60.0
+offset_top = 366.0
 offset_right = 896.0
-offset_bottom = 60.0
+offset_bottom = 366.0
 texture = ExtResource("2_8ldko")
 
 [node name="page2-test-button" type="Button" parent="Layouts/layout sample/content/Sample2"]
 layout_mode = 0
 offset_left = 896.0
-offset_top = 208.0
+offset_top = 514.0
 offset_right = 1024.0
-offset_bottom = 248.0
+offset_bottom = 554.0
 text = "Click Me!"
 
 [node name="page2-test-text" type="RichTextLabel" parent="Layouts/layout sample/content/Sample2"]
 layout_mode = 0
 offset_left = 896.0
-offset_top = 268.0
+offset_top = 574.0
 offset_right = 1024.0
-offset_bottom = 308.0
+offset_bottom = 614.0
 bbcode_enabled = true
 text = "[right]BBCode: [img width=40 height=40]icon.svg[/img][/right]"
 
-[node name="page2-test-inputfield" type="LineEdit" parent="Layouts/layout sample/content/Sample2"]
-layout_mode = 0
-offset_left = 896.0
-offset_top = 308.0
-offset_right = 1024.0
-offset_bottom = 348.0
-placeholder_text = "my placeholder"
-
 [node name="page2-test-form" type="Control" parent="Layouts/layout sample/content/Sample2"]
 anchors_preset = 0
-offset_top = 348.0
-offset_right = 1920.0
-offset_bottom = 1040.0
+offset_left = 710.0
+offset_top = 634.0
+offset_right = 1210.0
+offset_bottom = 734.0
 
 [node name="Sample2" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form"]
 anchors_preset = 0
-offset_right = 1920.0
-offset_bottom = 692.0
+offset_right = 500.0
+offset_bottom = 100.0
 
 [node name="page2-test-form-container" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2"]
 anchors_preset = 0
-offset_right = 1920.0
-offset_bottom = 692.0
+offset_right = 500.0
+offset_bottom = 100.0
 
 [node name="Sample2" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container"]
 anchors_preset = 0
-offset_right = 1920.0
-offset_bottom = 692.0
+offset_right = 500.0
+offset_bottom = 100.0
 
-[node name="page2-test-form-item-firsname" type="LineEdit" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2"]
+[node name="page2-test-form-item-firsname-inputline" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2"]
+anchors_preset = 0
+offset_right = 500.0
+offset_bottom = 40.0
+
+[node name="Sample2" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2/page2-test-form-item-firsname-inputline"]
+anchors_preset = 0
+offset_right = 500.0
+offset_bottom = 40.0
+
+[node name="page2-test-form-item-firsname-label" type="Label" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2/page2-test-form-item-firsname-inputline/Sample2"]
 layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 346.0
+offset_right = 245.0
+offset_bottom = 40.0
+text = "Firstname"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="page2-test-form-item-firsname" type="LineEdit" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2/page2-test-form-item-firsname-inputline/Sample2"]
+layout_mode = 0
+offset_left = 255.0
+offset_right = 500.0
+offset_bottom = 40.0
 placeholder_text = "my first name"
 
-[node name="page2-test-form-item-lastname" type="LineEdit" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2"]
+[node name="page2-test-form-item-lastname-inputline" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2"]
+anchors_preset = 0
+offset_top = 50.0
+offset_right = 500.0
+offset_bottom = 90.0
+
+[node name="Sample2" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2/page2-test-form-item-lastname-inputline"]
+anchors_preset = 0
+offset_right = 500.0
+offset_bottom = 40.0
+
+[node name="page2-test-form-item-lastname-label" type="Label" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2/page2-test-form-item-lastname-inputline/Sample2"]
 layout_mode = 0
-offset_top = 346.0
-offset_right = 1920.0
-offset_bottom = 692.0
+offset_right = 245.0
+offset_bottom = 40.0
+text = "Lastname"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="page2-test-form-item-lastname" type="LineEdit" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2/page2-test-form-item-lastname-inputline/Sample2"]
+layout_mode = 0
+offset_left = 255.0
+offset_right = 500.0
+offset_bottom = 40.0
 placeholder_text = "my first name"

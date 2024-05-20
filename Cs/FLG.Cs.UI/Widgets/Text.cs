@@ -29,7 +29,7 @@ namespace FLG.Cs.UI.Widgets {
             :base(name, layoutAttr)
         {
             _content = content;
-            AlignHorizontal = textAttr.AlignHorizontal;
+            AlignHorizontal = textAttr.alignHorizontal;
         }
     }
 }

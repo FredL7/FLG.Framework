@@ -66,8 +66,8 @@ namespace FLG.Cs.UI
         #endregion Widgets
 
         #region Forms
-        public IForm Form(string name, List<IInputField> fields, Action submit, LayoutAttributes attributes)
-            => new Form(name, fields, submit, attributes);
+        public IForm Form(string name, string title, List<IInputField> fields, Action submit, LayoutAttributes layoutAttr, FormAttributes formAttr)
+            => new Form(name, title, fields, submit, layoutAttr, formAttr);
 
         public IInputField InputField(string name, string label, string placeholder, IInputFieldModel model, LayoutAttributes layoutAttr)
             => new InputField(name, label, placeholder, model, layoutAttr);

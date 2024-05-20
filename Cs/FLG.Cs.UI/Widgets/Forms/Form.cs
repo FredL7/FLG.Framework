@@ -2,35 +2,30 @@
 using FLG.Cs.UI.Grids;
 using System.Xml;
 
-/*
- * TODO: Maybe have a form factory that would build a form from a list of parameters
- * That way the form itself can controls its styling/UI
- * 
- * TODO: Use generic IFieldItem instead IInputField and IInputFieldModel could be renamed ot IFieldItemModel
- * 
- * TODO: Use tests to fix the fact that VStack "container" childrens (form fields) are not shown in Godot
- * And that "container" layout doesn't work
- */
 namespace FLG.Cs.UI.Widgets {
     internal class Form : Container, IForm {
         public override ELayoutElement Type { get => ELayoutElement.FORM; }
 
+        public string Title { get; private set; }
         public FormModel Model { get; private set; }
         public Action SubmitAction { get; }
 
-        private readonly List<IInputField> _fields;
+        private List<IInputField> _fields;
+        private readonly FormAttributes _formAttributes;
 
         public Form(string name, XmlNode node) : base(name, node) {
             // Should not create Form from xml (unless we add a custom way to add childs so we can dynamically create the FormModel by using the default IInputFieldModel)
             throw new NotImplementedException();
         }
 
-        public Form(string name, List<IInputField> fields, Action submitAction, LayoutAttributes attributes)
-            : base(name, attributes)
+        public Form(string name, string title, List<IInputField> fields, Action submitAction, LayoutAttributes layoutAttr, FormAttributes formAttr)
+            : base(name, layoutAttr)
         {
+            Title = title;
             Model = new FormModel(fields);
             SubmitAction = submitAction;
             _fields = fields;
+            _formAttributes = formAttr;
         }
 
         public sealed override void OnAddedToPage(string pageID)
@@ -45,10 +40,24 @@ namespace FLG.Cs.UI.Widgets {
             var container = new VStack(Name + "-container", new(), new());
             layout.Add(container);
 
-            // TODO: Add header
-
+            List<IInputField> newFields = new(_fields.Count);
             foreach (var field in _fields)
-                container.AddChild(field, pageID);
+            {
+                HStack inputLine = new(field.Name + "-inputline", new(margin: new(0, 0, 0, _formAttributes.paddingBetweenRows)), new());
+                container.AddChild(inputLine, pageID);
+
+                Label inputLabel = new(field.Name + "-label", field.Label,
+                    new(margin: new(_formAttributes.paddingBetweenColumns / 2.0f, 0, 0, 0), weight: _formAttributes.labelColumnWeight),
+                    new(alignHorizontal: ETextAlignHorizontal.RIGHT, alignVertical: ETextAlignVertical.CENTER));
+                inputLine.AddChild(inputLabel, pageID);
+
+                // TODO: Better way than to create a copy?
+                InputField inputField = new(field.Name, field.Label, field.Placeholder, field.Model,
+                    new(weight: _formAttributes.inputColumnWeight, margin: new(0, 0, _formAttributes.paddingBetweenColumns / 2.0f, 0)));
+                newFields.Add(inputField);
+                inputLine.AddChild(inputField, pageID);
+            }
+            _fields = newFields;
 
             // TODO: Add reset and submit buttons
         }
