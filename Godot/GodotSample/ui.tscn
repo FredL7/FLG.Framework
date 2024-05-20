@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bdhf2jm05lbhw"]
 
-[ext_resource type="Script" path="res://UITool.cs" id="1_ey55o"]
+[ext_resource type="Script" path="res://UIManager.cs" id="1_bavhg"]
 [ext_resource type="Texture2D" uid="uid://jsdiclk3awk5" path="res://icon.svg" id="2_8ldko"]
 
 [node name="UI" type="Control"]
@@ -18,7 +18,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_ey55o")
+script = ExtResource("1_bavhg")
 
 [node name="layout sample" type="Control" parent="Layouts"]
 anchors_preset = 0
@@ -39,6 +39,7 @@ offset_bottom = 20.0
 
 [node name="header-title-icon" type="TextureRect" parent="Layouts/layout sample/header/header-title"]
 layout_mode = 0
+texture = ExtResource("2_8ldko")
 
 [node name="header-title-title" type="Label" parent="Layouts/layout sample/header/header-title"]
 layout_mode = 0
@@ -100,6 +101,7 @@ offset_bottom = 614.0
 text = "Click Me!"
 
 [node name="Sample2" type="Control" parent="Layouts/layout sample/content"]
+visible = false
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1040.0
@@ -145,6 +147,7 @@ offset_right = 1210.0
 offset_bottom = 734.0
 
 [node name="Sample2" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form"]
+visible = false
 anchors_preset = 0
 offset_right = 500.0
 offset_bottom = 100.0
@@ -155,6 +158,7 @@ offset_right = 500.0
 offset_bottom = 100.0
 
 [node name="Sample2" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container"]
+visible = false
 anchors_preset = 0
 offset_right = 500.0
 offset_bottom = 100.0
@@ -162,17 +166,18 @@ offset_bottom = 100.0
 [node name="page2-test-form-item-firsname-inputline" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2"]
 anchors_preset = 0
 offset_right = 500.0
-offset_bottom = 40.0
+offset_bottom = 23.3333
 
 [node name="Sample2" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2/page2-test-form-item-firsname-inputline"]
+visible = false
 anchors_preset = 0
 offset_right = 500.0
-offset_bottom = 40.0
+offset_bottom = 23.3333
 
 [node name="page2-test-form-item-firsname-label" type="Label" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2/page2-test-form-item-firsname-inputline/Sample2"]
 layout_mode = 0
 offset_right = 245.0
-offset_bottom = 40.0
+offset_bottom = 23.3333
 text = "Firstname"
 horizontal_alignment = 2
 vertical_alignment = 1
@@ -181,24 +186,25 @@ vertical_alignment = 1
 layout_mode = 0
 offset_left = 255.0
 offset_right = 500.0
-offset_bottom = 40.0
+offset_bottom = 31.0
 placeholder_text = "my first name"
 
 [node name="page2-test-form-item-lastname-inputline" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2"]
 anchors_preset = 0
-offset_top = 50.0
+offset_top = 33.3333
 offset_right = 500.0
-offset_bottom = 90.0
+offset_bottom = 56.6667
 
 [node name="Sample2" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2/page2-test-form-item-lastname-inputline"]
+visible = false
 anchors_preset = 0
 offset_right = 500.0
-offset_bottom = 40.0
+offset_bottom = 23.3333
 
 [node name="page2-test-form-item-lastname-label" type="Label" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2/page2-test-form-item-lastname-inputline/Sample2"]
 layout_mode = 0
 offset_right = 245.0
-offset_bottom = 40.0
+offset_bottom = 23.3333
 text = "Lastname"
 horizontal_alignment = 2
 vertical_alignment = 1
@@ -207,5 +213,30 @@ vertical_alignment = 1
 layout_mode = 0
 offset_left = 255.0
 offset_right = 500.0
-offset_bottom = 40.0
+offset_bottom = 31.0
 placeholder_text = "my first name"
+
+[node name="page2-test-form-controls" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2"]
+anchors_preset = 0
+offset_top = 76.6667
+offset_right = 500.0
+offset_bottom = 100.0
+
+[node name="Sample2" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2/page2-test-form-controls"]
+visible = false
+anchors_preset = 0
+offset_right = 500.0
+offset_bottom = 23.3333
+
+[node name="page2-test-form-control-reset" type="Button" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2/page2-test-form-controls/Sample2"]
+layout_mode = 0
+offset_right = 245.0
+offset_bottom = 23.3333
+text = "Reset"
+
+[node name="page2-test-form-control-submit" type="Button" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2/page2-test-form-controls/Sample2"]
+layout_mode = 0
+offset_left = 255.0
+offset_right = 500.0
+offset_bottom = 23.3333
+text = "Submit"

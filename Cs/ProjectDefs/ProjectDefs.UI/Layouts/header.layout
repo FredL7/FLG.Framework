@@ -2,7 +2,7 @@
 <layout>
   <HStack id="root" padding="10" height="40">
     <HStack id="header-title">
-      <Sprite id="header-title-icon" width="20" margin="10 0 0 0" />
+      <Sprite id="header-title-icon" source="icon.svg" width="20" height="20" margin="10 0 0 0" />
       <Label id="header-title-title">FLG.Framework</Label>
     </HStack>
     <HStack id="header-controls" justify="end">

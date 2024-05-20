@@ -26,12 +26,6 @@ namespace FLG.Cs.Framework {
 
         internal static void CreateUIManager(PreferencesUI prefs)
         {
-            IUIFactory uiFactory = new UIFactory();
-            Locator.Instance.Register(uiFactory);
-
-            prefs.factory = uiFactory;
-            prefs.logger = Locator.Instance.Get<ILogManager>();
-
             IUIManager manager = new UIManager(prefs);
             Locator.Instance.Register(manager);
         }
