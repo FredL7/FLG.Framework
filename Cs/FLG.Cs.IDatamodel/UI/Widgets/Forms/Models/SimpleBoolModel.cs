@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.IDatamodel {
+﻿namespace FLG.Cs.Datamodel {
     public class SimpleBoolModel : IInputFieldModel {
         private bool _initialValue;
         private bool _value;

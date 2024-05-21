@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.IDatamodel {
+﻿namespace FLG.Cs.Datamodel {
     public interface ILogManager : IServiceInstance {
         public void Error(string msg);
         public void Warn(string msg);

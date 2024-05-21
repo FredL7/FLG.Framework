@@ -1,6 +1,6 @@
 ﻿using FLG.Cs.Math;
 
-namespace FLG.Cs.IDatamodel {
+namespace FLG.Cs.Datamodel {
     public struct PreferencesUI {
         public string layoutsDir;
         public string pagesDir;

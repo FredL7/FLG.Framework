@@ -1,4 +1,4 @@
-﻿using FLG.Cs.IDatamodel;
+﻿using FLG.Cs.Datamodel;
 using FLG.Cs.Math;
 using FLG.Cs.UI.Layouts;
 using FLG.Cs.UI.Pages;

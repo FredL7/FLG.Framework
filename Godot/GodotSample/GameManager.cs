@@ -1,7 +1,7 @@
 using Godot;
 
 using FLG.Cs.Framework;
-using FLG.Cs.IDatamodel;
+using FLG.Cs.Datamodel;
 
 
 namespace FLG.Godot.Sample {

@@ -3,7 +3,7 @@
 using FLG.Cs.Math;
 
 
-namespace FLG.Cs.IDatamodel {
+namespace FLG.Cs.Datamodel {
     public interface ILayoutElement {
         public const string DEFAULT_CHILDREN_TARGET = "default";
 

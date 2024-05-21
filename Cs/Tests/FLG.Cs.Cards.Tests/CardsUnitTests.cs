@@ -1,6 +1,6 @@
 using System.Text;
 
-using FLG.Cs.IDatamodel;
+using FLG.Cs.Datamodel;
 using FLG.Cs.ServiceLocator;
 using FLG.Cs.Framework;
 

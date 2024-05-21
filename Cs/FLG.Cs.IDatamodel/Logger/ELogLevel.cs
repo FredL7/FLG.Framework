@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.IDatamodel {
+﻿namespace FLG.Cs.Datamodel {
     public enum ELogLevel {
         ERROR = 0,
         WARN = 1,

@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.IDatamodel {
+﻿namespace FLG.Cs.Datamodel {
     public interface IDeck {
         public List<ICard> GetHand(int playerIndex = 0);
 

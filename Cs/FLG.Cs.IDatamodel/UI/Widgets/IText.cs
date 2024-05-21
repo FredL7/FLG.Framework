@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.IDatamodel {
+﻿namespace FLG.Cs.Datamodel {
     public interface IText : ILayoutElement {
         string Content { get; set; }
         public ETextAlignHorizontal AlignHorizontal { get; }

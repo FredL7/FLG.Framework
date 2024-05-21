@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Nodes;
 
-using FLG.Cs.IDatamodel;
+using FLG.Cs.Datamodel;
 
 
 namespace FLG.Cs.Serialization {

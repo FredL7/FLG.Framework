@@ -1,4 +1,4 @@
-﻿using FLG.Cs.IDatamodel;
+﻿using FLG.Cs.Datamodel;
 using FLG.Cs.UI.Grids;
 using System.Xml;
 

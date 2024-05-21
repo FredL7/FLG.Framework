@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.IDatamodel {
+﻿namespace FLG.Cs.Datamodel {
     public class SimpleFloatModel : IInputFieldModel {
         private float _initialValue;
         private float _value;

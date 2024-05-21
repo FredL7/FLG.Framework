@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.IDatamodel {
+﻿namespace FLG.Cs.Datamodel {
     public class SimpleStringModel : IInputFieldModel {
         private string _initialValue;
         private string _value;

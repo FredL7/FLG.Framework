@@ -1,7 +1,7 @@
 ﻿using FLG.Cs.Math;
 
 
-namespace FLG.Cs.IDatamodel {
+namespace FLG.Cs.Datamodel {
     public struct LayoutAttributes {
         private const float DEFAULT_WIDTH = 0f;
         private const float DEFAULT_HEIGHT = 0f;

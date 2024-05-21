@@ -1,4 +1,4 @@
-using FLG.Cs.IDatamodel;
+using FLG.Cs.Datamodel;
 using FLG.Cs.ServiceLocator;
 
 public class Sample1 : IPage {

@@ -1,7 +1,7 @@
 using Godot;
 using System.Collections.Generic;
 
-using FLG.Cs.IDatamodel;
+using FLG.Cs.Datamodel;
 using FLG.Cs.Math;
 using FLG.Cs.UI;
 using FLG.Godot.Framework;

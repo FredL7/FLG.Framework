@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.IDatamodel {
+﻿namespace FLG.Cs.Datamodel {
     public struct FormAttributes {
         private const float DEFAULT_PADDINGBETWEENROWS = 10.0f;
         private const float DEFAULT_PADDINGBETWEENCOLS = 20.0f;

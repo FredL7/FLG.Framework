@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.IDatamodel {
+﻿namespace FLG.Cs.Datamodel {
     public interface ISerializer {
         public void Serialize(string filename);
         public void Serialize(ISaveFile saveFile);

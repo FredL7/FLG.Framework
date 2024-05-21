@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.IDatamodel {
+﻿namespace FLG.Cs.Datamodel {
     public interface ILayoutObserver {
         void OnLayoutSetActive();
         void OnLayoutSetInactive();

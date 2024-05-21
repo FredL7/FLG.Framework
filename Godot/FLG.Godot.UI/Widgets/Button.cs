@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-using FLG.Cs.IDatamodel;
+using FLG.Cs.Datamodel;
 
 
 using gd_Button = Godot.Button;

@@ -1,4 +1,4 @@
-﻿using FLG.Cs.IDatamodel;
+﻿using FLG.Cs.Datamodel;
 using FLG.Cs.Logger;
 using FLG.Cs.Serialization;
 using FLG.Cs.ServiceLocator;

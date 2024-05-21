@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.IDatamodel {
+﻿namespace FLG.Cs.Datamodel {
     public enum EGridAlignment { START, END, CENTER, STRETCH }
 
     public class EGridAlignmentExtension {

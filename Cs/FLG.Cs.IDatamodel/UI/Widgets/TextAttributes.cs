@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.IDatamodel {
+﻿namespace FLG.Cs.Datamodel {
     public struct TextAttributes {
         private const ETextAlignHorizontal DEFAULT_ALIGNHORIZONTAL = ETextAlignHorizontal.LEFT;
         private const ETextAlignVertical DEFAULT_ALIGNVERTICAL = ETextAlignVertical.TOP;

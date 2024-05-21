@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.IDatamodel {
+﻿namespace FLG.Cs.Datamodel {
     public interface IUIFactory : IServiceInstance {
         #region Layouts
         public ILayoutElement Container(string name, LayoutAttributes layoutAttr);

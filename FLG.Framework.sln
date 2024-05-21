@@ -39,7 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProjectDefs", "ProjectDefs"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectDefs.UI", "Cs\ProjectDefs\ProjectDefs.UI\ProjectDefs.UI.csproj", "{AE189990-56AC-4DED-935E-2BB4E1A4F8BA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FLG.Cs.IDatamodel", "Cs\FLG.Cs.IDatamodel\FLG.Cs.IDatamodel.csproj", "{C7409D5A-A2EE-48B3-8CBC-EC18258E1E18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FLG.Cs.Datamodel", "Cs\FLG.Cs.IDatamodel\FLG.Cs.Datamodel.csproj", "{C7409D5A-A2EE-48B3-8CBC-EC18258E1E18}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FLG.Cs.Cards", "Cs\FLG.Cs.Cards\FLG.Cs.Cards.csproj", "{BE74A0E5-55AF-4E8F-A283-39B37A5F49C8}"
 EndProject

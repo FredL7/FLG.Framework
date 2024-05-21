@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Numerics;
 using System.Xml;
-using FLG.Cs.IDatamodel;
+using FLG.Cs.Datamodel;
 using FLG.Cs.UI.Layouts;
 
 namespace FLG.Cs.UI.Grids {

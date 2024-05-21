@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.IDatamodel {
+﻿namespace FLG.Cs.Datamodel {
     public struct GridAttributes {
         private const EGridDirection DEFAULT_DIRECTION = EGridDirection.NORMAL;
         private const EGridJustify DEFAULT_JUSTIFY = EGridJustify.START;

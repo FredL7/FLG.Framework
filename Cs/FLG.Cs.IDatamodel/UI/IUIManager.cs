@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.IDatamodel {
+﻿namespace FLG.Cs.Datamodel {
     public interface IUIManager : IServiceInstance {
         public void SetCurrentPage(string id);
         public IEnumerable<ILayout> GetLayouts();

@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace FLG.Cs.IDatamodel {
+namespace FLG.Cs.Datamodel {
     public class FormModel : IEnumerable<KeyValuePair<string, IInputFieldModel>> {
         private readonly Dictionary<string, IInputFieldModel> _items;
         public FormModel(List<IInputField> fields)
