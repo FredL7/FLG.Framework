@@ -1,9 +1,8 @@
 ﻿using FLG.Cs.IDatamodel;
-using FLG.Cs.ServiceLocator;
 
 
 namespace FLG.Cs.Validation {
-    public readonly struct Result {
+    public readonly struct Result : IResult {
         public readonly static Result SUCCESS = new("SUCCESS", true, ELogLevel.DEBUG);
 
         public readonly string message;
@@ -19,23 +18,7 @@ namespace FLG.Cs.Validation {
 
         public static implicit operator bool(Result r) => r.success;
 
-        public readonly void Log()
-        {
-            switch(severity)
-            {
-                case ELogLevel.INFO:
-                    Locator.Instance.Get<ILogManager>().Info(message);
-                    break;
-                case ELogLevel.DEBUG:
-                    Locator.Instance.Get<ILogManager>().Debug(message);
-                    break;
-                case ELogLevel.WARN:
-                    Locator.Instance.Get<ILogManager>().Warn(message);
-                    break;
-                case ELogLevel.ERROR:
-                    Locator.Instance.Get<ILogManager>().Error(message);
-                    break;
-            }
-        }
+        public ELogLevel GetSeverity() => severity;
+        public string GetMessage() => message;
     }
 }

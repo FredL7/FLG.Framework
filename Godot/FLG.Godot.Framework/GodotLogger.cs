@@ -20,6 +20,7 @@ namespace FLG.Godot.Framework {
 
             DateTime date = DateTime.Now;
             GD.Print($"[{date.ToString(LoggerMetadata.LOGGING_DATE_PATTERN)}] [{level.ToPrettyString()}] [{(classname ?? LoggerMetadata.UNKNOWN)}::{(methodname ?? LoggerMetadata.UNKNOWN)}()] {msg}");
+            // TODO: use GD.PushError and GD.PushWarning
         }
 
         public void Error(string msg)
@@ -30,5 +31,10 @@ namespace FLG.Godot.Framework {
         public void Warn(string msg) { Log(msg, ELogLevel.WARN); }
         public void Info(string msg) { Log(msg, ELogLevel.INFO); }
         public void Debug(string msg) { Log(msg, ELogLevel.DEBUG); }
+
+        public void Log(IResult result)
+        {
+            Log(result.GetMessage(), result.GetSeverity());
+        }
     }
 }

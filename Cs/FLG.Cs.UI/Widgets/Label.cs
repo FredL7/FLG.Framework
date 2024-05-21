@@ -22,8 +22,8 @@ namespace FLG.Cs.UI.Widgets {
             : base(name, layoutAttr)
         {
             Text = text;
-            AlignHorizontal = textAttr.AlignHorizontal;
-            AlignVertical = textAttr.AlignVertical;
+            AlignHorizontal = textAttr.alignHorizontal;
+            AlignVertical = textAttr.alignVertical;
         }
     }
 }

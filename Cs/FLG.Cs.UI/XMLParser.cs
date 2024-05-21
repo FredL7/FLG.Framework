@@ -480,7 +480,6 @@ namespace FLG.Cs.UI {
                     2 => new Spacing(intValues[0], intValues[1]),
                     3 => new Spacing(intValues[0], intValues[1], intValues[2]),
                     4 => new Spacing(intValues[0], intValues[1], intValues[2], intValues[3]),
-                    // TODO: Locator.Instance.Get<ILogManager>().Warn("Spacing attribute has too many values");
                     _ => new Spacing(intValues[0], intValues[1], intValues[2], intValues[3]),
                 };
             }

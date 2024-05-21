@@ -3,6 +3,7 @@
 using FLG.Cs.IDatamodel;
 using FLG.Cs.UI.Layouts;
 
+
 namespace FLG.Cs.UI.Widgets {
     internal class Text : AbstractLayoutElementLeaf, IText {
         public override ELayoutElement Type { get => ELayoutElement.TEXT; }
@@ -28,7 +29,7 @@ namespace FLG.Cs.UI.Widgets {
             :base(name, layoutAttr)
         {
             _content = content;
-            AlignHorizontal = textAttr.AlignHorizontal;
+            AlignHorizontal = textAttr.alignHorizontal;
         }
     }
 }

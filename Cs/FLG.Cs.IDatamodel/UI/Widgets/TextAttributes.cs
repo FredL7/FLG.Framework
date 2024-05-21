@@ -1,8 +1,23 @@
 ﻿namespace FLG.Cs.IDatamodel {
     public struct TextAttributes {
-        public ETextAlignHorizontal AlignHorizontal { get; set; } = ETextAlignHorizontal.LEFT;
-        public ETextAlignVertical AlignVertical { get; set; } = ETextAlignVertical.TOP;
+        private const ETextAlignHorizontal DEFAULT_ALIGNHORIZONTAL = ETextAlignHorizontal.LEFT;
+        private const ETextAlignVertical DEFAULT_ALIGNVERTICAL = ETextAlignVertical.TOP;
 
-        public TextAttributes() { }
+        public ETextAlignHorizontal alignHorizontal;
+        public ETextAlignVertical alignVertical;
+
+        public TextAttributes()
+        {
+            alignHorizontal = DEFAULT_ALIGNHORIZONTAL;
+            alignVertical = DEFAULT_ALIGNVERTICAL;
+        }
+
+        public TextAttributes(
+            ETextAlignHorizontal alignHorizontal = DEFAULT_ALIGNHORIZONTAL,
+            ETextAlignVertical alignVertical = DEFAULT_ALIGNVERTICAL)
+        {
+            this.alignHorizontal = alignHorizontal;
+            this.alignVertical = alignVertical;
+        }
     }
 }

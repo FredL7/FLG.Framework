@@ -1,10 +1,9 @@
 ﻿using Godot;
 
 using FLG.Cs.IDatamodel;
-
+using FLG.Godot.Helpers;
 
 using gd_Label = Godot.Label;
-using FLG.Godot.Helpers;
 
 
 namespace FLG.Godot.UI {
