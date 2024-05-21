@@ -16,7 +16,7 @@ public class Sample1 : IPage {
         target.AddChild(btn, PageId);
     }
 
-    public void OnBtnClicked()
+    private void OnBtnClicked()
     {
         var _uiManager = Locator.Instance.Get<IUIManager>();
         _uiManager.SetCurrentPage("Sample2");

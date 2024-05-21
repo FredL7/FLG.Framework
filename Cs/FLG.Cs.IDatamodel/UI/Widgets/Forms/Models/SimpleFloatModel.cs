@@ -2,6 +2,7 @@
     public class SimpleFloatModel : IInputFieldModel {
         private float _initialValue;
         private float _value;
+        private Action? _clearUICallback;
 
         public SimpleFloatModel(float initialValue = 0f)
         {
@@ -24,9 +25,16 @@
         public float GetValueAsFloat() => _value;
         public bool GetValueAsBool() => _value != 0;
 
+
+        public void SetClearUICallback(Action a)
+        {
+            _clearUICallback = a;
+        }
+
         public void Clear()
         {
             _value = _initialValue;
+            _clearUICallback?.Invoke();
         }
     }
 }

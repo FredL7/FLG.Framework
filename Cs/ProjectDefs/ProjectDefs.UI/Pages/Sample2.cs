@@ -49,20 +49,18 @@ public class Sample2 : IPage {
         target.AddChild(form, PageId);
     }
 
-    public void OnBtnClicked()
+    private void OnBtnClicked()
     {
         var ui = Locator.Instance.Get<IUIManager>();
         ui.SetCurrentPage("Sample1");
     }
 
-    public void OnForm1Submit()
+    private void OnForm1Submit(string name, FormModel model)
     {
-        /*
-        string firstname = _formModel.GetItem(Form1Items.FIRSTNAME.ToLabel()).GetValueAsString();
-        string lastname = _formModel.GetItem(Form1Items.LASTNAME.ToLabel()).GetValueAsString();
         var logger = Locator.Instance.Get<ILogManager>();
-        logger.Debug($"Firstname={firstname}, Lastname={lastname}");
-        */
+        string firstname = model.GetItem(Form1Items.FIRSTNAME.ToLabel()).GetValueAsString();
+        string lastname = model.GetItem(Form1Items.LASTNAME.ToLabel()).GetValueAsString();
+        logger.Debug($"Form {name} Submitted with values:\nFirstname={firstname}, Lastname={lastname}");
     }
 
     public void OnOpen() { }

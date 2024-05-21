@@ -1,7 +1,6 @@
 ﻿using System.Xml;
 
 using FLG.Cs.IDatamodel;
-using FLG.Cs.Math;
 using FLG.Cs.UI.Layouts;
 
 namespace FLG.Cs.UI.Widgets {

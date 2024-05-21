@@ -7,6 +7,8 @@ namespace FLG.Godot.UI {
     public class InputField : IWidget<IInputField> {
         public IInputField Widget { get; private set; }
 
+        private LineEdit? _inputField;
+
         public InputField(IInputField widget)
         {
             Widget = widget;
@@ -14,7 +16,7 @@ namespace FLG.Godot.UI {
 
         public Node Draw(Node parent, bool fromEditor)
         {
-            LineEdit inputField = new()
+            _inputField = new()
             {
                 Name = Widget.Name,
                 Position = new Vector2(Widget.Position.X, Widget.Position.Y),
@@ -24,7 +26,23 @@ namespace FLG.Godot.UI {
                 PlaceholderText = Widget.Placeholder,
             };
 
-            return inputField;
+            if (!fromEditor)
+            {
+                _inputField.TextChanged += OnTextChanged;
+                Widget.Model.SetClearUICallback(Clear);
+            }
+
+            return _inputField;
+        }
+
+        private void OnTextChanged(string text)
+        {
+            Widget.Model.SetValue(text);
+        }
+
+        private void Clear()
+        {
+            _inputField?.Clear();
         }
     }
 }

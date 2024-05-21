@@ -8,23 +8,24 @@ namespace FLG.Cs.UI.Widgets {
 
         public string Title { get; private set; }
         public FormModel Model { get; private set; }
-        public Action SubmitAction { get; }
 
         private List<IInputField> _fields;
         private readonly FormAttributes _formAttributes;
+        private readonly Action<string, FormModel> _submitAction;
 
-        public Form(string name, XmlNode node) : base(name, node) {
+        public Form(string name, XmlNode node) : base(name, node)
+        {
             // Should not create Form from xml (unless we add a custom way to add childs so we can dynamically create the FormModel by using the default IInputFieldModel)
             throw new NotImplementedException();
         }
 
-        public Form(string name, string title, List<IInputField> fields, Action submitAction, LayoutAttributes layoutAttr, FormAttributes formAttr)
+        public Form(string name, string title, List<IInputField> fields, Action<string, FormModel> submitAction, LayoutAttributes layoutAttr, FormAttributes formAttr)
             : base(name, layoutAttr)
         {
             Title = title;
             Model = new FormModel(fields);
-            SubmitAction = submitAction;
-            _fields = fields;
+            _submitAction = submitAction;
+            _fields = fields; // TODO: Better repalce (can't change layout values once ctor, so need to replace because of internal values)
             _formAttributes = formAttr;
         }
 
@@ -40,6 +41,7 @@ namespace FLG.Cs.UI.Widgets {
             var container = new VStack(Name + "-container", new(), new());
             layout.Add(container);
 
+            // Fields
             List<IInputField> newFields = new(_fields.Count);
             foreach (var field in _fields)
             {
@@ -59,33 +61,38 @@ namespace FLG.Cs.UI.Widgets {
             }
             _fields = newFields;
 
-            // TODO: Add reset and submit buttons
+            // Controls
+            HStack controls = new(Name + "-controls", new(margin: new(0, 20, 0, 0)), new(justify: EGridJustify.CENTER));
+            container.AddChild(controls, pageID);
+
+            Button resetBtn = new(Name + "-control-reset", "Reset", ResetFields, new(margin: new(_formAttributes.paddingBetweenColumns / 2.0f, 0, 0, 0)));
+            controls.AddChild(resetBtn, pageID);
+            Button submitBtn = new(Name + "-control-submit", "Submit", SubmitForm, new(margin: new(0, 0, _formAttributes.paddingBetweenColumns / 2.0f, 0)));
+            controls.AddChild(submitBtn, pageID);
         }
 
-        /*
-        private Dictionary<string, IInputFieldModel> Submit()
+        private void ResetFields()
         {
-            Dictionary<string, IInputFieldModel> models = new(_items.Count);
-            foreach(var item in _items)
+            foreach (var field in _fields)
             {
-                models.Add(item.Key, item.Value.GetModel());
+                field.Model.Clear();
             }
-            return models;
         }
-        */
 
-
-
-        /*
-        public List<IResult> ValidateFields()
+        private void SubmitForm()
         {
-            List<IResult> results = new List<IResult>(_items.Count);
-            foreach (IFormItem item in _items)
+            if (ValidateFields())
             {
-
+                _submitAction(Name, Model);
             }
-            return results;
+
+            // TODO: Clear the form?
         }
-        */
+
+        public bool ValidateFields()
+        {
+            // TODO
+            return true;
+        }
     }
 }
