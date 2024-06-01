@@ -5,8 +5,7 @@ using FLG.Cs.UI.Pages;
 
 namespace FLG.Cs.UI {
     public class UIManager : IUIManager {
-        private string _layoutsDir;
-        private string _pagesDir;
+        private string[] _uiDirs;
         private Size _windowSize;
 
         private ILogManager _logger;
@@ -19,8 +18,7 @@ namespace FLG.Cs.UI {
 
         public UIManager(PreferencesUI prefs)
         {
-            _layoutsDir = prefs.layoutsDir;
-            _pagesDir = prefs.pagesDir;
+            _uiDirs = prefs.uiDirs;
             _windowSize = prefs.windowSize;
 
             _logger = prefs.logger;
@@ -67,7 +65,7 @@ namespace FLG.Cs.UI {
         {
             _logger.Debug("Begin XML Parsing");
 
-            XMLParser parser = new(_layoutsDir, _pagesDir, _logger);
+            XMLParser parser = new(_uiDirs, _logger);
             var result = parser.Parse();
             if (!result) _logger.Log(result);
             _logger.Debug("Finished XML Parsing");

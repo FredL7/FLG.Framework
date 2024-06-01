@@ -19,8 +19,7 @@ using FLG.Cs.Framework;
 namespace FLG.Godot.Sample {
     [Tool]
     public partial class UIManager : Control, IUIObserver {
-        private const string LAYOUTS_RELATIVE_PATH = "../../Cs/ProjectDefs/ProjectDefs.UI/Layouts";
-        private const string PAGES_RELATIVE_PATH = "../../Cs/ProjectDefs/ProjectDefs.UI/Pages";
+        private static readonly string[] UI_RELATIVE_PATH = { "../commons/ProjectDefs.UI/ui/general/", "../commons/ProjectDefs.UI/ui/client/" };
         private const string HOMEPAGE = "Sample1";
 
 
@@ -45,6 +44,14 @@ namespace FLG.Godot.Sample {
             }
         }
 
+        private string[] GetGlobalizedUiDirs()
+        {
+            var globalUiDir = new string[UI_RELATIVE_PATH.Length];
+            for (int i = 0; i < globalUiDir.Length; ++i)
+                globalUiDir[i] = ProjectSettings.GlobalizePath("res://" + UI_RELATIVE_PATH[i]);
+            return globalUiDir;
+        }
+
         private void InitializeFromEditor()
         {
             _logger = new GodotLogger();
@@ -52,8 +59,7 @@ namespace FLG.Godot.Sample {
 
             PreferencesUI prefsUI = new()
             {
-                layoutsDir = ProjectSettings.GlobalizePath("res://" + LAYOUTS_RELATIVE_PATH),
-                pagesDir = ProjectSettings.GlobalizePath("res://" + PAGES_RELATIVE_PATH),
+                uiDirs = GetGlobalizedUiDirs(),
                 windowSize = _window,
 
                 logger = _logger,
@@ -74,8 +80,7 @@ namespace FLG.Godot.Sample {
 
             PreferencesUI prefsUI = new()
             {
-                layoutsDir = ProjectSettings.GlobalizePath("res://" + LAYOUTS_RELATIVE_PATH),
-                pagesDir = ProjectSettings.GlobalizePath("res://" + PAGES_RELATIVE_PATH),
+                uiDirs = GetGlobalizedUiDirs(),
                 windowSize = _window,
 
                 logger = _logger,

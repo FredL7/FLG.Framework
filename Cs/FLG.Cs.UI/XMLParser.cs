@@ -12,8 +12,7 @@ using File = FLG.Cs.IO.File;
 
 namespace FLG.Cs.UI {
     internal class XMLParser {
-        private string _layoutsDir;
-        private string _pagesDir;
+        private string[] _uiDirs;
 
         private Dictionary<string, IPage> _pages;
         private Dictionary<string, Layout> _components;
@@ -28,29 +27,31 @@ namespace FLG.Cs.UI {
         public Dictionary<string, IPage> GetPages() => _pages;
         public Dictionary<string, Layout> GetLayouts() => _layouts;
 
-        internal XMLParser(string layoutsDir, string pagesDir, ILogManager logger)
+        internal XMLParser(string[] uiDirs, ILogManager logger)
         {
-            _layoutsDir = layoutsDir;
-            _pagesDir = pagesDir;
+            _uiDirs = uiDirs;
 
             _pages = new();
             _components = new();
             _layouts = new();
             _targets = new();
 
-            _layoutFiles = IOUtils.GetFilePathsByExtension(_layoutsDir, ".layout");
-            _pageXMLFiles = IOUtils.GetFilePathsByExtension(_pagesDir, ".page");
+            _layoutFiles = new();
+            foreach (string dir in _uiDirs)
+                _layoutFiles.AddRange(IOUtils.GetFilePathsByExtension(dir, ".layout"));
+
+            _pageXMLFiles = new();
+            foreach( string dir in _uiDirs)
+                _pageXMLFiles .AddRange(IOUtils.GetFilePathsByExtension(dir, ".page"));
 
             _logger = logger;
         }
 
         internal Result Parse()
         {
-            if (!Directory.Exists(_layoutsDir))
-                return new Result($"{Path.GetFullPath(_layoutsDir)} does not exists");
-
-            if (!Directory.Exists(_pagesDir))
-                return new Result($"{Path.GetFullPath(_pagesDir)} does not exists");
+            foreach(string dir in _uiDirs)
+                if (!Directory.Exists(dir))
+                    return new Result($"{Path.GetFullPath(dir)} does not exists");
 
             return ParsePages();
         }
@@ -224,7 +225,7 @@ namespace FLG.Cs.UI {
                 if (file.file == id)
                     return ParseLayout(file, id);
 
-            return new Result($"Layout with id {id} could not be found, searching for {id}.layout in {_layoutsDir}.");
+            return new Result($"Layout with id {id} could not be found.");
         }
 
         private Result ParseLayout(File file, string id)

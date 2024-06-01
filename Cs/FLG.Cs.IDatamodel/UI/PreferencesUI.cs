@@ -2,8 +2,7 @@
 
 namespace FLG.Cs.Datamodel {
     public struct PreferencesUI {
-        public string layoutsDir;
-        public string pagesDir;
+        public string[] uiDirs;
         public Size windowSize;
 
         public ILogManager logger;
