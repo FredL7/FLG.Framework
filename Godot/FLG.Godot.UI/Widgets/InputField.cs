@@ -22,9 +22,12 @@ namespace FLG.Godot.UI {
                 Position = new Vector2(Widget.Position.X, Widget.Position.Y),
                 Size = new Vector2(Widget.Dimensions.Width, Widget.Dimensions.Height),
                 // Alignment = TextAlignmentConverter.Horizontal(Widget.AlignHorizontal)
-                Text = Widget.Model.GetValueAsString(),
                 PlaceholderText = Widget.Placeholder,
             };
+
+            string value = Widget.Model.GetValueAsString();
+            if (value != string.Empty)
+                _inputField.Text = value;
 
             if (!fromEditor)
             {
