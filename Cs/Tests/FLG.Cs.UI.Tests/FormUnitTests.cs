@@ -33,6 +33,7 @@ namespace FLG.Cs.UI.Tests {
             Assert.IsTrue(value == 14.33f);
         }
 
+        [TestMethod]
         public void TestIntegerModel()
         {
             SimpleIntegerModel model = new(14);
@@ -42,6 +43,19 @@ namespace FLG.Cs.UI.Tests {
             model.SetValue("-15");
             value = model.GetValueAsInt();
             Assert.IsTrue(value == -15);
+        }
+
+        [TestMethod]
+        public void TestNetworkingModel()
+        {
+            NetworkingInputModel model = new();
+            var value = model.GetValueAsString();
+            Assert.IsTrue(value == "127.0.0.1");
+
+            string newValue = "196.128.255.255";
+            model.SetValue(newValue);
+            value = model.GetValueAsString();
+            Assert.IsTrue(value == newValue);
         }
     }
 }
