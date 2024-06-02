@@ -14,7 +14,7 @@
         #endregion Widgets
 
         #region Forms
-        public IForm Form(string name, string title, List<IInputField> fields, Action<string, FormModel> submit, LayoutAttributes layoutAttr, FormAttributes formAttr);
+        public IForm Form(string name, string title, List<IInputField> fields, Action<string, IFormModel> submit, LayoutAttributes layoutAttr, FormAttributes formAttr);
         public IInputField InputField(string name, string label, string placeholder, IInputFieldModel model, LayoutAttributes layoutAttr);
         #endregion Forms
     }

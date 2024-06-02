@@ -1,11 +1,13 @@
-﻿namespace FLG.Cs.Datamodel {
-    public class SimpleFloatModel : IInputFieldModel {
-        private float _initialValue;
-        private float _value;
+﻿using FLG.Cs.Datamodel;
+
+
+namespace FLG.Cs.Model {
+    public class SimpleBoolModel : IInputFieldModel {
+        private bool _initialValue;
+        private bool _value;
         private Action? _clearUICallback;
 
-        public SimpleFloatModel(float initialValue = 0f)
-        {
+        public SimpleBoolModel(bool initialValue = false) {
             _value = _initialValue = initialValue;
         }
 
@@ -14,7 +16,7 @@
             var transient = Convert.ToString(value);
             if (transient != null)
             {
-                if (float.TryParse(transient, out var result))
+                if (Boolean.TryParse(transient, out var result))
                 {
                     _value = result;
                     return true;
@@ -25,22 +27,21 @@
 
         public bool SetValue(object value)
         {
-            var transient = value as float?;
-            if (transient != null)
+            if (value is bool transient)
             {
-                _value = transient.Value;
+                _value = transient;
                 return true;
             }
             return false;
         }
 
         public string GetValueAsString() => _value.ToString();
-        public int GetValueAsInt() => (int)_value; // Will truncate. If require Round/Ceil/Floor, create custom model
-        public float GetValueAsFloat() => _value;
-        public bool GetValueAsBool() => _value != 0;
+        public int GetValueAsInt() => _value ? 1 : 0;
+        public float GetValueAsFloat() => _value ? 1f : 0f;
+        public bool GetValueAsBool() => _value;
 
 
-        public void SetClearUICallback(Action a)
+        public  void SetClearUICallback(Action a)
         {
             _clearUICallback = a;
         }

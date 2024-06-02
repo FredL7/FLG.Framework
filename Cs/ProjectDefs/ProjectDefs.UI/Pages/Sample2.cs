@@ -1,4 +1,5 @@
 using FLG.Cs.Datamodel;
+using FLG.Cs.Model;
 using FLG.Cs.ServiceLocator;
 
 public enum Form1Items { FIRSTNAME, LASTNAME }
@@ -55,7 +56,7 @@ public class Sample2 : IPage {
         ui.SetCurrentPage("Sample1");
     }
 
-    private void OnForm1Submit(string name, FormModel model)
+    private void OnForm1Submit(string name, IFormModel model)
     {
         var logger = Locator.Instance.Get<ILogManager>();
         string firstname = model.GetItem(Form1Items.FIRSTNAME.ToLabel()).GetValueAsString();

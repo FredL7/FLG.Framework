@@ -1,17 +1,20 @@
-﻿using FLG.Cs.Datamodel;
+﻿using System.Xml;
+
+using FLG.Cs.Datamodel;
+using FLG.Cs.Model;
 using FLG.Cs.UI.Grids;
-using System.Xml;
+
 
 namespace FLG.Cs.UI.Widgets {
     internal class Form : Container, IForm {
         public override ELayoutElement Type { get => ELayoutElement.FORM; }
 
         public string Title { get; private set; }
-        public FormModel Model { get; private set; }
+        public IFormModel Model { get; private set; }
 
         private List<IInputField> _fields;
         private readonly FormAttributes _formAttributes;
-        private readonly Action<string, FormModel> _submitAction;
+        private readonly Action<string, IFormModel> _submitAction;
 
         public Form(string name, XmlNode node) : base(name, node)
         {
@@ -19,7 +22,7 @@ namespace FLG.Cs.UI.Widgets {
             throw new NotImplementedException();
         }
 
-        public Form(string name, string title, List<IInputField> fields, Action<string, FormModel> submitAction, LayoutAttributes layoutAttr, FormAttributes formAttr)
+        public Form(string name, string title, List<IInputField> fields, Action<string, IFormModel> submitAction, LayoutAttributes layoutAttr, FormAttributes formAttr)
             : base(name, layoutAttr)
         {
             Title = title;

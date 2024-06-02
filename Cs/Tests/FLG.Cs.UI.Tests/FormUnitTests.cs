@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using FLG.Cs.Datamodel;
+using FLG.Cs.Model;
 
 namespace FLG.Cs.UI.Tests {
     [TestClass]
