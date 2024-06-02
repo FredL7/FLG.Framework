@@ -2,10 +2,11 @@
 using System.Text;
 
 using FLG.Cs.Datamodel;
+using FLG.Cs.ServiceLocator;
 
 
 namespace FLG.Cs.Networking {
-    public class TCPClient : ITCPClient {
+    public class TCPClient {
         private TcpClient _socketConnection;
         private Thread _clientReceiveThread;
 
@@ -26,7 +27,8 @@ namespace FLG.Cs.Networking {
             }
             catch (Exception e)
             {
-                // TODO: Log
+                var logger = Locator.Instance.Get<ILogManager>();
+                logger.Warn(e.Message);
             }
         }
 
@@ -34,6 +36,8 @@ namespace FLG.Cs.Networking {
         {
             try
             {
+                var logger = Locator.Instance.Get<ILogManager>();
+
                 _socketConnection = new TcpClient(_host, _port);
                 var bytes = new byte[1024];
                 while (true)
@@ -45,13 +49,15 @@ namespace FLG.Cs.Networking {
                         var incomingData = new byte[length];
                         Array.Copy(bytes, 0, incomingData, 0, length);
                         string serverMessage = Encoding.ASCII.GetString(incomingData); // TODO: UTF8?
-                                                                                       // TODO: Log for validation
+
+                        logger.Debug($"CLIENT {_source}: Server message received as: {serverMessage}");
                     }
                 }
             }
             catch (SocketException e)
             {
-                // TODO: Log
+                var logger = Locator.Instance.Get<ILogManager>();
+                logger.Warn(e.Message);
             }
         }
 
@@ -59,7 +65,8 @@ namespace FLG.Cs.Networking {
         {
             if (_socketConnection == null)
             {
-                // TODO: log
+                var logger = Locator.Instance.Get<ILogManager>();
+                logger.Debug($"CLIENT {_source}: Can't send message \"{msg}\", connection not established");
                 return;
             }
 
@@ -70,12 +77,15 @@ namespace FLG.Cs.Networking {
                 {
                     var msgAsByteArray = Encoding.ASCII.GetBytes(msg); // TODO: UTF8?
                     stream.Write(msgAsByteArray, 0, msgAsByteArray.Length);
-                    // TODO: Log for confirmation
+
+                    var logger = Locator.Instance.Get<ILogManager>();
+                    logger.Debug($"CLIENT {_source}: Message \"{msg}\" - should be received by server");
                 }
             }
             catch (SocketException e)
             {
-                // TODO: Log
+                var logger = Locator.Instance.Get<ILogManager>();
+                logger.Warn(e.Message);
             }
         }
     }

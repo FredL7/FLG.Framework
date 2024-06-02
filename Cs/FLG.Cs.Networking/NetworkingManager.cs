@@ -6,10 +6,12 @@ using FLG.Cs.ServiceLocator;
 
 namespace FLG.Cs.Networking {
     public class NetworkingManager : INetworkingManager {
-        private TCPClient _client;
-        private TCPServer _server;
+        private TCPClient? _client;
+        private TCPServer? _server;
 
-        private int _clientIndex = 0, _serverIndex = 0;
+        bool initializedClient = false, initializedServer = false;
+
+        // private int _clientIndex = 0, _serverIndex = 0;
 
         public NetworkingManager(/* PreferencesTCP */)
         {
@@ -25,15 +27,80 @@ namespace FLG.Cs.Networking {
         }
         #endregion IServiceInstance
 
-        public void Start()
+        public void InitializeClient(string ip, int port)
         {
-            var host = Dns.GetHostName();
+            if (initializedClient)
+            {
+                var logger = Locator.Instance.Get<ILogManager>();
+                logger.Warn("Cannot initialized Client: Client already initialized");
+                return;
+            }
 
-            _server = new();
+            /*if (initializedServer)
+            {
+                var logger = Locator.Instance.Get<ILogManager>();
+                logger.Warn("Cannot initialized Client: Already initialized as Server");
+                return;
+            }*/
+
+            initializedClient = true;
             _client = new();
+            var host = Dns.GetHostName();
+            _client.Connect(host, ip, port);
+        }
 
-            _server.Connect("127.0.0.1", 8052);
-            _client.Connect(host, "127.0.0.1", 8052);
+        public void InitializeServer(string ip, int port)
+        {
+            if (initializedServer)
+            {
+                var logger = Locator.Instance.Get<ILogManager>();
+                logger.Warn("Cannot initialized Server: Server already initialized");
+                return;
+            }
+
+            /*if (initializedClient)
+            {
+                var logger = Locator.Instance.Get<ILogManager>();
+                logger.Warn("Cannot initialized Server: Already initialized as Client");
+                return;
+            }*/
+
+            initializedServer = true;
+            _server = new();
+            _server.Connect(ip, port);
+        }
+
+        public void SendMessage(string message)
+        {
+            if (initializedClient && _client != null)
+            {
+                _client.SendMessage(message);
+            }
+            else if (initializedServer && _server != null)
+            {
+                _server?.SendMessage(message);
+            }
+            else
+            {
+                var logger = Locator.Instance.Get<ILogManager>();
+                logger.Warn("Client or Server not initialized");
+            }
+        }
+
+        public void TmpSendMessageClient(string message)
+        {
+            if (initializedClient && _client != null)
+            {
+                _client.SendMessage(message);
+            }
+        }
+
+        public void TmpSendMessageServer(string message)
+        {
+            if (initializedServer && _server != null)
+            {
+                _server?.SendMessage(message);
+            }
         }
     }
 }
