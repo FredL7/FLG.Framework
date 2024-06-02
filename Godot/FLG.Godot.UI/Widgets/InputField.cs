@@ -40,7 +40,10 @@ namespace FLG.Godot.UI {
 
         private void OnTextChanged(string text)
         {
-            Widget.Model.SetValue(text);
+            if (!Widget.Model.SetValue(text))
+            {
+                // TODO: Error handling
+            }
         }
 
         private void Clear()

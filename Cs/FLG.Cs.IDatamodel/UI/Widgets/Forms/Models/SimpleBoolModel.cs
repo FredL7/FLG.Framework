@@ -8,6 +8,20 @@
             _value = _initialValue = initialValue;
         }
 
+        public bool SetValue(string value)
+        {
+            var transient = Convert.ToString(value);
+            if (transient != null)
+            {
+                if (Boolean.TryParse(transient, out var result))
+                {
+                    _value = result;
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public bool SetValue(object value)
         {
             var transient = value as bool?;

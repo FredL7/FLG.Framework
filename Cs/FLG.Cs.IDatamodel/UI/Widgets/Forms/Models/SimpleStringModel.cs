@@ -9,6 +9,12 @@
             _value = _initialValue = initialValue;
         }
 
+        public bool SetValue(string value)
+        {
+            _value = value;
+            return true;
+        }
+
         public bool SetValue(object value)
         {
             var transient = Convert.ToString(value);
