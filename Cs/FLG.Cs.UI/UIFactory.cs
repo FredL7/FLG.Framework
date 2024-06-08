@@ -1,22 +1,14 @@
 ﻿using System.Xml;
 
 using FLG.Cs.Datamodel;
-using FLG.Cs.ServiceLocator;
 using FLG.Cs.UI.Grids;
 using FLG.Cs.UI.Layouts;
 using FLG.Cs.UI.Widgets;
 
 
-// TODO: Could be static class, no need for instance
 namespace FLG.Cs.UI
 {
     public class UIFactory : IUIFactory {
-        #region IServiceInstance
-        public bool IsProxy() => false;
-        public void OnServiceRegisteredFail() { Locator.Instance.Get<ILogManager>().Error("UI Factory Failed to register"); }
-        public void OnServiceRegistered() { Locator.Instance.Get<ILogManager>().Debug("UI Factory Registered"); }
-        #endregion IServiceInstance
-
         internal static AbstractLayoutElement? Xml(XmlNode node, string name)
         {
             var nodeType = node.Name;

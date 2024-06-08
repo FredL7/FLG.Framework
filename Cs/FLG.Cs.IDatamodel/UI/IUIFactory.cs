@@ -1,5 +1,5 @@
 ﻿namespace FLG.Cs.Datamodel {
-    public interface IUIFactory : IServiceInstance {
+    public interface IUIFactory {
         #region Layouts
         public ILayoutElement Container(string name, LayoutAttributes layoutAttr);
         public ILayoutElement HStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr);

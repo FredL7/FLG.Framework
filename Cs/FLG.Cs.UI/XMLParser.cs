@@ -3,6 +3,7 @@
 using FLG.Cs.Datamodel;
 using FLG.Cs.IO;
 using FLG.Cs.Math;
+using FLG.Cs.UI.Grids;
 using FLG.Cs.UI.Layouts;
 using FLG.Cs.Validation;
 
@@ -242,7 +243,10 @@ namespace FLG.Cs.UI {
             result = ConvertNodeRecursive(rootChild, root);
             if (!result) return result;
 
-            Layout layout = new(root, id, _targets);
+            Container container = new("root", new LayoutAttributes());
+            container.AddChild(root);
+
+            Layout layout = new(container, id, _targets);
             _components.Add(id, layout);
             _logger.Debug($"Finished Parsing XML Layout {file.filename}");
 

@@ -76,7 +76,7 @@ namespace FLG.Godot.Sample {
         {
             _logger = Locator.Instance.Get<ILogManager>();
 
-            _factory = new UIFactory(); // TODO: Dependency of UIManager, shoud maybe not be a Service
+            _factory = new UIFactory();
 
             PreferencesUI prefsUI = new()
             {
