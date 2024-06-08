@@ -13,7 +13,7 @@ namespace FLG.Cs.Networking {
 
         // private int _clientIndex = 0, _serverIndex = 0;
 
-        public NetworkingManager(/* PreferencesTCP */)
+        public NetworkingManager(PreferencesNetworking pref)
         {
 
         }
@@ -36,12 +36,12 @@ namespace FLG.Cs.Networking {
                 return;
             }
 
-            /*if (initializedServer)
+            if (initializedServer)
             {
                 var logger = Locator.Instance.Get<ILogManager>();
                 logger.Warn("Cannot initialized Client: Already initialized as Server");
                 return;
-            }*/
+            }
 
             initializedClient = true;
             _client = new();
@@ -58,12 +58,12 @@ namespace FLG.Cs.Networking {
                 return;
             }
 
-            /*if (initializedClient)
+            if (initializedClient)
             {
                 var logger = Locator.Instance.Get<ILogManager>();
                 logger.Warn("Cannot initialized Server: Already initialized as Client");
                 return;
-            }*/
+            }
 
             initializedServer = true;
             _server = new();

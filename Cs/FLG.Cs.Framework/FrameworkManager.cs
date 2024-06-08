@@ -72,5 +72,22 @@ namespace FLG.Cs.Framework {
 
         private bool ValidateDependenciesUI() => _initializedGeneral;
         #endregion UI
+
+        #region Networking
+        private bool _initializedNetworking = false;
+        public void InitializeNetworking(PreferencesNetworking pref)
+        {
+            if (!ValidateDependenciesNetworking())
+                return;
+
+            if (!_initializedNetworking)
+            {
+                ManagersFactory.CreateNetworkingManager(pref);
+                _initializedNetworking = true;
+            }
+        }
+
+        private bool ValidateDependenciesNetworking() => _initializedGeneral;
+        #endregion Networking
     }
 }

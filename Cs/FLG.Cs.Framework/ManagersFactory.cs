@@ -1,5 +1,6 @@
 ﻿using FLG.Cs.Datamodel;
 using FLG.Cs.Logger;
+using FLG.Cs.Networking;
 using FLG.Cs.Serialization;
 using FLG.Cs.ServiceLocator;
 using FLG.Cs.UI;
@@ -27,6 +28,12 @@ namespace FLG.Cs.Framework {
         internal static void CreateUIManager(PreferencesUI prefs)
         {
             IUIManager manager = new UIManager(prefs);
+            Locator.Instance.Register(manager);
+        }
+
+        internal static void CreateNetworkingManager(PreferencesNetworking prefs)
+        {
+            INetworkingManager manager = new NetworkingManager(prefs);
             Locator.Instance.Register(manager);
         }
     }

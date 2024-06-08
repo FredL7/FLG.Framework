@@ -3,6 +3,10 @@
 using FLG.Cs.Datamodel;
 
 
+// TODO: UI updates the model on change and not on submit, so there might be discrepency and lots of false errors when entering values
+// i.e. 1, 12, 127, 127., etc. will all be errors, but shouldn't really
+// Maybe change the data type to string and add a validate method for error handling
+// Which should be called on field exit? and on form validation
 namespace FLG.Cs.Model {
     public class NetworkingInputModel : IInputFieldModel {
         private readonly IPAddress _initialValue;

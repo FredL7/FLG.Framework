@@ -1,7 +1,7 @@
 using Godot;
 
-using FLG.Cs.Framework;
 using FLG.Cs.Datamodel;
+using FLG.Cs.Framework;
 
 
 namespace FLG.Godot.Sample {
@@ -23,6 +23,9 @@ namespace FLG.Godot.Sample {
                 logsDir = ProjectSettings.GlobalizePath("res://" + LOGS_RELATIVE_PATH),
             };
             FrameworkManager.Instance.InitializeLogs(prefsLogs);
+
+            PreferencesNetworking prefsNetworking = new();
+            FrameworkManager.Instance.InitializeNetworking(prefsNetworking);
 
             var uiManager = GetNode("UI/Layouts");
             uiManager.Call("Initialize");
