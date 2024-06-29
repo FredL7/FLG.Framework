@@ -8,27 +8,35 @@ namespace FLG.Godot.Sample {
     public partial class GameManager : Node {
         private const string LOGS_RELATIVE_PATH = "/_logs"; // TODO: Move to serialized field to appear in the inspector?
 
+        private FrameworkManager _frameworkManager;
+
         public override void _Ready()
         {
+            _frameworkManager = FrameworkManager.Instance;
             InitializeFramework();
         }
 
         private void InitializeFramework()
         {
             Preferences prefs = new();
-            FrameworkManager.Instance.InitializeFramework(prefs);
+            _frameworkManager.InitializeFramework(prefs);
 
             PreferencesLogs prefsLogs = new()
             {
                 logsDir = ProjectSettings.GlobalizePath("res://" + LOGS_RELATIVE_PATH),
             };
-            FrameworkManager.Instance.InitializeLogs(prefsLogs);
+            _frameworkManager.InitializeLogs(prefsLogs);
 
             PreferencesNetworking prefsNetworking = new();
-            FrameworkManager.Instance.InitializeNetworking(prefsNetworking);
+            _frameworkManager.InitializeNetworking(prefsNetworking);
 
             var uiManager = GetNode("UI/Layouts");
             uiManager.Call("Initialize");
+        }
+
+        public override void _Process(double delta)
+        {
+            _frameworkManager.Update();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace FLG.Cs.ServiceLocator {
             _services = new();
         }
 
-        public void Register<T>(T service) where T : IServiceInstance
+        public bool Register<T>(T service) where T : IServiceInstance
         {
             if (_services.ContainsKey(typeof(T)))
             {
@@ -22,6 +22,7 @@ namespace FLG.Cs.ServiceLocator {
             {
                 _services.Add(typeof(T), service);
                 service.OnServiceRegistered();
+                return true;
             }
         }
 

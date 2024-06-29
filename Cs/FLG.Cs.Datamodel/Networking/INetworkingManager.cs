@@ -1,7 +1,5 @@
-﻿using System.Net;
-
-namespace FLG.Cs.Datamodel {
-    public interface INetworkingManager : IServiceInstance {
+﻿namespace FLG.Cs.Datamodel {
+    public interface INetworkingManager : IServiceInstance, IGameLoopObject {
         //public IPAddress[] GetIPv4Addresses();
 
         public void InitializeClient(string ip, int port);

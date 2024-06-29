@@ -8,33 +8,48 @@ using FLG.Cs.UI;
 
 namespace FLG.Cs.Framework {
     internal static class ManagersFactory {
-        internal static void CreateGeneric<T>(T service) where T : IServiceInstance
+        internal static ILogManager? CreateLogger(PreferencesLogs prefs, bool dummy)
         {
-            Locator.Instance.Register(service);
+            ILogManager manager = dummy ? new LogManagerDummy() : new LogManager(prefs);
+            if (Locator.Instance.Register(manager))
+            {
+                return manager;
+            }
+
+            return null;
         }
 
-        internal static void CreateLogger(PreferencesLogs prefs, bool dummy)
+        internal static ISerializerManager? CreateSerializer(PreferencesSerialization prefs)
         {
-            ILogManager logManager = dummy ? new LogManagerDummy() : new LogManager(prefs);
-            Locator.Instance.Register(logManager);
+            ISerializerManager manager = new SerializerManager(prefs);
+            if (Locator.Instance.Register(manager))
+            {
+                return manager;
+            }
+
+            return null;
         }
 
-        internal static void CreateSerializer(PreferencesSerialization prefs)
-        {
-            ISerializerManager serializer = new SerializerManager(prefs);
-            Locator.Instance.Register(serializer);
-        }
-
-        internal static void CreateUIManager(PreferencesUI prefs)
+        internal static IUIManager? CreateUIManager(PreferencesUI prefs)
         {
             IUIManager manager = new UIManager(prefs);
-            Locator.Instance.Register(manager);
+            if (Locator.Instance.Register(manager))
+            {
+                return manager;
+            }
+
+            return null;
         }
 
-        internal static void CreateNetworkingManager(PreferencesNetworking prefs)
+        internal static INetworkingManager? CreateNetworkingManager(PreferencesNetworking prefs)
         {
             INetworkingManager manager = new NetworkingManager(prefs);
-            Locator.Instance.Register(manager);
+            if (Locator.Instance.Register(manager))
+            {
+                return manager;
+            }
+
+            return null;
         }
     }
 }
