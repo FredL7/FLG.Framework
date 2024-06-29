@@ -1,10 +1,11 @@
-﻿namespace FLG.Cs.Datamodel {
-    public interface INetworkingManager : IServiceInstance {
-        public void InitializeClient(string ip, int port);
-        public void InitializeServer(string ip, int port);
-        public void SendMessage(string message);
+﻿using System.Net;
 
-        public void TmpSendMessageClient(string message);
-        public void TmpSendMessageServer(string message);
+namespace FLG.Cs.Datamodel {
+    public interface INetworkingManager : IServiceInstance {
+        //public IPAddress[] GetIPv4Addresses();
+
+        public void InitializeClient(string ip, int port);
+        public void InitializeServer(int maxPlayers, int port);
+        //public void SendMessage(string message);
     }
 }

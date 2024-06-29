@@ -31,8 +31,7 @@ namespace FLG.Cs.UI {
         }
 
         #region IServiceInstance
-        public bool IsProxy() => false;
-        public void OnServiceRegisteredFail() { _logger.Error("UI Manager Failed to register"); }
+        public void OnServiceRegisteredFail() { }
         public void OnServiceRegistered()
         {
             _logger.Debug("UI Manager Registered");

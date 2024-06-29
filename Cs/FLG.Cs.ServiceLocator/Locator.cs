@@ -15,17 +15,8 @@ namespace FLG.Cs.ServiceLocator {
         {
             if (_services.ContainsKey(typeof(T)))
             {
-                IServiceInstance potentialProxy = _services[typeof(T)];
-                if (potentialProxy.IsProxy())
-                {
-                    _services[typeof(T)] = service;
-                    service.OnServiceRegistered();
-                }
-                else
-                {
-                    service.OnServiceRegisteredFail();
-                }
-                return;
+                service.OnServiceRegisteredFail();
+                throw new Exception($"Service already registered for type {typeof(T)}");
             }
             else
             {
@@ -42,7 +33,7 @@ namespace FLG.Cs.ServiceLocator {
             }
             catch (Exception)
             {
-                throw new NotImplementedException($"Service not registered for type {typeof(T)}");
+                throw new Exception($"Service not registered for type {typeof(T)}");
             }
         }
 

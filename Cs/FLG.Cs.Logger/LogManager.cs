@@ -19,8 +19,7 @@ namespace FLG.Cs.Logger {
         }
 
         #region IServiceInstance
-        public bool IsProxy() => false;
-        public void OnServiceRegisteredFail() { Error("Log Manager Failed to register"); }
+        public void OnServiceRegisteredFail() { }
         public void OnServiceRegistered()
         {
             Debug("Log Manager Registered");

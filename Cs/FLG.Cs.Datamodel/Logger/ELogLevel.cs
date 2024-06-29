@@ -15,7 +15,7 @@
                 ELogLevel.WARN => "WARNING",
                 ELogLevel.INFO => "INFO",
                 ELogLevel.DEBUG => "DEBUG",
-                _ => throw new NotImplementedException()
+                _ => throw new ArgumentException($"{level} is not valid"),
             };
         }
     }
