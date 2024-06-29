@@ -1,106 +1,83 @@
-﻿using System.Net;
-
-using FLG.Cs.Datamodel;
+﻿using FLG.Cs.Datamodel;
 using FLG.Cs.ServiceLocator;
+
+// Resource: https://www.youtube.com/watch?v=4uHTSknGJaY&list=PLXkn83W0QkfnqsK8I0RAz5AbUxfg3bOQ5
 
 
 namespace FLG.Cs.Networking {
     public class NetworkingManager : INetworkingManager {
-        private TCPClient? _client;
-        private TCPServer? _server;
+        private Client? _client;
+        private Server? _server;
 
-        bool initializedClient = false, initializedServer = false;
-
-        // private int _clientIndex = 0, _serverIndex = 0;
+        private readonly ThreadManager _threadManager;
 
         public NetworkingManager(PreferencesNetworking pref)
         {
-
+            _threadManager = new();
         }
 
         #region IServiceInstance
-        public bool IsProxy() => false; // TODO: Remove completely
-        public void OnServiceRegisteredFail() { Locator.Instance.Get<ILogManager>().Error("Networking Manager Failed to register"); } // TODO: Log directly in locator since I don't do anything than log in these methods
+        public void OnServiceRegisteredFail() { }
         public void OnServiceRegistered()
         {
-            Locator.Instance.Get<ILogManager>().Debug("Serialization Manager Registered");
+            Locator.Instance.Get<ILogManager>().Debug("Networking Manager Registered");
         }
         #endregion IServiceInstance
 
+        public void SetMaxServerConnexions(int maxConnexions)
+        {
+            if (_server == null)
+            {
+                Locator.Instance.Get<ILogManager>().Warn("Cannot set maximum number of connexions, server not initialized");
+                return;
+            }
+
+            _server.SetMaxConnexions(maxConnexions);
+        }
+
         public void InitializeClient(string ip, int port)
         {
-            if (initializedClient)
+            if (_client != null)
             {
-                var logger = Locator.Instance.Get<ILogManager>();
-                logger.Warn("Cannot initialized Client: Client already initialized");
+                Locator.Instance.Get<ILogManager>().Warn("Client already initialized");
                 return;
             }
 
-            if (initializedServer)
+            if (_server != null)
             {
-                var logger = Locator.Instance.Get<ILogManager>();
-                logger.Warn("Cannot initialized Client: Already initialized as Server");
+                Locator.Instance.Get<ILogManager>().Warn("Server already initialized, cannot be both a server and a client");
                 return;
             }
 
-            initializedClient = true;
-            _client = new();
-            var host = Dns.GetHostName();
-            _client.Connect(host, ip, port);
+            _client = new Client(ip, port, this);
+            _client.ConnectToServer();
         }
 
-        public void InitializeServer(string ip, int port)
+        public void InitializeServer(int port)
         {
-            if (initializedServer)
+            if (_server != null)
             {
-                var logger = Locator.Instance.Get<ILogManager>();
-                logger.Warn("Cannot initialized Server: Server already initialized");
+                Locator.Instance.Get<ILogManager>().Warn("Server already initialized");
                 return;
             }
 
-            if (initializedClient)
+            if (_client != null)
             {
-                var logger = Locator.Instance.Get<ILogManager>();
-                logger.Warn("Cannot initialized Server: Already initialized as Client");
+                Locator.Instance.Get<ILogManager>().Warn("Server already initialized, cannot be both a server and a client");
                 return;
             }
 
-            initializedServer = true;
-            _server = new();
-            _server.Connect(ip, port);
+            _server = new Server(port, this);
         }
 
-        public void SendMessage(string message)
+        internal void ExecuteOnMainThread(Action action)
         {
-            if (initializedClient && _client != null)
-            {
-                _client.SendMessage(message);
-            }
-            else if (initializedServer && _server != null)
-            {
-                _server?.SendMessage(message);
-            }
-            else
-            {
-                var logger = Locator.Instance.Get<ILogManager>();
-                logger.Warn("Client or Server not initialized");
-            }
+            _threadManager.ExecuteOnMainThread(action);
         }
 
-        public void TmpSendMessageClient(string message)
+        public void Update()
         {
-            if (initializedClient && _client != null)
-            {
-                _client.SendMessage(message);
-            }
-        }
-
-        public void TmpSendMessageServer(string message)
-        {
-            if (initializedServer && _server != null)
-            {
-                _server?.SendMessage(message);
-            }
+            _threadManager.Update();
         }
     }
 }
