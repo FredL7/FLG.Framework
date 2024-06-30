@@ -4,7 +4,7 @@
         public string LayoutId { get; set; }
         public void Setup(IUIManager ui, IUIFactory factory);
 
-        public void OnRegister();
+        public void OnRegister(); // Hook for calling Locator instances
         public void OnOpen();
         public void OnClose();
     }

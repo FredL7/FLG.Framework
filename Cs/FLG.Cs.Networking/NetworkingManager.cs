@@ -9,6 +9,17 @@ namespace FLG.Cs.Networking {
         private Client? _client;
         private Server? _server;
 
+        public int ServerPort {
+            get {
+                if (_server != null)
+                {
+                    return _server.Port;
+                }
+                return -1;
+            }
+        }
+
+        public int MaxServerConnexions { get => _server?.MaxConnexions ?? 0; }
         private readonly ThreadManager _threadManager;
 
         public NetworkingManager(PreferencesNetworking pref)
@@ -23,17 +34,6 @@ namespace FLG.Cs.Networking {
             Locator.Instance.Get<ILogManager>().Debug("Networking Manager Registered");
         }
         #endregion IServiceInstance
-
-        public void SetMaxServerConnexions(int maxConnexions)
-        {
-            if (_server == null)
-            {
-                Locator.Instance.Get<ILogManager>().Warn("Cannot set maximum number of connexions, server not initialized");
-                return;
-            }
-
-            _server.SetMaxConnexions(maxConnexions);
-        }
 
         public void InitializeClient(string ip, int port)
         {
@@ -53,7 +53,7 @@ namespace FLG.Cs.Networking {
             _client.ConnectToServer();
         }
 
-        public void InitializeServer(int port)
+        public void InitializeServer(int port, int maxConnexions)
         {
             if (_server != null)
             {
@@ -68,6 +68,7 @@ namespace FLG.Cs.Networking {
             }
 
             _server = new Server(port, this);
+            _server.SetMaxConnexions(maxConnexions);
         }
 
         public void SendCommand(ICommand command)

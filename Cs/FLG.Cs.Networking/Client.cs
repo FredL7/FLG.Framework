@@ -1,5 +1,4 @@
-﻿using System.Data;
-using System.Net.Sockets;
+﻿using System.Net.Sockets;
 
 using FLG.Cs.Datamodel;
 using FLG.Cs.ServiceLocator;

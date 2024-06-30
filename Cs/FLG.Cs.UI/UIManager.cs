@@ -59,6 +59,7 @@ namespace FLG.Cs.UI {
 
         public IEnumerable<ILayout> GetLayouts() => _layoutsManager.GetLayouts();
         public ILayout GetLayout(string name) => _layoutsManager.GetLayout(name);
+        public IPage GetPage(string id) => _pagesManager.GetPage(id);
         #endregion
 
         public void ParseUI()

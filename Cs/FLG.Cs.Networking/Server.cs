@@ -14,10 +14,12 @@ namespace FLG.Cs.Networking {
         private const int _id = -1;
 
         private readonly int _port;
+        public int Port { get => _port; }
         private readonly TcpListener _tcpListener;
 
         private bool _maxConnexionsSetOnlyOnce = false;
         private int _maxConnexions = 0;
+        public int MaxConnexions { get => _maxConnexions; }
 
         protected Dictionary<int, TCPConnexion> _connexions;
         private readonly MessagesHandler _messagesHandler;
