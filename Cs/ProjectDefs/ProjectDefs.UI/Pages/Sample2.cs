@@ -1,16 +1,17 @@
 using FLG.Cs.Datamodel;
+using FLG.Cs.Model;
 using FLG.Cs.ServiceLocator;
 
 public enum Form1Items { FIRSTNAME, LASTNAME }
 public static class Form1ItemsExtension {
     public static string ToLabel(this Form1Items item)
     {
-        switch (item)
+        return item switch
         {
-            case Form1Items.FIRSTNAME: return "Firstname";
-            case Form1Items.LASTNAME: return "Lastname";
-            default: return "";
-        }
+            Form1Items.FIRSTNAME => "Firstname",
+            Form1Items.LASTNAME => "Lastname",
+            _ => "",
+        };
     }
 }
 
@@ -55,7 +56,7 @@ public class Sample2 : IPage {
         ui.SetCurrentPage("Sample1");
     }
 
-    private void OnForm1Submit(string name, FormModel model)
+    private void OnForm1Submit(string name, IFormModel model)
     {
         var logger = Locator.Instance.Get<ILogManager>();
         string firstname = model.GetItem(Form1Items.FIRSTNAME.ToLabel()).GetValueAsString();
@@ -63,6 +64,7 @@ public class Sample2 : IPage {
         logger.Debug($"Form {name} Submitted with values:\nFirstname={firstname}, Lastname={lastname}");
     }
 
+    public void OnRegister() { }
     public void OnOpen() { }
     public void OnClose() { }
 }

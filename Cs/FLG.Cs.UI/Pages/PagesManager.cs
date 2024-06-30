@@ -1,5 +1,6 @@
 using FLG.Cs.Datamodel;
 
+
 namespace FLG.Cs.UI.Pages {
     internal class PagesManager {
         private Dictionary<string, IPage> _pages;
@@ -11,6 +12,8 @@ namespace FLG.Cs.UI.Pages {
             _pages = new();
             _currentPage = string.Empty;
         }
+
+        internal IPage GetPage(string id) => _pages[id];
 
         internal void SetCurrentPage(string id)
         {
@@ -38,6 +41,12 @@ namespace FLG.Cs.UI.Pages {
             _pages = pages;
             foreach (IPage page in _pages.Values)
                 page.Setup(ui, factory);
+        }
+
+        internal void RegisterPages()
+        {
+            foreach (IPage page in _pages.Values)
+                page.OnRegister();
         }
     }
 }

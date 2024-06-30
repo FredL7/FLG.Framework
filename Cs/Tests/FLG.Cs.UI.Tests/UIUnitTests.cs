@@ -10,8 +10,7 @@ namespace FLG.Cs.UI.Tests {
     [TestClass]
     public class UIUnitTests {
         private const string LOGS_DIR =     "../../../../../../_logs";
-        private const string LAYOUTS_DIR =  "../../../../../ProjectDefs/ProjectDefs.UI/Layouts";
-        private const string PAGES_DIR =    "../../../../../ProjectDefs/ProjectDefs.UI/Pages";
+        private static readonly string[] UI_DIRS = { "../../../../../ProjectDefs/ProjectDefs.UI/Layouts", "../../../../../ProjectDefs/ProjectDefs.UI/Pages" };
 
         [ClassInitialize]
         public static void Init(TestContext _)
@@ -27,8 +26,7 @@ namespace FLG.Cs.UI.Tests {
 
             PreferencesUI prefsUI = new()
             {
-                layoutsDir = LAYOUTS_DIR,
-                pagesDir = PAGES_DIR,
+                uiDirs = UI_DIRS,
                 windowSize = new Size(1920, 1080),
             };
             FrameworkManager.Instance.InitializeUI(prefsUI);

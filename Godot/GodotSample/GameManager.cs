@@ -1,7 +1,7 @@
 using Godot;
 
-using FLG.Cs.Framework;
 using FLG.Cs.Datamodel;
+using FLG.Cs.Framework;
 
 
 namespace FLG.Godot.Sample {
@@ -24,8 +24,16 @@ namespace FLG.Godot.Sample {
             };
             FrameworkManager.Instance.InitializeLogs(prefsLogs);
 
+            PreferencesNetworking prefsNetworking = new();
+            FrameworkManager.Instance.InitializeNetworking(prefsNetworking);
+
             var uiManager = GetNode("UI/Layouts");
             uiManager.Call("Initialize");
+        }
+
+        public override void _Process(double delta)
+        {
+            FrameworkManager.Instance.Update();
         }
     }
 }

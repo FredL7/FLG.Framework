@@ -1,17 +1,20 @@
-﻿using FLG.Cs.Datamodel;
+﻿using System.Xml;
+
+using FLG.Cs.Datamodel;
+using FLG.Cs.Model;
 using FLG.Cs.UI.Grids;
-using System.Xml;
+
 
 namespace FLG.Cs.UI.Widgets {
     internal class Form : Container, IForm {
         public override ELayoutElement Type { get => ELayoutElement.FORM; }
 
         public string Title { get; private set; }
-        public FormModel Model { get; private set; }
+        public IFormModel Model { get; private set; }
 
         private List<IInputField> _fields;
         private readonly FormAttributes _formAttributes;
-        private readonly Action<string, FormModel> _submitAction;
+        private readonly Action<string, IFormModel> _submitAction;
 
         public Form(string name, XmlNode node) : base(name, node)
         {
@@ -19,7 +22,7 @@ namespace FLG.Cs.UI.Widgets {
             throw new NotImplementedException();
         }
 
-        public Form(string name, string title, List<IInputField> fields, Action<string, FormModel> submitAction, LayoutAttributes layoutAttr, FormAttributes formAttr)
+        public Form(string name, string title, List<IInputField> fields, Action<string, IFormModel> submitAction, LayoutAttributes layoutAttr, FormAttributes formAttr)
             : base(name, layoutAttr)
         {
             Title = title;
@@ -45,7 +48,7 @@ namespace FLG.Cs.UI.Widgets {
             List<IInputField> newFields = new(_fields.Count);
             foreach (var field in _fields)
             {
-                HStack inputLine = new(field.Name + "-inputline", new(margin: new(0, 0, 0, _formAttributes.paddingBetweenRows)), new());
+                HStack inputLine = new(field.Name + "-inputline", new(height: 40, margin: new(0, 0, 0, _formAttributes.paddingBetweenRows)), new());
                 container.AddChild(inputLine, pageID);
 
                 Label inputLabel = new(field.Name + "-label", field.Label,
@@ -62,7 +65,7 @@ namespace FLG.Cs.UI.Widgets {
             _fields = newFields;
 
             // Controls
-            HStack controls = new(Name + "-controls", new(margin: new(0, 20, 0, 0)), new(justify: EGridJustify.CENTER));
+            HStack controls = new(Name + "-controls", new(height: 40, margin: new(0, 20, 0, 0)), new(justify: EGridJustify.CENTER));
             container.AddChild(controls, pageID);
 
             Button resetBtn = new(Name + "-control-reset", "Reset", ResetFields, new(margin: new(_formAttributes.paddingBetweenColumns / 2.0f, 0, 0, 0)));
@@ -75,7 +78,7 @@ namespace FLG.Cs.UI.Widgets {
         {
             foreach (var field in _fields)
             {
-                field.Model.Clear();
+                field.Model.Reset();
             }
         }
 

@@ -19,11 +19,14 @@ namespace FLG.Cs.Logger {
         }
 
         #region IServiceInstance
-        public bool IsProxy() => false;
-        public void OnServiceRegisteredFail() { Error("Log Manager Failed to register"); }
+        public void OnServiceRegisteredFail() { }
         public void OnServiceRegistered()
         {
             Debug("Log Manager Registered");
+
+            Type objType = typeof(ILogManager);
+            Debug($"Fred: {objType.Assembly.FullName}");
+            Debug($"Fred: {objType.AssemblyQualifiedName}");
         }
         #endregion IServiceInstance
 

@@ -7,7 +7,6 @@ using FLG.Cs.Datamodel;
 namespace FLG.Godot.Framework {
     public class GodotLogger : ILogManager {
         #region IServiceInstance
-        public bool IsProxy() { throw new NotImplementedException("Should not register Godot Logger"); }
         public void OnServiceRegisteredFail() { throw new NotImplementedException("Should not register Godot Logger"); }
         public void OnServiceRegistered() { throw new NotImplementedException("Should not register Godot Logger"); }
         #endregion IServiceInstance

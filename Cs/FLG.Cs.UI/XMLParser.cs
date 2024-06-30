@@ -3,6 +3,7 @@
 using FLG.Cs.Datamodel;
 using FLG.Cs.IO;
 using FLG.Cs.Math;
+using FLG.Cs.UI.Grids;
 using FLG.Cs.UI.Layouts;
 using FLG.Cs.Validation;
 
@@ -12,8 +13,7 @@ using File = FLG.Cs.IO.File;
 
 namespace FLG.Cs.UI {
     internal class XMLParser {
-        private string _layoutsDir;
-        private string _pagesDir;
+        private string[] _uiDirs;
 
         private Dictionary<string, IPage> _pages;
         private Dictionary<string, Layout> _components;
@@ -24,33 +24,37 @@ namespace FLG.Cs.UI {
         private List<File> _layoutFiles;
 
         private ILogManager _logger;
+        private IUIFactory _factory;
 
         public Dictionary<string, IPage> GetPages() => _pages;
         public Dictionary<string, Layout> GetLayouts() => _layouts;
 
-        internal XMLParser(string layoutsDir, string pagesDir, ILogManager logger)
+        internal XMLParser(string[] uiDirs, ILogManager logger, IUIFactory factory)
         {
-            _layoutsDir = layoutsDir;
-            _pagesDir = pagesDir;
+            _logger = logger;
+            _factory = factory;
+
+            _uiDirs = uiDirs;
 
             _pages = new();
             _components = new();
             _layouts = new();
             _targets = new();
 
-            _layoutFiles = IOUtils.GetFilePathsByExtension(_layoutsDir, ".layout");
-            _pageXMLFiles = IOUtils.GetFilePathsByExtension(_pagesDir, ".page");
+            _layoutFiles = new();
+            foreach (string dir in _uiDirs)
+                _layoutFiles.AddRange(IOUtils.GetFilePathsByExtension(dir, ".layout"));
 
-            _logger = logger;
+            _pageXMLFiles = new();
+            foreach (string dir in _uiDirs)
+                _pageXMLFiles.AddRange(IOUtils.GetFilePathsByExtension(dir, ".page"));
         }
 
         internal Result Parse()
         {
-            if (!Directory.Exists(_layoutsDir))
-                return new Result($"{Path.GetFullPath(_layoutsDir)} does not exists");
-
-            if (!Directory.Exists(_pagesDir))
-                return new Result($"{Path.GetFullPath(_pagesDir)} does not exists");
+            foreach (string dir in _uiDirs)
+                if (!Directory.Exists(dir))
+                    return new Result($"{Path.GetFullPath(dir)} does not exists");
 
             return ParsePages();
         }
@@ -90,40 +94,40 @@ namespace FLG.Cs.UI {
         private Result InstantiatePageCs(string binding, string layoutId)
         {
             IPage? page;
-            /*try
-            {
-                // var assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var assemblyFolder = Path.GetDirectoryName(typeof(XMLParser).Assembly.Location);
-                _logger.Debug($"FRED: {assemblyFolder}");
-                if (assemblyFolder == null) return new Result("Could not locate current assembly directory");
-
-                var assembly = System.Reflection.Assembly.LoadFile(Path.Combine(assemblyFolder, "ProjectDefs.UI.dll"));
-                if (assembly == null) return new Result("Could not load ProjectsDefs.UI.dll");
-
-                var type = assembly.GetType(binding);
-                if (type == null) return new Result($"Could not instantiate a class of type {binding}: type {binding} not found");
-
-                var pageObject = assembly.CreateInstance(binding);
-                if (pageObject == null) return new Result($"Could not instantiate a class of type {binding}: result is null");
-
-                page = pageObject as IPage;
-                _logger.Debug($"Instantiated IPage of type {binding}");
-            }
-            catch (Exception e)
-            {
-                return new Result($"Could not instantiate a class of type {binding}: {e}");
-            }*/
 
             try
             {
                 var type = Type.GetType(binding + ", ProjectDefs.UI");
                 if (type == null) return new Result($"Could not instantiate a class of type {binding}: type {binding} not found");
 
-                var pageObject = Activator.CreateInstance(type);
-                if (pageObject == null) return new Result($"Could not instantiate a class of type {binding}: could not create an instance of type {type}");
-
-                page = pageObject as IPage;
-                _logger.Debug($"Instantiated IPage of type {binding}");
+                try
+                {
+                    var pageObject = Activator.CreateInstance(type, _factory);
+                    if (pageObject == null) return new Result($"Could not instantiate a class of type {binding}: could not create an instance of type {type}");
+                    page = pageObject as IPage;
+                    _logger.Debug($"Instantiated IPage of type {binding} with param(factory) ctor");
+                }
+                catch (MissingMethodException _)
+                {
+                    _logger.Debug($"Could not find a ctor with factory param, fallback to default parameterless ctor");
+                    try
+                    {
+                        var pageObject = Activator.CreateInstance(type);
+                        if (pageObject == null) return new Result($"Could not instantiate a class of type {binding}: could not create an instance of type {type}");
+                        page = pageObject as IPage;
+                        _logger.Debug($"Instantiated IPage of type {binding} with default ctor");
+                    }
+                    catch (Exception eParamless)
+                    {
+                        _logger.Error($"Could not create an instance of {binding}: {eParamless.Message}");
+                        return new Result($"Could not instantiate a class of type {binding}: {eParamless.Message}");
+                    }
+                }
+                catch (Exception e)
+                {
+                    _logger.Error($"Could not create an instance of {binding}: {e.Message}");
+                    return new Result($"Could not instantiate a class of type {binding}: {e.Message}");
+                }
             }
             catch (Exception e)
             {
@@ -224,7 +228,7 @@ namespace FLG.Cs.UI {
                 if (file.file == id)
                     return ParseLayout(file, id);
 
-            return new Result($"Layout with id {id} could not be found, searching for {id}.layout in {_layoutsDir}.");
+            return new Result($"Layout with id {id} could not be found.");
         }
 
         private Result ParseLayout(File file, string id)
@@ -241,7 +245,10 @@ namespace FLG.Cs.UI {
             result = ConvertNodeRecursive(rootChild, root);
             if (!result) return result;
 
-            Layout layout = new(root, id, _targets);
+            Container container = new("root", new LayoutAttributes());
+            container.AddChild(root);
+
+            Layout layout = new(container, id, _targets);
             _components.Add(id, layout);
             _logger.Debug($"Finished Parsing XML Layout {file.filename}");
 

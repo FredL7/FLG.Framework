@@ -7,8 +7,7 @@ namespace FLG.Cs.Logger {
         public LogManagerDummy() { }
 
         #region IServiceInstance
-        public bool IsProxy() => false;
-        public void OnServiceRegisteredFail() { Error("Log Manager Dummy Failed to register"); }
+        public void OnServiceRegisteredFail() { }
         public void OnServiceRegistered()
         {
             Debug("Log Manager Dummy Registered");

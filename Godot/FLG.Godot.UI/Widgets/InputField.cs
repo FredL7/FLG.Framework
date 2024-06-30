@@ -22,14 +22,17 @@ namespace FLG.Godot.UI {
                 Position = new Vector2(Widget.Position.X, Widget.Position.Y),
                 Size = new Vector2(Widget.Dimensions.Width, Widget.Dimensions.Height),
                 // Alignment = TextAlignmentConverter.Horizontal(Widget.AlignHorizontal)
-                Text = Widget.Model.GetValueAsString(),
                 PlaceholderText = Widget.Placeholder,
             };
+
+            string value = Widget.Model.GetValueAsString();
+            if (value != string.Empty)
+                _inputField.Text = value;
 
             if (!fromEditor)
             {
                 _inputField.TextChanged += OnTextChanged;
-                Widget.Model.SetClearUICallback(Clear);
+                Widget.Model.SetResetCallback(Reset);
             }
 
             return _inputField;
@@ -37,12 +40,18 @@ namespace FLG.Godot.UI {
 
         private void OnTextChanged(string text)
         {
-            Widget.Model.SetValue(text);
+            if (!Widget.Model.SetValue(text))
+            {
+                // TODO: Error handling
+            }
         }
 
-        private void Clear()
+        private void Reset()
         {
-            _inputField?.Clear();
+            if (_inputField != null)
+            {
+                _inputField.Text = Widget.Model?.GetValueAsString();
+            }
         }
     }
 }

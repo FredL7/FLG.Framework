@@ -90,19 +90,20 @@ namespace FLG.Cs.UI.Grids {
             var stackDimensionMain = GetStackDimensionMain(stackDimensions);
             var spaceRequired = expectedSizesSum + marginsSum;
             var spaceAvailable = stackDimensionMain - spaceRequired;
-            Debug.Assert(spaceAvailable >= 0);
+            Debug.Assert(spaceAvailable >= 0, $"[{Name}] Not enough space available: dimensions={stackDimensionMain}, required={spaceRequired}, available={spaceAvailable}");
 
             var stretchedSizes = GetSizesForStretch(childrens, expectedSizes, spaceAvailable);
             var stretchedSizeSum = stretchedSizes.Sum();
             var stretchedSpaceRequired = stretchedSizeSum + marginsSum;
             var spaceAvailableAfterStretch = stackDimensionMain - stretchedSpaceRequired;
-            Debug.Assert(spaceAvailableAfterStretch >= 0);
+            Debug.Assert(spaceAvailableAfterStretch >= 0, $"[{Name}] Not enough space available after stretch dimensions={stretchedSizeSum}, required={stretchedSpaceRequired}, available={spaceAvailableAfterStretch}");
 
             var justifiedMargins = UpdateMarginsForJustify(margins, spaceAvailableAfterStretch);
             var justifiedMarginsSum = justifiedMargins.Sum();
             var justifiedSpaceRequired = stretchedSizeSum + justifiedMarginsSum;
             var spaceAvailableAfterJustify = stackDimensionMain - justifiedSpaceRequired;
-            Debug.Assert(MathF.Abs(spaceAvailableAfterJustify) < float.Epsilon);
+            // Content could not fill parent
+            Debug.Assert(spaceAvailableAfterJustify > 0 || MathF.Abs(spaceAvailableAfterJustify) < float.Epsilon, $"[{Name}] Not enough space available after justify dimensions={justifiedMarginsSum}, required={justifiedSpaceRequired}, available={spaceAvailableAfterJustify}");
 
             return (stretchedSizes, justifiedMargins);
         }

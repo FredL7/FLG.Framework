@@ -44,8 +44,7 @@ namespace FLG.Cs.Serialization {
         }
 
         #region IServiceInstance
-        public bool IsProxy() => false;
-        public void OnServiceRegisteredFail() { Locator.Instance.Get<ILogManager>().Error("Serialization Manager Failed to register"); }
+        public void OnServiceRegisteredFail() { }
         public void OnServiceRegistered() {
             Locator.Instance.Get<ILogManager>().Debug("Serialization Manager Registered");
             DiscoverSaveFile();
