@@ -32,7 +32,7 @@ namespace FLG.Godot.UI {
             if (!fromEditor)
             {
                 _inputField.TextChanged += OnTextChanged;
-                Widget.Model.SetClearUICallback(Clear);
+                Widget.Model.SetResetCallback(Reset);
             }
 
             return _inputField;
@@ -46,9 +46,12 @@ namespace FLG.Godot.UI {
             }
         }
 
-        private void Clear()
+        private void Reset()
         {
-            _inputField?.Clear();
+            if (_inputField != null)
+            {
+                _inputField.Text = Widget.Model?.GetValueAsString();
+            }
         }
     }
 }

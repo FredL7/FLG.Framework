@@ -5,7 +5,7 @@ namespace FLG.Cs.Model {
     public class SimpleFloatModel : IInputFieldModel {
         private float _initialValue;
         private float _value;
-        private Action? _clearUICallback;
+        private Action? _resetUICallback;
 
         public SimpleFloatModel(float initialValue = 0f)
         {
@@ -42,15 +42,15 @@ namespace FLG.Cs.Model {
         public bool GetValueAsBool() => _value != 0;
 
 
-        public void SetClearUICallback(Action a)
+        public void SetResetCallback(Action a)
         {
-            _clearUICallback = a;
+            _resetUICallback = a;
         }
 
-        public void Clear()
+        public void Reset()
         {
             _value = _initialValue;
-            _clearUICallback?.Invoke();
+            _resetUICallback?.Invoke();
         }
     }
 }

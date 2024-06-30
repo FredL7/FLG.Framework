@@ -78,7 +78,7 @@ namespace FLG.Cs.UI.Widgets {
         {
             foreach (var field in _fields)
             {
-                field.Model.Clear();
+                field.Model.Reset();
             }
         }
 

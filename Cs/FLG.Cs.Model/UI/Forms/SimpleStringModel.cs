@@ -5,7 +5,7 @@ namespace FLG.Cs.Model {
     public class SimpleStringModel : IInputFieldModel {
         private string _initialValue;
         private string _value;
-        private Action? _clearUICallback;
+        private Action? _resetUICallback;
 
         public SimpleStringModel(string initialValue = "")
         {
@@ -35,15 +35,15 @@ namespace FLG.Cs.Model {
         public bool GetValueAsBool() => Convert.ToBoolean(_value);
 
 
-        public void SetClearUICallback(Action a)
+        public void SetResetCallback(Action a)
         {
-            _clearUICallback = a;
+            _resetUICallback = a;
         }
 
-        public void Clear()
+        public void Reset()
         {
             _value = _initialValue;
-            _clearUICallback?.Invoke();
+            _resetUICallback?.Invoke();
         }
     }
 }

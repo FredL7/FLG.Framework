@@ -11,7 +11,7 @@ namespace FLG.Cs.Model {
     public class NetworkingInputModel : IInputFieldModel {
         private readonly IPAddress _initialValue;
         private IPAddress _value;
-        private Action? _clearUICallback;
+        private Action? _resetUICallback;
 
         public NetworkingInputModel(string initialValue = "")
         {
@@ -58,15 +58,15 @@ namespace FLG.Cs.Model {
         public float GetValueAsFloat() => 0f;
         public bool GetValueAsBool() => false;
 
-        public void SetClearUICallback(Action a)
+        public void SetResetCallback(Action a)
         {
-            _clearUICallback = a;
+            _resetUICallback = a;
         }
 
-        public void Clear()
+        public void Reset()
         {
             _value = _initialValue;
-            _clearUICallback?.Invoke();
+            _resetUICallback?.Invoke();
         }
     }
 }

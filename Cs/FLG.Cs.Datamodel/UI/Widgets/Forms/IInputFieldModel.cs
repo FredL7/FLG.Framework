@@ -8,7 +8,7 @@
         public float GetValueAsFloat();
         public bool GetValueAsBool();
 
-        public void SetClearUICallback(Action a);
-        public void Clear();
+        public void SetResetCallback(Action a);
+        public void Reset();
     }
 }
