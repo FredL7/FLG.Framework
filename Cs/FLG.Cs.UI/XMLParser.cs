@@ -24,12 +24,16 @@ namespace FLG.Cs.UI {
         private List<File> _layoutFiles;
 
         private ILogManager _logger;
+        private IUIFactory _factory;
 
         public Dictionary<string, IPage> GetPages() => _pages;
         public Dictionary<string, Layout> GetLayouts() => _layouts;
 
-        internal XMLParser(string[] uiDirs, ILogManager logger)
+        internal XMLParser(string[] uiDirs, ILogManager logger, IUIFactory factory)
         {
+            _logger = logger;
+            _factory = factory;
+
             _uiDirs = uiDirs;
 
             _pages = new();
@@ -42,15 +46,13 @@ namespace FLG.Cs.UI {
                 _layoutFiles.AddRange(IOUtils.GetFilePathsByExtension(dir, ".layout"));
 
             _pageXMLFiles = new();
-            foreach( string dir in _uiDirs)
-                _pageXMLFiles .AddRange(IOUtils.GetFilePathsByExtension(dir, ".page"));
-
-            _logger = logger;
+            foreach (string dir in _uiDirs)
+                _pageXMLFiles.AddRange(IOUtils.GetFilePathsByExtension(dir, ".page"));
         }
 
         internal Result Parse()
         {
-            foreach(string dir in _uiDirs)
+            foreach (string dir in _uiDirs)
                 if (!Directory.Exists(dir))
                     return new Result($"{Path.GetFullPath(dir)} does not exists");
 
@@ -92,40 +94,40 @@ namespace FLG.Cs.UI {
         private Result InstantiatePageCs(string binding, string layoutId)
         {
             IPage? page;
-            /*try
-            {
-                // var assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var assemblyFolder = Path.GetDirectoryName(typeof(XMLParser).Assembly.Location);
-                _logger.Debug($"FRED: {assemblyFolder}");
-                if (assemblyFolder == null) return new Result("Could not locate current assembly directory");
-
-                var assembly = System.Reflection.Assembly.LoadFile(Path.Combine(assemblyFolder, "ProjectDefs.UI.dll"));
-                if (assembly == null) return new Result("Could not load ProjectsDefs.UI.dll");
-
-                var type = assembly.GetType(binding);
-                if (type == null) return new Result($"Could not instantiate a class of type {binding}: type {binding} not found");
-
-                var pageObject = assembly.CreateInstance(binding);
-                if (pageObject == null) return new Result($"Could not instantiate a class of type {binding}: result is null");
-
-                page = pageObject as IPage;
-                _logger.Debug($"Instantiated IPage of type {binding}");
-            }
-            catch (Exception e)
-            {
-                return new Result($"Could not instantiate a class of type {binding}: {e}");
-            }*/
 
             try
             {
                 var type = Type.GetType(binding + ", ProjectDefs.UI");
                 if (type == null) return new Result($"Could not instantiate a class of type {binding}: type {binding} not found");
 
-                var pageObject = Activator.CreateInstance(type);
-                if (pageObject == null) return new Result($"Could not instantiate a class of type {binding}: could not create an instance of type {type}");
-
-                page = pageObject as IPage;
-                _logger.Debug($"Instantiated IPage of type {binding}");
+                try
+                {
+                    var pageObject = Activator.CreateInstance(type, _factory);
+                    if (pageObject == null) return new Result($"Could not instantiate a class of type {binding}: could not create an instance of type {type}");
+                    page = pageObject as IPage;
+                    _logger.Debug($"Instantiated IPage of type {binding} with param(factory) ctor");
+                }
+                catch (MissingMethodException _)
+                {
+                    _logger.Debug($"Could not find a ctor with factory param, fallback to default parameterless ctor");
+                    try
+                    {
+                        var pageObject = Activator.CreateInstance(type);
+                        if (pageObject == null) return new Result($"Could not instantiate a class of type {binding}: could not create an instance of type {type}");
+                        page = pageObject as IPage;
+                        _logger.Debug($"Instantiated IPage of type {binding} with default ctor");
+                    }
+                    catch (Exception eParamless)
+                    {
+                        _logger.Error($"Could not create an instance of {binding}: {eParamless.Message}");
+                        return new Result($"Could not instantiate a class of type {binding}: {eParamless.Message}");
+                    }
+                }
+                catch (Exception e)
+                {
+                    _logger.Error($"Could not create an instance of {binding}: {e.Message}");
+                    return new Result($"Could not instantiate a class of type {binding}: {e.Message}");
+                }
             }
             catch (Exception e)
             {

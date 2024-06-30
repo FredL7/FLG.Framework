@@ -36,6 +36,7 @@ namespace FLG.Cs.UI {
         {
             _logger.Debug("UI Manager Registered");
             ParseUI();
+            _pagesManager.RegisterPages();
         }
         #endregion IServiceInstance
 
@@ -64,7 +65,7 @@ namespace FLG.Cs.UI {
         {
             _logger.Debug("Begin XML Parsing");
 
-            XMLParser parser = new(_uiDirs, _logger);
+            XMLParser parser = new(_uiDirs, _logger, _factory);
             var result = parser.Parse();
             if (!result) _logger.Log(result);
             _logger.Debug("Finished XML Parsing");

@@ -22,6 +22,7 @@ public class Sample1 : IPage {
         _uiManager.SetCurrentPage("Sample2");
     }
 
+    public void OnRegister() { }
     public void OnOpen() { }
     public void OnClose() { }
 }

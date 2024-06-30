@@ -39,5 +39,11 @@ namespace FLG.Cs.UI.Pages {
             foreach (IPage page in _pages.Values)
                 page.Setup(ui, factory);
         }
+
+        internal void RegisterPages()
+        {
+            foreach (IPage page in _pages.Values)
+                page.OnRegister();
+        }
     }
 }

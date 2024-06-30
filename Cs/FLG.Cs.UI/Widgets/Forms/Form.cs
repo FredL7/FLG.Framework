@@ -48,7 +48,7 @@ namespace FLG.Cs.UI.Widgets {
             List<IInputField> newFields = new(_fields.Count);
             foreach (var field in _fields)
             {
-                HStack inputLine = new(field.Name + "-inputline", new(margin: new(0, 0, 0, _formAttributes.paddingBetweenRows)), new());
+                HStack inputLine = new(field.Name + "-inputline", new(height: 40, margin: new(0, 0, 0, _formAttributes.paddingBetweenRows)), new());
                 container.AddChild(inputLine, pageID);
 
                 Label inputLabel = new(field.Name + "-label", field.Label,
@@ -65,7 +65,7 @@ namespace FLG.Cs.UI.Widgets {
             _fields = newFields;
 
             // Controls
-            HStack controls = new(Name + "-controls", new(margin: new(0, 20, 0, 0)), new(justify: EGridJustify.CENTER));
+            HStack controls = new(Name + "-controls", new(height: 40, margin: new(0, 20, 0, 0)), new(justify: EGridJustify.CENTER));
             container.AddChild(controls, pageID);
 
             Button resetBtn = new(Name + "-control-reset", "Reset", ResetFields, new(margin: new(_formAttributes.paddingBetweenColumns / 2.0f, 0, 0, 0)));
