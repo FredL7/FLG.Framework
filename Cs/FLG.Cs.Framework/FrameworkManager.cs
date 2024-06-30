@@ -81,12 +81,13 @@ namespace FLG.Cs.Framework {
 
             if (!_initializedNetworking)
             {
-                var manager = ManagersFactory.CreateNetworkingManager(pref);
-                _initializedNetworking = manager != null;
+                var networkingManager = ManagersFactory.CreateNetworkingManager(pref);
+                var commandManager = ManagersFactory.CreateCommandManager();
+                _initializedNetworking = networkingManager != null && commandManager != null;
 
-                if (manager != null)
+                if (networkingManager != null && commandManager != null)
                 {
-                    _gameLoopObjects.Add(manager);
+                    _gameLoopObjects.Add(networkingManager);
                 }
             }
         }

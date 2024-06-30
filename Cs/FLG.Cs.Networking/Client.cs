@@ -1,4 +1,5 @@
-﻿using System.Net.Sockets;
+﻿using System.Data;
+using System.Net.Sockets;
 
 using FLG.Cs.Datamodel;
 using FLG.Cs.ServiceLocator;
@@ -18,9 +19,7 @@ namespace FLG.Cs.Networking {
         private Message _receivedData;
         private byte[] _receiveBuffer;
 
-        internal delegate void MessageHandler(Message message);
-        private readonly Dictionary<int, MessageHandler> _messageHandlers;
-        internal Dictionary<int, MessageHandler> MessageHandlers { get => _messageHandlers; }
+        private readonly MessagesHandler _messagesHandler;
 
         public Client(string ip, int port, NetworkingManager manager)
         {
@@ -28,12 +27,12 @@ namespace FLG.Cs.Networking {
             _ip = ip;
             _port = port;
 
-            _messageHandlers = new()
+            _messagesHandler = new(new()
             {
                 { (int)Messages.WELCOME, WelcomeHandler },
                 { (int)Messages.HEARTBEAT, HeartbeatHandler },
                 { (int)Messages.COMMAND, CommandHandler },
-            };
+            });
 
             _receiveBuffer = Array.Empty<byte>();
             _receivedData = new Message();
@@ -89,7 +88,7 @@ namespace FLG.Cs.Networking {
                     byte[] data = new byte[byteLength];
                     Array.Copy(_receiveBuffer, data, byteLength);
 
-                    _receivedData.Reset(HandleData(data));
+                    _receivedData.Reset(MessagesHandler.HandleData(data, _receivedData, _manager, _messagesHandler.MessageHandlers));
                     _stream.BeginRead(_receiveBuffer, 0, Message.DATA_BUFFER_SIZE, ReceiveCallback, null);
                 }
             }
@@ -99,56 +98,22 @@ namespace FLG.Cs.Networking {
                 // TODO: Disconnect
             }
         }
-
-        private bool HandleData(byte[] data) // Copied in TCPConnexion (except the ExecuteOnMainThread inner)
-        {
-            int length = 0;
-
-            _receivedData.SetBytes(data);
-
-            if (_receivedData.UnreadLength >= Message.INT_LENGTH)
-            {
-                length = _receivedData.ReadInt();
-                if (length <= 0)
-                {
-                    return true;
-                }
-            }
-
-            while (length > 0 && length <= _receivedData.UnreadLength)
-            {
-                byte[] packetBytes = _receivedData.ReadBytes(length);
-                _manager.ExecuteOnMainThread(() =>
-                {
-                    using Message message = new(packetBytes);
-                    int id = message.ReadInt();
-                    _messageHandlers[id](message);
-                });
-
-                length = 0;
-                if (_receivedData.UnreadLength >= Message.INT_LENGTH)
-                {
-                    length = _receivedData.ReadInt();
-                    if (length <= 0)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            if (length <= 1)
-            {
-                return true;
-            }
-
-            return false;
-        }
         #endregion Connexion
 
         #region Messaging
+        public void SendCommand(ICommand command)
+        {
+            string commandMessage = command.ToMessageString();
+            using Message message = new((int)Messages.COMMAND);
+            message.Write(commandMessage);
+            Locator.Instance.Get<ILogManager>().Debug($"Sending command message to server ({commandMessage})");
+            SendTcpData(message);
+        }
         private void SendTcpData(Message message)
         {
+            message.WriteId(_id);
             message.WriteLength();
+            Locator.Instance.Get<ILogManager>().Debug($"Sending message to server ({message})");
             SendData(message);
         }
 
@@ -157,7 +122,6 @@ namespace FLG.Cs.Networking {
             // Do not call directly, call SendTcpData instead
             try
             {
-                // Maybe add message.WriteLength to the ToArray() function?
                 _stream?.BeginWrite(message.ToArray(), 0, message.Length, null, null);
             }
             catch (Exception e)
@@ -169,29 +133,30 @@ namespace FLG.Cs.Networking {
 
 
         #region Message Handlers
-        private void WelcomeHandler(Message message)
+        private void WelcomeHandler(int serverId, Message message)
         {
+            var logger = Locator.Instance.Get<ILogManager>();
+            logger.Debug($"Receiving welcome message from server ({serverId})");
             string msg = message.ReadString();
             int id = message.ReadInt();
 
             _id = id;
-            Locator.Instance.Get<ILogManager>().Debug($"Receiving Message from server \"{msg}\", my id={_id}");
+            logger.Debug($"Received welcome message from server \"{msg}\", my id={_id}");
 
             {
                 using Message callbackMessage = new((int)Messages.WELCOME);
-                callbackMessage.Write(_id);
-                callbackMessage.Write("username"); // TODO: Add username
-                Locator.Instance.Get<ILogManager>().Debug("Sending Welcome message to server (WELCOME, CLIENT ID, USERNAME)");
-                SendTcpData(message);
+                callbackMessage.Write(_id, "clientreceivedId");
+                logger.Debug("Sending Welcome message to server");
+                SendTcpData(callbackMessage);
             }
         }
 
-        private void HeartbeatHandler(Message message)
+        private void HeartbeatHandler(int serverId, Message message)
         {
             throw new NotImplementedException();
         }
 
-        private void CommandHandler(Message message)
+        private void CommandHandler(int serverId, Message message)
         {
             throw new NotImplementedException();
         }

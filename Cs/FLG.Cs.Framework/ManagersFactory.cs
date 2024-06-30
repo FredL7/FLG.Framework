@@ -1,4 +1,5 @@
-﻿using FLG.Cs.Datamodel;
+﻿using FLG.Cs.Commands;
+using FLG.Cs.Datamodel;
 using FLG.Cs.Logger;
 using FLG.Cs.Networking;
 using FLG.Cs.Serialization;
@@ -44,6 +45,17 @@ namespace FLG.Cs.Framework {
         internal static INetworkingManager? CreateNetworkingManager(PreferencesNetworking prefs)
         {
             INetworkingManager manager = new NetworkingManager(prefs);
+            if (Locator.Instance.Register(manager))
+            {
+                return manager;
+            }
+
+            return null;
+        }
+
+        internal static ICommandManager? CreateCommandManager()
+        {
+            ICommandManager manager = new CommandManager();
             if (Locator.Instance.Register(manager))
             {
                 return manager;

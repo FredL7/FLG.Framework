@@ -3,11 +3,15 @@ using System.Net.Sockets;
 
 using FLG.Cs.Datamodel;
 using FLG.Cs.ServiceLocator;
+using static FLG.Cs.Networking.MessagesHandler;
 
 
 namespace FLG.Cs.Networking {
     internal class Server {
         private readonly NetworkingManager _manager;
+        public NetworkingManager Manager { get => _manager; }
+
+        private const int _id = -1;
 
         private readonly int _port;
         private readonly TcpListener _tcpListener;
@@ -16,9 +20,8 @@ namespace FLG.Cs.Networking {
         private int _maxConnexions = 0;
 
         protected Dictionary<int, TCPConnexion> _connexions;
-        internal delegate void MessageHandler(int clientID, Message message);
-        private readonly Dictionary<int, MessageHandler> _messageHandlers;
-        internal Dictionary<int, MessageHandler> MessageHandlers { get => _messageHandlers; }
+        private readonly MessagesHandler _messagesHandler;
+        public Dictionary<int, MessageHandler> MessageHandlers { get => _messagesHandler.MessageHandlers; }
 
         public Server(int port, NetworkingManager manager)
         {
@@ -28,20 +31,20 @@ namespace FLG.Cs.Networking {
             _port = port;
             _connexions = new();
 
-            _messageHandlers = new()
+            _messagesHandler = new(new()
             {
                 { (int)Messages.WELCOME, WelcomeHandler },
                 { (int)Messages.HEARTBEAT, HeartbeatHandler },
                 { (int)Messages.COMMAND, CommandHandler },
-            };
+            });
 
-            logger.Debug($"Starting Server");
+            logger.Info($"Starting Server");
 
             _tcpListener = new(IPAddress.Any, _port);
             _tcpListener.Start();
             _tcpListener.BeginAcceptTcpClient(new AsyncCallback(TCPConnectCallback), null);
 
-            logger.Debug($"Server started on {_port}");
+            logger.Info($"Server started on {_port}");
         }
 
         public void SetMaxConnexions(int nbConnexions)
@@ -54,10 +57,10 @@ namespace FLG.Cs.Networking {
                 _connexions = new(nbConnexions);
                 for (int i = 0; i < _maxConnexions; ++i)
                 {
-                    _connexions.Add(i, new TCPConnexion(i, _manager, this));
+                    _connexions.Add(i, new TCPConnexion(i, this));
                 }
             }
-            Locator.Instance.Get<ILogManager>().Debug($"Server max connexions set to {_maxConnexions}");
+            Locator.Instance.Get<ILogManager>().Info($"Server max connexions set to {_maxConnexions}");
         }
 
         #region Connexion
@@ -66,7 +69,7 @@ namespace FLG.Cs.Networking {
             TcpClient client = _tcpListener.EndAcceptTcpClient(result);
             _tcpListener.BeginAcceptTcpClient(new AsyncCallback(TCPConnectCallback), null);
 
-            Locator.Instance.Get<ILogManager>().Debug($"Incoming connxion from {client.Client.RemoteEndPoint}");
+            Locator.Instance.Get<ILogManager>().Debug($"Incoming connexion from {client.Client.RemoteEndPoint}");
 
             for (int i = 0; i < _maxConnexions; ++i)
             {
@@ -82,10 +85,10 @@ namespace FLG.Cs.Networking {
         private void SendWelcomeMessage(int clientId)
         {
             using Message message = new((int)Messages.WELCOME);
-            message.Write("Welcome to the server");
-            message.Write(clientId);
+            message.Write("Welcome to the server", "welcomemsg");
+            message.Write(clientId, "clientid");
 
-            Locator.Instance.Get<ILogManager>().Debug("Sending Welcome message to client (WELCOME, MESSAGE, CLIENT ID)");
+            Locator.Instance.Get<ILogManager>().Debug("Sending Welcome message to client");
             SendTCPData(clientId, message);
         }
         #endregion Connexion
@@ -93,7 +96,9 @@ namespace FLG.Cs.Networking {
         #region TCP
         private void SendTCPData(int clientId, Message message)
         {
+            message.WriteId(_id);
             message.WriteLength();
+            Locator.Instance.Get<ILogManager>().Debug($"Sending message to client {clientId} ({message})");
             _connexions[clientId].SendData(message);
         }
 
@@ -120,29 +125,27 @@ namespace FLG.Cs.Networking {
         #region Message Handlers
         private void WelcomeHandler(int clientId, Message message)
         {
-            Locator.Instance.Get<ILogManager>().Debug("Receiving welcome message from client");
-            // int clientIdCheck = message.ReadInt();
-            // string username = message.ReadString();
+            Locator.Instance.Get<ILogManager>().Debug($"Receiving welcome message from client {clientId}");
 
             var logger = Locator.Instance.Get<ILogManager>();
-
-            logger.Debug("Received Welcome message from client (WELCOME, CLIENT ID, USERNAME)");
-
             logger.Debug($"{_connexions[clientId].RemoteEndPoint} connected successfully and is now player {clientId}");
-            /*if (clientId != clientIdCheck)
-            {
-                logger.Error($"Player \"{username}\" (ID: {clientId}) has assumed the wrong client ID ({clientIdCheck})");
-            }*/
         }
 
-        private void HeartbeatHandler(int cliendId, Message message)
+        private void HeartbeatHandler(int clientId, Message message)
         {
             throw new NotImplementedException();
         }
 
-        private void CommandHandler(int cliendId, Message message)
+        private void CommandHandler(int clientId, Message message)
         {
-            throw new NotImplementedException();
+            var logger = Locator.Instance.Get<ILogManager>();
+            var cmd = Locator.Instance.Get<ICommandManager>();
+
+            logger.Debug($"Receiving command message from client {clientId}");
+            string command = message.ReadString();
+            logger.Debug($"Received command from client {clientId} ({command})");
+
+            cmd.ExecuteCommand(command);
         }
         #endregion Message Handlers
     }
