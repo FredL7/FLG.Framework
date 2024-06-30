@@ -70,6 +70,17 @@ namespace FLG.Cs.Networking {
             _server = new Server(port, this);
         }
 
+        public void SendCommand(ICommand command)
+        {
+            if (_client == null)
+            {
+                Locator.Instance.Get<ILogManager>().Warn($"Cannot send command, client not initialized ({command.ToMessageString()})");
+                return;
+            }
+
+            _client.SendCommand(command);
+        }
+
         internal void ExecuteOnMainThread(Action action)
         {
             _threadManager.ExecuteOnMainThread(action);

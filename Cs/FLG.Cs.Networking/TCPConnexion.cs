@@ -10,7 +10,6 @@ namespace FLG.Cs.Networking {
         private readonly int _id;
         public int Id { get => _id; }
 
-        private readonly NetworkingManager _manager;
         private readonly Server _server;
 
         private TcpClient? _client;
@@ -21,10 +20,9 @@ namespace FLG.Cs.Networking {
         public bool Available { get => _client == null; }
         public EndPoint? RemoteEndPoint { get => _client?.Client.RemoteEndPoint; }
 
-        public TCPConnexion(int id, NetworkingManager manager, Server server)
+        public TCPConnexion(int id, Server server)
         {
             _id = id;
-            _manager = manager;
             _server = server;
 
             _receiveBuffer = Array.Empty<byte>();
@@ -78,7 +76,7 @@ namespace FLG.Cs.Networking {
                     byte[] data = new byte[byteLength];
                     Array.Copy(_receiveBuffer, data, byteLength);
 
-                    _receivedData.Reset(HandleData(data));
+                    _receivedData.Reset(MessagesHandler.HandleData(data, _receivedData, _server.Manager, _server.MessageHandlers));
                     _stream.BeginRead(_receiveBuffer, 0, Message.DATA_BUFFER_SIZE, ReceiveCallback, null);
                 }
             }
@@ -87,51 +85,6 @@ namespace FLG.Cs.Networking {
                 Locator.Instance.Get<ILogManager>().Error($"Error receiving TCP data: {e}");
                 // TODO: Disconnect
             }
-        }
-
-        private bool HandleData(byte[] data)
-        {
-            int length = 0;
-
-            _receivedData.SetBytes(data);
-
-            // Messages always start with int from Message.cs::Messages enum
-            if (_receivedData.UnreadLength >= Message.INT_LENGTH)
-            {
-                length = _receivedData.ReadInt();
-                if (length <= 0)
-                {
-                    return true;
-                }
-            }
-
-            while (length > 0 && length <= _receivedData.UnreadLength)
-            {
-                byte[] messageBytes = _receivedData.ReadBytes(length);
-                _manager.ExecuteOnMainThread(() =>
-                {
-                    using Message message = new(messageBytes);
-                    int id = message.ReadInt();
-                    _server.MessageHandlers[id](id, message);
-                });
-
-                length = 0;
-                if (_receivedData.UnreadLength >= Message.INT_LENGTH)
-                {
-                    length = _receivedData.ReadInt();
-                    if (length <= 0)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            if (length <= 1)
-            {
-                return true;
-            }
-
-            return false;
         }
     }
 }

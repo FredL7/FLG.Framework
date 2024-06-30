@@ -22,11 +22,13 @@ namespace FLG.Cs.Networking {
         public int Length { get => _buffer.Count; }
         public int UnreadLength { get => Length - _readPos; }
 
+        private StringBuilder _debugMessage = new();
+
         public Message() { }
 
         public Message(int id)
         {
-            Write(id);
+            Write(id, "msgType");
         }
 
         public Message(byte[] data)
@@ -43,17 +45,24 @@ namespace FLG.Cs.Networking {
         public void WriteLength()
         {
             _buffer.InsertRange(0, BitConverter.GetBytes(_buffer.Count));
+            _debugMessage.Insert(0, "//length:" + _buffer.Count);
         }
 
-        public void InsertInt(int value)
+        public void WriteId(int id)
         {
-            _buffer.InsertRange(0, BitConverter.GetBytes(value));
+            _buffer.InsertRange(0, BitConverter.GetBytes(id));
+            _debugMessage.Insert(0, "//id:" + id);
         }
 
         public byte[] ToArray()
         {
             _readableBuffer = _buffer.ToArray();
             return _readableBuffer;
+        }
+
+        public override string ToString()
+        {
+            return _debugMessage.ToString();
         }
 
         public void Reset(bool shouldReset = true)
@@ -63,6 +72,7 @@ namespace FLG.Cs.Networking {
                 _buffer.Clear();
                 _readableBuffer = Array.Empty<byte>();
                 _readPos = 0;
+                _debugMessage.Clear();
             }
             else
             {
@@ -72,16 +82,32 @@ namespace FLG.Cs.Networking {
 
         #region Write
         // public void Write(byte value { _buffer.Add(value); }
-        public void Write(byte[] value) { _buffer.AddRange(value); }
-        // public void Write(short value) { _buffer.AddRange(BitConverter.GetBytes(value)); }
-        public void Write(int value) { _buffer.AddRange(BitConverter.GetBytes(value)); }
-        // public void Write(long value) { _buffer.AddRange(BitConverter.GetBytes(value)); }
-        public void Write(float value) { _buffer.AddRange(BitConverter.GetBytes(value)); }
-        public void Write(bool value) { _buffer.AddRange(BitConverter.GetBytes(value)); }
-        public void Write(string value)
+        public void Write(byte[] value)
         {
-            Write(value.Length);
+            _buffer.AddRange(value);
+        }
+        // public void Write(short value) { _buffer.AddRange(BitConverter.GetBytes(value)); }
+        public void Write(int value, string debugId = "int")
+        {
+            _buffer.AddRange(BitConverter.GetBytes(value));
+            _debugMessage.Append($"//{debugId}:" + value);
+        }
+        // public void Write(long value) { _buffer.AddRange(BitConverter.GetBytes(value)); }
+        public void Write(float value, string debugId = "float")
+        {
+            _buffer.AddRange(BitConverter.GetBytes(value));
+            _debugMessage.Append($"//{debugId}:" + value);
+        }
+        public void Write(bool value, string debugId = "bool")
+        {
+            _buffer.AddRange(BitConverter.GetBytes(value));
+            _debugMessage.Append($"//{debugId}:" + value);
+        }
+        public void Write(string value, string debugId = "string")
+        {
+            Write(value.Length, "strlen");
             _buffer.AddRange(Encoding.ASCII.GetBytes(value));
+            _debugMessage.Append($"//{debugId}:" + value);
         }
         #endregion Write
 

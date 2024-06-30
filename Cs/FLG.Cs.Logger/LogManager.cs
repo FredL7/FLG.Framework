@@ -23,6 +23,10 @@ namespace FLG.Cs.Logger {
         public void OnServiceRegistered()
         {
             Debug("Log Manager Registered");
+
+            Type objType = typeof(ILogManager);
+            Debug($"Fred: {objType.Assembly.FullName}");
+            Debug($"Fred: {objType.AssemblyQualifiedName}");
         }
         #endregion IServiceInstance
 
