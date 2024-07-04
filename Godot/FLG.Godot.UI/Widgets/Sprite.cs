@@ -24,26 +24,28 @@ namespace FLG.Godot.UI {
                 AnchorBottom = 0f,
             };
 
+            var originalSize = rect.Texture.GetSize();
+            float scale = 1;
+
             if (Widget.Size.Width == 0 && Widget.Size.Height == 0)
             {
                 // Keep original image size
             }
-            else if (Widget.Size.Width == 0 || Widget.Size.Height == 0)
+            else if (Widget.Size.Width == 0)
             {
-                float ratio = rect.Size.X / rect.Size.Y;
-                if (Widget.Size.Width == 0)
-                {
-                    rect.Size = new (Widget.Size.Height * ratio, Widget.Size.Height);
-                }
-                else if (Widget.Size.Height == 0)
-                {
-                    rect.Size = new(Widget.Size.Width, Widget.Size.Width / ratio);
-                }
+                scale = Widget.Size.Height / originalSize.Y;
+            }
+            else if (Widget.Size.Height == 0)
+            {
+                scale = Widget.Size.Width / originalSize.X;
             }
             else
             {
-                rect.Size = new(Widget.Size.Width, Widget.Size.Height);
+                // Both dimensions should compute the same ratio
+                scale = Widget.Size.Width / originalSize.X;
             }
+
+            rect.Scale = new(scale, scale);
 
             return rect;
         }
