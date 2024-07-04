@@ -1,5 +1,6 @@
 ﻿namespace FLG.Cs.Datamodel {
     public interface INetworkingManager : IServiceInstance, IGameLoopObject {
+        public int Id { get; }
         public int MaxServerConnexions { get; }
         public int ServerPort { get; }
 

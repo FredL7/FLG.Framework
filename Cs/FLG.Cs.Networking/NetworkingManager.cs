@@ -9,6 +9,23 @@ namespace FLG.Cs.Networking {
         private Client? _client;
         private Server? _server;
 
+        public int Id {
+            get {
+                if (_client != null)
+                {
+                    return _client.Id;
+                }
+                if (_server != null)
+                {
+                    return _server.Id;
+                }
+                else
+                {
+                    return -2; // TODO: Better error handling
+                }
+            }
+        }
+
         public int ServerPort {
             get {
                 if (_server != null)

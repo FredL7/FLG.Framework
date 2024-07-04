@@ -12,6 +12,7 @@ namespace FLG.Cs.Networking {
         public NetworkingManager Manager { get => _manager; }
 
         private const int _id = -1;
+        public int Id { get => _id; }
 
         private readonly int _port;
         public int Port { get => _port; }

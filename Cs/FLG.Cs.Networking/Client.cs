@@ -9,6 +9,7 @@ namespace FLG.Cs.Networking {
         private readonly NetworkingManager _manager;
 
         private int _id;
+        public int Id { get => _id; }
 
         private readonly string _ip;
         private readonly int _port;
