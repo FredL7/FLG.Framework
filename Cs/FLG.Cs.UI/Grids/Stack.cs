@@ -207,18 +207,23 @@ namespace FLG.Cs.UI.Grids {
                     justifiedMargin[margins.Length - 1] += spaceAvailable / 2f;
                     break;
                 case EGridJustify.SPACE_BETWEEN:
-                    var spaceBetween = spaceAvailable / (justifiedMargin.Length - 1);
-                    for (int i = 0; i < justifiedMargin.Length; ++i)
-                        justifiedMargin[i] += spaceBetween;
+                    // Must have at least 2 items (3 margins) to compute space between otherwise, treat is as START
+                    if (justifiedMargin.Length > 2)
+                    {
+                        var spaceBetween = spaceAvailable / (justifiedMargin.Length - 2);
+                        for (int i = 1; i < justifiedMargin.Length - 1; ++i)
+                            justifiedMargin[i] += spaceBetween;
+                    }
                     break;
                 case EGridJustify.SPACE_AROUND:
-                    var spaceAround = spaceAvailable / (2 * justifiedMargin.Length);
+                    var spaceAround = spaceAvailable / (2 * (justifiedMargin.Length - 1));
                     justifiedMargin[0] += spaceAround;
-                    for (int i = 1; i < justifiedMargin.Length; ++i)
+                    justifiedMargin[justifiedMargin.Length - 1] += spaceAround;
+                    for (int i = 1; i < justifiedMargin.Length - 1; ++i)
                         justifiedMargin[i] += 2 * spaceAround;
                     break;
                 case EGridJustify.SPACE_EVENLY:
-                    var spaceEvenly = spaceAvailable / (justifiedMargin.Length + 1);
+                    var spaceEvenly = spaceAvailable / justifiedMargin.Length;
                     for (int i = 0; i < justifiedMargin.Length; ++i)
                         justifiedMargin[i] += spaceEvenly;
                     break;
