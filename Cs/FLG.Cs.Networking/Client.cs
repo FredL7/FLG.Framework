@@ -158,7 +158,14 @@ namespace FLG.Cs.Networking {
 
         private void CommandHandler(int serverId, Message message)
         {
-            throw new NotImplementedException();
+            var logger = Locator.Instance.Get<ILogManager>();
+            var cmd = Locator.Instance.Get<ICommandManager>();
+
+            logger.Debug($"Receiving command message from server");
+            string command = message.ReadString();
+            logger.Debug($"Received command from server ({command})");
+
+            cmd.ExecuteCommand(command);
         }
         #endregion Message Handlers
     }
