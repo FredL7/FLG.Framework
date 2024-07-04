@@ -280,9 +280,6 @@ namespace FLG.Cs.UI {
 
                 if (layoutElement.IsTarget)
                 {
-                    /*if (node.HasChildNodes)
-                        return new Result($"Target node {layoutElement.Name} cannot declare childrens");*/
-
                     _targets.Add(layoutElement.Name, layoutElement);
                 }
 
@@ -303,9 +300,6 @@ namespace FLG.Cs.UI {
 
                 if (layoutElement.IsTarget)
                 {
-                    if (node.HasChildNodes)
-                        return new Result($"Target node {layoutElement.Name} cannot declare childrens");
-
                     _targets.Add(layoutElement.Name, layoutElement);
                 }
 
