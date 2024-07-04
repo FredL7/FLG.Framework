@@ -1,10 +1,14 @@
 ﻿using FLG.Cs.Decorators;
-using FLG.Cs.IDatamodel;
+using FLG.Cs.Datamodel;
 
 
 namespace FLG.Cs.Framework {
     public class FrameworkManager : SingletonBase<FrameworkManager> {
-        private FrameworkManager() { }
+        private List<IGameLoopObject> _gameLoopObjects;
+        private FrameworkManager()
+        {
+            _gameLoopObjects = new(1);
+        }
 
         #region General
         private bool _initializedGeneral = false;
@@ -12,28 +16,22 @@ namespace FLG.Cs.Framework {
         {
             if (!_initializedGeneral)
             {
-                ManagersFactory.CreateProxies();
                 _initializedGeneral = true;
             }
-        }
-
-        public void Initialize<T>(T service) where T : IServiceInstance
-        {
-            ManagersFactory.CreateGeneric(service);
         }
         #endregion General
 
         #region Logs
         private bool _initializedLogs = false;
-        public void InitializeLogs(PreferencesLogs pref)
+        public void InitializeLogs(PreferencesLogs pref, bool dummy = false)
         {
             if (!ValidateDependenciesLogs())
                 return;
 
             if (!_initializedLogs)
             {
-                ManagersFactory.CreateLogger(pref);
-                _initializedLogs = true;
+                var manager = ManagersFactory.CreateLogger(pref, dummy);
+                _initializedLogs = manager != null;
             }
         }
 
@@ -49,8 +47,8 @@ namespace FLG.Cs.Framework {
 
             if (!_initializedSerializer)
             {
-                ManagersFactory.CreateSerializer(pref);
-                _initializedSerializer = true;
+                var manager = ManagersFactory.CreateSerializer(pref);
+                _initializedSerializer = manager != null;
             }
         }
 
@@ -66,12 +64,43 @@ namespace FLG.Cs.Framework {
 
             if (!_initializedUI)
             {
-                ManagersFactory.CreateUIManager(pref);
-                _initializedUI = true;
+                var manager = ManagersFactory.CreateUIManager(pref);
+                _initializedUI = manager != null;
             }
         }
 
         private bool ValidateDependenciesUI() => _initializedGeneral;
         #endregion UI
+
+        #region Networking
+        private bool _initializedNetworking = false;
+        public void InitializeNetworking(PreferencesNetworking pref)
+        {
+            if (!ValidateDependenciesNetworking())
+                return;
+
+            if (!_initializedNetworking)
+            {
+                var networkingManager = ManagersFactory.CreateNetworkingManager(pref);
+                var commandManager = ManagersFactory.CreateCommandManager();
+                _initializedNetworking = networkingManager != null && commandManager != null;
+
+                if (networkingManager != null && commandManager != null)
+                {
+                    _gameLoopObjects.Add(networkingManager);
+                }
+            }
+        }
+
+        private bool ValidateDependenciesNetworking() => _initializedGeneral;
+        #endregion Networking
+
+        public void Update()
+        {
+            foreach (var manager in _gameLoopObjects)
+            {
+                manager.Update();
+            }
+        }
     }
 }

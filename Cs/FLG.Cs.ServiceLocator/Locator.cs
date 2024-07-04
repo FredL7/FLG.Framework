@@ -1,5 +1,5 @@
 ﻿using FLG.Cs.Decorators;
-using FLG.Cs.IDatamodel;
+using FLG.Cs.Datamodel;
 
 
 namespace FLG.Cs.ServiceLocator {
@@ -11,26 +11,18 @@ namespace FLG.Cs.ServiceLocator {
             _services = new();
         }
 
-        public void Register<T>(T service) where T : IServiceInstance
+        public bool Register<T>(T service) where T : IServiceInstance
         {
             if (_services.ContainsKey(typeof(T)))
             {
-                IServiceInstance potentialProxy = _services[typeof(T)];
-                if (potentialProxy.IsProxy())
-                {
-                    _services[typeof(T)] = service;
-                    service.OnServiceRegistered();
-                }
-                else
-                {
-                    service.OnServiceRegisteredFail();
-                }
-                return;
+                service.OnServiceRegisteredFail();
+                throw new Exception($"Service already registered for type {typeof(T)}");
             }
             else
             {
                 _services.Add(typeof(T), service);
                 service.OnServiceRegistered();
+                return true;
             }
         }
 
@@ -42,7 +34,7 @@ namespace FLG.Cs.ServiceLocator {
             }
             catch (Exception)
             {
-                throw new NotImplementedException($"Service not registered for type {typeof(T)}");
+                throw new Exception($"Service not registered for type {typeof(T)}");
             }
         }
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bdhf2jm05lbhw"]
 
-[ext_resource type="Script" path="res://UITool.cs" id="1_ey55o"]
+[ext_resource type="Script" path="res://UIManager.cs" id="1_bavhg"]
 [ext_resource type="Texture2D" uid="uid://jsdiclk3awk5" path="res://icon.svg" id="2_8ldko"]
 
 [node name="UI" type="Control"]
@@ -18,155 +18,225 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_ey55o")
+script = ExtResource("1_bavhg")
 
 [node name="layout sample" type="Control" parent="Layouts"]
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
 
-[node name="header (FLG_Cs_UI_Grids_HStack)" type="Control" parent="Layouts/layout sample"]
+[node name="header" type="Control" parent="Layouts/layout sample"]
 anchors_preset = 0
 offset_left = 10.0
 offset_top = 10.0
 offset_right = 1910.0
 offset_bottom = 30.0
 
-[node name="header-title (FLG_Cs_UI_Grids_HStack)" type="Control" parent="Layouts/layout sample/header (FLG_Cs_UI_Grids_HStack)"]
+[node name="header-title" type="Control" parent="Layouts/layout sample/header"]
 anchors_preset = 0
 offset_right = 950.0
 offset_bottom = 20.0
 
-[node name="header-title-icon (FLG_Cs_UI_Widgets_ProxyLayoutElementLeaf)" type="Control" parent="Layouts/layout sample/header (FLG_Cs_UI_Grids_HStack)/header-title (FLG_Cs_UI_Grids_HStack)"]
-anchors_preset = 0
-offset_right = 20.0
-offset_bottom = 20.0
+[node name="header-title-icon" type="TextureRect" parent="Layouts/layout sample/header/header-title"]
+layout_mode = 0
+texture = ExtResource("2_8ldko")
 
-[node name="header-title-title" type="Label" parent="Layouts/layout sample/header (FLG_Cs_UI_Grids_HStack)/header-title (FLG_Cs_UI_Grids_HStack)"]
+[node name="header-title-title" type="Label" parent="Layouts/layout sample/header/header-title"]
 layout_mode = 0
 offset_left = 30.0
 offset_right = 950.0
 offset_bottom = 23.0
 text = "FLG.Framework"
 
-[node name="header-controls (FLG_Cs_UI_Grids_HStack)" type="Control" parent="Layouts/layout sample/header (FLG_Cs_UI_Grids_HStack)"]
+[node name="header-controls" type="Control" parent="Layouts/layout sample/header"]
 anchors_preset = 0
 offset_left = 950.0
 offset_right = 1900.0
 offset_bottom = 20.0
 
-[node name="header-controls-minimize (FLG_Cs_UI_Widgets_ProxyLayoutElementLeaf)" type="Control" parent="Layouts/layout sample/header (FLG_Cs_UI_Grids_HStack)/header-controls (FLG_Cs_UI_Grids_HStack)"]
-anchors_preset = 0
-offset_left = 890.0
-offset_right = 910.0
-offset_bottom = 20.0
-
-[node name="header-controls-maximize (FLG_Cs_UI_Widgets_ProxyLayoutElementLeaf)" type="Control" parent="Layouts/layout sample/header (FLG_Cs_UI_Grids_HStack)/header-controls (FLG_Cs_UI_Grids_HStack)"]
-anchors_preset = 0
-offset_left = 910.0
-offset_right = 930.0
-offset_bottom = 20.0
-
-[node name="header-controls-quit (FLG_Cs_UI_Widgets_ProxyLayoutElementLeaf)" type="Control" parent="Layouts/layout sample/header (FLG_Cs_UI_Grids_HStack)/header-controls (FLG_Cs_UI_Grids_HStack)"]
-anchors_preset = 0
-offset_left = 930.0
-offset_right = 950.0
-offset_bottom = 20.0
-
-[node name="content (FLG_Cs_UI_Grids_VStack)" type="Control" parent="Layouts/layout sample"]
+[node name="content" type="Control" parent="Layouts/layout sample"]
 anchors_preset = 0
 offset_top = 40.0
 offset_right = 1920.0
 offset_bottom = 1080.0
 
-[node name="Sample1" type="Control" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)"]
+[node name="Sample1" type="Control" parent="Layouts/layout sample/content"]
 visible = false
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1040.0
 
-[node name="page1-test-1 (FLG_Cs_UI_Widgets_ProxyLayoutElementLeaf)" type="Control" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)/Sample1"]
-anchors_preset = 0
-offset_left = 896.0
-offset_top = 336.0
-offset_right = 1024.0
-offset_bottom = 376.0
-
-[node name="page1-test-label" type="Label" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)/Sample1"]
+[node name="page1-test-label" type="Label" parent="Layouts/layout sample/content/Sample1"]
 layout_mode = 0
 offset_left = 896.0
-offset_top = 396.0
+offset_top = 366.0
 offset_right = 1024.0
-offset_bottom = 436.0
+offset_bottom = 406.0
 text = "Hello World!"
+horizontal_alignment = 1
 
-[node name="page1-test-sprite" type="TextureRect" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)/Sample1"]
+[node name="page1-test-sprite" type="TextureRect" parent="Layouts/layout sample/content/Sample1"]
 layout_mode = 0
 offset_left = 896.0
-offset_top = 456.0
+offset_top = 426.0
 offset_right = 896.0
-offset_bottom = 456.0
+offset_bottom = 426.0
 texture = ExtResource("2_8ldko")
 
-[node name="page1-test-text" type="RichTextLabel" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)/Sample1"]
+[node name="page1-test-text" type="RichTextLabel" parent="Layouts/layout sample/content/Sample1"]
 layout_mode = 0
 offset_left = 896.0
-offset_top = 664.0
+offset_top = 634.0
 offset_right = 1024.0
-offset_bottom = 704.0
+offset_bottom = 674.0
 bbcode_enabled = true
 text = "Foobar"
 
-[node name="page1-test-button" type="Button" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)/Sample1"]
+[node name="page1-test-button" type="Button" parent="Layouts/layout sample/content/Sample1"]
 layout_mode = 0
 offset_left = 896.0
-offset_top = 604.0
+offset_top = 574.0
 offset_right = 1024.0
-offset_bottom = 644.0
+offset_bottom = 614.0
 text = "Click Me!"
 
-[node name="Sample2" type="Control" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)"]
+[node name="Sample2" type="Control" parent="Layouts/layout sample/content"]
 visible = false
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1040.0
 
-[node name="page2-test-1 (FLG_Cs_UI_Widgets_ProxyLayoutElementLeaf)" type="Control" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)/Sample2"]
-anchors_preset = 0
-offset_left = 896.0
-offset_top = 336.0
-offset_right = 1024.0
-offset_bottom = 376.0
-
-[node name="page2-test-label" type="Label" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)/Sample2"]
+[node name="page2-test-label" type="Label" parent="Layouts/layout sample/content/Sample2"]
 layout_mode = 0
 offset_left = 896.0
-offset_top = 396.0
+offset_top = 306.0
 offset_right = 1024.0
-offset_bottom = 436.0
+offset_bottom = 346.0
 text = "Hello World!"
 
-[node name="page2-test-sprite" type="TextureRect" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)/Sample2"]
+[node name="page2-test-sprite" type="TextureRect" parent="Layouts/layout sample/content/Sample2"]
 layout_mode = 0
 offset_left = 896.0
-offset_top = 456.0
+offset_top = 366.0
 offset_right = 896.0
-offset_bottom = 456.0
+offset_bottom = 366.0
 texture = ExtResource("2_8ldko")
 
-[node name="page2-test-button" type="Button" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)/Sample2"]
+[node name="page2-test-button" type="Button" parent="Layouts/layout sample/content/Sample2"]
 layout_mode = 0
 offset_left = 896.0
-offset_top = 604.0
+offset_top = 514.0
 offset_right = 1024.0
-offset_bottom = 644.0
+offset_bottom = 554.0
 text = "Click Me!"
 
-[node name="page2-test-text" type="RichTextLabel" parent="Layouts/layout sample/content (FLG_Cs_UI_Grids_VStack)/Sample2"]
+[node name="page2-test-text" type="RichTextLabel" parent="Layouts/layout sample/content/Sample2"]
 layout_mode = 0
 offset_left = 896.0
-offset_top = 664.0
+offset_top = 574.0
 offset_right = 1024.0
-offset_bottom = 704.0
+offset_bottom = 614.0
 bbcode_enabled = true
-text = "BBCode: [img width=40 height=40]icon.svg[/img]"
+text = "[right]BBCode: [img width=40 height=40]icon.svg[/img][/right]"
+
+[node name="page2-test-form" type="Control" parent="Layouts/layout sample/content/Sample2"]
+anchors_preset = 0
+offset_left = 710.0
+offset_top = 634.0
+offset_right = 1210.0
+offset_bottom = 734.0
+
+[node name="Sample2" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form"]
+visible = false
+anchors_preset = 0
+offset_right = 500.0
+offset_bottom = 100.0
+
+[node name="page2-test-form-container" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2"]
+anchors_preset = 0
+offset_right = 500.0
+offset_bottom = 100.0
+
+[node name="Sample2" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container"]
+visible = false
+anchors_preset = 0
+offset_right = 500.0
+offset_bottom = 100.0
+
+[node name="page2-test-form-item-firsname-inputline" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2"]
+anchors_preset = 0
+offset_right = 500.0
+offset_bottom = 23.3333
+
+[node name="Sample2" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2/page2-test-form-item-firsname-inputline"]
+visible = false
+anchors_preset = 0
+offset_right = 500.0
+offset_bottom = 23.3333
+
+[node name="page2-test-form-item-firsname-label" type="Label" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2/page2-test-form-item-firsname-inputline/Sample2"]
+layout_mode = 0
+offset_right = 245.0
+offset_bottom = 23.3333
+text = "Firstname"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="page2-test-form-item-firsname" type="LineEdit" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2/page2-test-form-item-firsname-inputline/Sample2"]
+layout_mode = 0
+offset_left = 255.0
+offset_right = 500.0
+offset_bottom = 31.0
+placeholder_text = "my first name"
+
+[node name="page2-test-form-item-lastname-inputline" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2"]
+anchors_preset = 0
+offset_top = 33.3333
+offset_right = 500.0
+offset_bottom = 56.6667
+
+[node name="Sample2" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2/page2-test-form-item-lastname-inputline"]
+visible = false
+anchors_preset = 0
+offset_right = 500.0
+offset_bottom = 23.3333
+
+[node name="page2-test-form-item-lastname-label" type="Label" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2/page2-test-form-item-lastname-inputline/Sample2"]
+layout_mode = 0
+offset_right = 245.0
+offset_bottom = 23.3333
+text = "Lastname"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="page2-test-form-item-lastname" type="LineEdit" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2/page2-test-form-item-lastname-inputline/Sample2"]
+layout_mode = 0
+offset_left = 255.0
+offset_right = 500.0
+offset_bottom = 31.0
+placeholder_text = "my first name"
+
+[node name="page2-test-form-controls" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2"]
+anchors_preset = 0
+offset_top = 76.6667
+offset_right = 500.0
+offset_bottom = 100.0
+
+[node name="Sample2" type="Control" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2/page2-test-form-controls"]
+visible = false
+anchors_preset = 0
+offset_right = 500.0
+offset_bottom = 23.3333
+
+[node name="page2-test-form-control-reset" type="Button" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2/page2-test-form-controls/Sample2"]
+layout_mode = 0
+offset_right = 245.0
+offset_bottom = 23.3333
+text = "Reset"
+
+[node name="page2-test-form-control-submit" type="Button" parent="Layouts/layout sample/content/Sample2/page2-test-form/Sample2/page2-test-form-container/Sample2/page2-test-form-controls/Sample2"]
+layout_mode = 0
+offset_left = 255.0
+offset_right = 500.0
+offset_bottom = 23.3333
+text = "Submit"

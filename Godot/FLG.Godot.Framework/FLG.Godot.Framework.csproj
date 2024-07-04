@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Godot.SourceGenerators" Version="4.1.1" />
+    <PackageReference Include="GodotSharp" Version="4.1.1" />
+    <PackageReference Include="GodotSharpEditor" Version="4.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Cs\FLG.Cs.Datamodel\FLG.Cs.Datamodel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="GodotSharp">
+      <HintPath>..\..\dependencies\$(Configuration)\GodotSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

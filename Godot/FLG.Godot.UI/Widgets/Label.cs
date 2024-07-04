@@ -1,7 +1,7 @@
 ﻿using Godot;
 
-using FLG.Cs.IDatamodel;
-
+using FLG.Cs.Datamodel;
+using FLG.Godot.Helpers;
 
 using gd_Label = Godot.Label;
 
@@ -23,6 +23,8 @@ namespace FLG.Godot.UI {
                 Position = new Vector2(Widget.Position.X, Widget.Position.Y),
                 Size = new Vector2(Widget.Dimensions.Width, Widget.Dimensions.Height),
                 Text = Widget.Text,
+                HorizontalAlignment = TextAlignmentConverter.Horizontal(Widget.AlignHorizontal),
+                VerticalAlignment = TextAlignmentConverter.Vertical(Widget.AlignVertical),
             };
             return label;
         }

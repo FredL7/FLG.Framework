@@ -1,31 +1,32 @@
 ﻿using System.Diagnostics;
 
-using FLG.Cs.IDatamodel;
+using FLG.Cs.Datamodel;
 
 
 namespace FLG.Cs.Logger {
     public class LogManager : ILogManager {
-        private const string FILENAME_DATE_PATTERN = @"yyyyddM_HH-mm";
-        private const string LOGGING_DATE_PATTERN = @"HH:mm:ss:fff";
-        private const string UNKNOWN = "Unknown";
-
         private string _logsDir;
         private string _filepath;
 
-        public LogManager(PreferencesLogs prefs) {
+        public LogManager(PreferencesLogs prefs)
+        {
             _logsDir = prefs.logsDir;
 
             DateTime date = DateTime.Now;
-            string filename = date.ToString(FILENAME_DATE_PATTERN);
+            string filename = date.ToString(LoggerMetadata.FILENAME_DATE_PATTERN);
             System.IO.Directory.CreateDirectory(_logsDir);
             _filepath = Path.Combine(_logsDir, filename + ".log");
         }
 
         #region IServiceInstance
-        public bool IsProxy() => false;
-        public void OnServiceRegisteredFail() { Error("Log Manager Failed to register"); }
-        public void OnServiceRegistered() {
+        public void OnServiceRegisteredFail() { }
+        public void OnServiceRegistered()
+        {
             Debug("Log Manager Registered");
+
+            Type objType = typeof(ILogManager);
+            Debug($"Fred: {objType.Assembly.FullName}");
+            Debug($"Fred: {objType.AssemblyQualifiedName}");
         }
         #endregion IServiceInstance
 
@@ -37,7 +38,7 @@ namespace FLG.Cs.Logger {
 
             DateTime date = DateTime.Now;
             using StreamWriter w = File.AppendText(_filepath);
-            w.WriteLine($"[{date.ToString(LOGGING_DATE_PATTERN)}] [{level.ToPrettyString()}] [{(classname ?? UNKNOWN)}::{(methodname ?? UNKNOWN)}()] {msg}");
+            w.WriteLine($"[{date.ToString(LoggerMetadata.LOGGING_DATE_PATTERN)}] [{level.ToPrettyString()}] [{(classname ?? LoggerMetadata.UNKNOWN)}::{(methodname ?? LoggerMetadata.UNKNOWN)}()] {msg}");
         }
 
         public void Error(string msg)
@@ -48,5 +49,7 @@ namespace FLG.Cs.Logger {
         public void Warn(string msg) { Log(msg, ELogLevel.WARN); }
         public void Info(string msg) { Log(msg, ELogLevel.INFO); }
         public void Debug(string msg) { Log(msg, ELogLevel.DEBUG); }
+
+        public void Log(IResult result) { Log(result.GetMessage(), result.GetSeverity()); }
     }
 }

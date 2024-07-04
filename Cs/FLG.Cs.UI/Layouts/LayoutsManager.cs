@@ -1,6 +1,5 @@
-﻿using FLG.Cs.IDatamodel;
+﻿using FLG.Cs.Datamodel;
 using FLG.Cs.Math;
-using FLG.Cs.ServiceLocator;
 
 
 namespace FLG.Cs.UI.Layouts
@@ -20,8 +19,7 @@ namespace FLG.Cs.UI.Layouts
         {
             if (!_layouts.ContainsKey(id))
             {
-                Locator.Instance.Get<ILogManager>().Error($"Layout with id {id} does not exists");
-                return;
+                throw new Exception($"Layout with id {id} does not exists");
             }
 
             _currentLayout = id;
@@ -30,7 +28,7 @@ namespace FLG.Cs.UI.Layouts
         internal Layout GetCurrent()
         {
             if (_currentLayout == string.Empty)
-                Locator.Instance.Get<ILogManager>().Error($"Current layout isn't set.");
+                throw new Exception($"Current layout isn't set.");
 
             return _layouts[_currentLayout];
         }

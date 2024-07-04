@@ -16,8 +16,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FLG.Cs.Datamodel\FLG.Cs.Datamodel.csproj" />
     <ProjectReference Include="..\FLG.Cs.Decorators\FLG.Cs.Decorators.csproj" />
-    <ProjectReference Include="..\FLG.Cs.IDatamodel\FLG.Cs.IDatamodel.csproj" />
     <ProjectReference Include="..\FLG.Cs.IO\FLG.Cs.IO.csproj" />
     <ProjectReference Include="..\FLG.Cs.ServiceLocator\FLG.Cs.ServiceLocator.csproj" />
   </ItemGroup>

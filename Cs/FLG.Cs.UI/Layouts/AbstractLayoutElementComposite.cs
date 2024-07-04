@@ -1,22 +1,25 @@
 ﻿using System.Xml;
 
-using FLG.Cs.IDatamodel;
-using FLG.Cs.Math;
+using FLG.Cs.Datamodel;
 
 
 namespace FLG.Cs.UI.Layouts {
     public abstract class AbstractLayoutElementComposite : AbstractLayoutElement {
         private readonly Dictionary<string, List<ILayoutElement>> _childrens = new();
-        protected List<ILayoutElement> GetChildrensInternal(string id = ILayoutElement.DEFAULT_CHILDREN_TARGET) => _childrens[id];
+        protected List<ILayoutElement> GetChildrensInternal(string id = ILayoutElement.DEFAULT_CHILDREN_TARGET)
+        {
+            CreateChildrenContainerIfDoesntExists(id);
+            return _childrens[id]; ;
+        }
 
         internal AbstractLayoutElementComposite(string name, XmlNode node)
-            : base(name, node)
+            : base(name, node, true)
         {
             SetupDefaultChildrensTarget();
         }
 
-        internal AbstractLayoutElementComposite(string name, LayoutAttributes attributes, bool isTarget)
-            : base(name, attributes, isTarget)
+        internal AbstractLayoutElementComposite(string name, LayoutAttributes attributes)
+            : base(name, attributes, true)
         {
             SetupDefaultChildrensTarget();
         }
@@ -26,11 +29,18 @@ namespace FLG.Cs.UI.Layouts {
             _childrens.Add(ILayoutElement.DEFAULT_CHILDREN_TARGET, new());
         }
 
-        public override void AddChild(ILayoutElement child, string id = ILayoutElement.DEFAULT_CHILDREN_TARGET)
+        private void CreateChildrenContainerIfDoesntExists(string id)
         {
             if (!_childrens.ContainsKey(id))
                 _childrens.Add(id, new());
+        }
+
+        public override void AddChild(ILayoutElement child, string id = ILayoutElement.DEFAULT_CHILDREN_TARGET)
+        {
+            CreateChildrenContainerIfDoesntExists(id);
             _childrens[id].Add(child);
+
+            child.OnAddedToPage(id);
         }
 
         public override IEnumerable<string> GetTargets() => _childrens.Keys;

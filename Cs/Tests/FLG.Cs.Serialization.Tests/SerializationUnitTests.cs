@@ -1,6 +1,6 @@
 global using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using FLG.Cs.IDatamodel;
+using FLG.Cs.Datamodel;
 using FLG.Cs.Framework;
 using FLG.Cs.ServiceLocator;
 
@@ -30,6 +30,7 @@ namespace FLG.Cs.Serialization.Tests {
                 serializerType = t
             };
             FrameworkManager.Instance.InitializeFramework(pref);
+            FrameworkManager.Instance.InitializeLogs(new(), true);
             FrameworkManager.Instance.InitializeSerializer(prefSerialization);
 
             ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();

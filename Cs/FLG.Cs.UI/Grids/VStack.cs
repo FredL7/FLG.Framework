@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using System.Xml;
 
-using FLG.Cs.IDatamodel;
+using FLG.Cs.Datamodel;
 using FLG.Cs.Math;
 
 
@@ -10,7 +10,7 @@ namespace FLG.Cs.UI.Grids {
         public override ELayoutElement Type { get => ELayoutElement.VSTACK; }
 
         public VStack(string name, XmlNode node) : base(name, node) { }
-        public VStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget) : base(name, layoutAttr, gridAttr, isTarget) { }
+        public VStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr) : base(name, layoutAttr, gridAttr) { }
 
         protected override float GetChildMainMarginFirst(ILayoutElement child) => child.RectXform.Margin.Top;
         protected override float GetChildMainMarginLast(ILayoutElement child) => child.RectXform.Margin.Bottom;

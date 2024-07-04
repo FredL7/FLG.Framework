@@ -1,4 +1,4 @@
-﻿using FLG.Cs.IDatamodel;
+﻿using FLG.Cs.Datamodel;
 
 namespace FLG.Cs.Cards {
     public class StandardDeck52 : Deck {

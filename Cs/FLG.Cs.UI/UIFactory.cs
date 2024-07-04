@@ -1,21 +1,14 @@
 ﻿using System.Xml;
 
-using FLG.Cs.IDatamodel;
-using FLG.Cs.Math;
-using FLG.Cs.ServiceLocator;
+using FLG.Cs.Datamodel;
 using FLG.Cs.UI.Grids;
 using FLG.Cs.UI.Layouts;
 using FLG.Cs.UI.Widgets;
 
+
 namespace FLG.Cs.UI
 {
     public class UIFactory : IUIFactory {
-        #region IServiceInstance
-        public bool IsProxy() => false;
-        public void OnServiceRegisteredFail() { Locator.Instance.Get<ILogManager>().Error("UI Factory Failed to register"); }
-        public void OnServiceRegistered() { Locator.Instance.Get<ILogManager>().Debug("UI Factory Registered"); }
-        #endregion IServiceInstance
-
         internal static AbstractLayoutElement? Xml(XmlNode node, string name)
         {
             var nodeType = node.Name;
@@ -27,42 +20,50 @@ namespace FLG.Cs.UI
                 "VStack" => new VStack(name, node),
 
                 // Widgets
-                "Button" => new Button(name, node), // Should throw in ctor
+                "Button" => new Button(name, node), // Should throw in ctor (can't bind fct to click)
                 "Label" => new Label(name, node),
                 "Sprite" => new Sprite(name, node),
                 "Text" => new Text(name, node),
 
-                // TMP
-                "ProxyLayoutElement" => new ProxyLayoutElementLeaf(name, node),
+                // Forms
+                "Form" => new Form(name, node), // Should throw in ctor (specifics not implemented)
+                "InputField" => new InputField(name, node),
+
                 _ => null,
             };
         }
 
-        public ILayoutElement ProxyLayoutElement(string name, LayoutAttributes attributes)
-            => new ProxyLayoutElementLeaf(name, attributes);
-
         #region Layouts
-        public ILayoutElement Container(string name, LayoutAttributes attributes, bool isTarget)
-            => new Container(name, attributes, isTarget);
-        public ILayoutElement HStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget)
-            => new HStack(name, layoutAttr, gridAttr, isTarget);
+        public ILayoutElement Container(string name, LayoutAttributes attributes)
+            => new Container(name, attributes);
+        public ILayoutElement HStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr)
+            => new HStack(name, layoutAttr, gridAttr);
 
-        public ILayoutElement VStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget)
-            => new VStack(name, layoutAttr, gridAttr, isTarget);
+        public ILayoutElement VStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr)
+            => new VStack(name, layoutAttr, gridAttr);
         #endregion Layouts
 
         #region Widgets
-        public ILayoutElement Button(string name, string source, Action action, LayoutAttributes attributes)
+        public IButton Button(string name, string source, Action action, LayoutAttributes attributes)
             => new Button(name, source, action, attributes);
 
-        public ILayoutElement Label(string name, string text, LayoutAttributes attributes)
-            => new Label(name, text, attributes);
+        public ILabel Label(string name, string text, LayoutAttributes layoutAttr, TextAttributes textAttr)
+            => new Label(name, text, layoutAttr, textAttr);
 
-        public ILayoutElement Sprite(string name, string source, LayoutAttributes attributes)
+        public ISprite Sprite(string name, string source, LayoutAttributes attributes)
             => new Sprite(name, source, attributes);
 
-        public ILayoutElement Text(string name, string source, LayoutAttributes attributes)
-            => new Text(name, source, attributes);
+        public IText Text(string name, string source, LayoutAttributes layoutAttr, TextAttributes textAttr)
+            => new Text(name, source, layoutAttr, textAttr);
         #endregion Widgets
+
+        #region Forms
+        public IForm Form(string name, string title, List<IInputField> fields, Action<string, IFormModel> submit, LayoutAttributes layoutAttr, FormAttributes formAttr)
+            => new Form(name, title, fields, submit, layoutAttr, formAttr);
+
+        public IInputField InputField(string name, string label, string placeholder, IInputFieldModel model, LayoutAttributes layoutAttr)
+            => new InputField(name, label, placeholder, model, layoutAttr);
+        // TODO: Second method of InputField without model that will use a default
+        #endregion Forms
     }
 }

@@ -2,7 +2,7 @@
 using System.Numerics;
 using System.Xml;
 
-using FLG.Cs.IDatamodel;
+using FLG.Cs.Datamodel;
 using FLG.Cs.Math;
 using FLG.Cs.UI.Layouts;
 
@@ -20,12 +20,12 @@ namespace FLG.Cs.UI.Grids {
             _alignment = XMLParser.GetAlignment(node);
         }
         internal Stack(
-            string name, LayoutAttributes layoutAttr, GridAttributes gridAttr, bool isTarget)
-            : base(name, layoutAttr, isTarget)
+            string name, LayoutAttributes layoutAttr, GridAttributes gridAttr)
+            : base(name, layoutAttr)
         {
-            _direction = gridAttr.Direction;
-            _justify = gridAttr.Justify;
-            _alignment = gridAttr.Alignment;
+            _direction = gridAttr.direction;
+            _justify = gridAttr.justify;
+            _alignment = gridAttr.alignment;
         }
 
         protected sealed override void ComputeChildrenSizesAndPositions(string id = ILayoutElement.DEFAULT_CHILDREN_TARGET)
@@ -90,19 +90,20 @@ namespace FLG.Cs.UI.Grids {
             var stackDimensionMain = GetStackDimensionMain(stackDimensions);
             var spaceRequired = expectedSizesSum + marginsSum;
             var spaceAvailable = stackDimensionMain - spaceRequired;
-            Debug.Assert(spaceAvailable >= 0);
+            Debug.Assert(spaceAvailable >= 0, $"[{Name}] Not enough space available: dimensions={stackDimensionMain}, required={spaceRequired}, available={spaceAvailable}");
 
             var stretchedSizes = GetSizesForStretch(childrens, expectedSizes, spaceAvailable);
             var stretchedSizeSum = stretchedSizes.Sum();
             var stretchedSpaceRequired = stretchedSizeSum + marginsSum;
             var spaceAvailableAfterStretch = stackDimensionMain - stretchedSpaceRequired;
-            Debug.Assert(spaceAvailableAfterStretch >= 0);
+            Debug.Assert(spaceAvailableAfterStretch >= 0, $"[{Name}] Not enough space available after stretch dimensions={stretchedSizeSum}, required={stretchedSpaceRequired}, available={spaceAvailableAfterStretch}");
 
             var justifiedMargins = UpdateMarginsForJustify(margins, spaceAvailableAfterStretch);
             var justifiedMarginsSum = justifiedMargins.Sum();
             var justifiedSpaceRequired = stretchedSizeSum + justifiedMarginsSum;
             var spaceAvailableAfterJustify = stackDimensionMain - justifiedSpaceRequired;
-            Debug.Assert(MathF.Abs(spaceAvailableAfterJustify) < float.Epsilon);
+            // Content could not fill parent
+            Debug.Assert(spaceAvailableAfterJustify > 0 || MathF.Abs(spaceAvailableAfterJustify) < float.Epsilon, $"[{Name}] Not enough space available after justify dimensions={justifiedMarginsSum}, required={justifiedSpaceRequired}, available={spaceAvailableAfterJustify}");
 
             return (stretchedSizes, justifiedMargins);
         }
@@ -113,13 +114,6 @@ namespace FLG.Cs.UI.Grids {
             var stackDimensionSecondary = GetStackDimensionSecondary(stackDimensions);
 
             float[] margins = new float[childrens.Length];
-            for (int i = 0; i < margins.Length; ++i) // TODO: Validate
-            {
-                var secondaryMarginFirst = GetChildSecondaryMarginFirst(childrens[i]);
-                var secondaryMarginLast = GetChildSecondaryMarginLast(childrens[i]);
-            }
-
-
             float[] dimensions = new float[childrens.Length];
 
             for (int i = 0; i < childrens.Length; ++i)
@@ -213,18 +207,23 @@ namespace FLG.Cs.UI.Grids {
                     justifiedMargin[margins.Length - 1] += spaceAvailable / 2f;
                     break;
                 case EGridJustify.SPACE_BETWEEN:
-                    var spaceBetween = spaceAvailable / (justifiedMargin.Length - 1);
-                    for (int i = 0; i < justifiedMargin.Length; ++i)
-                        justifiedMargin[i] += spaceBetween;
+                    // Must have at least 2 items (3 margins) to compute space between otherwise, treat is as START
+                    if (justifiedMargin.Length > 2)
+                    {
+                        var spaceBetween = spaceAvailable / (justifiedMargin.Length - 2);
+                        for (int i = 1; i < justifiedMargin.Length - 1; ++i)
+                            justifiedMargin[i] += spaceBetween;
+                    }
                     break;
                 case EGridJustify.SPACE_AROUND:
-                    var spaceAround = spaceAvailable / (2 * justifiedMargin.Length);
+                    var spaceAround = spaceAvailable / (2 * (justifiedMargin.Length - 1));
                     justifiedMargin[0] += spaceAround;
-                    for (int i = 1; i < justifiedMargin.Length; ++i)
+                    justifiedMargin[justifiedMargin.Length - 1] += spaceAround;
+                    for (int i = 1; i < justifiedMargin.Length - 1; ++i)
                         justifiedMargin[i] += 2 * spaceAround;
                     break;
                 case EGridJustify.SPACE_EVENLY:
-                    var spaceEvenly = spaceAvailable / (justifiedMargin.Length + 1);
+                    var spaceEvenly = spaceAvailable / justifiedMargin.Length;
                     for (int i = 0; i < justifiedMargin.Length; ++i)
                         justifiedMargin[i] += spaceEvenly;
                     break;

@@ -1,20 +1,18 @@
 ﻿using System.Xml;
 
-using FLG.Cs.IDatamodel;
-using FLG.Cs.Math;
-using FLG.Cs.ServiceLocator;
+using FLG.Cs.Datamodel;
 
 
 namespace FLG.Cs.UI.Layouts {
     public abstract class AbstractLayoutElementLeaf : AbstractLayoutElement {
         internal AbstractLayoutElementLeaf(string name, XmlNode node)
-            : base(name, node) { }
+            : base(name, node, false) { }
         internal AbstractLayoutElementLeaf(string name, LayoutAttributes attributes)
             : base(name, attributes, false) { }
 
         public override void AddChild(ILayoutElement child, string id = ILayoutElement.DEFAULT_CHILDREN_TARGET)
         {
-            Locator.Instance.Get<ILogManager>().Error("Layout element leaf cannot contain childrens");
+            throw new NotImplementedException("Layout element leaf cannot contain childrens");
         }
 
         public override IEnumerable<string> GetTargets() => Enumerable.Empty<string>();

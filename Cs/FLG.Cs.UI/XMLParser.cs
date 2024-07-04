@@ -1,21 +1,19 @@
-﻿using FLG.Cs.IDatamodel;
+﻿using System.Xml;
+
+using FLG.Cs.Datamodel;
 using FLG.Cs.IO;
 using FLG.Cs.Math;
-using FLG.Cs.ServiceLocator;
 using FLG.Cs.UI.Grids;
 using FLG.Cs.UI.Layouts;
 using FLG.Cs.Validation;
 
-using System.Reflection;
-using System.Xml;
 
 using File = FLG.Cs.IO.File;
 
 
 namespace FLG.Cs.UI {
     internal class XMLParser {
-        private string _layoutsDir;
-        private string _pagesDir;
+        private string[] _uiDirs;
 
         private Dictionary<string, IPage> _pages;
         private Dictionary<string, Layout> _components;
@@ -25,34 +23,38 @@ namespace FLG.Cs.UI {
         private List<File> _pageXMLFiles;
         private List<File> _layoutFiles;
 
-        private ILogManager _log;
+        private ILogManager _logger;
+        private IUIFactory _factory;
 
         public Dictionary<string, IPage> GetPages() => _pages;
         public Dictionary<string, Layout> GetLayouts() => _layouts;
 
-        internal XMLParser(string layoutsDir, string pagesDir)
+        internal XMLParser(string[] uiDirs, ILogManager logger, IUIFactory factory)
         {
-            _layoutsDir = layoutsDir;
-            _pagesDir = pagesDir;
+            _logger = logger;
+            _factory = factory;
+
+            _uiDirs = uiDirs;
 
             _pages = new();
             _components = new();
             _layouts = new();
             _targets = new();
 
-            _layoutFiles = IOUtils.GetFilePathsByExtension(_layoutsDir, ".layout");
-            _pageXMLFiles = IOUtils.GetFilePathsByExtension(_pagesDir, ".page");
+            _layoutFiles = new();
+            foreach (string dir in _uiDirs)
+                _layoutFiles.AddRange(IOUtils.GetFilePathsByExtension(dir, ".layout"));
 
-            _log = Locator.Instance.Get<ILogManager>();
+            _pageXMLFiles = new();
+            foreach (string dir in _uiDirs)
+                _pageXMLFiles.AddRange(IOUtils.GetFilePathsByExtension(dir, ".page"));
         }
 
         internal Result Parse()
         {
-            if (!Directory.Exists(_layoutsDir))
-                return new Result($"{Path.GetFullPath(_layoutsDir)} does not exists");
-
-            if (!Directory.Exists(_pagesDir))
-                return new Result($"{Path.GetFullPath(_pagesDir)} does not exists");
+            foreach (string dir in _uiDirs)
+                if (!Directory.Exists(dir))
+                    return new Result($"{Path.GetFullPath(dir)} does not exists");
 
             return ParsePages();
         }
@@ -67,7 +69,7 @@ namespace FLG.Cs.UI {
 
             foreach (var file in _pageXMLFiles)
             {
-                _log.Debug($"Begin Parsing XML {file.filename}");
+                _logger.Debug($"Begin Parsing XML {file.filename}");
 
                 Result result = ValidateXml(file, "page", out XmlDocument _, out XmlNode? rootNode);
                 if (!result || rootNode == null) return result;
@@ -83,7 +85,7 @@ namespace FLG.Cs.UI {
                 result = ParsePage(layoutId, layoutNode, binding);
                 if (!result) return result;
 
-                _log.Debug($"Finished Parsing XML {file.filename}");
+                _logger.Debug($"Finished Parsing XML {file.filename}");
             }
 
             return Result.SUCCESS;
@@ -92,40 +94,40 @@ namespace FLG.Cs.UI {
         private Result InstantiatePageCs(string binding, string layoutId)
         {
             IPage? page;
-            /*try
-            {
-                // var assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var assemblyFolder = Path.GetDirectoryName(typeof(XMLParser).Assembly.Location);
-                _log.Debug($"FRED: {assemblyFolder}");
-                if (assemblyFolder == null) return new Result("Could not locate current assembly directory");
-
-                var assembly = System.Reflection.Assembly.LoadFile(Path.Combine(assemblyFolder, "ProjectDefs.UI.dll"));
-                if (assembly == null) return new Result("Could not load ProjectsDefs.UI.dll");
-
-                var type = assembly.GetType(binding);
-                if (type == null) return new Result($"Could not instantiate a class of type {binding}: type {binding} not found");
-
-                var pageObject = assembly.CreateInstance(binding);
-                if (pageObject == null) return new Result($"Could not instantiate a class of type {binding}: result is null");
-
-                page = pageObject as IPage;
-                _log.Debug($"Instantiated IPage of type {binding}");
-            }
-            catch (Exception e)
-            {
-                return new Result($"Could not instantiate a class of type {binding}: {e}");
-            }*/
 
             try
             {
                 var type = Type.GetType(binding + ", ProjectDefs.UI");
                 if (type == null) return new Result($"Could not instantiate a class of type {binding}: type {binding} not found");
 
-                var pageObject = Activator.CreateInstance(type);
-                if (pageObject == null) return new Result($"Could not instantiate a class of type {binding}: could not create an instance of type {type}");
-
-                page = pageObject as IPage;
-                _log.Debug($"Instantiated IPage of type {binding}");
+                try
+                {
+                    var pageObject = Activator.CreateInstance(type, _factory);
+                    if (pageObject == null) return new Result($"Could not instantiate a class of type {binding}: could not create an instance of type {type}");
+                    page = pageObject as IPage;
+                    _logger.Debug($"Instantiated IPage of type {binding} with param(factory) ctor");
+                }
+                catch (MissingMethodException _)
+                {
+                    _logger.Debug($"Could not find a ctor with factory param, fallback to default parameterless ctor");
+                    try
+                    {
+                        var pageObject = Activator.CreateInstance(type);
+                        if (pageObject == null) return new Result($"Could not instantiate a class of type {binding}: could not create an instance of type {type}");
+                        page = pageObject as IPage;
+                        _logger.Debug($"Instantiated IPage of type {binding} with default ctor");
+                    }
+                    catch (Exception eParamless)
+                    {
+                        _logger.Error($"Could not create an instance of {binding}: {eParamless.Message}");
+                        return new Result($"Could not instantiate a class of type {binding}: {eParamless.Message}");
+                    }
+                }
+                catch (Exception e)
+                {
+                    _logger.Error($"Could not create an instance of {binding}: {e.Message}");
+                    return new Result($"Could not instantiate a class of type {binding}: {e.Message}");
+                }
             }
             catch (Exception e)
             {
@@ -141,10 +143,10 @@ namespace FLG.Cs.UI {
 
         private Result LoadPageLayout(string layoutId)
         {
-            _log.Debug($"Begin Parsing layout with id {layoutId}");
+            _logger.Debug($"Begin Parsing layout with id {layoutId}");
             Result result = LoadLayout(layoutId);
             if (!result) return result;
-            _log.Debug($"Finished Parsing layout with id {layoutId}");
+            _logger.Debug($"Finished Parsing layout with id {layoutId}");
 
             if (!_layouts.ContainsKey(layoutId))
                 _layouts.Add(layoutId, _components[layoutId]);
@@ -218,7 +220,7 @@ namespace FLG.Cs.UI {
         {
             if (_components.ContainsKey(id))
             {
-                _log.Debug($"Layout {id} already loaded OK");
+                _logger.Debug($"Layout {id} already loaded OK");
                 return Result.SUCCESS;
             }
 
@@ -226,12 +228,12 @@ namespace FLG.Cs.UI {
                 if (file.file == id)
                     return ParseLayout(file, id);
 
-            return new Result($"Layout with id {id} could not be found, searching for {id}.layout in {_layoutsDir}.");
+            return new Result($"Layout with id {id} could not be found.");
         }
 
         private Result ParseLayout(File file, string id)
         {
-            _log.Debug($"Begin Parsing {file.filename}");
+            _logger.Debug($"Begin Parsing {file.filename}");
             Result result = ValidateXml(file, "layout", out XmlDocument _, out XmlNode? rootNode);
             if (!result || rootNode == null) return result;
             result = ValidateLayoutXml(rootNode, out XmlNode? rootChild);
@@ -243,9 +245,12 @@ namespace FLG.Cs.UI {
             result = ConvertNodeRecursive(rootChild, root);
             if (!result) return result;
 
-            Layout layout = new(root, id, _targets);
+            Container container = new("root", new LayoutAttributes());
+            container.AddChild(root);
+
+            Layout layout = new(container, id, _targets);
             _components.Add(id, layout);
-            _log.Debug($"Finished Parsing XML Layout {file.filename}");
+            _logger.Debug($"Finished Parsing XML Layout {file.filename}");
 
             return Result.SUCCESS;
         }
@@ -275,9 +280,6 @@ namespace FLG.Cs.UI {
 
                 if (layoutElement.IsTarget)
                 {
-                    if (node.HasChildNodes)
-                        return new Result($"Target node {layoutElement.Name} cannot declare childrens");
-
                     _targets.Add(layoutElement.Name, layoutElement);
                 }
 
@@ -298,9 +300,6 @@ namespace FLG.Cs.UI {
 
                 if (layoutElement.IsTarget)
                 {
-                    if (node.HasChildNodes)
-                        return new Result($"Target node {layoutElement.Name} cannot declare childrens");
-
                     _targets.Add(layoutElement.Name, layoutElement);
                 }
 
@@ -362,35 +361,16 @@ namespace FLG.Cs.UI {
 
         private static string GetNodeName(XmlNode node, string externalFileName = "")
         {
-            /*
-             * If the node is the root of an external file, use that file's name;
-             * Then if the node has a name attribute, use that value;
-             * Then if the node has a target attribute, use that value;
-             * Then return the XmlNode Name (which is the fallback value for GetName(node);
-             */
-            var targetName = GetTarget(node);
-            var nodeName = GetName(node);
             if (externalFileName != "")
             {
                 return externalFileName;
             }
-            else if (nodeName != node.Name)
-            {
-                return nodeName;
-            }
-            else if (targetName != "")
-            {
-                return targetName;
-            }
-            else
-            {
-                return nodeName;
-            }
+
+            return GetId(node);
         }
 
-        internal static string GetName(XmlNode node) => GetStringAttribute(node, "name", node.Name);
+        internal static string GetId(XmlNode node) => GetStringAttribute(node, "id", node.Name);
         internal static string GetText(XmlNode node) => GetStringAttributeOrContent(node, "text");
-        internal static string GetTarget(XmlNode node) => GetStringAttribute(node, "target", string.Empty);
         internal static Spacing GetMargin(XmlNode node) => GetSpacingAttribute(node, "margin");
         internal static Spacing GetPadding(XmlNode node) => GetSpacingAttribute(node, "padding");
         internal static float GetWidth(XmlNode node) => GetFloatAttribute(node, "width");
@@ -400,7 +380,19 @@ namespace FLG.Cs.UI {
         internal static EGridDirection GetDirection(XmlNode node) => GetDirectionAttribute(node);
         internal static EGridJustify GetJustify(XmlNode node) => GetJustifyAttribute(node);
         internal static EGridAlignment GetAlignment(XmlNode node) => GetAlignmentAttribute(node);
+        internal static ETextAlignHorizontal GetTextAlignHorizontal(XmlNode node) => getTextAlignHorzAttribute(node);
+        internal static ETextAlignVertical GetTextAlignVertical(XmlNode node) => getTextAlignVertAttribute(node);
         #endregion XML
+
+        private static string GetAttributeValue(XmlNode node, string attr)
+        {
+            var value = node.Attributes?[attr]?.Value;
+            if (value == null || value == string.Empty)
+            {
+                value = "";
+            }
+            return value;
+        }
 
         #region Converters
         internal static string GetStringAttribute(XmlNode node, string attr, string defaultValue = "")
@@ -447,139 +439,81 @@ namespace FLG.Cs.UI {
 
         internal static int GetIntAttribute(XmlNode node, string attr, int defaultValue = 0)
         {
-            if (node.Attributes?[attr]?.Value == null)
+            var value = GetAttributeValue(node, attr);
+            if (value == "")
             {
                 return defaultValue;
             }
             else
             {
-                var value = node?.Attributes[attr]?.Value;
-                if (value == null || value == string.Empty)
-                {
-                    return defaultValue;
-                }
-                else
-                {
-                    return int.TryParse(value, out var x) ? x : defaultValue;
-                }
+                return int.TryParse(value, out var x) ? x : defaultValue;
             }
         }
 
         internal static float GetFloatAttribute(XmlNode node, string attr, float defaultValue = 0f)
         {
-            if (node.Attributes?[attr]?.Value == null)
+            var value = GetAttributeValue(node, attr);
+            if (value == "")
             {
                 return defaultValue;
             }
             else
             {
-                var value = node?.Attributes[attr]?.Value;
-                if (value == null || value == string.Empty)
-                {
-                    return defaultValue;
-                }
-                else
-                {
-                    return float.TryParse(value, out var x) ? x : defaultValue;
-                }
+                return float.TryParse(value, out var x) ? x : defaultValue;
             }
         }
 
         internal static Spacing GetSpacingAttribute(XmlNode node, string attr)
         {
-            if (node.Attributes?[attr]?.Value == null)
+            var value = GetAttributeValue(node, attr);
+            if (value == "")
             {
                 return Spacing.Zero;
             }
             else
             {
-                var value = node?.Attributes[attr]?.Value;
-                if (value == null || value == string.Empty)
+                var splittedValue = value.Split(' ');
+                var intValues = Array.ConvertAll(splittedValue, x => int.TryParse(x, out var y) ? y : 0);
+                return intValues.Length switch
                 {
-                    return Spacing.Zero;
-                }
-                else
-                {
-                    var splittedValue = value.Split(' ');
-                    var intValues = Array.ConvertAll(splittedValue, x => int.TryParse(x, out var y) ? y : 0);
-                    switch (intValues.Length)
-                    {
-                        case 0:
-                            return Spacing.Zero;
-                        case 1:
-                            return new Spacing(intValues[0]);
-                        case 2:
-                            return new Spacing(intValues[0], intValues[1]);
-                        case 3:
-                            return new Spacing(intValues[0], intValues[1], intValues[2]);
-                        case 4:
-                            return new Spacing(intValues[0], intValues[1], intValues[2], intValues[3]);
-                        default:
-                            Locator.Instance.Get<ILogManager>().Warn("Spacing attribute has too many values");
-                            return new Spacing(intValues[0], intValues[1], intValues[2], intValues[3]);
-                    }
-                }
+                    0 => Spacing.Zero,
+                    1 => new Spacing(intValues[0]),
+                    2 => new Spacing(intValues[0], intValues[1]),
+                    3 => new Spacing(intValues[0], intValues[1], intValues[2]),
+                    4 => new Spacing(intValues[0], intValues[1], intValues[2], intValues[3]),
+                    _ => new Spacing(intValues[0], intValues[1], intValues[2], intValues[3]),
+                };
             }
         }
 
         internal static EGridDirection GetDirectionAttribute(XmlNode node)
         {
-            if (node.Attributes?["direction"]?.Value == null)
-            {
-                return EGridDirectionExtension.FromString("");
-            }
-            else
-            {
-                var value = node?.Attributes["direction"]?.Value;
-                if (value == null || value == string.Empty)
-                {
-                    return EGridDirectionExtension.FromString("");
-                }
-                else
-                {
-                    return EGridDirectionExtension.FromString(value);
-                }
-            }
+            var value = GetAttributeValue(node, "direction");
+            return EGridDirectionExtension.FromString(value);
         }
 
         internal static EGridJustify GetJustifyAttribute(XmlNode node)
         {
-            if (node.Attributes?["justify"]?.Value == null)
-            {
-                return EGridJustifyExtension.FromString("");
-            }
-            else
-            {
-                var value = node?.Attributes["justify"]?.Value;
-                if (value == null || value == string.Empty)
-                {
-                    return EGridJustifyExtension.FromString("");
-                }
-                else
-                {
-                    return EGridJustifyExtension.FromString(value);
-                }
-            }
+            var value = GetAttributeValue(node, "justify");
+            return EGridJustifyExtension.FromString(value);
         }
 
         internal static EGridAlignment GetAlignmentAttribute(XmlNode node)
         {
-            if (node.Attributes?["align"]?.Value == null)
-            {
-                return EGridAlignmentExtension.FromString("");
-            }
-            else
-            {
-                var value = node?.Attributes["align"]?.Value;
-                if (value == null || value == string.Empty)
-                {
-                    return EGridAlignmentExtension.FromString("");
-                }
-                else
-                {
-                    return EGridAlignmentExtension.FromString(value);
-                }
-            }
+            var value = GetAttributeValue(node, "align");
+            return EGridAlignmentExtension.FromString(value);
+        }
+
+        internal static ETextAlignHorizontal getTextAlignHorzAttribute(XmlNode node)
+        {
+            var value = GetAttributeValue(node, "text-align");
+            return ETextAlignHorizontalExtension.FromString(value);
+        }
+
+        internal static ETextAlignVertical getTextAlignVertAttribute(XmlNode node)
+        {
+            var value = GetAttributeValue(node, "text-align-vertical");
+            return ETextAlignVerticalExtension.FromString(value);
         }
         #endregion Converters
         #endregion Helpers

@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using FLG.Cs.Framework;
-using FLG.Cs.IDatamodel;
+using FLG.Cs.Datamodel;
 using FLG.Cs.ServiceLocator;
 using FLG.Cs.Math;
 
@@ -10,8 +10,7 @@ namespace FLG.Cs.UI.Tests {
     [TestClass]
     public class UIUnitTests {
         private const string LOGS_DIR =     "../../../../../../_logs";
-        private const string LAYOUTS_DIR =  "../../../../../ProjectDefs/ProjectDefs.UI/Layouts";
-        private const string PAGES_DIR =    "../../../../../ProjectDefs/ProjectDefs.UI/Pages";
+        private static readonly string[] UI_DIRS = { "../../../../../ProjectDefs/ProjectDefs.UI/Layouts", "../../../../../ProjectDefs/ProjectDefs.UI/Pages" };
 
         [ClassInitialize]
         public static void Init(TestContext _)
@@ -27,9 +26,10 @@ namespace FLG.Cs.UI.Tests {
 
             PreferencesUI prefsUI = new()
             {
-                layoutsDir = LAYOUTS_DIR,
-                pagesDir = PAGES_DIR,
-                windowSize = new Size(1920, 1080)
+                uiDirs = UI_DIRS,
+                windowSize = new Size(1920, 1080),
+                logger = Locator.Instance.Get<ILogManager>(),
+                factory = new UIFactory()
             };
             FrameworkManager.Instance.InitializeUI(prefsUI);
         }
@@ -140,25 +140,21 @@ namespace FLG.Cs.UI.Tests {
                                 var name = child2.Name;
                                 switch (name)
                                 {
-                                    case "page1-test-1":
-                                        Assert.IsTrue(child2.Dimensions.Width == 128 && child2.Dimensions.Height == 40);
-                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 336);
-                                        break;
                                     case "page1-test-label":
                                         Assert.IsTrue(child2.Dimensions.Width == 128 && child2.Dimensions.Height == 40);
-                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 396);
+                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 366);
                                         break;
                                     case "page1-test-sprite":
                                         Assert.IsTrue(child2.Dimensions.Width == 128 && child2.Dimensions.Height == 128);
-                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 456);
+                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 426);
                                         break;
                                     case "page1-test-button":
                                         Assert.IsTrue(child2.Dimensions.Width == 128 && child2.Dimensions.Height == 40);
-                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 604);
+                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 574);
                                         break;
                                     case "page1-test-text":
                                         Assert.IsTrue(child2.Dimensions.Width == 128 && child2.Dimensions.Height == 40);
-                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 664);
+                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 634);
                                         break;
                                     default:
                                         Assert.Fail();
@@ -174,25 +170,21 @@ namespace FLG.Cs.UI.Tests {
                                 var name = child2.Name;
                                 switch (name)
                                 {
-                                    case "page2-test-1":
-                                        Assert.IsTrue(child2.Dimensions.Width == 128 && child2.Dimensions.Height == 40);
-                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 336);
-                                        break;
                                     case "page2-test-label":
                                         Assert.IsTrue(child2.Dimensions.Width == 128 && child2.Dimensions.Height == 40);
-                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 396);
+                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 366);
                                         break;
                                     case "page2-test-sprite":
                                         Assert.IsTrue(child2.Dimensions.Width == 128 && child2.Dimensions.Height == 128);
-                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 456);
+                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 426);
                                         break;
                                     case "page2-test-button":
                                         Assert.IsTrue(child2.Dimensions.Width == 128 && child2.Dimensions.Height == 40);
-                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 604);
+                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 574);
                                         break;
                                     case "page2-test-text":
                                         Assert.IsTrue(child2.Dimensions.Width == 128 && child2.Dimensions.Height == 40);
-                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 664);
+                                        Assert.IsTrue(child2.Position.X == 896 && child2.Position.Y == 634);
                                         break;
                                     default:
                                         Assert.Fail();

@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using System.Xml;
 
-using FLG.Cs.IDatamodel;
+using FLG.Cs.Datamodel;
 using FLG.Cs.Math;
 
 
@@ -18,10 +18,10 @@ namespace FLG.Cs.UI.Layouts
         public int Order { get; private set; }
         public float Weight { get; private set; }
 
-        internal AbstractLayoutElement(string name, XmlNode node)
+        internal AbstractLayoutElement(string name, XmlNode node, bool isTarget)
         {
             Name = name;
-            IsTarget = XMLParser.GetTarget(node) != string.Empty;
+            IsTarget = isTarget;
 
             Order = XMLParser.GetOrder(node);
             Weight = XMLParser.GetWeight(node);
@@ -38,14 +38,15 @@ namespace FLG.Cs.UI.Layouts
         {
             Name = name;
             IsTarget = isTarget;
-            Order = attributes.Order;
-            Weight = attributes.Weight;
+            Order = attributes.order;
+            Weight = attributes.weight;
 
-            RectXform = new(attributes.Margin, attributes.Padding);
-            Size = new(attributes.Width, attributes.Height);
+            RectXform = new(attributes.margin, attributes.padding);
+            Size = new(attributes.width, attributes.height);
         }
 
         public abstract void AddChild(ILayoutElement child, string id = ILayoutElement.DEFAULT_CHILDREN_TARGET);
+        public virtual void OnAddedToPage(string id) { }
         public abstract void ComputeRectXform();
         public abstract IEnumerable<string> GetTargets();
         public abstract bool HasChildren(string id = ILayoutElement.DEFAULT_CHILDREN_TARGET);
