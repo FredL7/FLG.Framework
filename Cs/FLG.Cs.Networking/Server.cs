@@ -97,7 +97,7 @@ namespace FLG.Cs.Networking {
         #endregion Connexion
 
         #region TCP
-        private void SendTCPData(int clientId, Message message)
+        internal void SendTCPData(int clientId, Message message)
         {
             message.WriteId(_id);
             message.WriteLength();
@@ -105,21 +105,21 @@ namespace FLG.Cs.Networking {
             _connexions[clientId].SendData(message);
         }
 
-        private void SendTCPDataToAll(Message message)
+        internal void SendTCPDataToAll(Message message)
         {
             foreach (var client in _connexions)
             {
-                client.Value.SendData(message);
+                SendTCPData(client.Key, message);
             }
         }
 
-        private void SendTCPDataTpAllButOne(int ExceptId, Message message)
+        internal void SendTCPDataTpAllButOne(int exceptId, Message message)
         {
             foreach (var client in _connexions)
             {
-                if (client.Value.Id != ExceptId)
+                if (client.Value.Id != exceptId)
                 {
-                    client.Value.SendData(message);
+                    SendTCPData(client.Key, message);
                 }
             }
         }

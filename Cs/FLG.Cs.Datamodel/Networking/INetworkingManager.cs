@@ -8,5 +8,8 @@
         public void InitializeServer(int port, int maxConnexions = 0);
 
         public void SendCommand(ICommand command);
+        public void SendServerCommand(int clientId, ICommand command);
+        public void SendServerCommandToAll(ICommand command);
+        public void SendServerCommandToAllButOne(int exceptId, ICommand command);
     }
 }

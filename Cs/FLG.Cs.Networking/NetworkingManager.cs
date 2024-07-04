@@ -99,6 +99,51 @@ namespace FLG.Cs.Networking {
             _client.SendCommand(command);
         }
 
+        public void SendServerCommand(int clientId, ICommand command)
+        {
+            if (_server == null)
+            {
+                Locator.Instance.Get<ILogManager>().Warn($"Cannot send command, server not initialized ({command.ToMessageString()})");
+                return;
+            }
+
+            string commandMessage = command.ToMessageString();
+            using Message message = new((int)Messages.COMMAND);
+            message.Write(commandMessage);
+            Locator.Instance.Get<ILogManager>().Debug($"Sending command message to client {clientId} ({commandMessage})");
+            _server.SendTCPData(clientId, message);
+        }
+
+        public void SendServerCommandToAll(ICommand command)
+        {
+            if (_server == null)
+            {
+                Locator.Instance.Get<ILogManager>().Warn($"Cannot send command, server not initialized ({command.ToMessageString()})");
+                return;
+            }
+
+            string commandMessage = command.ToMessageString();
+            using Message message = new((int)Messages.COMMAND);
+            message.Write(commandMessage);
+            Locator.Instance.Get<ILogManager>().Debug($"Sending command message to all clients ({commandMessage})");
+            _server.SendTCPDataToAll(message);
+        }
+
+        public void SendServerCommandToAllButOne(int exceptId, ICommand command)
+        {
+            if (_server == null)
+            {
+                Locator.Instance.Get<ILogManager>().Warn($"Cannot send command, server not initialized ({command.ToMessageString()})");
+                return;
+            }
+
+            string commandMessage = command.ToMessageString();
+            using Message message = new((int)Messages.COMMAND);
+            message.Write(commandMessage);
+            Locator.Instance.Get<ILogManager>().Debug($"Sending command message to all clients but {exceptId} ({commandMessage})");
+            _server.SendTCPDataTpAllButOne(exceptId, message);
+        }
+
         internal void ExecuteOnMainThread(Action action)
         {
             _threadManager.ExecuteOnMainThread(action);
