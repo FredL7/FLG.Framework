@@ -51,8 +51,8 @@ namespace FLG.Cs.Commands {
                     string pValueRaw = arg[1];
                     object pValue = pType switch
                     {
-                        ECommandArgumentType.BOOL => Int32.Parse(pValueRaw),
-                        ECommandArgumentType.INT => Boolean.Parse(pValueRaw),
+                        ECommandArgumentType.BOOL => Boolean.Parse(pValueRaw),
+                        ECommandArgumentType.INT => Int32.Parse(pValueRaw),
                         ECommandArgumentType.FLOAT => float.Parse(pValueRaw),
                         ECommandArgumentType.STRING => pValueRaw,
                         _ => throw new ArgumentException($"Unknown type {pType}"),
