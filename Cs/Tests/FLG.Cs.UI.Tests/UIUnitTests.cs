@@ -28,6 +28,8 @@ namespace FLG.Cs.UI.Tests {
             {
                 uiDirs = UI_DIRS,
                 windowSize = new Size(1920, 1080),
+                logger = Locator.Instance.Get<ILogManager>(),
+                factory = new UIFactory()
             };
             FrameworkManager.Instance.InitializeUI(prefsUI);
         }
