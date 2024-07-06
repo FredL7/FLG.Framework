@@ -16,6 +16,7 @@ namespace FLG.Cs.Datamodel {
         public Size Size { get; }
         public int Order { get; }
         public float Weight { get; }
+        public string BackgroundImage { get; }
 
         public void ComputeRectXform();
         public IEnumerable<string> GetTargets();

@@ -2,7 +2,9 @@ using Godot;
 using System.Collections.Generic;
 
 using FLG.Cs.Datamodel;
+using FLG.Cs.Framework;
 using FLG.Cs.Math;
+using FLG.Cs.ServiceLocator;
 using FLG.Cs.UI;
 using FLG.Godot.Framework;
 using FLG.Godot.Helpers;
@@ -12,8 +14,6 @@ using sysV2 = System.Numerics.Vector2;
 using gdV2 = Godot.Vector2;
 using flgLabel = FLG.Godot.UI.Label;
 using flgButton = FLG.Godot.UI.Button;
-using FLG.Cs.ServiceLocator;
-using FLG.Cs.Framework;
 
 
 namespace FLG.Godot.Sample {
@@ -152,6 +152,48 @@ namespace FLG.Godot.Sample {
             return node;
         }
 
+        private Node AddGridNode(string name, ILayoutElement layoutElement, Node parent)
+        {
+            var node = AddNode(name, layoutElement, parent);
+            if (layoutElement.BackgroundImage != string.Empty)
+            {
+                _logger.Debug($"background image path: {layoutElement.BackgroundImage}");
+                var rect = new TextureRect
+                {
+                    Name = "backgroundimg",
+                    Position = new Vector2(layoutElement.Position.X, layoutElement.Position.Y),
+                    Texture = ResourceLoader.Load<Texture2D>("res://" + layoutElement.BackgroundImage),
+                    AnchorLeft = 0.5f,
+                    AnchorRight = 0.5f,
+                    AnchorTop = 0.5f,
+                    AnchorBottom = 0.5f
+                };
+
+                var originalSize = rect.Texture.GetSize();
+                float ratio = 1;
+                if (originalSize.X < layoutElement.Dimensions.Width)
+                {
+                    ratio = layoutElement.Dimensions.Width / originalSize.X;
+                }
+                else if (originalSize.Y < layoutElement.Dimensions.Height)
+                {
+                    ratio = layoutElement.Dimensions.Height / originalSize.Y;
+                }
+
+                var newSize = new Vector2(originalSize.X * ratio, originalSize.Y * ratio);
+                rect.OffsetLeft = -newSize.X / 2f;
+                rect.OffsetRight = newSize.X / 2f;
+                rect.OffsetTop = -newSize.Y / 2f;
+                rect.OffsetBottom = newSize.Y / 2f;
+                rect.PivotOffset = new Vector2(newSize.X / 2f, newSize.Y / 2f);
+                _logger.Debug($"layoutDimensions={layoutElement.Dimensions} OriginalSize={originalSize}, ratio={ratio}, newSize={newSize}");
+
+                node.AddChild(rect);
+                rect.Owner = GetTree().EditedSceneRoot;
+            }
+            return node;
+        }
+
         private void DrawLayouts()
         {
             foreach (var layout in _ui.GetLayouts())
@@ -224,8 +266,14 @@ namespace FLG.Godot.Sample {
                     IWidget<IInputField> inputField = new InputField((IInputField)layoutElement);
                     node = inputField.Draw(parentNode, fromEditor);
                     break;
+                case ELayoutElement.CONTAINER:
+                case ELayoutElement.HSTACK:
+                case ELayoutElement.VSTACK:
+                    node = AddGridNode(layoutElement.Name, layoutElement, parentNode);
+                    parentSetter = false;
+                    break;
                 default:
-                    node = AddNode(layoutElement.Name/* + " (" + layoutElement.GetType() + ")"*/, layoutElement, parentNode);
+                    node = AddNode(layoutElement.Name, layoutElement, parentNode);
                     parentSetter = false;
                     break;
             }

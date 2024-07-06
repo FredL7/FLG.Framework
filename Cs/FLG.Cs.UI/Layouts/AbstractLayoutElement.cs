@@ -17,6 +17,7 @@ namespace FLG.Cs.UI.Layouts
         public Size Size { get; private set; }
         public int Order { get; private set; }
         public float Weight { get; private set; }
+        public string BackgroundImage { get; private set; }
 
         internal AbstractLayoutElement(string name, XmlNode node, bool isTarget)
         {
@@ -32,6 +33,8 @@ namespace FLG.Cs.UI.Layouts
             var height = XMLParser.GetHeight(node);
             RectXform = new(margin, padding);
             Size = new(width, height);
+
+            BackgroundImage = XMLParser.GetStringAttribute(node, "backgroundImage");
         }
 
         public AbstractLayoutElement(string name, LayoutAttributes attributes, bool isTarget)
@@ -43,6 +46,8 @@ namespace FLG.Cs.UI.Layouts
 
             RectXform = new(attributes.margin, attributes.padding);
             Size = new(attributes.width, attributes.height);
+
+            BackgroundImage = attributes.backgroundImage;
         }
 
         public abstract void AddChild(ILayoutElement child, string id = ILayoutElement.DEFAULT_CHILDREN_TARGET);

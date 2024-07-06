@@ -7,6 +7,7 @@ namespace FLG.Cs.Datamodel {
         private const float DEFAULT_HEIGHT = 0f;
         private const int DEFAULT_ORDER = 0;
         private const float DEFAULT_WEIGHT = 1f;
+        private const string DEFAULT_BACKGROUNDIMAGE = "";
 
         public float width;
         public float height;
@@ -14,6 +15,7 @@ namespace FLG.Cs.Datamodel {
         public Spacing padding;
         public int order;
         public float weight;
+        public string backgroundImage;
 
         public LayoutAttributes()
         {
@@ -23,12 +25,14 @@ namespace FLG.Cs.Datamodel {
             padding = new();
             order = DEFAULT_ORDER;
             weight = DEFAULT_WEIGHT;
+            backgroundImage = DEFAULT_BACKGROUNDIMAGE;
         }
 
         public LayoutAttributes(
             float width = DEFAULT_WIDTH, float height = DEFAULT_HEIGHT,
             Spacing margin = new(), Spacing padding = new(),
-            int order = DEFAULT_ORDER, float weight = DEFAULT_WEIGHT
+            int order = DEFAULT_ORDER, float weight = DEFAULT_WEIGHT,
+            string backgroundImage = DEFAULT_BACKGROUNDIMAGE
         ) {
             this.width = width;
             this.height = height;
@@ -36,6 +40,7 @@ namespace FLG.Cs.Datamodel {
             this.padding = padding;
             this.order = order;
             this.weight = weight;
+            this.backgroundImage = backgroundImage;
         }
     }
 }
