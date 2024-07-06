@@ -245,7 +245,7 @@ namespace FLG.Cs.UI {
             result = ConvertNodeRecursive(rootChild, root);
             if (!result) return result;
 
-            Container container = new("root", new LayoutAttributes());
+            Container container = new("root-" + id, new LayoutAttributes());
             container.AddChild(root);
 
             Layout layout = new(container, id, _targets);

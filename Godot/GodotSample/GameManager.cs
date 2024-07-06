@@ -20,7 +20,7 @@ namespace FLG.Godot.Sample {
 
             PreferencesLogs prefsLogs = new()
             {
-                logsDir = ProjectSettings.GlobalizePath("res://" + LOGS_RELATIVE_PATH),
+                logsDir = ProjectSettings.GlobalizePath("user://" + LOGS_RELATIVE_PATH),
             };
             FrameworkManager.Instance.InitializeLogs(prefsLogs);
 
