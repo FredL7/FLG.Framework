@@ -24,7 +24,10 @@ namespace FLG.Godot.Sample {
             };
             FrameworkManager.Instance.InitializeLogs(prefsLogs);
 
-            PreferencesNetworking prefsNetworking = new();
+            PreferencesNetworking prefsNetworking = new()
+            {
+                clientType = ENetworkClientType.SERVER
+            };
             FrameworkManager.Instance.InitializeNetworking(prefsNetworking);
 
             var uiManager = GetNode("UI/Layouts");

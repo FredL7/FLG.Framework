@@ -10,6 +10,8 @@ namespace FLG.Cs.Framework {
             _gameLoopObjects = new(1);
         }
 
+        #region Initializer
+
         #region General
         private bool _initializedGeneral = false;
         public void InitializeFramework(Preferences pref)
@@ -30,8 +32,11 @@ namespace FLG.Cs.Framework {
 
             if (!_initializedLogs)
             {
-                var manager = ManagersFactory.CreateLogger(pref, dummy);
-                _initializedLogs = manager != null;
+                var result = ManagersFactory.CreateLogger(pref, dummy);
+                if (result.result)
+                {
+                    _initializedLogs = true;
+                }
             }
         }
 
@@ -47,8 +52,11 @@ namespace FLG.Cs.Framework {
 
             if (!_initializedSerializer)
             {
-                var manager = ManagersFactory.CreateSerializer(pref);
-                _initializedSerializer = manager != null;
+                var result = ManagersFactory.CreateSerializer(pref);
+                if (result.result)
+                {
+                    _initializedSerializer = true;
+                }
             }
         }
 
@@ -64,8 +72,11 @@ namespace FLG.Cs.Framework {
 
             if (!_initializedUI)
             {
-                var manager = ManagersFactory.CreateUIManager(pref);
-                _initializedUI = manager != null;
+                var result = ManagersFactory.CreateUIManager(pref);
+                if (result.result)
+                {
+                    _initializedUI = true;
+                }
             }
         }
 
@@ -79,21 +90,22 @@ namespace FLG.Cs.Framework {
             if (!ValidateDependenciesNetworking())
                 return;
 
-            if (!_initializedNetworking)
+            var networkingResult = ManagersFactory.CreateNetworkingManager(pref);
+            var commandResult = ManagersFactory.CreateCommandManager();
+            if (networkingResult.result && commandResult.result)
             {
-                var networkingManager = ManagersFactory.CreateNetworkingManager(pref);
-                var commandManager = ManagersFactory.CreateCommandManager();
-                _initializedNetworking = networkingManager != null && commandManager != null;
-
-                if (networkingManager != null && commandManager != null)
+                _initializedNetworking = true;
+                if (networkingResult.manager != null && commandResult.manager != null)
                 {
-                    _gameLoopObjects.Add(networkingManager);
+                    _gameLoopObjects.Add(networkingResult.manager);
                 }
             }
         }
 
-        private bool ValidateDependenciesNetworking() => _initializedGeneral;
+        private bool ValidateDependenciesNetworking() => _initializedGeneral && !_initializedNetworking;
         #endregion Networking
+
+        #endregion Initializer
 
         public void Update()
         {

@@ -1,7 +1,7 @@
 ﻿using FLG.Cs.Datamodel;
 
 
-namespace FLG.Cs.Validation {
+namespace FLG.Cs.Model {
     public readonly struct Result : IResult {
         public readonly static Result SUCCESS = new("SUCCESS", true, ELogLevel.DEBUG);
 
