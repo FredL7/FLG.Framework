@@ -13,14 +13,14 @@ namespace FLG.Cs.UI.Widgets {
         public string Label { get; private set; }
         public IInputFieldModel Model { get; private set; }
 
-        public InputField(string name, XmlNode node) : base(name, node)
+        internal InputField(string name, XmlNode node) : base(name, node)
         {
             Label = Placeholder = XMLParser.GetStringAttribute(node, "label", name);
             Placeholder = XMLParser.GetStringAttribute(node, "palceholder", string.Empty);
             Model = new SimpleStringModel();
         }
 
-        public InputField(string name, string label, string placeholder, IInputFieldModel model, LayoutAttributes layoutAttr) : base(name, layoutAttr)
+        internal InputField(string name, string label, string placeholder, IInputFieldModel model, LayoutAttributes layoutAttr) : base(name, layoutAttr)
         {
             Label = label;
             Placeholder = placeholder;

@@ -37,7 +37,7 @@ namespace FLG.Cs.UI.Layouts
             BackgroundImage = XMLParser.GetStringAttribute(node, "backgroundImage");
         }
 
-        public AbstractLayoutElement(string name, LayoutAttributes attributes, bool isTarget)
+        internal AbstractLayoutElement(string name, LayoutAttributes attributes, bool isTarget)
         {
             Name = name;
             IsTarget = isTarget;

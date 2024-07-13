@@ -10,13 +10,13 @@ namespace FLG.Cs.UI.Widgets {
         public string Text { get; private set; }
         public Action Action { get; private set; }
 
-        public Button(string name, XmlNode node) : base(name, node)
+        internal Button(string name, XmlNode node) : base(name, node)
         {
             // Should not create Button from xml (unless we add reflection on action call)
             throw new NotImplementedException();
         }
 
-        public Button(string name, string text, Action action, LayoutAttributes attributes)
+        internal Button(string name, string text, Action action, LayoutAttributes attributes)
             : base(name, attributes)
         {
             Text = text;
