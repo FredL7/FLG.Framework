@@ -15,15 +15,10 @@ namespace FLG.Cs.UI.Tests {
         [ClassInitialize]
         public static void Init(TestContext _)
         {
-            Preferences prefs = new();
-            FrameworkManager.Instance.InitializeFramework(prefs);
-
             PreferencesLogs prefsLogs = new()
             {
                 logsDir = LOGS_DIR
             };
-            FrameworkManager.Instance.InitializeLogs(prefsLogs);
-
             PreferencesUI prefsUI = new()
             {
                 uiDirs = UI_DIRS,
@@ -31,7 +26,8 @@ namespace FLG.Cs.UI.Tests {
                 logger = Locator.Instance.Get<ILogManager>(),
                 factory = new UIFactory()
             };
-            FrameworkManager.Instance.InitializeUI(prefsUI);
+
+            FrameworkManager.Instance.Initialize(preferenceLogs: prefsLogs, preferenceUI: prefsUI);
         }
 
         [TestMethod]

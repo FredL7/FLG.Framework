@@ -56,13 +56,13 @@ namespace FLG.Cs.Cards.Tests {
             int dealerWins = 0;
             int round = 1;
 
-            Preferences pref = new();
             PreferencesLogs prefsLogs = new()
             {
+                loggerType = ELoggerType.WRITE_FILE,
                 logsDir = LOGS_DIR
             };
-            FrameworkManager.Instance.InitializeFramework(pref);
-            FrameworkManager.Instance.InitializeLogs(prefsLogs);
+            FrameworkManager.Instance.Initialize(preferenceLogs: prefsLogs);
+
             var logger = Locator.Instance.Get<ILogManager>();
 
             while (playerWins < 3 && dealerWins < 3)

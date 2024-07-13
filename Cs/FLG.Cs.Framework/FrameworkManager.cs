@@ -1,6 +1,7 @@
 ﻿using FLG.Cs.Decorators;
 using FLG.Cs.Datamodel;
 using FLG.Cs.Model;
+using FLG.Cs.ServiceLocator;
 
 
 namespace FLG.Cs.Framework {
@@ -13,11 +14,35 @@ namespace FLG.Cs.Framework {
         }
 
         #region Initializer
+        public Result Initialize(
+            PreferencesLogs? preferenceLogs = null,
+            PreferencesSerialization? preferenceSerialization = null,
+            PreferencesUI? preferenceUI = null,
+            PreferencesNetworking? preferenceNetworking = null)
+        {
+            Result result = InitializeFramework();
+            if (!result) return result;
+
+            result = InitializeLogs(preferenceLogs);
+            if (!result) return result;
+
+            result = InitializeSerializer(preferenceSerialization);
+            if (!result) return result;
+
+            result = InitializeUI(preferenceUI);
+            if (!result) return result;
+
+            result = InitializeNetworking(preferenceNetworking);
+            if (!result) return result;
+
+            return Result.SUCCESS;
+        }
 
         #region General
         private bool _initializedFramework = false;
-        public Result InitializeFramework(Preferences pref)
+        private Result InitializeFramework()
         {
+            // Only to prevent more than one initialization
             if (!_initializedFramework)
             {
                 _initializedFramework = true;
@@ -30,7 +55,31 @@ namespace FLG.Cs.Framework {
 
         #region Logs
         private bool _initializedLogs = false;
-        public Result InitializeLogs(PreferencesLogs pref)
+
+        private Result InitializeLogs(PreferencesLogs? pref)
+        {
+            if (pref != null)
+            {
+                PreferencesLogs prefNoNull = pref.Value;
+                var result = InitializeLogsInner(prefNoNull);
+                if (!result) return result;
+                Locator.Instance.Get<ILogManager>().Info("Initialized Log Manager with user prefs");
+            }
+            else
+            {
+                PreferencesLogs prefOverride = new()
+                {
+                    loggerType = ELoggerType.NO_LOGS,
+                };
+                var result = InitializeLogsInner(prefOverride);
+                if (!result) return result;
+                Locator.Instance.Get<ILogManager>().Debug("Initialized Log Manager with default prefs (no logs)");
+            }
+
+            return Result.SUCCESS;
+        }
+
+        private Result InitializeLogsInner(PreferencesLogs pref)
         {
             if (!ValidateDependenciesLogs())
                 return new Result($"Could not initialize Log Manager: dependencies not initialized (Framework={_initializedFramework}");
@@ -52,12 +101,25 @@ namespace FLG.Cs.Framework {
             return new Result("Could not initialize Log Manager: Already initialized", severity: ELogLevel.WARN);
         }
 
-        private bool ValidateDependenciesLogs() => _initializedFramework;
+        private bool ValidateDependenciesLogs() => _initializedFramework && _initializedLogs;
         #endregion Logs
 
         #region Serialization
         private bool _initializedSerializer = false;
-        public Result InitializeSerializer(PreferencesSerialization pref)
+
+        private Result InitializeSerializer(PreferencesSerialization? pref)
+        {
+            if (pref != null)
+            {
+                PreferencesSerialization prefNoNull = pref.Value;
+                var result = InitializeSerializerInner(prefNoNull);
+                if (!result) return result;
+                Locator.Instance.Get<ILogManager>().Info("Initialized Serialization Manager with user prefs");
+            }
+            return Result.SUCCESS;
+        }
+
+        private Result InitializeSerializerInner(PreferencesSerialization pref)
         {
             if (!ValidateDependenciesSerialization())
                 return new Result($"Could not initialize Serializer Manager: dependencies not initialized (Framework={_initializedFramework}");
@@ -79,12 +141,30 @@ namespace FLG.Cs.Framework {
             return new Result("Could not initialize Serializer Manager: Already initialized", severity: ELogLevel.WARN);
         }
 
-        private bool ValidateDependenciesSerialization() => _initializedFramework;
+        private bool ValidateDependenciesSerialization() => _initializedFramework && _initializedLogs;
         #endregion Serialization
 
         #region UI
         private bool _initializedUI = false;
-        public Result InitializeUI(PreferencesUI pref)
+
+        private Result InitializeUI(PreferencesUI? pref)
+        {
+            if (pref != null)
+            {
+                PreferencesUI prefNoNull = pref.Value;
+                var result = InitializeUIInner(prefNoNull);
+                if (!result) return result;
+                Locator.Instance.Get<ILogManager>().Info("Initialized UI Manager with user prefs");
+            }
+            else
+            {
+                Locator.Instance.Get<ILogManager>().Debug("UI Manager Not initialized");
+            }
+
+            return Result.SUCCESS;
+        }
+
+        private Result InitializeUIInner(PreferencesUI pref)
         {
             if (!ValidateDependenciesUI())
                 return new Result($"Could not initialize UI Manager: dependencies not initialized (Framework={_initializedFramework}");
@@ -106,12 +186,36 @@ namespace FLG.Cs.Framework {
             return new Result("Could not initialize UI Manager: Already initialized", severity: ELogLevel.WARN);
         }
 
-        private bool ValidateDependenciesUI() => _initializedFramework;
+        private bool ValidateDependenciesUI() => _initializedFramework && _initializedLogs;
         #endregion UI
 
         #region Networking
         private bool _initializedNetworking = false;
-        public Result InitializeNetworking(PreferencesNetworking pref)
+
+        private Result InitializeNetworking(PreferencesNetworking? pref)
+        {
+            if (pref != null)
+            {
+                PreferencesNetworking prefNoNull = pref.Value;
+                var result = InitializeNetworkingInner(prefNoNull);
+                if (!result) return result;
+                Locator.Instance.Get<ILogManager>().Info("Initialized Networking Manager with user prefs");
+            }
+            else
+            {
+                PreferencesNetworking prefOverride = new()
+                {
+                    clientType = ENetworkClientType.OFFLINE,
+                };
+                var result = InitializeNetworkingInner(prefOverride);
+                if (!result) return result;
+                Locator.Instance.Get<ILogManager>().Debug("Initialized networking Manager with default prefs (offline)");
+            }
+
+            return Result.SUCCESS;
+        }
+
+        private Result InitializeNetworkingInner(PreferencesNetworking pref)
         {
             if (!ValidateDependenciesNetworking())
                 return new Result($"Could not initialize Networking Manager: dependencies not initialized (Framework={_initializedFramework}");
@@ -141,7 +245,7 @@ namespace FLG.Cs.Framework {
             return new Result("Could not initialize Networking Manager: Already initialized", severity: ELogLevel.WARN);
         }
 
-        private bool ValidateDependenciesNetworking() => _initializedFramework;
+        private bool ValidateDependenciesNetworking() => _initializedFramework && _initializedLogs;
         #endregion Networking
 
         #endregion Initializer

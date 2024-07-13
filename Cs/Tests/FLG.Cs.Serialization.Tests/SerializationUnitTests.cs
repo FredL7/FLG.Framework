@@ -23,21 +23,16 @@ namespace FLG.Cs.Serialization.Tests {
         #region Test
         private static void Initialize(ESerializerType t)
         {
-            Preferences pref = new();
-            FrameworkManager.Instance.InitializeFramework(pref);
-
             PreferencesLogs prefLogs = new()
             {
                 loggerType = ELoggerType.NO_LOGS,
             };
-            FrameworkManager.Instance.InitializeLogs(prefLogs);
-
             PreferencesSerialization prefSerialization = new()
             {
                 savesDir = SAVES_DIR,
-                serializerType = t
+                serializerType = t,
             };
-            FrameworkManager.Instance.InitializeSerializer(prefSerialization);
+            FrameworkManager.Instance.Initialize(preferenceLogs: prefLogs, preferenceSerialization: prefSerialization);
 
             ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();
             _datevalue = DateTime.Now;
