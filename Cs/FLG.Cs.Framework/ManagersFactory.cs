@@ -71,10 +71,10 @@ namespace FLG.Cs.Framework {
             switch (prefs.clientType)
             {
                 case ENetworkClientType.SERVER:
-                    manager = new NetworkingManager(prefs);
+                    manager = new NetworkingManagerServer(prefs);
                     break;
                 case ENetworkClientType.CLIENT:
-                    manager = new NetworkingManager(prefs);
+                    manager = new NetworkingManagerClient(prefs);
                     break;
                 default:
                     result.result = new Result($"Unknown network client type {prefs.clientType}");

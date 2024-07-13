@@ -62,8 +62,12 @@ namespace FLG.Cs.Networking {
                 {
                     _connexions.Add(i, new TCPConnexion(i, this));
                 }
+                Locator.Instance.Get<ILogManager>().Info($"Server max connexions set to {_maxConnexions}");
             }
-            Locator.Instance.Get<ILogManager>().Info($"Server max connexions set to {_maxConnexions}");
+            else
+            {
+                Locator.Instance.Get<ILogManager>().Warn($"Server max connexions already set to {_maxConnexions}, attempting to set to {nbConnexions}");
+            }
         }
 
         #region Connexion
