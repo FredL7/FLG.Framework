@@ -2,6 +2,7 @@ using Godot;
 
 using FLG.Cs.Datamodel;
 using FLG.Cs.Framework;
+using FLG.Cs.Model;
 
 
 namespace FLG.Godot.Sample {
@@ -10,25 +11,30 @@ namespace FLG.Godot.Sample {
 
         public override void _Ready()
         {
+            GD.Print("FRED");
             InitializeFramework();
         }
 
         private void InitializeFramework()
         {
+            Result result;
             Preferences prefs = new();
-            FrameworkManager.Instance.InitializeFramework(prefs);
+            result = FrameworkManager.Instance.InitializeFramework(prefs);
+            if (!result) GD.PrintErr(result.GetMessage());
 
             PreferencesLogs prefsLogs = new()
             {
                 logsDir = ProjectSettings.GlobalizePath("user://" + LOGS_RELATIVE_PATH),
             };
-            FrameworkManager.Instance.InitializeLogs(prefsLogs);
+            result = FrameworkManager.Instance.InitializeLogs(prefsLogs);
+            if (!result) GD.PrintErr(result.GetMessage());
 
             PreferencesNetworking prefsNetworking = new()
             {
                 clientType = ENetworkClientType.SERVER
             };
-            FrameworkManager.Instance.InitializeNetworking(prefsNetworking);
+            result = FrameworkManager.Instance.InitializeNetworking(prefsNetworking);
+            if (!result) GD.PrintErr(result.GetMessage());
 
             var uiManager = GetNode("UI/Layouts");
             uiManager.Call("Initialize");

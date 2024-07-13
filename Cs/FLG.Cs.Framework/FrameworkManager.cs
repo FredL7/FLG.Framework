@@ -1,5 +1,6 @@
 ﻿using FLG.Cs.Decorators;
 using FLG.Cs.Datamodel;
+using FLG.Cs.Model;
 
 
 namespace FLG.Cs.Framework {
@@ -13,22 +14,25 @@ namespace FLG.Cs.Framework {
         #region Initializer
 
         #region General
-        private bool _initializedGeneral = false;
-        public void InitializeFramework(Preferences pref)
+        private bool _initializedFramework = false;
+        public Result InitializeFramework(Preferences pref)
         {
-            if (!_initializedGeneral)
+            if (!_initializedFramework)
             {
-                _initializedGeneral = true;
+                _initializedFramework = true;
+                return Result.SUCCESS;
             }
+
+            return new Result("Could not initialize Framework: Already initialized", severity: ELogLevel.WARN);
         }
         #endregion General
 
         #region Logs
         private bool _initializedLogs = false;
-        public void InitializeLogs(PreferencesLogs pref, bool dummy = false)
+        public Result InitializeLogs(PreferencesLogs pref, bool dummy = false)
         {
             if (!ValidateDependenciesLogs())
-                return;
+                return new Result($"Could not initialize Log Manager: dependencies not initialized (Framework={_initializedFramework}");
 
             if (!_initializedLogs)
             {
@@ -36,19 +40,26 @@ namespace FLG.Cs.Framework {
                 if (result.result)
                 {
                     _initializedLogs = true;
+                    return Result.SUCCESS;
+                }
+                else
+                {
+                    return result.result;
                 }
             }
+
+            return new Result("Could not initialize Log Manager: Already initialized", severity: ELogLevel.WARN);
         }
 
-        private bool ValidateDependenciesLogs() => _initializedGeneral;
+        private bool ValidateDependenciesLogs() => _initializedFramework;
         #endregion Logs
 
         #region Serialization
         private bool _initializedSerializer = false;
-        public void InitializeSerializer(PreferencesSerialization pref)
+        public Result InitializeSerializer(PreferencesSerialization pref)
         {
             if (!ValidateDependenciesSerialization())
-                return;
+                return new Result($"Could not initialize Serializer Manager: dependencies not initialized (Framework={_initializedFramework}");
 
             if (!_initializedSerializer)
             {
@@ -56,19 +67,26 @@ namespace FLG.Cs.Framework {
                 if (result.result)
                 {
                     _initializedSerializer = true;
+                    return Result.SUCCESS;
+                }
+                else
+                {
+                    return result.result;
                 }
             }
+
+            return new Result("Could not initialize Serializer Manager: Already initialized", severity: ELogLevel.WARN);
         }
 
-        private bool ValidateDependenciesSerialization() => _initializedGeneral;
+        private bool ValidateDependenciesSerialization() => _initializedFramework;
         #endregion Serialization
 
         #region UI
         private bool _initializedUI = false;
-        public void InitializeUI(PreferencesUI pref)
+        public Result InitializeUI(PreferencesUI pref)
         {
             if (!ValidateDependenciesUI())
-                return;
+                return new Result($"Could not initialize UI Manager: dependencies not initialized (Framework={_initializedFramework}");
 
             if (!_initializedUI)
             {
@@ -76,33 +94,53 @@ namespace FLG.Cs.Framework {
                 if (result.result)
                 {
                     _initializedUI = true;
+                    return Result.SUCCESS;
+                }
+                else
+                {
+                    return result.result;
                 }
             }
+
+            return new Result("Could not initialize UI Manager: Already initialized", severity: ELogLevel.WARN);
         }
 
-        private bool ValidateDependenciesUI() => _initializedGeneral;
+        private bool ValidateDependenciesUI() => _initializedFramework;
         #endregion UI
 
         #region Networking
         private bool _initializedNetworking = false;
-        public void InitializeNetworking(PreferencesNetworking pref)
+        public Result InitializeNetworking(PreferencesNetworking pref)
         {
             if (!ValidateDependenciesNetworking())
-                return;
+                return new Result($"Could not initialize Networking Manager: dependencies not initialized (Framework={_initializedFramework}");
 
-            var networkingResult = ManagersFactory.CreateNetworkingManager(pref);
-            var commandResult = ManagersFactory.CreateCommandManager();
-            if (networkingResult.result && commandResult.result)
+            if (!_initializedNetworking)
             {
-                _initializedNetworking = true;
+                var networkingResult = ManagersFactory.CreateNetworkingManager(pref);
+                if (!networkingResult.result)
+                    return networkingResult.result;
+
+                var commandResult = ManagersFactory.CreateCommandManager();
+                if (!commandResult.result)
+                    return commandResult.result;
+
                 if (networkingResult.manager != null && commandResult.manager != null)
                 {
+                    _initializedNetworking = true;
                     _gameLoopObjects.Add(networkingResult.manager);
+                    return Result.SUCCESS;
+                }
+                else
+                {
+                    return new Result("Could not initialize Networking Manager: manager initialization failure");
                 }
             }
+
+            return new Result("Could not initialize Networking Manager: Already initialized", severity: ELogLevel.WARN);
         }
 
-        private bool ValidateDependenciesNetworking() => _initializedGeneral && !_initializedNetworking;
+        private bool ValidateDependenciesNetworking() => _initializedFramework;
         #endregion Networking
 
         #endregion Initializer

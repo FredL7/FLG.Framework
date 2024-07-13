@@ -7,6 +7,7 @@
     <ProjectReference Include="..\..\Cs\FLG.Cs.Datamodel\FLG.Cs.Datamodel.csproj" />
     <ProjectReference Include="..\..\Cs\FLG.Cs.Framework\FLG.Cs.Framework.csproj" />
     <ProjectReference Include="..\..\Cs\FLG.Cs.Math\FLG.Cs.Math.csproj" />
+    <ProjectReference Include="..\..\Cs\FLG.Cs.Model\FLG.Cs.Model.csproj" />
     <ProjectReference Include="..\..\Cs\FLG.Cs.ServiceLocator\FLG.Cs.ServiceLocator.csproj" />
     <ProjectReference Include="..\..\Cs\FLG.Cs.UI\FLG.Cs.UI.csproj" />
     <ProjectReference Include="..\FLG.Godot.Framework\FLG.Godot.Framework.csproj" />
