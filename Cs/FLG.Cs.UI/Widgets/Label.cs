@@ -12,13 +12,13 @@ namespace FLG.Cs.UI.Widgets {
         public ETextAlignHorizontal AlignHorizontal { get; private set; }
         public ETextAlignVertical AlignVertical { get; private set; }
 
-        public Label(string name, XmlNode node) : base(name, node)
+        internal Label(string name, XmlNode node) : base(name, node)
         {
             Text = XMLParser.GetText(node);
             AlignHorizontal = XMLParser.GetTextAlignHorizontal(node);
             AlignVertical = XMLParser.GetTextAlignVertical(node);
         }
-        public Label(string name, string text, LayoutAttributes layoutAttr, TextAttributes textAttr)
+        internal Label(string name, string text, LayoutAttributes layoutAttr, TextAttributes textAttr)
             : base(name, layoutAttr)
         {
             Text = text;

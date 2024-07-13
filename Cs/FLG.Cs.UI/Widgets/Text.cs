@@ -20,12 +20,12 @@ namespace FLG.Cs.UI.Widgets {
 
         public event EventHandler? TextChanged;
 
-        public Text(string name, XmlNode node) : base(name, node)
+        internal Text(string name, XmlNode node) : base(name, node)
         {
             _content = XMLParser.GetText(node);
             AlignHorizontal = XMLParser.GetTextAlignHorizontal(node);
         }
-        public Text(string name, string content, LayoutAttributes layoutAttr, TextAttributes textAttr)
+        internal Text(string name, string content, LayoutAttributes layoutAttr, TextAttributes textAttr)
             :base(name, layoutAttr)
         {
             _content = content;
