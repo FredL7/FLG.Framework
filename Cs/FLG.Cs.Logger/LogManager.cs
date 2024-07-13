@@ -13,7 +13,7 @@ namespace FLG.Cs.Logger {
             _logsDir = prefs.logsDir;
 
             DateTime date = DateTime.Now;
-            string filename = date.ToString(LoggerMetadata.FILENAME_DATE_PATTERN);
+            string filename = date.ToString(LoggerConstants.FILENAME_DATE_PATTERN);
             System.IO.Directory.CreateDirectory(_logsDir);
             _filepath = Path.Combine(_logsDir, filename + ".log");
         }
@@ -38,7 +38,7 @@ namespace FLG.Cs.Logger {
 
             DateTime date = DateTime.Now;
             using StreamWriter w = File.AppendText(_filepath);
-            w.WriteLine($"[{date.ToString(LoggerMetadata.LOGGING_DATE_PATTERN)}] [{level.ToPrettyString()}] [{(classname ?? LoggerMetadata.UNKNOWN)}::{(methodname ?? LoggerMetadata.UNKNOWN)}()] {msg}");
+            w.WriteLine($"[{date.ToString(LoggerConstants.LOGGING_DATE_PATTERN)}] [{level.ToPrettyString()}] [{(classname ?? LoggerConstants.UNKNOWN)}::{(methodname ?? LoggerConstants.UNKNOWN)}()] {msg}");
         }
 
         public void Error(string msg)
