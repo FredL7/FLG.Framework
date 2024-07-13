@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 
 using FLG.Cs.Datamodel;
+using FLG.Cs.ServiceLocator;
 
 
 namespace FLG.Cs.Logger {
@@ -28,13 +29,15 @@ namespace FLG.Cs.Logger {
 
         protected override void Log(string msg, ELogLevel serverity)
         {
+            var networking = Locator.Instance.Get<INetworkingManager>();
+
             StackTrace stackTrace = new();
-            string? methodname = stackTrace.GetFrame(2)?.GetMethod()?.Name;
             string? classname = stackTrace.GetFrame(2)?.GetMethod()?.DeclaringType?.FullName;
+            string? methodname = stackTrace.GetFrame(2)?.GetMethod()?.Name;
 
             DateTime date = DateTime.Now;
             using StreamWriter w = File.AppendText(_filepath);
-            w.WriteLine($"[{date.ToString(LoggerConstants.LOGGING_DATE_PATTERN)}] [{serverity.ToPrettyString()}] [{(classname ?? LoggerConstants.UNKNOWN)}::{(methodname ?? LoggerConstants.UNKNOWN)}()] {msg}");
+            w.WriteLine(MakeLogEntry(networking.LogIdentifier, date, serverity, classname, methodname, msg));
         }
     }
 }

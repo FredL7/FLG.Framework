@@ -14,7 +14,20 @@ namespace FLG.Cs.Networking {
             }
         }
 
-        public NetworkingManagerClient(PreferencesNetworking prefs) :base(prefs) { }
+        public string LogIdentifier {
+            get {
+                if (_client == null)
+                {
+                    return "Unknown Client";
+                }
+                else
+                {
+                    return $"Client {Id}";
+                }
+            }
+        }
+
+        public NetworkingManagerClient(PreferencesNetworking prefs) : base(prefs) { }
 
         #region IServiceInstance
         public void OnServiceRegisteredFail() { }

@@ -13,6 +13,9 @@ namespace FLG.Cs.Networking {
                 return _server.Id;
             }
         }
+
+        public string LogIdentifier { get => "Server"; }
+
         public int Port {
             get {
                 if (_server == null)

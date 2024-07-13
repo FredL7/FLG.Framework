@@ -32,7 +32,7 @@ namespace FLG.Godot.Sample {
 
             PreferencesNetworking prefsNetworking = new()
             {
-                clientType = ENetworkClientType.SERVER
+                clientType = ENetworkClientType.OFFLINE,
             };
             result = FrameworkManager.Instance.InitializeNetworking(prefsNetworking);
             if (!result) GD.PrintErr(result.GetMessage());

@@ -17,18 +17,17 @@ namespace FLG.Cs.Logger {
         }
         #endregion IServiceInstance
 
-        protected override void Log(string msg, ELogLevel serverity)
+        protected override void Log(string msg, ELogLevel severity)
         {
             var network = Locator.Instance.Get<INetworkingManagerClient>();
-            // TODO: Add client ID to command
 
             StackTrace stackTrace = new();
             string? methodname = stackTrace.GetFrame(2)?.GetMethod()?.Name;
             string? classname = stackTrace.GetFrame(2)?.GetMethod()?.DeclaringType?.FullName;
             DateTime date = DateTime.Now;
-            string logMessage = $"[{date.ToString(LoggerConstants.LOGGING_DATE_PATTERN)}] [{serverity.ToPrettyString()}] [{(classname ?? LoggerConstants.UNKNOWN)}::{(methodname ?? LoggerConstants.UNKNOWN)}()] {msg}";
+            string logMessage = MakeLogEntry(network.LogIdentifier, date, severity, methodname, classname, msg);
 
-            var command = new Command<ILogManager>(serverity.ToLogMethod());
+            var command = new Command<ILogManager>(severity.ToLogMethod());
             command.AddParam(logMessage);
 
             network.SendCommand(command);
