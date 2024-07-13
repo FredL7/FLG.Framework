@@ -24,6 +24,7 @@ namespace FLG.Godot.Sample {
 
             PreferencesLogs prefsLogs = new()
             {
+                loggerType = ELoggerType.WRITE_FILE,
                 logsDir = ProjectSettings.GlobalizePath("user://" + LOGS_RELATIVE_PATH),
             };
             result = FrameworkManager.Instance.InitializeLogs(prefsLogs);

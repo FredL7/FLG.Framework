@@ -5,10 +5,11 @@ using FLG.Cs.Model;
 
 namespace FLG.Cs.Framework {
     public class FrameworkManager : SingletonBase<FrameworkManager> {
-        private List<IGameLoopObject> _gameLoopObjects;
+        private readonly List<IGameLoopObject> _gameLoopObjects;
+
         private FrameworkManager()
         {
-            _gameLoopObjects = new(1);
+            _gameLoopObjects = new();
         }
 
         #region Initializer
@@ -29,14 +30,14 @@ namespace FLG.Cs.Framework {
 
         #region Logs
         private bool _initializedLogs = false;
-        public Result InitializeLogs(PreferencesLogs pref, bool dummy = false)
+        public Result InitializeLogs(PreferencesLogs pref)
         {
             if (!ValidateDependenciesLogs())
                 return new Result($"Could not initialize Log Manager: dependencies not initialized (Framework={_initializedFramework}");
 
             if (!_initializedLogs)
             {
-                var result = ManagersFactory.CreateLogger(pref, dummy);
+                var result = ManagersFactory.CreateLogger(pref);
                 if (result.result)
                 {
                     _initializedLogs = true;

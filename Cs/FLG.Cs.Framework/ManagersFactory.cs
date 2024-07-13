@@ -10,10 +10,31 @@ using FLG.Cs.UI;
 
 namespace FLG.Cs.Framework {
     internal static class ManagersFactory {
-        internal static FrameworkFactoryResult<ILogManager> CreateLogger(PreferencesLogs prefs, bool dummy)
+        internal static FrameworkFactoryResult<ILogManager> CreateLogger(PreferencesLogs prefs)
         {
             FrameworkFactoryResult<ILogManager> result;
-            ILogManager manager = dummy ? new LogManagerDummy() : new LogManager(prefs);
+            ILogManager manager;
+            switch(prefs.loggerType)
+            {
+                case ELoggerType.WRITE_FILE:
+                    manager = new LogManagerWriteFile(prefs);
+                    break;
+                case ELoggerType.NO_LOGS:
+                    manager = new LogManagerNoLogs(prefs);
+                    break;
+                case ELoggerType.NETWORKING:
+                    manager = new LogManagerNetworking(prefs);
+                    break;
+                case ELoggerType.GAME_ENGINE:
+                    result.result = new Result($"Can't create a Game Engine Logger");
+                    result.manager = null;
+                    return result;
+                default:
+                    result.result = new Result($"Unknown Logger type {prefs.loggerType}");
+                    result.manager = null;
+                    return result;
+            }
+
             if (Locator.Instance.Register(manager))
             {
                 result.result = Result.SUCCESS;
@@ -71,10 +92,24 @@ namespace FLG.Cs.Framework {
             switch (prefs.clientType)
             {
                 case ENetworkClientType.SERVER:
-                    manager = new NetworkingManagerServer(prefs);
+                    INetworkingManagerServer server = new NetworkingManagerServer(prefs);
+                    if (!Locator.Instance.Register(server))
+                    {
+                        result.result = new Result("Could not register Networking Manager (Server)");
+                        result.manager = null;
+                        return result;
+                    }
+                    manager = server;
                     break;
                 case ENetworkClientType.CLIENT:
-                    manager = new NetworkingManagerClient(prefs);
+                    INetworkingManagerClient client = new NetworkingManagerClient(prefs);
+                    if (!Locator.Instance.Register(client))
+                    {
+                        result.result = new Result("Could not register Networking Manager (Client)");
+                        result.manager = null;
+                        return result;
+                    }
+                    manager = client;
                     break;
                 default:
                     result.result = new Result($"Unknown network client type {prefs.clientType}");
