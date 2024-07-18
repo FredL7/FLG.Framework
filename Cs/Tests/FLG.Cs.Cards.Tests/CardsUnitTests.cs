@@ -59,7 +59,7 @@ namespace FLG.Cs.Cards.Tests {
             {
                 logs = new()
                 {
-                    type = ELoggerType.WRITE_FILE,
+                    types = new[] { ELoggerType.WRITE_FILE },
                     dir = Constants.logsDir,
                 },
                 ui = null,

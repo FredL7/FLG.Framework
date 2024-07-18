@@ -20,7 +20,7 @@ namespace FLG.Godot.Sample {
             {
                 logs = new()
                 {
-                    type= ELoggerType.WRITE_FILE,
+                    types = new[] { ELoggerType.WRITE_FILE },
                     dir = "/_logs", // ProjectSettings.GlobalizePath("user://" + LOGS_RELATIVE_PATH),
                 }, // or null
                 ui = new()

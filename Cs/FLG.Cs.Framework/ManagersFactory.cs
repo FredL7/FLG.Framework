@@ -13,32 +13,13 @@ namespace FLG.Cs.Framework {
         internal static FrameworkFactoryResult<ILogManager> CreateLogger(PreferencesLogs prefs)
         {
             FrameworkFactoryResult<ILogManager> result;
-            ILogManager manager;
-            switch(prefs.type)
-            {
-                case ELoggerType.WRITE_FILE:
-                    manager = new LogManagerWriteFile(prefs);
-                    break;
-                case ELoggerType.NO_LOGS:
-                    manager = new LogManagerNoLogs(prefs);
-                    break;
-                case ELoggerType.NETWORKING:
-                    manager = new LogManagerNetworking(prefs);
-                    break;
-                case ELoggerType.GAME_ENGINE:
-                    result.result = new Result($"Can't create a Game Engine Logger");
-                    result.manager = null;
-                    return result;
-                default:
-                    result.result = new Result($"Unknown Logger type {prefs.type}");
-                    result.manager = null;
-                    return result;
-            }
+            LogManager manager = new(prefs);
 
-            if (Locator.Instance.Register(manager))
+            ILogManager imanager = manager;
+            if (Locator.Instance.Register(imanager))
             {
                 result.result = Result.SUCCESS;
-                result.manager = manager;
+                result.manager = imanager;
             }
             else
             {

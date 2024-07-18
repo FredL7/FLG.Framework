@@ -35,7 +35,6 @@ namespace FLG.Cs.UI {
         public void OnServiceRegistered()
         {
             _logger.Debug("UI Manager Registered");
-            SetupUI();
         }
         #endregion IServiceInstance
 

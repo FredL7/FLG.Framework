@@ -1,6 +1,7 @@
 ﻿using Godot;
 
 using FLG.Cs.Datamodel;
+using FLG.Cs.Logger;
 using FLG.Cs.Math;
 using FLG.Cs.ServiceLocator;
 using FLG.Cs.UI;
@@ -30,7 +31,6 @@ namespace FLG.Godot.UI {
 
             if (sanitizedPrefs.ui == null)
             {
-                GD.PrintErr("Cannot initialize Godot UIManager without prefs");
                 throw new Exception("Cannot initialize Godot UIManager without prefs");
             }
 
@@ -38,7 +38,12 @@ namespace FLG.Godot.UI {
 
             if (fromEditor)
             {
-                _logger = new GodotLogger();
+                if (sanitizedPrefs.logs == null)
+                {
+                    throw new Exception("Sanitized preferences (logs) should not be null");
+                }
+
+                _logger = new LogManager(sanitizedPrefs.logs.Value);
                 IUIFactory factory = new UIFactory();
 
                 var ui = new FLG.Cs.UI.UIManager(sanitizedPrefs.ui.Value, _logger, factory);
@@ -48,10 +53,24 @@ namespace FLG.Godot.UI {
             else
             {
                 _logger = Locator.Instance.Get<ILogManager>();
+                _logger.AddLogger(new GodotLogger());
 
                 _ui = Locator.Instance.Get<IUIManager>();
+
+                /*
+                 * TODO:
+                 * Setup UI used to be called FLG.Cs.UI.UIManager::OnServiceRegistered()
+                 * But since the Godot logger isn't added at that time (we only add it here)
+                 * We miss on all the logs.
+                 * However this solution with a cast feels dirty, but I also don't want to expose
+                 * SetupUI to IUIManager since it should only be called on initialization
+                 */
+                FLG.Cs.UI.UIManager uIManager = (FLG.Cs.UI.UIManager)_ui;
+                uIManager.SetupUI();
+
                 _ui.AddObserver(this);
             }
+
             Setup(sanitizedPrefs.ui.Value.homepage);
         }
 

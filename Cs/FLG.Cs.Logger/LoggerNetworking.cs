@@ -6,17 +6,7 @@ using FLG.Cs.ServiceLocator;
 
 
 namespace FLG.Cs.Logger {
-    public class LogManagerNetworking : LogManager {
-        public LogManagerNetworking(PreferencesLogs prefs) : base(prefs) { }
-
-        #region IServiceInstance
-        public override void OnServiceRegisteredFail() { }
-        public override void OnServiceRegistered()
-        {
-            Debug("Log Manager (Networking) Registered");
-        }
-        #endregion IServiceInstance
-
+    internal class LoggerNetworking : Logger {
         protected override void Log(string msg, ELogLevel severity)
         {
             var network = Locator.Instance.Get<INetworkingManagerClient>();

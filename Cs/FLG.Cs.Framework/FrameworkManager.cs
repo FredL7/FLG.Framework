@@ -65,7 +65,7 @@ namespace FLG.Cs.Framework {
             {
                 PreferencesLogs prefOverride = new()
                 {
-                    type = ELoggerType.NO_LOGS,
+                    types = new[] { ELoggerType.NO_LOGS },
                 };
                 var result = InitializeLogsInner(prefOverride);
                 if (!result) return result;

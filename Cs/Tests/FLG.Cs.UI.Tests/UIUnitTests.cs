@@ -17,7 +17,7 @@ namespace FLG.Cs.UI.Tests {
             {
                 logs = new()
                 {
-                    type = ELoggerType.WRITE_FILE,
+                    types = new[] { ELoggerType.WRITE_FILE },
                     dir = Constants.logsDir,
                 },
                 ui = new()
