@@ -4,30 +4,32 @@ using FLG.Cs.Framework;
 using FLG.Cs.Datamodel;
 using FLG.Cs.ServiceLocator;
 using FLG.Cs.Math;
+using FLG.Cs.Tests.Commons;
 
 
 namespace FLG.Cs.UI.Tests {
     [TestClass]
     public class UIUnitTests {
-        private const string LOGS_DIR =     "../../../../../../_logs";
-        private static readonly string[] UI_DIRS = { "../../../../../ProjectDefs/ProjectDefs.UI/Layouts", "../../../../../ProjectDefs/ProjectDefs.UI/Pages" };
-
         [ClassInitialize]
         public static void Init(TestContext _)
         {
-            PreferencesLogs prefsLogs = new()
+            PreferencesFramework prefs = new()
             {
-                logsDir = LOGS_DIR
+                logs = new()
+                {
+                    type = ELoggerType.WRITE_FILE,
+                    dir = Constants.logsDir,
+                },
+                ui = new()
+                {
+                    dirs = new[] { Constants.uiDirLayouts, Constants.uiDirPages },
+                    windowSize = new(1920, 1080),
+                    homepage = Constants.uiHomepage
+                },
+                networking = null,
+                serialization = null
             };
-            PreferencesUI prefsUI = new()
-            {
-                uiDirs = UI_DIRS,
-                windowSize = new Size(1920, 1080),
-                logger = Locator.Instance.Get<ILogManager>(),
-                factory = new UIFactory()
-            };
-
-            FrameworkManager.Instance.Initialize(preferenceLogs: prefsLogs, preferenceUI: prefsUI);
+            FrameworkManager.Instance.Initialize(prefs);
         }
 
         [TestMethod]

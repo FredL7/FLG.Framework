@@ -5,24 +5,24 @@ using FLG.Cs.UI.Pages;
 
 namespace FLG.Cs.UI {
     public class UIManager : IUIManager {
-        private string[] _uiDirs;
+        private readonly string[] _uiDirs;
         private Size _windowSize;
 
-        private ILogManager _logger;
-        private IUIFactory _factory;
+        private readonly ILogManager _logger;
+        private readonly IUIFactory _factory;
 
-        private LayoutsManager _layoutsManager;
-        private PagesManager _pagesManager;
+        private readonly LayoutsManager _layoutsManager;
+        private readonly PagesManager _pagesManager;
 
-        List<IUIObserver> _observers;
+        private readonly List<IUIObserver> _observers;
 
-        public UIManager(PreferencesUI prefs)
+        public UIManager(PreferencesUI prefs, ILogManager logger, IUIFactory factory)
         {
-            _uiDirs = prefs.uiDirs;
+            _uiDirs = prefs.dirs;
             _windowSize = prefs.windowSize;
 
-            _logger = prefs.logger;
-            _factory = prefs.factory;
+            _logger = logger;
+            _factory = factory;
 
             _layoutsManager = new();
             _pagesManager = new();
@@ -35,8 +35,7 @@ namespace FLG.Cs.UI {
         public void OnServiceRegistered()
         {
             _logger.Debug("UI Manager Registered");
-            ParseUI();
-            _pagesManager.RegisterPages();
+            SetupUI();
         }
         #endregion IServiceInstance
 
@@ -60,9 +59,15 @@ namespace FLG.Cs.UI {
         public IEnumerable<ILayout> GetLayouts() => _layoutsManager.GetLayouts();
         public ILayout GetLayout(string name) => _layoutsManager.GetLayout(name);
         public IPage GetPage(string id) => _pagesManager.GetPage(id);
+
+        public void SetupUI()
+        {
+            ParseUI();
+            _pagesManager.RegisterPages();
+        }
         #endregion
 
-        public void ParseUI()
+        private void ParseUI()
         {
             _logger.Debug("Begin XML Parsing");
 

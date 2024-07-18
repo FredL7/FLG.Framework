@@ -28,7 +28,7 @@ namespace FLG.Cs.UI.Widgets {
             Title = title;
             Model = new FormModel(fields);
             _submitAction = submitAction;
-            _fields = fields; // TODO: Better repalce (can't change layout values once ctor, so need to replace because of internal values)
+            _fields = fields; // TODO: Better replace (can't change layout values once ctor, so need to replace because of internal values)
             _formAttributes = formAttr;
         }
 

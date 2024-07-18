@@ -29,7 +29,7 @@ namespace FLG.Cs.Serialization {
             _binSerializer = new BinarySerializer(this);
             _jsonSerializer = new JsonSerializer(this);
             _xmlSerializer = new XmlSerializer(this);
-            _writeSerializer = prefs.serializerType switch
+            _writeSerializer = prefs.type switch
             {
                 ESerializerType.BIN => _binSerializer,
                 ESerializerType.JSON => _jsonSerializer,
@@ -37,7 +37,7 @@ namespace FLG.Cs.Serialization {
                 _ => _binSerializer,
             };
 
-            _saveDir = prefs.savesDir;
+            _saveDir = prefs.dir;
             _saveFiles = new();
 
             _serializableItems = new();

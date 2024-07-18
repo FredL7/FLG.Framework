@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Cs\FLG.Cs.Datamodel\FLG.Cs.Datamodel.csproj" />
+    <ProjectReference Include="..\..\Cs\FLG.Cs.Model\FLG.Cs.Model.csproj" />
   </ItemGroup>
 
   <ItemGroup>

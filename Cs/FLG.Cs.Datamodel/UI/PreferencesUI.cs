@@ -2,10 +2,8 @@
 
 namespace FLG.Cs.Datamodel {
     public struct PreferencesUI {
-        public string[] uiDirs;
+        public string[] dirs;
         public Size windowSize;
-
-        public ILogManager logger;
-        public IUIFactory factory;
+        public string homepage;
     }
 }

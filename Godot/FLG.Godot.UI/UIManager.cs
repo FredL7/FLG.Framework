@@ -1,104 +1,65 @@
-using Godot;
-using System.Collections.Generic;
+﻿using Godot;
 
 using FLG.Cs.Datamodel;
-using FLG.Cs.Framework;
 using FLG.Cs.Math;
 using FLG.Cs.ServiceLocator;
 using FLG.Cs.UI;
 using FLG.Godot.Framework;
 using FLG.Godot.Helpers;
-using FLG.Godot.UI;
 
 using sysV2 = System.Numerics.Vector2;
 using gdV2 = Godot.Vector2;
 using flgLabel = FLG.Godot.UI.Label;
 using flgButton = FLG.Godot.UI.Button;
 
+namespace FLG.Godot.UI {
+    public class UIManager : IUIObserver {
+        private readonly ILogManager _logger;
+        private readonly IUIManager _ui;
 
-namespace FLG.Godot.Sample {
-    [Tool]
-    public partial class UIManager : Control, IUIObserver {
-        private static readonly string[] UI_RELATIVE_PATH = { "../commons/ProjectDefs.UI/ui/general/", "../commons/ProjectDefs.UI/ui/client/" };
-        private const string HOMEPAGE = "Sample1";
+        private readonly Node _node;
 
-
-        private Size _window = new(1920, 1080);
-
-        private ILogManager _logger;
-        private IUIFactory _factory;
-        private IUIManager _ui;
-
-        private Dictionary<string, Node> _layouts = new();
-        private Dictionary<string, List<Node>> _pages = new();
+        private readonly Dictionary<string, Node> _layouts = new();
+        private readonly Dictionary<string, List<Node>> _pages = new();
         private string _currentLayout = string.Empty;
         private string _currentPage = string.Empty;
 
-        public override void _Ready()
+        public UIManager(PreferencesFramework prefs, Node node, bool fromEditor)
         {
-            base._Ready();
+            var sanitizedPrefs = FrameworkHelper.SanitizePreferences(prefs);
 
-            if (Engine.IsEditorHint())
+            if (sanitizedPrefs.ui == null)
             {
-                InitializeFromEditor();
+                GD.PrintErr("Cannot initialize Godot UIManager without prefs");
+                throw new Exception("Cannot initialize Godot UIManager without prefs");
             }
-        }
 
-        private string[] GetGlobalizedUiDirs()
-        {
-            var globalUiDir = new string[UI_RELATIVE_PATH.Length];
-            for (int i = 0; i < globalUiDir.Length; ++i)
-                globalUiDir[i] = ProjectSettings.GlobalizePath("res://" + UI_RELATIVE_PATH[i]);
-            return globalUiDir;
-        }
+            _node = node;
 
-        private void InitializeFromEditor()
-        {
-            _logger = new GodotLogger();
-            _factory = new UIFactory();
-
-            PreferencesUI prefsUI = new()
+            if (fromEditor)
             {
-                uiDirs = GetGlobalizedUiDirs(),
-                windowSize = _window,
+                _logger = new GodotLogger();
+                IUIFactory factory = new UIFactory();
 
-                logger = _logger,
-                factory = _factory
-            };
-
-            _ui = new FLG.Cs.UI.UIManager(prefsUI);
-            _ui.OnServiceRegistered();
-
-            SetupUI();
-        }
-
-        public void Initialize()
-        {
-            _logger = Locator.Instance.Get<ILogManager>();
-
-            _factory = new UIFactory();
-
-            PreferencesUI prefsUI = new()
+                var ui = new FLG.Cs.UI.UIManager(sanitizedPrefs.ui.Value, _logger, factory);
+                ui.SetupUI();
+                _ui = ui;
+            }
+            else
             {
-                uiDirs = GetGlobalizedUiDirs(),
-                windowSize = _window,
+                _logger = Locator.Instance.Get<ILogManager>();
 
-                logger = _logger,
-                factory = _factory
-            };
-            FrameworkManager.Instance.InitializeUI(prefsUI);
-
-            _ui = Locator.Instance.Get<IUIManager>();
-            _ui.AddObserver(this);
-
-            SetupUI();
+                _ui = Locator.Instance.Get<IUIManager>();
+                _ui.AddObserver(this);
+            }
+            Setup(sanitizedPrefs.ui.Value.homepage);
         }
 
-        private void SetupUI()
+        private void Setup(string homepage)
         {
             Clear();
-            DrawUI();
-            _ui.SetCurrentPage(HOMEPAGE);
+            Draw();
+            _ui.SetCurrentPage(homepage);
         }
 
         public void OnCurrentPageChanged(string pageId, string layoutId)
@@ -118,17 +79,59 @@ namespace FLG.Godot.Sample {
                         layout.Value.Set("visible", false);
                     _layouts[layoutId].Set("visible", true);
                 }
+
+                _currentPage = pageId;
+                _currentLayout = layoutId;
             }
         }
 
         private void Clear()
         {
-            SceneHelper.RemoveAllChildrensImmediately(this);
+            SceneHelper.RemoveAllChildrensImmediately(_node);
         }
 
-        private void DrawUI()
+        private void Draw()
         {
-            DrawLayouts();
+            foreach (var layout in _ui.GetLayouts())
+                DrawLayout(layout);
+        }
+
+        private void DrawLayout(ILayout layout)
+        {
+            string id = layout.Name;
+            var root = layout.Root;
+            var layoutNode = AddNode("layout " + id, root, _node);
+            _layouts.Add(id, layoutNode);
+            DrawLayoutRecursive(layoutNode, root);
+        }
+
+        private void DrawLayoutRecursive(Node parentNode, ILayoutElement layoutElementParent)
+        {
+            var targets = layoutElementParent.GetTargets();
+            foreach (var target in targets)
+            {
+                if (layoutElementParent.HasChildren(target))
+                {
+                    var parentForAddNode = parentNode;
+                    if (target != ILayoutElement.DEFAULT_CHILDREN_TARGET)
+                    {
+                        var targetNode = AddNode(target, sysV2.Zero, layoutElementParent.Dimensions, parentNode);
+
+                        if (!_pages.ContainsKey(target))
+                            _pages.Add(target, new List<Node>());
+                        _pages[target].Add(targetNode);
+
+                        targetNode.Set("visible", false);
+                        parentForAddNode = targetNode;
+                    }
+
+                    foreach (ILayoutElement child in layoutElementParent.GetChildrens(target))
+                    {
+                        var node = DrawNode(child, parentForAddNode);
+                        DrawLayoutRecursive(node, child);
+                    }
+                }
+            }
         }
 
         private Node AddNode(string name, ILayoutElement layoutElement, Node parent)
@@ -148,7 +151,7 @@ namespace FLG.Godot.Sample {
                 Size = new gdV2(dimensions.Width, dimensions.Height),
             };
             parent.AddChild(node);
-            node.Owner = GetTree().EditedSceneRoot;
+            node.Owner = _node.GetTree().EditedSceneRoot;
             return node;
         }
 
@@ -189,59 +192,15 @@ namespace FLG.Godot.Sample {
                 _logger.Debug($"layoutDimensions={layoutElement.Dimensions} OriginalSize={originalSize}, ratio={ratio}, newSize={newSize}");
 
                 node.AddChild(rect);
-                rect.Owner = GetTree().EditedSceneRoot;
+                rect.Owner = _node.GetTree().EditedSceneRoot;
             }
             return node;
-        }
-
-        private void DrawLayouts()
-        {
-            foreach (var layout in _ui.GetLayouts())
-                DrawLayout(layout);
-        }
-
-        private void DrawLayout(ILayout layout)
-        {
-            string id = layout.Name;
-            var root = layout.Root;
-            var layoutNode = AddNode("layout " + id, root, this);
-            _layouts.Add(id, layoutNode);
-            DrawLayoutRecursive(layoutNode, root);
-        }
-
-        private void DrawLayoutRecursive(Node parentNode, ILayoutElement layoutElementParent)
-        {
-            var targets = layoutElementParent.GetTargets();
-            foreach (var target in targets)
-            {
-                if (layoutElementParent.HasChildren(target))
-                {
-                    var parentForAddNode = parentNode;
-                    if (target != ILayoutElement.DEFAULT_CHILDREN_TARGET)
-                    {
-                        var targetNode = AddNode(target, sysV2.Zero, layoutElementParent.Dimensions, parentNode);
-
-                        if (!_pages.ContainsKey(target))
-                            _pages.Add(target, new List<Node>());
-                        _pages[target].Add(targetNode);
-
-                        targetNode.Set("visible", false);
-                        parentForAddNode = targetNode;
-                    }
-
-                    foreach (ILayoutElement child in layoutElementParent.GetChildrens(target))
-                    {
-                        var node = DrawNode(child, parentForAddNode);
-                        DrawLayoutRecursive(node, child);
-                    }
-                }
-            }
         }
 
         private Node DrawNode(ILayoutElement layoutElement, Node parentNode)
         {
             Node node;
-            var root = GetTree().EditedSceneRoot;
+            var root = _node.GetTree().EditedSceneRoot;
             var fromEditor = Engine.IsEditorHint();
             bool parentSetter = true;
             switch (layoutElement.Type)

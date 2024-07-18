@@ -1,49 +1,57 @@
 using Godot;
 
 using FLG.Cs.Datamodel;
-using FLG.Cs.Framework;
-using FLG.Cs.Model;
-
+using FLG.Godot.UI;
+using FLG.Godot.Helpers;
 
 namespace FLG.Godot.Sample {
+    [Tool]
     public partial class GameManager : Node {
-        private const string LOGS_RELATIVE_PATH = "/_logs"; // TODO: Move to serialized field to appear in the inspector?
+        private UIManager _ui;
 
         public override void _Ready()
         {
-            GD.Print("FRED");
             InitializeFramework();
         }
 
         private void InitializeFramework()
         {
-            Result result;
-            Preferences prefs = new();
-            result = FrameworkManager.Instance.InitializeFramework(prefs);
-            if (!result) GD.PrintErr(result.GetMessage());
-
-            PreferencesLogs prefsLogs = new()
+            PreferencesFramework prefs = new()
             {
-                loggerType = ELoggerType.WRITE_FILE,
-                logsDir = ProjectSettings.GlobalizePath("user://" + LOGS_RELATIVE_PATH),
+                logs = new()
+                {
+                    type= ELoggerType.WRITE_FILE,
+                    dir = "/_logs", // ProjectSettings.GlobalizePath("user://" + LOGS_RELATIVE_PATH),
+                }, // or null
+                ui = new()
+                {
+                    dirs = new[] { "../commons/ProjectDefs.UI/ui/general/", "../commons/ProjectDefs.UI/ui/client/" },
+                    windowSize = new(1920, 1080),
+                    homepage = "Sample1"
+                }, // or null
+                networking = new()
+                {
+                    clientType = ENetworkClientType.OFFLINE,
+                }, // or null
+                serialization = new()
+                {
+                    type = ESerializerType.BIN,
+                    dir = "/_saves",
+                }, // or null
             };
-            result = FrameworkManager.Instance.InitializeLogs(prefsLogs);
-            if (!result) GD.PrintErr(result.GetMessage());
 
-            PreferencesNetworking prefsNetworking = new()
+            if (!Engine.IsEditorHint())
             {
-                clientType = ENetworkClientType.OFFLINE,
-            };
-            result = FrameworkManager.Instance.InitializeNetworking(prefsNetworking);
-            if (!result) GD.PrintErr(result.GetMessage());
+                FrameworkHelper.InitializeFramework(prefs);
+            }
 
-            var uiManager = GetNode("UI/Layouts");
-            uiManager.Call("Initialize");
+            var uiNode = GetNode("UI/Layouts");
+            _ui = new(prefs, uiNode, Engine.IsEditorHint());
         }
 
         public override void _Process(double delta)
         {
-            FrameworkManager.Instance.Update();
+            // FrameworkManager.Instance.Update();
         }
     }
 }

@@ -14,7 +14,7 @@ namespace FLG.Cs.Framework {
         {
             FrameworkFactoryResult<ILogManager> result;
             ILogManager manager;
-            switch(prefs.loggerType)
+            switch(prefs.type)
             {
                 case ELoggerType.WRITE_FILE:
                     manager = new LogManagerWriteFile(prefs);
@@ -30,7 +30,7 @@ namespace FLG.Cs.Framework {
                     result.manager = null;
                     return result;
                 default:
-                    result.result = new Result($"Unknown Logger type {prefs.loggerType}");
+                    result.result = new Result($"Unknown Logger type {prefs.type}");
                     result.manager = null;
                     return result;
             }
@@ -69,8 +69,11 @@ namespace FLG.Cs.Framework {
 
         internal static FrameworkFactoryResult<IUIManager> CreateUIManager(PreferencesUI prefs)
         {
+            var logger = Locator.Instance.Get<ILogManager>();
+            var factory = new UIFactory();
+
             FrameworkFactoryResult<IUIManager> result;
-            IUIManager manager = new UIManager(prefs);
+            IUIManager manager = new UIManager(prefs, logger, factory);
             if (Locator.Instance.Register(manager))
             {
                 result.result = Result.SUCCESS;

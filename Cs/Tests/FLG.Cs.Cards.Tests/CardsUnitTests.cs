@@ -3,13 +3,12 @@ using System.Text;
 using FLG.Cs.Datamodel;
 using FLG.Cs.ServiceLocator;
 using FLG.Cs.Framework;
+using FLG.Cs.Tests.Commons;
 
 
 namespace FLG.Cs.Cards.Tests {
     [TestClass]
     public class CardsTests {
-        private const string LOGS_DIR = "../../../../../../_logs";
-
         [TestMethod]
         public void CardsTest()
         {
@@ -56,12 +55,18 @@ namespace FLG.Cs.Cards.Tests {
             int dealerWins = 0;
             int round = 1;
 
-            PreferencesLogs prefsLogs = new()
+            PreferencesFramework prefs = new()
             {
-                loggerType = ELoggerType.WRITE_FILE,
-                logsDir = LOGS_DIR
+                logs = new()
+                {
+                    type = ELoggerType.WRITE_FILE,
+                    dir = Constants.logsDir,
+                },
+                ui = null,
+                networking = null,
+                serialization = null
             };
-            FrameworkManager.Instance.Initialize(preferenceLogs: prefsLogs);
+            FrameworkManager.Instance.Initialize(prefs);
 
             var logger = Locator.Instance.Get<ILogManager>();
 

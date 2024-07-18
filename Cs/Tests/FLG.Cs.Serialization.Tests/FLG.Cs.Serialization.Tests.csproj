@@ -27,6 +27,7 @@
     <ProjectReference Include="..\..\FLG.Cs.Framework\FLG.Cs.Framework.csproj" />
     <ProjectReference Include="..\..\FLG.Cs.Serialization\FLG.Cs.Serialization.csproj" />
     <ProjectReference Include="..\..\FLG.Cs.ServiceLocator\FLG.Cs.ServiceLocator.csproj" />
+    <ProjectReference Include="..\FLG.Cs.Tests.Commons\FLG.Cs.Tests.Commons.csproj" />
   </ItemGroup>
 
 </Project>

@@ -15,6 +15,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Cs\FLG.Cs.Datamodel\FLG.Cs.Datamodel.csproj" />
+    <ProjectReference Include="..\..\Cs\FLG.Cs.Decorators\FLG.Cs.Decorators.csproj" />
+    <ProjectReference Include="..\..\Cs\FLG.Cs.Framework\FLG.Cs.Framework.csproj" />
+    <ProjectReference Include="..\..\Cs\FLG.Cs.Model\FLG.Cs.Model.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -14,25 +14,21 @@ namespace FLG.Cs.Framework {
         }
 
         #region Initializer
-        public Result Initialize(
-            PreferencesLogs? preferenceLogs = null,
-            PreferencesSerialization? preferenceSerialization = null,
-            PreferencesUI? preferenceUI = null,
-            PreferencesNetworking? preferenceNetworking = null)
+        public Result Initialize(PreferencesFramework prefs)
         {
             Result result = InitializeFramework();
             if (!result) return result;
 
-            result = InitializeLogs(preferenceLogs);
+            result = InitializeLogs(prefs.logs);
             if (!result) return result;
 
-            result = InitializeSerializer(preferenceSerialization);
+            result = InitializeUI(prefs.ui);
             if (!result) return result;
 
-            result = InitializeUI(preferenceUI);
+            result = InitializeSerializer(prefs.serialization);
             if (!result) return result;
 
-            result = InitializeNetworking(preferenceNetworking);
+            result = InitializeNetworking(prefs.networking);
             if (!result) return result;
 
             return Result.SUCCESS;
@@ -69,7 +65,7 @@ namespace FLG.Cs.Framework {
             {
                 PreferencesLogs prefOverride = new()
                 {
-                    loggerType = ELoggerType.NO_LOGS,
+                    type = ELoggerType.NO_LOGS,
                 };
                 var result = InitializeLogsInner(prefOverride);
                 if (!result) return result;
