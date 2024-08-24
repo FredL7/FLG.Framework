@@ -3,14 +3,12 @@ global using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FLG.Cs.Datamodel;
 using FLG.Cs.Framework;
 using FLG.Cs.ServiceLocator;
+using FLG.Cs.Tests.Commons;
 
 
 namespace FLG.Cs.Serialization.Tests {
     [TestClass]
     public class SerializationUnitTests {
-        private const string SAVES_DIR = "../../../../../../_saves";
-        private const string LOGS_DIR = "../../../../../../_logs";
-
         private const bool _boolvalue = true;
         private const uint _uintvalue = uint.MaxValue;
         private const int _intvalue = int.MinValue;
@@ -23,21 +21,18 @@ namespace FLG.Cs.Serialization.Tests {
         #region Test
         private static void Initialize(ESerializerType t)
         {
-            Preferences pref = new();
-            FrameworkManager.Instance.InitializeFramework(pref);
-
-            PreferencesLogs prefLogs = new()
+            PreferencesFramework prefs = new()
             {
-                loggerType = ELoggerType.NO_LOGS,
+                logs = null,
+                ui = null,
+                networking = null,
+                serialization = new()
+                {
+                    type = t,
+                    dir = Constants.savesDir,
+                },
             };
-            FrameworkManager.Instance.InitializeLogs(prefLogs);
-
-            PreferencesSerialization prefSerialization = new()
-            {
-                savesDir = SAVES_DIR,
-                serializerType = t
-            };
-            FrameworkManager.Instance.InitializeSerializer(prefSerialization);
+            FrameworkManager.Instance.Initialize(prefs);
 
             ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();
             _datevalue = DateTime.Now;

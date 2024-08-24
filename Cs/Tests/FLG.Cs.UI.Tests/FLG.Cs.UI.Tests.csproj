@@ -25,6 +25,7 @@
     <ProjectReference Include="..\..\FLG.Cs.ServiceLocator\FLG.Cs.ServiceLocator.csproj" />
     <ProjectReference Include="..\..\FLG.Cs.UI\FLG.Cs.UI.csproj" />
     <ProjectReference Include="..\..\ProjectDefs\ProjectDefs.UI\ProjectDefs.UI.csproj" />
+    <ProjectReference Include="..\FLG.Cs.Tests.Commons\FLG.Cs.Tests.Commons.csproj" />
   </ItemGroup>
 
 </Project>

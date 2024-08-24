@@ -5,13 +5,13 @@ using FLG.Cs.ServiceLocator;
 
 
 namespace FLG.Cs.Logger {
-    public class LogManagerWriteFile : LogManager {
+    internal class LoggerWriteFile : Logger {
         private readonly string _logsDir;
         private readonly string _filepath;
 
-        public LogManagerWriteFile(PreferencesLogs prefs) : base(prefs)
+        public LoggerWriteFile(string dir)
         {
-            _logsDir = prefs.logsDir;
+            _logsDir = dir;
 
             DateTime date = DateTime.Now;
             string filename = date.ToString(LoggerConstants.FILENAME_DATE_PATTERN);
@@ -19,15 +19,7 @@ namespace FLG.Cs.Logger {
             _filepath = Path.Combine(_logsDir, filename + ".log");
         }
 
-        #region IServiceInstance
-        public override void OnServiceRegisteredFail() { }
-        public override void OnServiceRegistered()
-        {
-            Debug("Log Manager (Write File) Registered");
-        }
-        #endregion IServiceInstance
-
-        protected override void Log(string msg, ELogLevel serverity)
+        protected override void Log(string msg, ELogLevel severity)
         {
             var networking = Locator.Instance.Get<INetworkingManager>();
 
@@ -37,7 +29,7 @@ namespace FLG.Cs.Logger {
 
             DateTime date = DateTime.Now;
             using StreamWriter w = File.AppendText(_filepath);
-            w.WriteLine(MakeLogEntry(networking.LogIdentifier, date, serverity, classname, methodname, msg));
+            w.WriteLine(MakeLogEntry(networking.LogIdentifier, date, severity, classname, methodname, msg));
         }
     }
 }
