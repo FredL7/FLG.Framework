@@ -10,8 +10,8 @@ namespace FLG.Cs.UI.Grids {
     public class HStack : Stack {
         public override ELayoutElement Type { get => ELayoutElement.HSTACK; }
 
-        public HStack(string name, XmlNode node) : base(name, node) { }
-        public HStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr) : base(name, layoutAttr, gridAttr) { }
+        internal HStack(string name, XmlNode node) : base(name, node) { }
+        internal HStack(string name, LayoutAttributes layoutAttr, GridAttributes gridAttr) : base(name, layoutAttr, gridAttr) { }
 
         protected override float GetChildMainMarginFirst(ILayoutElement child) => child.RectXform.Margin.Left;
         protected override float GetChildMainMarginLast(ILayoutElement child) => child.RectXform.Margin.Right;

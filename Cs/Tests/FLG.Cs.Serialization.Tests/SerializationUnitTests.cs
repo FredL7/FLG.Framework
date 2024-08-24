@@ -24,13 +24,19 @@ namespace FLG.Cs.Serialization.Tests {
         private static void Initialize(ESerializerType t)
         {
             Preferences pref = new();
+            FrameworkManager.Instance.InitializeFramework(pref);
+
+            PreferencesLogs prefLogs = new()
+            {
+                loggerType = ELoggerType.NO_LOGS,
+            };
+            FrameworkManager.Instance.InitializeLogs(prefLogs);
+
             PreferencesSerialization prefSerialization = new()
             {
                 savesDir = SAVES_DIR,
                 serializerType = t
             };
-            FrameworkManager.Instance.InitializeFramework(pref);
-            FrameworkManager.Instance.InitializeLogs(new(), true);
             FrameworkManager.Instance.InitializeSerializer(prefSerialization);
 
             ISerializerManager serializer = Locator.Instance.Get<ISerializerManager>();

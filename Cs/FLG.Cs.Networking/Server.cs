@@ -11,7 +11,7 @@ namespace FLG.Cs.Networking {
         private readonly NetworkingManager _manager;
         public NetworkingManager Manager { get => _manager; }
 
-        private const int _id = -1;
+        private const int _id = NetworkingConstants.SERVER_ID;
         public int Id { get => _id; }
 
         private readonly int _port;
@@ -62,8 +62,12 @@ namespace FLG.Cs.Networking {
                 {
                     _connexions.Add(i, new TCPConnexion(i, this));
                 }
+                Locator.Instance.Get<ILogManager>().Info($"Server max connexions set to {_maxConnexions}");
             }
-            Locator.Instance.Get<ILogManager>().Info($"Server max connexions set to {_maxConnexions}");
+            else
+            {
+                Locator.Instance.Get<ILogManager>().Warn($"Server max connexions already set to {_maxConnexions}, attempting to set to {nbConnexions}");
+            }
         }
 
         #region Connexion

@@ -1,5 +1,6 @@
-﻿using FLG.Cs.Datamodel;
-using FLG.Cs.ServiceLocator;
+﻿// using FLG.Cs.Datamodel;
+// using FLG.Cs.ServiceLocator;
+
 
 namespace FLG.Cs.Networking {
     internal class MessagesHandler {
@@ -19,21 +20,21 @@ namespace FLG.Cs.Networking {
 
             receivedData.SetBytes(data);
 
-            var logger = Locator.Instance.Get<ILogManager>();
-            logger.Debug("Handling Data");
+            // var logger = Locator.Instance.Get<ILogManager>();
+            // logger.Debug("Handling Data");
 
             if (receivedData.UnreadLength >= Message.INT_LENGTH)
             {
                 length = receivedData.ReadInt();
-                logger.Debug($"Before: Length={length}");
+                // logger.Debug($"Before: Length={length}");
                 if (length <= 0)
                 {
-                    logger.Debug("Before: All data handled");
+                    // logger.Debug("Before: All data handled");
                     return true;
                 }
             }
 
-            logger.Debug("Data left to handle");
+            // logger.Debug("Data left to handle");
 
             while (length > 0 && length <= receivedData.UnreadLength)
             {
@@ -43,7 +44,7 @@ namespace FLG.Cs.Networking {
                     using Message message = new(messageBytes);
                     int sourceId = message.ReadInt();
                     int handlerId = message.ReadInt();
-                    logger.Debug($"Send to main thread handler {handlerId} with source {sourceId}");
+                    // logger.Debug($"Send to main thread handler {handlerId} with source {sourceId}");
                     messagesHandler[handlerId](sourceId, message);
                 });
 
@@ -51,10 +52,10 @@ namespace FLG.Cs.Networking {
                 if (receivedData.UnreadLength >= Message.INT_LENGTH)
                 {
                     length = receivedData.ReadInt();
-                    logger.Debug($"While: Length={length}");
+                    // logger.Debug($"While: Length={length}");
                     if (length <= 0)
                     {
-                        logger.Debug("While: all data handled");
+                        // logger.Debug("While: all data handled");
                         return true;
                     }
                 }
@@ -62,11 +63,11 @@ namespace FLG.Cs.Networking {
 
             if (length <= 1)
             {
-                logger.Debug("After: Length = 1");
+                // logger.Debug("After: Length = 1");
                 return true;
             }
 
-            logger.Debug("Return false, message incomplete");
+            // logger.Debug("Return false, message incomplete");
             return false;
         }
     }

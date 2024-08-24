@@ -16,13 +16,13 @@ namespace FLG.Cs.UI.Widgets {
         private readonly FormAttributes _formAttributes;
         private readonly Action<string, IFormModel> _submitAction;
 
-        public Form(string name, XmlNode node) : base(name, node)
+        internal Form(string name, XmlNode node) : base(name, node)
         {
             // Should not create Form from xml (unless we add a custom way to add childs so we can dynamically create the FormModel by using the default IInputFieldModel)
             throw new NotImplementedException();
         }
 
-        public Form(string name, string title, List<IInputField> fields, Action<string, IFormModel> submitAction, LayoutAttributes layoutAttr, FormAttributes formAttr)
+        internal Form(string name, string title, List<IInputField> fields, Action<string, IFormModel> submitAction, LayoutAttributes layoutAttr, FormAttributes formAttr)
             : base(name, layoutAttr)
         {
             Title = title;

@@ -1,99 +1,150 @@
 ﻿using FLG.Cs.Decorators;
 using FLG.Cs.Datamodel;
+using FLG.Cs.Model;
 
 
 namespace FLG.Cs.Framework {
     public class FrameworkManager : SingletonBase<FrameworkManager> {
-        private List<IGameLoopObject> _gameLoopObjects;
+        private readonly List<IGameLoopObject> _gameLoopObjects;
+
         private FrameworkManager()
         {
-            _gameLoopObjects = new(1);
+            _gameLoopObjects = new();
         }
 
+        #region Initializer
+
         #region General
-        private bool _initializedGeneral = false;
-        public void InitializeFramework(Preferences pref)
+        private bool _initializedFramework = false;
+        public Result InitializeFramework(Preferences pref)
         {
-            if (!_initializedGeneral)
+            if (!_initializedFramework)
             {
-                _initializedGeneral = true;
+                _initializedFramework = true;
+                return Result.SUCCESS;
             }
+
+            return new Result("Could not initialize Framework: Already initialized", severity: ELogLevel.WARN);
         }
         #endregion General
 
         #region Logs
         private bool _initializedLogs = false;
-        public void InitializeLogs(PreferencesLogs pref, bool dummy = false)
+        public Result InitializeLogs(PreferencesLogs pref)
         {
             if (!ValidateDependenciesLogs())
-                return;
+                return new Result($"Could not initialize Log Manager: dependencies not initialized (Framework={_initializedFramework}");
 
             if (!_initializedLogs)
             {
-                var manager = ManagersFactory.CreateLogger(pref, dummy);
-                _initializedLogs = manager != null;
+                var result = ManagersFactory.CreateLogger(pref);
+                if (result.result)
+                {
+                    _initializedLogs = true;
+                    return Result.SUCCESS;
+                }
+                else
+                {
+                    return result.result;
+                }
             }
+
+            return new Result("Could not initialize Log Manager: Already initialized", severity: ELogLevel.WARN);
         }
 
-        private bool ValidateDependenciesLogs() => _initializedGeneral;
+        private bool ValidateDependenciesLogs() => _initializedFramework;
         #endregion Logs
 
         #region Serialization
         private bool _initializedSerializer = false;
-        public void InitializeSerializer(PreferencesSerialization pref)
+        public Result InitializeSerializer(PreferencesSerialization pref)
         {
             if (!ValidateDependenciesSerialization())
-                return;
+                return new Result($"Could not initialize Serializer Manager: dependencies not initialized (Framework={_initializedFramework}");
 
             if (!_initializedSerializer)
             {
-                var manager = ManagersFactory.CreateSerializer(pref);
-                _initializedSerializer = manager != null;
+                var result = ManagersFactory.CreateSerializer(pref);
+                if (result.result)
+                {
+                    _initializedSerializer = true;
+                    return Result.SUCCESS;
+                }
+                else
+                {
+                    return result.result;
+                }
             }
+
+            return new Result("Could not initialize Serializer Manager: Already initialized", severity: ELogLevel.WARN);
         }
 
-        private bool ValidateDependenciesSerialization() => _initializedGeneral;
+        private bool ValidateDependenciesSerialization() => _initializedFramework;
         #endregion Serialization
 
         #region UI
         private bool _initializedUI = false;
-        public void InitializeUI(PreferencesUI pref)
+        public Result InitializeUI(PreferencesUI pref)
         {
             if (!ValidateDependenciesUI())
-                return;
+                return new Result($"Could not initialize UI Manager: dependencies not initialized (Framework={_initializedFramework}");
 
             if (!_initializedUI)
             {
-                var manager = ManagersFactory.CreateUIManager(pref);
-                _initializedUI = manager != null;
+                var result = ManagersFactory.CreateUIManager(pref);
+                if (result.result)
+                {
+                    _initializedUI = true;
+                    return Result.SUCCESS;
+                }
+                else
+                {
+                    return result.result;
+                }
             }
+
+            return new Result("Could not initialize UI Manager: Already initialized", severity: ELogLevel.WARN);
         }
 
-        private bool ValidateDependenciesUI() => _initializedGeneral;
+        private bool ValidateDependenciesUI() => _initializedFramework;
         #endregion UI
 
         #region Networking
         private bool _initializedNetworking = false;
-        public void InitializeNetworking(PreferencesNetworking pref)
+        public Result InitializeNetworking(PreferencesNetworking pref)
         {
             if (!ValidateDependenciesNetworking())
-                return;
+                return new Result($"Could not initialize Networking Manager: dependencies not initialized (Framework={_initializedFramework}");
 
             if (!_initializedNetworking)
             {
-                var networkingManager = ManagersFactory.CreateNetworkingManager(pref);
-                var commandManager = ManagersFactory.CreateCommandManager();
-                _initializedNetworking = networkingManager != null && commandManager != null;
+                var networkingResult = ManagersFactory.CreateNetworkingManager(pref);
+                if (!networkingResult.result)
+                    return networkingResult.result;
 
-                if (networkingManager != null && commandManager != null)
+                var commandResult = ManagersFactory.CreateCommandManager();
+                if (!commandResult.result)
+                    return commandResult.result;
+
+                if (networkingResult.manager != null && commandResult.manager != null)
                 {
-                    _gameLoopObjects.Add(networkingManager);
+                    _initializedNetworking = true;
+                    _gameLoopObjects.Add(networkingResult.manager);
+                    return Result.SUCCESS;
+                }
+                else
+                {
+                    return new Result("Could not initialize Networking Manager: manager initialization failure");
                 }
             }
+
+            return new Result("Could not initialize Networking Manager: Already initialized", severity: ELogLevel.WARN);
         }
 
-        private bool ValidateDependenciesNetworking() => _initializedGeneral;
+        private bool ValidateDependenciesNetworking() => _initializedFramework;
         #endregion Networking
+
+        #endregion Initializer
 
         public void Update()
         {

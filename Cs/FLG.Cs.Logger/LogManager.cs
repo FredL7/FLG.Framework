@@ -1,44 +1,20 @@
-﻿using System.Diagnostics;
-
-using FLG.Cs.Datamodel;
+﻿using FLG.Cs.Datamodel;
 
 
 namespace FLG.Cs.Logger {
-    public class LogManager : ILogManager {
-        private string _logsDir;
-        private string _filepath;
-
-        public LogManager(PreferencesLogs prefs)
-        {
-            _logsDir = prefs.logsDir;
-
-            DateTime date = DateTime.Now;
-            string filename = date.ToString(LoggerMetadata.FILENAME_DATE_PATTERN);
-            System.IO.Directory.CreateDirectory(_logsDir);
-            _filepath = Path.Combine(_logsDir, filename + ".log");
-        }
+    public abstract class LogManager : ILogManager {
+        public LogManager(PreferencesLogs prefs) { }
 
         #region IServiceInstance
-        public void OnServiceRegisteredFail() { }
-        public void OnServiceRegistered()
-        {
-            Debug("Log Manager Registered");
-
-            Type objType = typeof(ILogManager);
-            Debug($"Fred: {objType.Assembly.FullName}");
-            Debug($"Fred: {objType.AssemblyQualifiedName}");
-        }
+        public abstract void OnServiceRegisteredFail();
+        public abstract void OnServiceRegistered();
         #endregion IServiceInstance
 
-        private void Log(string msg, ELogLevel level)
-        {
-            StackTrace stackTrace = new();
-            string? methodname = stackTrace.GetFrame(2)?.GetMethod()?.Name;
-            string? classname = stackTrace.GetFrame(2)?.GetMethod()?.DeclaringType?.FullName;
+        protected abstract void Log(string message, ELogLevel severity);
 
-            DateTime date = DateTime.Now;
-            using StreamWriter w = File.AppendText(_filepath);
-            w.WriteLine($"[{date.ToString(LoggerMetadata.LOGGING_DATE_PATTERN)}] [{level.ToPrettyString()}] [{(classname ?? LoggerMetadata.UNKNOWN)}::{(methodname ?? LoggerMetadata.UNKNOWN)}()] {msg}");
+        protected static string MakeLogEntry(string networkId, DateTime date, ELogLevel severity, string? classname, string? methodname, string msg)
+        {
+            return $"[{date.ToString(LoggerConstants.LOGGING_DATE_PATTERN)}] [{severity.ToPrettyString()}] [${networkId}] [{(classname ?? LoggerConstants.UNKNOWN)}::{(methodname ?? LoggerConstants.UNKNOWN)}()] {msg}";
         }
 
         public void Error(string msg)

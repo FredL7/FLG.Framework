@@ -14,7 +14,6 @@
     <ProjectReference Include="..\FLG.Cs.Math\FLG.Cs.Math.csproj" />
     <ProjectReference Include="..\FLG.Cs.Model\FLG.Cs.Model.csproj" />
     <ProjectReference Include="..\FLG.Cs.ServiceLocator\FLG.Cs.ServiceLocator.csproj" />
-    <ProjectReference Include="..\FLG.Cs.Validation\FLG.Cs.Validation.csproj" />
     <ProjectReference Include="..\ProjectDefs\ProjectDefs.UI\ProjectDefs.UI.csproj" />
   </ItemGroup>
 

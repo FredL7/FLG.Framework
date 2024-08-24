@@ -18,5 +18,17 @@
                 _ => throw new ArgumentException($"{level} is not valid"),
             };
         }
+
+        public static string ToLogMethod(this ELogLevel level)
+        {
+            return level switch
+            {
+                ELogLevel.ERROR => "Error",
+                ELogLevel.WARN => "Warn",
+                ELogLevel.INFO => "info",
+                ELogLevel.DEBUG => "Debug",
+                _ => throw new ArgumentException($"{level} is not valid"),
+            };
+        }
     }
 }
