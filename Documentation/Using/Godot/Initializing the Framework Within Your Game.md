@@ -1,0 +1,1 @@
+The code is commented in `GodotSample/GameManager.cs.tmpl`, but I will add the documentation here as well.
