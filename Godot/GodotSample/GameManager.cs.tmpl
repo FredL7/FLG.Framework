@@ -1,0 +1,114 @@
+using Godot;
+
+using FLG.Cs.Datamodel;
+using FLG.Godot.UI;
+using FLG.Godot.Helpers;
+
+// Sections requiring a change when copying this template are marked with [TEMPLATE]
+
+namespace FLG.Godot.Sample {
+    [Tool] // Allows using code in the editor (Engine.IsEditorHint())
+    public partial class GameManager : Node {
+
+        // Called once
+        public override void _Ready()
+        {
+            InitializeFramework();
+        }
+
+        private void InitializeFramework()
+        {
+            /*
+             * Define preferences according to your needs
+             * Setting anny to null will not initialize that component
+             * Non-initialized components will be ignored by the framework
+             */
+            PreferencesFramework prefs = new()
+            {
+                /*
+                 * Attribute "types"
+                 *  - NO_LOGS: logger that does nothing with the messages it's given
+                 *  - WRITE_FILE: Write the message to a file, whose location is a relative path defined by the "dir" attribute and is named YYYYMMDD_HH-MM.log
+                 *  - NETWORKING: Similar to WRITE_FILE, but only one file exists for the server. All the client send logging requests to the server.
+                 *  - GAME_ENGINE: Uses the specific game engine logging system to log to its console
+                 *  - USER: Uses a custom logger that must be written by the user.
+                 *      You must manually add it to the framework with `Locator.Instance.get<ILogManager>().AddLogger(ILogger);`
+                 *      See documentation on how to write a custom logger
+                 *
+                 * Attribute "dir"
+                 * Define where the log files will be written. Only used when types contains WRITE_FILE or NETWORKING
+                 * The path is relative to the project's main file (*.godot or *.exe when published)
+                 */
+                logs = new() // [TEMPLATE] || `logs = null`
+                {
+                    types = new[] { ELoggerType.WRITE_FILE },
+                    dir = "/path/to/logs",
+                },
+
+                /*
+                 * Attribute "dirs"
+                 * Define where the framework will look for ui files (*.layout, *.page)
+                 * The path is relative to the project's main file (*.godot or *.exe when published)
+                 * 
+                 * Attribute "windowSize"
+                 * Will be deprecated at some point when I decide to watch the actual window size of the game
+                 * In the meantime it's used to draw the UI components and uses that as its starting point
+                 * 
+                 * Attribute "homepage"
+                 * Tells the UI Manager which page, by id, to open when the project launches.
+                 */
+                ui = new() // [TEMPLATE] || `ui = null`
+                {
+                    dirs = new[] { "/path/to/general/ui", "/path/to/project/ui" },
+                    windowSize = new(1920, 1080),
+                    homepage = "MyHomepage"
+                },
+
+                /*
+                 * Attribute "clientType"
+                 *  - OFFLINE: Used internally (some of the framework functionalities requires a networking manager, but that is subject to change)
+                 *  - SERVER: Declare this project as a server
+                 *  - CLIENT: Declare this project as a client
+                 */
+                networking = new() // [TEMPLATE] || `networking = null`
+                {
+                    clientType = ENetworkClientType.CLIENT,
+                },
+
+                /*
+                 * Attribute "type"
+                 *  - BIN: save files are written as binary
+                 *  - JSON: save files are written as json
+                 *  - XML: save files are writte as xml
+                 * 
+                 * Attribute "dir"
+                 * Define where the save files will be written
+                 * The path is relative to the project's main file (*.godot or *.exe when published)
+                 */
+                serialization = new() // [TEMPLATE] || `serialization = null`
+                {
+                    type = ESerializerType.BIN,
+                    dir = "/path/to/save/files",
+                },
+            };
+
+            // Only initialize the Framework when the game is actually running, not when it's in Editor mode
+            if (!Engine.IsEditorHint())
+            {
+                FrameworkHelper.InitializeFramework(prefs);
+            }
+
+            // But always Draw the UI components so we can visualize and debug them even in the editor
+            // You can change the path to the UI node according to your needs
+            var uiNode = GetNode("UI/Layouts"); // [TEMPLATE]
+            var ui = new UIManager(prefs, uiNode, Engine.IsEditorHint());
+        }
+
+        // Called once every frame
+        public override void _Process(double delta)
+        {
+            // TODO:
+            // FrameworkManager.Instance.Update();
+        }
+    }
+}
