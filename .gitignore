@@ -202,4 +202,8 @@ mono_crash.*.json
 .history
 .ionide
 
+### Obsidian ###
+# config dir
+.obsidian/
+
 # End of https://www.toptal.com/developers/gitignore/api/csharp,visualstudio,visualstudiocode,godot
