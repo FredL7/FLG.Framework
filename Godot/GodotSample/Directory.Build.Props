@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <AssemblyVersion>0.2.0</AssemblyVersion>
     <FileVersion>$(AssemblyVersion)</FileVersion>
     <Version>$(AssemblyVersion)</Version>
   </PropertyGroup>
