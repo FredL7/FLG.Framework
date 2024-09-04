@@ -30,7 +30,7 @@ namespace FLG.Cs.Geometry {
 
         public static int GetNbFaceFromNbRecursions(int nbRecursions) => (int)(20 * MathF.Pow(4, nbRecursions));
 
-        public static MeshInfo GenerateMeshInfo(int recursionLevel, float radius)
+        public static MeshInfo GenerateMeshInfo(int recursionLevel, float radius, bool invertFaces)
         {
             int nbFaces = GetNbFaceFromNbRecursions(recursionLevel);
             int nbPoints = nbFaces * 3;
@@ -39,7 +39,7 @@ namespace FLG.Cs.Geometry {
 
             CreateIcosahedron(vertices, faces, radius);
             faces = Recursion(recursionLevel, vertices, faces, radius);
-            return SetMeshProperties(vertices, faces);
+            return SetMeshProperties(vertices, faces, invertFaces);
         }
 
         private static void CreateIcosahedron(List<Vector3> vertices, List<TriangleIndices> faces, float radius)
@@ -148,9 +148,9 @@ namespace FLG.Cs.Geometry {
             return i;
         }
 
-        private static MeshInfo SetMeshProperties(List<Vector3> vertices, List<TriangleIndices> faces)
+        private static MeshInfo SetMeshProperties(List<Vector3> vertices, List<TriangleIndices> faces, bool invertFaces)
         {
-            List<Vector3> normalizedVertices = new(vertices.Count);
+            Vector3[] normalizedVertices = new Vector3[vertices.Count];
             for (int i = 0; i < vertices.Count; ++i)
             {
                 normalizedVertices[i] = Vector3.Normalize(vertices[i]);
@@ -160,8 +160,8 @@ namespace FLG.Cs.Geometry {
             for(int i = 0; i < faces.Count; ++i)
             {
                 triangles[i * 3 + 0] = faces[i].v1;
-                triangles[i * 3 + 1] = faces[i].v2;
-                triangles[i * 3 + 2] = faces[i].v3;
+                triangles[i * 3 + 1] = invertFaces ? faces[i].v3 : faces[i].v2;
+                triangles[i * 3 + 2] = invertFaces  ? faces[i].v2 : faces[i].v3;
             }
 
             Vector2[] uvs = new Vector2[vertices.Count];
@@ -178,8 +178,8 @@ namespace FLG.Cs.Geometry {
             return new()
             {
                 vertices = vertices.ToArray(),
-                normals = normalizedVertices.ToArray(),
-                triangles = triangles.ToArray(),
+                normals = normalizedVertices,
+                triangles = triangles,
                 uvs = uvs
             };
         }
