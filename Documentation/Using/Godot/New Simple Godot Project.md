@@ -11,6 +11,7 @@
 	- TODO: Provide helper scripts
 
 ## Visual Studio
+Skips steps 1-3 if you're not using UI
 1. Create the "commons/" folder
 	- Right-click the Solution in the solution explorer > Add > New Solution Folder
 	- Also create that folder in the file system
