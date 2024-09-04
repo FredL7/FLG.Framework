@@ -25,6 +25,7 @@ namespace FLG.Cs.Logger {
                 ELoggerType.WRITE_FILE => new LoggerWriteFile(dir),
                 ELoggerType.NETWORKING => new LoggerNetworking(),
                 ELoggerType.GAME_ENGINE => throw new ArgumentException("Game Engine logger should be added using `Locator.Instance.get<ILogManager>().AddLogger(ILogger)`"),
+                ELoggerType.USER => throw new ArgumentException("User logger should be added using `Locator.Instance.get<ILogManager>().AddLogger(ILogger)`"),
                 _ => throw new ArgumentException($"Unknown logger type: {type}"),
             };
             _loggers.Add(logger);
