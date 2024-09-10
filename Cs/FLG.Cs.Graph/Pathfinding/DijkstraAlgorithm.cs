@@ -1,40 +1,53 @@
 ﻿namespace FLG.Cs.Graph {
     internal class DijkstraAlgorithm<T> where T : INodeItem {
-        class Path
-        {
-            public int[] _steps;
-            public int FirstStep { get => _steps[1]; }
+        class Path {
+            private readonly Edge<T>[] _steps;
+            public Node<T> FirstStep { get; private set; }
+            public Node<T> LastStep { get; private set; }
+
             public int Length { get => _steps.Length; }
-            public float Distance { get; private set; }
+            public float Weight { get; private set; }
 
-            public Path(Node<T> origin)
+            public Path(Node<T> origin, Edge<T> edge)
             {
-                _steps = new int[] { origin.ID };
-                Distance = 0f;
+                _steps = new Edge<T>[] { edge };
+
+                FirstStep = edge.GetDestination(origin);
+                LastStep = FirstStep;
+                Weight = edge.Weight;
             }
 
-            public Path(Path path, Node<T> newDestination)
+            public Path(Path path, Edge<T> other)
             {
-                _steps = new int[path.Length + 1];
+                _steps = new Edge<T>[path.Length + 1];
                 Array.Copy(path._steps, _steps, path.Length);
-                _steps[path.Length] = newDestination.ID;
-            }
+                _steps[path.Length] = other;
 
-            public int Last() => _steps.Last();
+                FirstStep = path.FirstStep;
+                LastStep = other.GetDestination(path.LastStep);
+                Weight = path.Weight + other.Weight;
+            }
         }
 
-        internal void Populate(Node<T>[] nodes, int[,] adjacency, float[,] distances, int start)
+        internal static void Populate(Node<T>[] nodes, int[,] adjacency, float[,] weights, int start)
         {
             PriorityQueue<Path, float> queue = new();
-            Path path = new(nodes[start]);
-            queue.Enqueue(path, path.Length);
 
-            HashSet<Node<T>> visited = new();
+            foreach (var edge in nodes[start].Edges)
+            {
+                Path path = new(nodes[start], edge);
+                queue.Enqueue(path, path.Weight);
+            }
+
+            HashSet<Node<T>> visited = new()
+            {
+                nodes[start]
+            };
 
             while (queue.Count > 0)
             {
                 Path currentPath = queue.Dequeue();
-                Node<T> current = nodes[currentPath.Last()];
+                Node<T> current = nodes[currentPath.LastStep.ID];
 
                 if (visited.Contains(current))
                 {
@@ -42,17 +55,24 @@
                 }
                 visited.Add(current);
 
-                foreach(Edge<T> edge in current.GetEdges())
+                if (currentPath.Length == 1)
+                {
+                    Node<T> destination = currentPath.LastStep;
+                    weights[start, destination.ID] = currentPath.Weight;
+                    adjacency[start, destination.ID] = destination.ID;
+                }
+
+                foreach (Edge<T> edge in current.Edges)
                 {
                     Node<T> neighbour = edge.GetDestination(current);
-                    float distance = distances[start, current.ID] + edge.Weight;
+                    float weight = currentPath.Weight + edge.Weight;
 
-                    if (distance < distances[start, neighbour.ID])
+                    if (weight < weights[start, neighbour.ID])
                     {
-                        distances[start, neighbour.ID] = distance;
-                        Path newPath = new(path, neighbour);
-                        queue.Enqueue(newPath, distance);
-                        adjacency[start, neighbour.ID] = newPath.FirstStep;
+                        weights[start, neighbour.ID] = weight;
+                        Path newPath = new(currentPath, edge);
+                        queue.Enqueue(newPath, weight);
+                        adjacency[start, neighbour.ID] = newPath.FirstStep.ID;
                     }
                 }
             }

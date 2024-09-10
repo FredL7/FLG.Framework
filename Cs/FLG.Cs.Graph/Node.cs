@@ -1,9 +1,14 @@
-﻿namespace FLG.Cs.Graph {
-    internal class Node<T> where T : INodeItem {
+﻿using System.Xml.Linq;
+
+namespace FLG.Cs.Graph {
+    public class Node<T> where T : INodeItem {
         private readonly Graph<T> _graph;
-        private readonly List<Edge<T>> _edges;
         public int ID { get; private set; }
         public T Item { get; private set; }
+
+        private HashSet<Edge<T>> _edgesHash;
+        public List<Edge<T>> Edges { get; private set; }
+
 
         public Node(int ID, int expectedNbEdges, T item, Graph<T> graph)
         {
@@ -13,28 +18,8 @@
             item.SetNode<Node<T>, T>(this);
 
             this.ID = ID;
-            _edges = expectedNbEdges > 0 ? new List<Edge<T>>(expectedNbEdges) : new List<Edge<T>>();
-        }
-
-        public void SetNeighbour(Node<T> destination, float weight = 1f)
-        {
-            // TODO: Check in Debug only
-#if DEBUG
-            if (this == destination)
-            {
-                throw new ArgumentException("Cannot create an edge between a node and itself"); // Maybe we'd want to?
-            }
-            // TODO: Check if nodes are already neighbours?
-            // TODO: Directed
-#endif
-
-            if (!_graph.Unidirectionality)
-            {
-                throw new Exception("Graph cannot have unidirectional edges. Didi you meant to use SetNeighbours(node1, node2)?");
-            }
-
-            UnidirectionalEdge<T> edge = new(destination, weight);
-            this._edges.Add(edge);
+            _edgesHash = expectedNbEdges > 0 ? new(expectedNbEdges) : new();
+            Edges = expectedNbEdges > 0 ? new(expectedNbEdges) : new();
         }
 
         public static void SetNeighbours(Node<T> node1, Node<T> node2, float weight = 1f)
@@ -44,26 +29,44 @@
             {
                 throw new ArgumentException("Cannot create an edge between a node and itself"); // Maybe we'd want to?
             }
-            // TODO: Check if nodes are already neighbours?
-            // TODO: Directed
+            // TODO: Directed?
 #endif
+            Edge<T> edge = new(node1, node2, weight);
+            if (!node1._edgesHash.Contains(edge))
+            {
+                node1.Edges.Add(edge);
+                node1._edgesHash.Add(edge);
+            }
+            if (!node2._edgesHash.Contains(edge))
+            {
+                node2.Edges.Add(edge);
+                node2._edgesHash.Add(edge);
+            }
+        }
 
-            BidirectionalEdge<T> edge = new(node1, node2, weight);
-            node1._edges.Add(edge);
-            node2._edges.Add(edge);
+        public static void SetNeighbours(Edge<T> edge)
+        {
+            // TODO: Directed?
+            if (!edge.Node1._edgesHash.Contains(edge))
+            {
+                edge.Node1.Edges.Add(edge);
+            }
+
+            if (!edge.Node2._edgesHash.Contains(edge))
+            {
+                edge.Node2.Edges.Add(edge);
+            }
         }
 
         public Node<T>[] GetNeighbours()
         {
-            Node<T>[] neighbours = new Node<T>[_edges.Count];
+            Node<T>[] neighbours = new Node<T>[Edges.Count];
             for (int i = 0; i < neighbours.Length; i++)
             {
-                neighbours[i] = _edges[i].GetDestination(this);
+                neighbours[i] = Edges[i].GetDestination(this);
             }
             return neighbours;
         }
-
-        public List<Edge<T>> GetEdges() => _edges;
 
         public override bool Equals(object? obj)
         {

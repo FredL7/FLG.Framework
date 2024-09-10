@@ -3,12 +3,27 @@
      * Graph that uses an adjencency matrix to represent paths between nodes
      * Useful when you want to find the path between two nodes that are not direct neighbours.
      */
-    internal class MatrixGraph<T> : Graph<T> where T : INodeItem {
+    public class MatrixGraph<T> : Graph<T> where T : INodeItem {
         private readonly Pathfinder<T> _pathfinder;
 
-        public MatrixGraph(T[] items, bool unidirectionality, int nbExpectedEdges = 0) : base(items, nbExpectedEdges, unidirectionality)
+        public MatrixGraph(T[] items, bool unidirectionality = false, int nbExpectedEdges = 0) : base(items, nbExpectedEdges, unidirectionality)
         {
-            _pathfinder = new(_nodes);
+            _pathfinder = new(Nodes);
+        }
+
+        public void MakeSpanningTree(SpanningTreeAlgorithm algo, Node<T> start)
+        {
+            List<Edge<T>> edges = algo switch
+            {
+                SpanningTreeAlgorithm.Kruskal => SpanningTree<T>.KruskalAlgorithm(Nodes),
+                SpanningTreeAlgorithm.Prim => SpanningTree<T>.PrimAlgorithm(Nodes, start),
+                _ => throw new ArgumentException($"Unknown algorithm {algo}"),
+            };
+
+            foreach(Edge<T> edge in edges)
+            {
+                Node<T>.SetNeighbours(edge);
+            }
         }
 
         // This will compute all the adjencies (edges must already be defined)
@@ -16,6 +31,13 @@
         {
             _pathfinder.Populate();
         }
+
+#if DEBUG
+        public void ExportTablesToCSV(string dir)
+        {
+            _pathfinder.ExportTablesToCSV(dir);
+        }
+#endif
 
         public List<Node<T>>? GetPath(Node<T> start, Node<T> end)
         {
@@ -28,7 +50,7 @@
             List<Node<T>> path = new();
             for (int i = 0; i < pathID.Count; i++)
             {
-                path[i] = _nodes[pathID[i]];
+                path.Add(Nodes[pathID[i]]);
             }
             return path;
         }
