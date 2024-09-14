@@ -55,7 +55,21 @@
                 }
                 visited.Add(current);
 
-                if (currentPath.Length == 1)
+                if (currentPath.Weight < weights[start, current.ID])
+                {
+                    weights[start, current.ID] = currentPath.Weight;
+                    adjacency[start, current.ID] = currentPath.FirstStep.ID;
+                }
+
+                foreach (Edge<T> edge in current.Edges)
+                {
+                    Node<T> neighbour = edge.GetDestination(current);
+                    float newWeight = currentPath.Weight + edge.Weight;
+                    Path newPath = new(currentPath, edge);
+                    queue.Enqueue(newPath, newWeight);
+                }
+
+                /*if (currentPath.Length == 1)
                 {
                     Node<T> destination = currentPath.LastStep;
                     weights[start, destination.ID] = currentPath.Weight;
@@ -74,7 +88,7 @@
                         queue.Enqueue(newPath, weight);
                         adjacency[start, neighbour.ID] = newPath.FirstStep.ID;
                     }
-                }
+                }*/
             }
         }
     }
