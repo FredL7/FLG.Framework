@@ -99,6 +99,7 @@ namespace FLG.Godot.Sample {
             }
 
             // But always Draw the UI components so we can visualize and debug them even in the editor
+            // Unless you're not using UI
             // You can change the path to the UI node according to your needs
             var uiNode = GetNode("UI/Layouts"); // [TEMPLATE]
             var ui = new UIManager(prefs, uiNode, Engine.IsEditorHint());

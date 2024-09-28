@@ -22,5 +22,11 @@ namespace FLG.Godot.Helpers {
                 child.Free();
             }
         }
+
+        public static void AddChild(Node child, Node parent, Node owner)
+        {
+            parent.AddChild(child);
+            child.Owner = owner;
+        }
     }
 }

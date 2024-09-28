@@ -1,21 +1,8 @@
 ﻿using System.Numerics;
 
-using FLG.Cs.Datamodel;
-
 
 namespace FLG.Cs.Geometry {
     public static class Icosphere {
-        private struct TriangleIndices
-        {
-            public int v1, v2, v3;
-            public TriangleIndices(int v1, int v2, int v3)
-            {
-                this.v1 = v1;
-                this.v2 = v2;
-                this.v3 = v3;
-            }
-        }
-
         /*public int GetNbRecursionFromNbFaces(int nbFaces)
         {
             int x = 20;
@@ -30,19 +17,20 @@ namespace FLG.Cs.Geometry {
 
         public static int GetNbFaceFromNbRecursions(int nbRecursions) => (int)(20 * MathF.Pow(4, nbRecursions));
 
-        public static MeshInfo GenerateMeshInfo(int recursionLevel, float radius)
+        // Invert is for clockwise (invert = false) and anticlockwise (invert = true) triangle definition
+        public static MeshInfo GenerateMeshInfo(int recursionLevel, float radius, bool invert)
         {
             int nbFaces = GetNbFaceFromNbRecursions(recursionLevel);
             int nbPoints = nbFaces * 3;
             List<Vector3> vertices = new(nbPoints);
-            List<TriangleIndices> faces = new(nbFaces);
+            List<Triangle> faces = new(nbFaces);
 
             CreateIcosahedron(vertices, faces, radius);
             faces = Recursion(recursionLevel, vertices, faces, radius);
-            return SetMeshProperties(vertices, faces);
+            return SetMeshProperties(vertices, faces, invert);
         }
 
-        private static void CreateIcosahedron(List<Vector3> vertices, List<TriangleIndices> faces, float radius)
+        private static void CreateIcosahedron(List<Vector3> vertices, List<Triangle> faces, float radius)
         {
             float t = (1f + MathF.Sqrt(5f)) / 2f;
 
@@ -95,14 +83,14 @@ namespace FLG.Cs.Geometry {
             faces.Add(new(9, 8, 1));
         }
 
-        private static List<TriangleIndices> Recursion(int recursionLevel, List<Vector3> vertices, List<TriangleIndices> faces, float radius)
+        private static List<Triangle> Recursion(int recursionLevel, List<Vector3> vertices, List<Triangle> faces, float radius)
         {
             Dictionary<long, int> middlePointIndexCache = new();
-            List<TriangleIndices> newFaces = faces;
+            List<Triangle> newFaces = faces;
 
             for (int i = 0; i < recursionLevel; ++i)
             {
-                List<TriangleIndices> faces2 = new();
+                List<Triangle> faces2 = new();
                 foreach(var triangle in newFaces)
                 {
                     // replace the triangle by 4 triangles
@@ -148,21 +136,15 @@ namespace FLG.Cs.Geometry {
             return i;
         }
 
-        private static MeshInfo SetMeshProperties(List<Vector3> vertices, List<TriangleIndices> faces)
+        private static MeshInfo SetMeshProperties(List<Vector3> vertices, List<Triangle> faces, bool invert)
         {
-            List<Vector3> normalizedVertices = new(vertices.Count);
+            Vector3[] normalizedVertices = new Vector3[vertices.Count];
             for (int i = 0; i < vertices.Count; ++i)
             {
                 normalizedVertices[i] = Vector3.Normalize(vertices[i]);
             }
 
-            int[] triangles = new int[faces.Count * 3];
-            for(int i = 0; i < faces.Count; ++i)
-            {
-                triangles[i * 3 + 0] = faces[i].v1;
-                triangles[i * 3 + 1] = faces[i].v2;
-                triangles[i * 3 + 2] = faces[i].v3;
-            }
+            int[] indices = Geometry.GetIndices(faces, invert);
 
             Vector2[] uvs = new Vector2[vertices.Count];
             for (int i = 0; i < uvs.Length; ++i)
@@ -178,9 +160,10 @@ namespace FLG.Cs.Geometry {
             return new()
             {
                 vertices = vertices.ToArray(),
-                normals = normalizedVertices.ToArray(),
-                triangles = triangles.ToArray(),
-                uvs = uvs
+                normals = normalizedVertices,
+                indices = indices,
+                uvs = uvs,
+                triangles = faces.ToArray()
             };
         }
     }
