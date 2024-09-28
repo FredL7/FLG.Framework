@@ -22,6 +22,23 @@ namespace FLG.Cs.Graph {
             Edges = expectedNbEdges > 0 ? new(expectedNbEdges) : new();
         }
 
+        public void AddNeighbour(Node<T> neighbour, float weight)
+        {
+#if DEBUG
+            if (this == neighbour)
+            {
+                throw new ArgumentException("Cannot create an edge between a node and itself"); // Maybe we'd want to?
+            }
+#endif
+
+            Edge<T> edge = new(this, neighbour, weight);
+            if (!_edgesHash.Contains(edge))
+            {
+                Edges.Add(edge);
+                _edgesHash.Add(edge);
+            }
+        }
+
         public static void SetNeighbours(Node<T> node1, Node<T> node2, float weight = 1f)
         {
 #if DEBUG

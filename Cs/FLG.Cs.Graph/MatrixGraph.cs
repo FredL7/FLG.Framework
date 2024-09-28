@@ -6,24 +6,24 @@
     public class MatrixGraph<T> : Graph<T> where T : INodeItem {
         private readonly Pathfinder<T> _pathfinder;
 
-        public MatrixGraph(T[] items, bool unidirectionality = false, int nbExpectedEdges = 0) : base(items, nbExpectedEdges, unidirectionality)
+        public MatrixGraph(T[] items, int nbExpectedEdges = 0) : base(items, nbExpectedEdges)
         {
             _pathfinder = new(Nodes);
         }
 
-        public void MakeSpanningTree(SpanningTreeAlgorithm algo, Node<T> start)
+        public MatrixGraph(MatrixGraph<T> graph) : base(graph)
         {
-            List<Edge<T>> edges = algo switch
+            _pathfinder = new(Nodes);
+        }
+
+        public List<Edge<T>> ExtractSpanningTree(SpanningTreeAlgorithm algo, int startID)
+        {
+            return algo switch
             {
-                SpanningTreeAlgorithm.Kruskal => SpanningTree<T>.KruskalAlgorithm(Nodes),
-                SpanningTreeAlgorithm.Prim => SpanningTree<T>.PrimAlgorithm(Nodes, start),
+                SpanningTreeAlgorithm.Kruskal => SpanningTree<T>.KruskalAlgorithm(this),
+                SpanningTreeAlgorithm.Prim => SpanningTree<T>.PrimAlgorithm(this, startID),
                 _ => throw new ArgumentException($"Unknown algorithm {algo}"),
             };
-
-            foreach(Edge<T> edge in edges)
-            {
-                Node<T>.SetNeighbours(edge);
-            }
         }
 
         // This will compute all the adjencies (edges must already be defined)

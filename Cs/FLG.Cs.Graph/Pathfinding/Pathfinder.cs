@@ -8,6 +8,7 @@ namespace FLG.Cs.Graph {
         protected Node<T>[] _nodes;
         protected int[,] _adjacency;
         protected float[,] _weights;
+
         // TODO: (Debugging only?) Helper to dump _adjacency to csv file
 
         public Pathfinder(Node<T>[] nodes)

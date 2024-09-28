@@ -21,7 +21,7 @@ namespace FLG.Cs.Graph {
 
             Return T // T is the spanning tree
         */
-        internal static List<Edge<T>> KruskalAlgorithm(Node<T>[] nodes)
+        internal static List<Edge<T>> KruskalAlgorithm(MatrixGraph<T> graph)
         {
             throw new NotImplementedException();
 
@@ -42,17 +42,15 @@ namespace FLG.Cs.Graph {
             */
         }
 
-        internal static List<Edge<T>> PrimAlgorithm(Node<T>[] nodes, Node<T> start)
+        internal static List<Edge<T>> PrimAlgorithm(MatrixGraph<T> graph, int startID)
         {
             PriorityQueue<Edge<T>, float> queue = new();
-            HashSet<Node<T>> visited = new(); // TODO: Could be replaced by bool[] since I have an id
+            HashSet<Node<T>> visited = new(); // TODO: Could be replaced by bool[] since I have an id for each node
             List<Edge<T>> edges = new();
 
-            visited.Add(start);
-            for (int j = 1; j < nodes.Length; ++j)
+            visited.Add(graph.Nodes[startID]);
+            foreach(var edge in graph.Nodes[startID].Edges)
             {
-                float weight = nodes[0].Item.WeightFunction(nodes[j].Item);
-                Edge<T> edge = new(nodes[0], nodes[j], weight);
                 queue.Enqueue(edge, edge.Weight);
             }
 
@@ -65,12 +63,11 @@ namespace FLG.Cs.Graph {
                     edges.Add(current);
                     visited.Add(destination);
 
-                    foreach(Node<T> node in nodes)
+                    foreach(var edge in graph.Nodes[destination.ID].Edges)
                     {
-                        if (!visited.Contains(node))
+                        Node<T> next = edge.GetDestination(graph.Nodes[destination.ID]);
+                        if (!visited.Contains(next))
                         {
-                            float distance = destination.Item.WeightFunction(node.Item);
-                            Edge<T> edge = new(destination, node, distance);
                             queue.Enqueue(edge, edge.Weight);
                         }
                     }

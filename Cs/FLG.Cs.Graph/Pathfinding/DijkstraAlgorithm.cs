@@ -1,6 +1,12 @@
 ﻿namespace FLG.Cs.Graph {
+
+    /*
+     * Populate the whole graph at once.
+     * Parse all origin-destination pairs once, which might take a long time,
+     * but getting paths will then always be fast
+     */
     internal class DijkstraAlgorithm<T> where T : INodeItem {
-        class Path {
+        private class Path {
             private readonly Edge<T>[] _steps;
             public Node<T> FirstStep { get; private set; }
             public Node<T> LastStep { get; private set; }
@@ -47,26 +53,24 @@
             while (queue.Count > 0)
             {
                 Path currentPath = queue.Dequeue();
-                Node<T> current = nodes[currentPath.LastStep.ID];
+                Node<T> currentNode = nodes[currentPath.LastStep.ID];
 
-                if (visited.Contains(current))
+                if (visited.Contains(currentNode))
                 {
                     continue;
                 }
-                visited.Add(current);
+                visited.Add(currentNode);
 
-                if (currentPath.Weight < weights[start, current.ID])
+                if (currentPath.Weight < weights[start, currentNode.ID])
                 {
-                    weights[start, current.ID] = currentPath.Weight;
-                    adjacency[start, current.ID] = currentPath.FirstStep.ID;
+                    weights[start, currentNode.ID] = currentPath.Weight;
+                    adjacency[start, currentNode.ID] = currentPath.FirstStep.ID;
                 }
 
-                foreach (Edge<T> edge in current.Edges)
+                foreach (Edge<T> edge in currentNode.Edges)
                 {
-                    Node<T> neighbour = edge.GetDestination(current);
-                    float newWeight = currentPath.Weight + edge.Weight;
                     Path newPath = new(currentPath, edge);
-                    queue.Enqueue(newPath, newWeight);
+                    queue.Enqueue(newPath, newPath.Weight);
                 }
 
                 /*if (currentPath.Length == 1)

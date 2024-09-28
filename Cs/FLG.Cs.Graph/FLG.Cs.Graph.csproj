@@ -6,4 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Pathfinding\AStarAlgorithm.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Pathfinding\AStarAlgorithm.cs" />
+  </ItemGroup>
+
 </Project>

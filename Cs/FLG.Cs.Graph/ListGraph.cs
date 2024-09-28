@@ -5,6 +5,6 @@
      */
     public class ListGraph<T> : Graph<T> where T : INodeItem {
         // TODO: Get nth neighbour(s)
-        public ListGraph(T[] items, bool unidirectionality = true) : base(items, 1, unidirectionality) { }
+        public ListGraph(T[] items) : base(items, 1) { }
     }
 }
