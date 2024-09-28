@@ -31,7 +31,7 @@ Skips steps 1-3 if you're not using UI
 
 ## Godot Project
 1. Import the `GameManager.cs.tmpl` and rename it without the `.tmpl` part
-2. Create two new Root Node
+2. Create two new Root Node (or only the first if you're not using UI)
 	1. The first of type 3D Scene, this will be you main scene node.
 		- Add the `GameManager` script to it
 	2. The second of type User Interface (Control), this will be the UI node

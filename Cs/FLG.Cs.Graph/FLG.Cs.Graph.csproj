@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FLG.Cs.Math\FLG.Cs.Math.csproj" />
-    <ProjectReference Include="..\FLG.Cs.UI\FLG.Cs.UI.csproj" />
+    <Compile Remove="Pathfinding\AStarAlgorithm.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Pathfinding\AStarAlgorithm.cs" />
   </ItemGroup>
 
 </Project>

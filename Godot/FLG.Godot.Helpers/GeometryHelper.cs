@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-using FLG.Cs.Datamodel;
+using FLG.Cs.Geometry;
 
 using gd = Godot;
 
@@ -15,7 +15,7 @@ namespace FLG.Godot.Helpers {
             arrays[(int)Mesh.ArrayType.Vertex] = Array.ConvertAll(meshInfo.vertices, v => new Vector3(v.X, v.Y, v.Z));
             arrays[(int)Mesh.ArrayType.Normal] = Array.ConvertAll(meshInfo.normals, n => new Vector3(n.X, n.Y, n.Z));
             arrays[(int)Mesh.ArrayType.TexUV] = Array.ConvertAll(meshInfo.uvs, uv => new Vector2(uv.X, uv.Y));
-            arrays[(int)Mesh.ArrayType.Index] = meshInfo.triangles;
+            arrays[(int)Mesh.ArrayType.Index] = meshInfo.indices;
 
             arrayMesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, arrays);
             return new MeshInstance3D

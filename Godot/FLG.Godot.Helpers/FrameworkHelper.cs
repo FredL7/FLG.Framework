@@ -2,7 +2,6 @@
 
 using FLG.Cs.Datamodel;
 using FLG.Cs.Framework;
-using FLG.Cs.Model;
 
 namespace FLG.Godot.Helpers {
     public static class FrameworkHelper {
@@ -40,7 +39,7 @@ namespace FLG.Godot.Helpers {
             if (!result) GD.PrintErr(result.GetMessage());
         }
 
-        private static string GlobalizePathResources(string relativePath) => ProjectSettings.GlobalizePath("res://" + relativePath);
-        private static string GlobalizePathUser(string relativePath) => ProjectSettings.GlobalizePath("user://" + relativePath);
+        public static string GlobalizePathResources(string relativePath) => ProjectSettings.GlobalizePath("res://" + relativePath);
+        public static string GlobalizePathUser(string relativePath) => ProjectSettings.GlobalizePath("user://" + relativePath);
     }
 }
