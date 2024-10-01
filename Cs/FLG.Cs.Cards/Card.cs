@@ -1,7 +1,5 @@
-﻿using FLG.Cs.Datamodel;
-
-namespace FLG.Cs.Cards {
-    internal class Card: ICard {
+﻿namespace FLG.Cs.Cards {
+    public class Card {
         public string Name { get; private set; }
         public int Number { get; private set; }
         public string Color { get; private set; }
