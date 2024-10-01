@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FLG.Cs.Datamodel\FLG.Cs.Datamodel.csproj" />
+    <ProjectReference Include="..\FLG.Cs.FLGMath\FLG.Cs.FLGMath.csproj" />
   </ItemGroup>
 
 </Project>

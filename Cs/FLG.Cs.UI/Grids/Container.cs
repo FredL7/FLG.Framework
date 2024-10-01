@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Numerics;
 using System.Xml;
 using FLG.Cs.Datamodel;
 using FLG.Cs.FLGMath;
@@ -32,7 +31,7 @@ namespace FLG.Cs.UI.Grids {
         {
             var children = childrens[0]; // Assert only 1 child
             Spacing margin = children.RectXform.Margin;
-            Vector2 position = new Vector2(margin.Left, margin.Top);
+            FLGVector2 position = new (margin.Left, margin.Top);
             Size size = new Size(Dimensions.Width - (margin.Left + margin.Right), Dimensions.Height - (margin.Top + margin.Bottom));
             children.RectXform.SetSizesAndPosition(size, position);
         }

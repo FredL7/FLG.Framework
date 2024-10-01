@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace FLG.Cs.Graph {
+﻿namespace FLG.Cs.Graph {
     public enum SpanningTreeAlgorithm
     {
         Kruskal, Prim

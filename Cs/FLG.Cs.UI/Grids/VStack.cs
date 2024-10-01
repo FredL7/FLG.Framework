@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using System.Xml;
+﻿using System.Xml;
 
 using FLG.Cs.Datamodel;
 using FLG.Cs.FLGMath;
@@ -23,14 +22,14 @@ namespace FLG.Cs.UI.Grids {
         protected override float GetStackDimensionMain(Size stackDimensions) => stackDimensions.Height;
         protected override float GetStackDimensionSecondary(Size stackDimensions) => stackDimensions.Width;
 
-        protected override Vector2[] GetFinalPositions(float[] mainMargins, float[] secondaryMargins, float[] mainDimensions)
+        protected override FLGVector2[] GetFinalPositions(float[] mainMargins, float[] secondaryMargins, float[] mainDimensions)
         {
-            Vector2[] positions = new Vector2[mainDimensions.Length];
+            FLGVector2[] positions = new FLGVector2[mainDimensions.Length];
             var accumulate = 0f;
             for (int i = 0; i < positions.Length; ++i)
             {
                 float mainDimensionDelta = i == 0 ? 0 : mainDimensions[i - 1];
-                positions[i] = new Vector2(secondaryMargins[i], accumulate + mainMargins[i] + mainDimensionDelta);
+                positions[i] = new (secondaryMargins[i], accumulate + mainMargins[i] + mainDimensionDelta);
                 accumulate += mainMargins[i] + mainDimensionDelta;
             }
             return positions;

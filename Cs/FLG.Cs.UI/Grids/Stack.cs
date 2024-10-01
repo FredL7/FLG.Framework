@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Numerics;
 using System.Xml;
 
 using FLG.Cs.Datamodel;
@@ -53,7 +52,7 @@ namespace FLG.Cs.UI.Grids {
             var secondaryMargins = secondaryDimensionsAndMargins.Item2;
 
             Size[] sizes = GetFinalSizes(mainDimensions, secondaryDimensions);
-            Vector2[] positions = GetFinalPositions(mainMargins, secondaryMargins, mainDimensions);
+            FLGVector2[] positions = GetFinalPositions(mainMargins, secondaryMargins, mainDimensions);
 
             for (int i = 0; i < orderedChildrens.Length; ++i)
                 orderedChildrens[i].RectXform.SetSizesAndPosition(sizes[i], positions[i]);
@@ -68,7 +67,7 @@ namespace FLG.Cs.UI.Grids {
         protected abstract float GetStackDimensionMain(Size stackDimensions);
         protected abstract float GetStackDimensionSecondary(Size stackDimensions);
         protected abstract Size[] GetFinalSizes(float[] mainDimensions, float[] secondaryDimensions);
-        protected abstract Vector2[] GetFinalPositions(float[] mainMargins, float[] secondaryMargins, float[] mainDimensions);
+        protected abstract FLGVector2[] GetFinalPositions(float[] mainMargins, float[] secondaryMargins, float[] mainDimensions);
 
         private ILayoutElement[] OrderChildrens(List<ILayoutElement> childrens)
         {
