@@ -2,7 +2,7 @@
 using System.Xml;
 
 using FLG.Cs.Datamodel;
-using FLG.Cs.Math;
+using FLG.Cs.FLGMath;
 
 
 namespace FLG.Cs.UI.Grids {

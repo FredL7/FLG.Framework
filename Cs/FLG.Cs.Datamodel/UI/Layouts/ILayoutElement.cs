@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-using FLG.Cs.Math;
+using FLG.Cs.FLGMath;
 
 
 namespace FLG.Cs.Datamodel {

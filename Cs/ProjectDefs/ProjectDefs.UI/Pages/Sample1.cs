@@ -1,5 +1,7 @@
 using FLG.Cs.Datamodel;
+using FLG.Cs.FLGMath;
 using FLG.Cs.ServiceLocator;
+
 
 public class Sample1 : IPage {
     private const string PAGE_ID = "Sample1";

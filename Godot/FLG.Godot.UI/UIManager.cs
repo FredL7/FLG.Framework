@@ -2,7 +2,7 @@
 
 using FLG.Cs.Datamodel;
 using FLG.Cs.Logger;
-using FLG.Cs.Math;
+using FLG.Cs.FLGMath;
 using FLG.Cs.ServiceLocator;
 using FLG.Cs.UI;
 using FLG.Godot.Framework;

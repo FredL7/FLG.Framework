@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 
 
-namespace FLG.Cs.Math {
+namespace FLG.Cs.FLGMath {
     /*
     public class XForm2D {
         public Vector2 Position { get; set; }

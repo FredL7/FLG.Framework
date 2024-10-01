@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FLG.Cs.Framework;
 using FLG.Cs.Datamodel;
 using FLG.Cs.ServiceLocator;
-using FLG.Cs.Math;
+using FLG.Cs.FLGMath;
 using FLG.Cs.Tests.Commons;
 
 

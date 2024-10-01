@@ -2,7 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Numerics;
 
 
-namespace FLG.Cs.Math.Test {
+namespace FLG.Cs.FLGMath.Test {
     [TestClass]
     public class MathUnitTests {
         [TestMethod]
