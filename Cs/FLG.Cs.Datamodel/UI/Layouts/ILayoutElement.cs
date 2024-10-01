@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-using FLG.Cs.Math;
+﻿using FLG.Cs.FLGMath;
 
 
 namespace FLG.Cs.Datamodel {
@@ -11,7 +9,7 @@ namespace FLG.Cs.Datamodel {
         public ELayoutElement Type { get; }
         public bool IsTarget { get; }
         public RectXform RectXform { get; }
-        public Vector2 Position { get; }
+        public FLGVector2 Position { get; }
         public Size Dimensions { get; }
         public Size Size { get; }
         public int Order { get; }

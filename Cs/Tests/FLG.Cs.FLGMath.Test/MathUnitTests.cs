@@ -1,8 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Numerics;
 
 
-namespace FLG.Cs.Math.Test {
+namespace FLG.Cs.FLGMath.Test {
     [TestClass]
     public class MathUnitTests {
         [TestMethod]
@@ -45,10 +44,10 @@ namespace FLG.Cs.Math.Test {
             RectXform rectXform = new(margins, padding);
 
             Size bounds = new(250f, 400f);
-            Vector2 position = new(20f, 760f);
+            FLGVector2 position = new(20f, 760f);
             rectXform.SetSizesAndPosition(bounds, position);
 
-            Vector2 expectedWrapprPosition = new(20f + 35f, 760f + 30f);
+            FLGVector2 expectedWrapprPosition = new(20f + 35f, 760f + 30f);
             Assert.IsTrue(rectXform.GetWrapperPosition().Equals(expectedWrapprPosition));
 
             Size expectedDimensions = new(250f - (25f + 35f), 400f - (30f + 40f));

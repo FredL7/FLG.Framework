@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+﻿using FLG.Cs.FLGMath;
 
 
 namespace FLG.Cs.Geometry {
@@ -22,7 +22,7 @@ namespace FLG.Cs.Geometry {
         {
             int nbFaces = GetNbFaceFromNbRecursions(recursionLevel);
             int nbPoints = nbFaces * 3;
-            List<Vector3> vertices = new(nbPoints);
+            List<FLGVector3> vertices = new(nbPoints);
             List<Triangle> faces = new(nbFaces);
 
             CreateIcosahedron(vertices, faces, radius);
@@ -30,7 +30,7 @@ namespace FLG.Cs.Geometry {
             return SetMeshProperties(vertices, faces, invert);
         }
 
-        private static void CreateIcosahedron(List<Vector3> vertices, List<Triangle> faces, float radius)
+        private static void CreateIcosahedron(List<FLGVector3> vertices, List<Triangle> faces, float radius)
         {
             float t = (1f + MathF.Sqrt(5f)) / 2f;
 
@@ -51,7 +51,7 @@ namespace FLG.Cs.Geometry {
 
             for (int i = 0; i < vertices.Count; ++i)
             {
-                vertices[i] = Vector3.Normalize(vertices[i]) * radius;
+                vertices[i] = FLGVector3.Normalize(vertices[i]) * radius;
             }
 
             // 5 Faces around point 0
@@ -83,7 +83,7 @@ namespace FLG.Cs.Geometry {
             faces.Add(new(9, 8, 1));
         }
 
-        private static List<Triangle> Recursion(int recursionLevel, List<Vector3> vertices, List<Triangle> faces, float radius)
+        private static List<Triangle> Recursion(int recursionLevel, List<FLGVector3> vertices, List<Triangle> faces, float radius)
         {
             Dictionary<long, int> middlePointIndexCache = new();
             List<Triangle> newFaces = faces;
@@ -110,7 +110,7 @@ namespace FLG.Cs.Geometry {
             return newFaces;
         }
 
-        private static int GetMiddlePoint(int p1, int p2, ref List<Vector3> vertices, ref Dictionary<long, int> cache, float radius)
+        private static int GetMiddlePoint(int p1, int p2, ref List<FLGVector3> vertices, ref Dictionary<long, int> cache, float radius)
         {
             // first check if we have it already in the cache
             bool firstIsSmaller = p1 < p2;
@@ -125,32 +125,32 @@ namespace FLG.Cs.Geometry {
             }
 
             // Not in cache, compute it
-            Vector3 point1 = vertices[p1];
-            Vector3 point2 = vertices[p2];
-            Vector3 middle = (point1 + point2) / 2f;
+            FLGVector3 point1 = vertices[p1];
+            FLGVector3 point2 = vertices[p2];
+            FLGVector3 middle = (point1 + point2) / 2f;
 
             int i = vertices.Count;
-            vertices.Add(Vector3.Normalize(middle) * radius);
+            vertices.Add(FLGVector3.Normalize(middle) * radius);
             cache.Add(key, i);
 
             return i;
         }
 
-        private static MeshInfo SetMeshProperties(List<Vector3> vertices, List<Triangle> faces, bool invert)
+        private static MeshInfo SetMeshProperties(List<FLGVector3> vertices, List<Triangle> faces, bool invert)
         {
-            Vector3[] normalizedVertices = new Vector3[vertices.Count];
+            FLGVector3[] normalizedVertices = new FLGVector3[vertices.Count];
             for (int i = 0; i < vertices.Count; ++i)
             {
-                normalizedVertices[i] = Vector3.Normalize(vertices[i]);
+                normalizedVertices[i] = FLGVector3.Normalize(vertices[i]);
             }
 
             int[] indices = Geometry.GetIndices(faces, invert);
 
-            Vector2[] uvs = new Vector2[vertices.Count];
+            FLGVector2[] uvs = new FLGVector2[vertices.Count];
             for (int i = 0; i < uvs.Length; ++i)
             {
                 var unitVector = normalizedVertices[i];
-                Vector2 icouv = new(
+                FLGVector2 icouv = new(
                     (MathF.Atan2(unitVector.X, unitVector.Z) + MathF.PI) / MathF.PI / 2,
                     (MathF.Acos(unitVector.Y) + MathF.PI) / MathF.PI - 1.0f
                 );

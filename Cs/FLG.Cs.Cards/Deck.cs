@@ -1,5 +1,4 @@
-﻿using FLG.Cs.Datamodel;
-using FLG.Cs.Utils;
+﻿using FLG.Cs.Utils;
 
 /* Consider:
  *   - Scry
@@ -10,14 +9,14 @@ using FLG.Cs.Utils;
  *   - Shuffle graveyard into library when library empty
  */
 namespace FLG.Cs.Cards {
-    public class Deck : IDeck {
-        private List<ICard> _cards;
+    public class Deck {
+        private List<Card> _cards;
 
-        private List<ICard> _library;
-        private List<List<ICard>> _hand;
-        private List<ICard> _graveyard;
+        private List<Card> _library;
+        private List<List<Card>> _hand;
+        private List<Card> _graveyard;
 
-        public List<ICard> GetHand(int playerIndex) => _hand[playerIndex];
+        public List<Card> GetHand(int playerIndex = 0) => _hand[playerIndex];
 
         public Deck(int nbPlayers = 1)
         {
@@ -30,23 +29,23 @@ namespace FLG.Cs.Cards {
                 _hand.Add(new());
         }
 
-        internal void SetCards(List<ICard> cards)
+        internal void SetCards(List<Card> cards)
         {
             _cards = cards;
             Reset();
         }
 
-        public ICard DrawTop(int playerIndex)
+        public Card DrawTop(int playerIndex = 0)
         {
-            ICard card = _library.Last();
+            Card card = _library.Last();
             _library.RemoveAt(_library.Count - 1);
             _hand[playerIndex].Add(card);
             return card;
         }
 
-        public List<ICard> DrawMultiple(uint n, int playerIndex)
+        public List<Card> DrawMultiple(uint n, int playerIndex = 0)
         {
-            List<ICard> cards = new((Int32)n);
+            List<Card> cards = new((Int32)n);
 
             for (int i = 0; i < n; ++i)
             {
@@ -62,13 +61,13 @@ namespace FLG.Cs.Cards {
             CollectionUtils.Shuffle(_library);
         }
 
-        public void Discard(ICard card, int playerIndex)
+        public void Discard(Card card, int playerIndex = 0)
         {
             _hand[playerIndex].Remove(card);
             _graveyard.Add(card);
         }
 
-        public ICard Search(string name, int playerIndex, bool searchEverywhere)
+        public Card Search(string name, int playerIndex = 0, bool searchEverywhere = false)
         {
             var card = _library.Find(x => x.Name == name);
             if (card != null)
@@ -104,7 +103,7 @@ namespace FLG.Cs.Cards {
 
         public int CountCards() => _cards.Count;
         public int CountLibrary() => _library.Count;
-        public int CountHand(int playerIndex) => _hand[playerIndex].Count;
+        public int CountHand(int playerIndex = 0) => _hand[playerIndex].Count;
         public int CountGraveyard() => _graveyard.Count;
     }
 }

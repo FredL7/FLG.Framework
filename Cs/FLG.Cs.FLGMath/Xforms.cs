@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 
 
-namespace FLG.Cs.Math {
+namespace FLG.Cs.FLGMath {
     /*
     public class XForm2D {
         public Vector2 Position { get; set; }
@@ -104,14 +104,14 @@ namespace FLG.Cs.Math {
     }
 
     public class RectXform {
-        private Vector2 _position;
+        private FLGVector2 _position;
         private Size _dimensions; // Content size
         private Size _bounds; // Includes padding
 
         public Spacing Margin { get; private set; }
         public Spacing Padding { get; private set; }
 
-        public Vector2 GetWrapperPosition() => _position + new Vector2(Padding.Left, Padding.Top);
+        public FLGVector2 GetWrapperPosition() => _position + new FLGVector2(Padding.Left, Padding.Top);
         public Size GetDimensions() => _dimensions;
 
         public RectXform() { }
@@ -124,7 +124,7 @@ namespace FLG.Cs.Math {
             Padding = padding;
         }
 
-        public void SetSizesAndPosition(Size bounds, Vector2 position)
+        public void SetSizesAndPosition(Size bounds, FLGVector2 position)
         {
             _bounds = bounds;
             ComputeDimensions();

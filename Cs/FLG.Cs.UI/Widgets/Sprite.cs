@@ -1,7 +1,7 @@
 ﻿using System.Xml;
 
 using FLG.Cs.Datamodel;
-using FLG.Cs.Math;
+using FLG.Cs.FLGMath;
 using FLG.Cs.UI.Layouts;
 
 

@@ -1,10 +1,11 @@
-﻿using System.Numerics;
+﻿using FLG.Cs.FLGMath;
+
 
 namespace FLG.Cs.Geometry {
     public struct MeshInfo {
-        public Vector3[] vertices;
-        public Vector3[] normals;
-        public Vector2[] uvs;
+        public FLGVector3[] vertices;
+        public FLGVector3[] normals;
+        public FLGVector2[] uvs;
         public int[] indices;
         public Triangle[] triangles;
     }

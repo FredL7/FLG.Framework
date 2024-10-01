@@ -2,16 +2,15 @@
 
 using FLG.Cs.Datamodel;
 using FLG.Cs.Logger;
-using FLG.Cs.Math;
+using FLG.Cs.FLGMath;
 using FLG.Cs.ServiceLocator;
 using FLG.Cs.UI;
 using FLG.Godot.Framework;
 using FLG.Godot.Helpers;
 
-using sysV2 = System.Numerics.Vector2;
-using gdV2 = Godot.Vector2;
 using flgLabel = FLG.Godot.UI.Label;
 using flgButton = FLG.Godot.UI.Button;
+
 
 namespace FLG.Godot.UI {
     public class UIManager : IUIObserver {
@@ -134,7 +133,7 @@ namespace FLG.Godot.UI {
                     var parentForAddNode = parentNode;
                     if (target != ILayoutElement.DEFAULT_CHILDREN_TARGET)
                     {
-                        var targetNode = AddNode(target, sysV2.Zero, layoutElementParent.Dimensions, parentNode);
+                        var targetNode = AddNode(target, FLGVector2.Zero, layoutElementParent.Dimensions, parentNode);
 
                         if (!_pages.ContainsKey(target))
                             _pages.Add(target, new List<Node>());
@@ -161,13 +160,13 @@ namespace FLG.Godot.UI {
             return AddNode(name, position, dimensions, parent);
         }
 
-        private Node AddNode(string name, sysV2 position, Size dimensions, Node parent)
+        private Node AddNode(string name, FLGVector2 position, Size dimensions, Node parent)
         {
             Control node = new()
             {
                 Name = name,
-                Position = new gdV2(position.X, position.Y),
-                Size = new gdV2(dimensions.Width, dimensions.Height),
+                Position = new Vector2(position.X, position.Y),
+                Size = new Vector2(dimensions.Width, dimensions.Height),
             };
             parent.AddChild(node);
             node.Owner = _node.GetTree().EditedSceneRoot;

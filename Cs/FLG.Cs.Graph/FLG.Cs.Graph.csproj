@@ -14,4 +14,8 @@
     <None Include="Pathfinding\AStarAlgorithm.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FLG.Cs.FLGMath\FLG.Cs.FLGMath.csproj" />
+  </ItemGroup>
+
 </Project>

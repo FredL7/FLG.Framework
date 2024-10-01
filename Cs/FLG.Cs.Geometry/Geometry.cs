@@ -28,9 +28,9 @@
                 var edges = new[]
                 {
                     // key (vA, vB) where vA < vB)
-                    (System.Math.Min(v1, v2), System.Math.Max(v1, v2)),
-                    (System.Math.Min(v2, v3), System.Math.Max(v2, v3)),
-                    (System.Math.Min(v1, v3), System.Math.Max(v1, v3)),
+                    (Math.Min(v1, v2), Math.Max(v1, v2)),
+                    (Math.Min(v2, v3), Math.Max(v2, v3)),
+                    (Math.Min(v1, v3), Math.Max(v1, v3)),
                 };
 
                 foreach (var edge in edges)

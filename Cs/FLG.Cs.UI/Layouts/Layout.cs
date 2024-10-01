@@ -1,7 +1,5 @@
-﻿using System.Numerics;
-
-using FLG.Cs.Datamodel;
-using FLG.Cs.Math;
+﻿using FLG.Cs.Datamodel;
+using FLG.Cs.FLGMath;
 
 
 namespace FLG.Cs.UI.Layouts {
@@ -54,7 +52,7 @@ namespace FLG.Cs.UI.Layouts {
 
         internal void ComputeRectXforms(Size windowSize)
         {
-            _root.RectXform.SetSizesAndPosition(windowSize, Vector2.Zero);
+            _root.RectXform.SetSizesAndPosition(windowSize, FLGVector2.Zero);
             _root.ComputeRectXform();
         }
     }

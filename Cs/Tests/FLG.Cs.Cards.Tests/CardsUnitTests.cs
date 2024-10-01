@@ -1,5 +1,6 @@
 using System.Text;
 
+using FLG.Cs.Cards;
 using FLG.Cs.Datamodel;
 using FLG.Cs.ServiceLocator;
 using FLG.Cs.Framework;
@@ -12,7 +13,7 @@ namespace FLG.Cs.Cards.Tests {
         [TestMethod]
         public void CardsTest()
         {
-            IDeck deck = new StandardDeck52();
+            Deck deck = new StandardDeck52();
 
             deck.Shuffle();
             Assert.IsTrue(deck.CountCards() == 52);
@@ -38,7 +39,7 @@ namespace FLG.Cs.Cards.Tests {
         [TestMethod]
         public void MultipleAces()
         {
-            IDeck deck = new StandardDeck52();
+            Deck deck = new StandardDeck52();
             deck.Search("King of SPADES");
             deck.Search("Ace of SPADES");
             deck.Search("Ace of HEARTS");
@@ -73,11 +74,11 @@ namespace FLG.Cs.Cards.Tests {
             while (playerWins < 3 && dealerWins < 3)
             {
                 logger.Debug($"=== Round {round++} ===");
-                IDeck deck = new StandardDeck52();
+                Deck deck = new StandardDeck52();
                 deck.Shuffle();
 
-                List<ICard> playerHand = deck.DrawMultiple(2);
-                List<ICard> dealerHand = deck.DrawMultiple(2);
+                List<Card> playerHand = deck.DrawMultiple(2);
+                List<Card> dealerHand = deck.DrawMultiple(2);
 
                 int playerSum = HandTotal(playerHand);
                 int dealerSum = HandTotal(dealerHand);
@@ -141,7 +142,7 @@ namespace FLG.Cs.Cards.Tests {
             logger.Debug($"Player: {playerWins} | dealer: {dealerWins}");
         }
 
-        private static string HandPrettyString(List<ICard> hand, int total)
+        private static string HandPrettyString(List<Card> hand, int total)
         {
             StringBuilder sb = new();
             foreach (var card in hand)
@@ -159,7 +160,7 @@ namespace FLG.Cs.Cards.Tests {
             return sb.ToString();
         }
 
-        private static int HandTotal(List<ICard> hand)
+        private static int HandTotal(List<Card> hand)
         {
             int total = 0;
             int aces = 0;

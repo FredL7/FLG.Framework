@@ -2,7 +2,7 @@
 
 using FLG.Cs.Datamodel;
 using FLG.Cs.IO;
-using FLG.Cs.Math;
+using FLG.Cs.FLGMath;
 using FLG.Cs.Model;
 using FLG.Cs.UI.Grids;
 using FLG.Cs.UI.Layouts;

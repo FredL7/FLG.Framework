@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.Math {
+﻿namespace FLG.Cs.FLGMath {
     public class NormalDistribution {
         private float mu;       // mean
         private float sigma;    // standard deviation
