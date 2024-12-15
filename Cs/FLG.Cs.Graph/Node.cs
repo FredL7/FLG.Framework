@@ -1,19 +1,14 @@
-﻿using System.Xml.Linq;
-
-namespace FLG.Cs.Graph {
+﻿namespace FLG.Cs.Graph {
     public class Node<T> where T : INodeItem {
-        private readonly Graph<T> _graph;
         public int ID { get; private set; }
         public T Item { get; private set; }
 
-        private HashSet<Edge<T>> _edgesHash;
+        private readonly HashSet<Edge<T>> _edgesHash;
         public List<Edge<T>> Edges { get; private set; }
 
 
-        public Node(int ID, int expectedNbEdges, T item, Graph<T> graph)
+        public Node(int ID, int expectedNbEdges, T item)
         {
-            _graph = graph;
-
             Item = item;
             item.SetNode<Node<T>, T>(this);
 

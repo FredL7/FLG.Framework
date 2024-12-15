@@ -1,7 +1,9 @@
 ﻿using System.Xml;
 
-using FLG.Cs.Datamodel;
-using FLG.Cs.FLGMath;
+using FLG.Cs.Datamodel.UI.Grids;
+using FLG.Cs.Datamodel.UI.Layouts;
+using FLG.Cs.Datamodel.UI;
+using FLG.Cs.Math;
 
 
 namespace FLG.Cs.UI.Grids {
@@ -29,7 +31,7 @@ namespace FLG.Cs.UI.Grids {
             for (int i = 0; i < positions.Length; ++i)
             {
                 float mainDimensionDelta = i == 0 ? 0 : mainDimensions[i - 1];
-                positions[i] = new (secondaryMargins[i], accumulate + mainMargins[i] + mainDimensionDelta);
+                positions[i] = new(secondaryMargins[i], accumulate + mainMargins[i] + mainDimensionDelta);
                 accumulate += mainMargins[i] + mainDimensionDelta;
             }
             return positions;

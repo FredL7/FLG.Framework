@@ -1,4 +1,6 @@
-﻿using FLG.Cs.Datamodel;
+﻿using FLG.Cs.Datamodel.Commands;
+using FLG.Cs.Datamodel.Logger;
+using FLG.Cs.Datamodel.ServiceLocator;
 using FLG.Cs.ServiceLocator;
 
 
@@ -86,7 +88,7 @@ namespace FLG.Cs.Commands {
             }
         }
 
-        private void ExecuteCommand(CommandData commandData)
+        private static void ExecuteCommand(CommandData commandData)
         {
             var logger = Locator.Instance.Get<ILogManager>();
             string args = string.Join(", ", commandData.args.Select(x => $"{x.type}: {x.value}"));

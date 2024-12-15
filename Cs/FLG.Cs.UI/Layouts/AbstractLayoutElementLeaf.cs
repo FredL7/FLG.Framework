@@ -1,6 +1,7 @@
-﻿using System.Xml;
+﻿using System.Collections.Generic;
+using System.Xml;
 
-using FLG.Cs.Datamodel;
+using FLG.Cs.Datamodel.UI.Layouts;
 
 
 namespace FLG.Cs.UI.Layouts {

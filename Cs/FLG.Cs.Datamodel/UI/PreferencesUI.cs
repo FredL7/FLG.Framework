@@ -1,6 +1,7 @@
-﻿using FLG.Cs.FLGMath;
+﻿using FLG.Cs.Math;
 
-namespace FLG.Cs.Datamodel {
+
+namespace FLG.Cs.Datamodel.UI {
     public struct PreferencesUI {
         public string[] dirs;
         public Size windowSize;

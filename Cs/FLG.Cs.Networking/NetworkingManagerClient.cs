@@ -1,9 +1,11 @@
-﻿using FLG.Cs.Datamodel;
+﻿using FLG.Cs.Datamodel.Commands;
+using FLG.Cs.Datamodel.Logger;
+using FLG.Cs.Datamodel.Networking;
 using FLG.Cs.ServiceLocator;
 
 
 namespace FLG.Cs.Networking {
-    public class NetworkingManagerClient : NetworkingManager, INetworkingManagerClient {
+    public class NetworkingManagerClient(PreferencesNetworking prefs) : NetworkingManager(prefs), INetworkingManagerClient {
         private Client? _client;
 
         public int Id {
@@ -26,8 +28,6 @@ namespace FLG.Cs.Networking {
                 }
             }
         }
-
-        public NetworkingManagerClient(PreferencesNetworking prefs) : base(prefs) { }
 
         #region IServiceInstance
         public void OnServiceRegisteredFail() { }

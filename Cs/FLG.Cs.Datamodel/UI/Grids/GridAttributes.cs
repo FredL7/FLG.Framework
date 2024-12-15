@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.Datamodel {
+﻿namespace FLG.Cs.Datamodel.UI.Grids {
     public struct GridAttributes {
         private const EGridDirection DEFAULT_DIRECTION = EGridDirection.NORMAL;
         private const EGridJustify DEFAULT_JUSTIFY = EGridJustify.START;
@@ -19,7 +19,8 @@
             EGridDirection direction = DEFAULT_DIRECTION,
             EGridJustify justify = DEFAULT_JUSTIFY,
             EGridAlignment alignment = DEFAULT_ALIGNMENT
-        ) {
+        )
+        {
             this.direction = direction;
             this.justify = justify;
             this.alignment = alignment;

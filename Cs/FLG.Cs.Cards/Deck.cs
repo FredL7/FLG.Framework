@@ -1,5 +1,6 @@
 ﻿using FLG.Cs.Utils;
 
+
 /* Consider:
  *   - Scry
  *   - Add to top or bottom of library
@@ -20,13 +21,13 @@ namespace FLG.Cs.Cards {
 
         public Deck(int nbPlayers = 1)
         {
-            _cards = new();
-            _library = new();
-            _graveyard = new();
+            _cards = [];
+            _library = [];
+            _graveyard = [];
 
             _hand = new(nbPlayers);
-            for(int i = 0; i < nbPlayers; ++i)
-                _hand.Add(new());
+            for (int i = 0; i < nbPlayers; ++i)
+                _hand.Add([]);
         }
 
         internal void SetCards(List<Card> cards)
@@ -52,14 +53,10 @@ namespace FLG.Cs.Cards {
                 var card = DrawTop(playerIndex);
                 cards.Add(card);
             }
-
             return cards;
         }
 
-        public void Shuffle()
-        {
-            CollectionUtils.Shuffle(_library);
-        }
+        public void Shuffle() => CollectionUtils.Shuffle(_library);
 
         public void Discard(Card card, int playerIndex = 0)
         {
@@ -97,7 +94,7 @@ namespace FLG.Cs.Cards {
             _graveyard.Clear();
             _library = new(_cards);
 
-            foreach(var hand in _hand)
+            foreach (var hand in _hand)
                 hand.Clear();
         }
 

@@ -1,11 +1,12 @@
 ﻿using System.Diagnostics;
 
-using FLG.Cs.Datamodel;
+using FLG.Cs.Datamodel.Logger;
+using FLG.Cs.Datamodel.Networking;
 using FLG.Cs.ServiceLocator;
 
 
 namespace FLG.Cs.Logger {
-    internal class LoggerWriteFile : Logger {
+    internal class LoggerWriteFile : FLGLogger {
         private readonly string _logsDir;
         private readonly string _filepath;
 

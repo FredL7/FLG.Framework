@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.Graph {
+﻿namespace FLG.Cs.Graph.Pathfinding {
 
     /*
      * Populate the whole graph at once.
@@ -16,7 +16,7 @@
 
             public Path(Node<T> origin, Edge<T> edge)
             {
-                _steps = new Edge<T>[] { edge };
+                _steps = [edge];
 
                 FirstStep = edge.GetDestination(origin);
                 LastStep = FirstStep;
@@ -45,10 +45,7 @@
                 queue.Enqueue(path, path.Weight);
             }
 
-            HashSet<Node<T>> visited = new()
-            {
-                nodes[start]
-            };
+            HashSet<Node<T>> visited = [nodes[start]];
 
             while (queue.Count > 0)
             {

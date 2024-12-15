@@ -1,11 +1,12 @@
-﻿using System.Xml;
+﻿using System.Collections.Generic;
+using System.Xml;
 
-using FLG.Cs.Datamodel;
-using FLG.Cs.FLGMath;
+using FLG.Cs.Datamodel.UI.Layouts;
+using FLG.Cs.Datamodel.UI;
+using FLG.Cs.Math;
 
 
-namespace FLG.Cs.UI.Layouts
-{
+namespace FLG.Cs.UI.Layouts {
     public abstract class AbstractLayoutElement : ILayoutElement {
         public string Name { get; private set; }
         public abstract ELayoutElement Type { get; }

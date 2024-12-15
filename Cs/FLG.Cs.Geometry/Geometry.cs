@@ -1,4 +1,7 @@
-﻿namespace FLG.Cs.Geometry {
+﻿using sysMath = System.Math;
+
+
+namespace FLG.Cs.Geometry {
     public static class Geometry {
         public static int[] GetIndices(List<Triangle> triangles, bool invert)
         {
@@ -8,7 +11,7 @@
             {
                 indices[i * 3 + 0] = triangles[i].v1;
                 indices[i * 3 + 1] = invert ? triangles[i].v3 : triangles[i].v2;
-                indices[i * 3 + 2] = invert ? triangles[i].v2 : triangles[i].v3; 
+                indices[i * 3 + 2] = invert ? triangles[i].v2 : triangles[i].v3;
             }
 
             return indices;
@@ -28,18 +31,20 @@
                 var edges = new[]
                 {
                     // key (vA, vB) where vA < vB)
-                    (Math.Min(v1, v2), Math.Max(v1, v2)),
-                    (Math.Min(v2, v3), Math.Max(v2, v3)),
-                    (Math.Min(v1, v3), Math.Max(v1, v3)),
+                    (sysMath.Min(v1, v2), sysMath.Max(v1, v2)),
+                    (sysMath.Min(v2, v3), sysMath.Max(v2, v3)),
+                    (sysMath.Min(v1, v3), sysMath.Max(v1, v3)),
                 };
 
                 foreach (var edge in edges)
                 {
-                    if (!edgeToTriangles.ContainsKey(edge))
+                    if (!edgeToTriangles.TryGetValue(edge, out List<int>? value))
                     {
-                        edgeToTriangles[edge] = new List<int>();
+                        value = [];
+                        edgeToTriangles[edge] = value;
                     }
-                    edgeToTriangles[edge].Add(i);
+
+                    value.Add(i);
                 }
             }
 
@@ -52,7 +57,7 @@
             var triangleNeighbours = new List<List<int>>(new List<int>[mesh.triangles.Length]);
             for (int i = 0; i < triangleNeighbours.Count; ++i)
             {
-                triangleNeighbours[i] = new List<int>();
+                triangleNeighbours[i] = [];
             }
 
             var edgeToTriangles = BuildEdgeMap(mesh);

@@ -1,9 +1,12 @@
-﻿using System.Net;
-using System.Net.Sockets;
+﻿using System.Net.Sockets;
+using System.Net;
 
-using FLG.Cs.Datamodel;
-using FLG.Cs.ServiceLocator;
 using static FLG.Cs.Networking.MessagesHandler;
+
+using FLG.Cs.Datamodel.Commands;
+using FLG.Cs.Datamodel.Logger;
+using FLG.Cs.Datamodel.Networking;
+using FLG.Cs.ServiceLocator;
 
 
 namespace FLG.Cs.Networking {
@@ -12,7 +15,7 @@ namespace FLG.Cs.Networking {
         public NetworkingManager Manager { get => _manager; }
 
         private const int _id = NetworkingConstants.SERVER_ID;
-        public int Id { get => _id; }
+        public static int Id => _id;
 
         private readonly int _port;
         public int Port { get => _port; }
@@ -32,7 +35,7 @@ namespace FLG.Cs.Networking {
 
             _manager = manager;
             _port = port;
-            _connexions = new();
+            _connexions = [];
 
             _messagesHandler = new(new()
             {

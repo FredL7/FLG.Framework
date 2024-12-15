@@ -1,4 +1,7 @@
-﻿namespace FLG.Cs.Graph {
+﻿using FLG.Cs.Graph.Pathfinding;
+
+
+namespace FLG.Cs.Graph {
     /*
      * Graph that uses an adjencency matrix to represent paths between nodes
      * Useful when you want to find the path between two nodes that are not direct neighbours.

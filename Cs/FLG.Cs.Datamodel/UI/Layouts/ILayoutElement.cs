@@ -1,7 +1,7 @@
-﻿using FLG.Cs.FLGMath;
+﻿using FLG.Cs.Math;
 
 
-namespace FLG.Cs.Datamodel {
+namespace FLG.Cs.Datamodel.UI.Layouts {
     public interface ILayoutElement {
         public const string DEFAULT_CHILDREN_TARGET = "default";
 

@@ -1,8 +1,9 @@
 ﻿namespace FLG.Cs.Networking {
     internal class ThreadManager {
         private bool _actionToExecuteOnMainThread = false;
-        private readonly List<Action> _executeOnMainThreadReceive = new();
-        private readonly List<Action> _executeOnMainThreadExecute = new();
+        private readonly List<Action> _executeOnMainThreadReceive = [];
+        private readonly List<Action> _executeOnMainThreadExecute = []
+;
         public void ExecuteOnMainThread(Action action)
         {
             if (action == null)

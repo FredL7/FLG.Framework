@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.Datamodel {
+﻿namespace FLG.Cs.Datamodel.Serialization {
     public interface ISaveFile {
         public string Name { get; }
         public string Path { get; }

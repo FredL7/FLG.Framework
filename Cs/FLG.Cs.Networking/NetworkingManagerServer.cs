@@ -1,4 +1,6 @@
-﻿using FLG.Cs.Datamodel;
+﻿using FLG.Cs.Datamodel.Commands;
+using FLG.Cs.Datamodel.Logger;
+using FLG.Cs.Datamodel.Networking;
 using FLG.Cs.ServiceLocator;
 
 
@@ -10,7 +12,7 @@ namespace FLG.Cs.Networking {
             get {
                 if (_server == null)
                     throw new InvalidOperationException("Server not initialized");
-                return _server.Id;
+                return Server.Id;
             }
         }
 

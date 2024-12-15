@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace FLG.Cs.Graph {
+namespace FLG.Cs.Graph .Pathfinding {
     internal class Pathfinder<T> where T : INodeItem {
         protected const int PATH_UNDEFINED = -2;
         protected const int PATH_UNAVAILABLE = -1;
@@ -8,8 +8,6 @@ namespace FLG.Cs.Graph {
         protected Node<T>[] _nodes;
         protected int[,] _adjacency;
         protected float[,] _weights;
-
-        // TODO: (Debugging only?) Helper to dump _adjacency to csv file
 
         public Pathfinder(Node<T>[] nodes)
         {
@@ -46,7 +44,7 @@ namespace FLG.Cs.Graph {
         {
             if (start == end)
             {
-                return new List<int>() { start };
+                return [start];
             }
 
             if (_adjacency[start, end] == PATH_UNDEFINED)
@@ -59,10 +57,7 @@ namespace FLG.Cs.Graph {
                 return null;
             }
 
-            List<int> path = new()
-            {
-                start
-            };
+            List<int> path = [start];
 
             int currentStep = start;
             int nextStep;
@@ -86,7 +81,7 @@ namespace FLG.Cs.Graph {
             }
 
             StringBuilder positions = new();
-            foreach(var _node in _nodes)
+            foreach (var _node in _nodes)
             {
                 positions.Append(_node.Item.Position);
                 positions.Append('\n');

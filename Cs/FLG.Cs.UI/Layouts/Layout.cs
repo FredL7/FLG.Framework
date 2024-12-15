@@ -1,5 +1,7 @@
-﻿using FLG.Cs.Datamodel;
-using FLG.Cs.FLGMath;
+﻿using System.Collections.Generic;
+
+using FLG.Cs.Datamodel.UI.Layouts;
+using FLG.Cs.Math;
 
 
 namespace FLG.Cs.UI.Layouts {
@@ -8,7 +10,7 @@ namespace FLG.Cs.UI.Layouts {
 
         public string Name { get; private set; }
         public AbstractLayoutElement _root;
-        public ILayoutElement Root { get { return _root; } }
+        public ILayoutElement Root => _root;
 
         #region Targets
         readonly private Dictionary<string, AbstractLayoutElement> _targets;

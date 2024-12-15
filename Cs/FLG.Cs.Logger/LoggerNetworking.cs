@@ -1,12 +1,13 @@
 ﻿using System.Diagnostics;
 
-using FLG.Cs.Datamodel;
-using FLG.Cs.Model;
+using FLG.Cs.Datamodel.Logger;
+using FLG.Cs.Datamodel.Networking;
+using FLG.Cs.Datamodel.Commands;
 using FLG.Cs.ServiceLocator;
 
 
 namespace FLG.Cs.Logger {
-    internal class LoggerNetworking : Logger {
+    internal class LoggerNetworking : FLGLogger {
         protected override void Log(string msg, ELogLevel severity)
         {
             var network = Locator.Instance.Get<INetworkingManagerClient>();

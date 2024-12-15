@@ -1,5 +1,5 @@
-﻿using FLG.Cs.Datamodel;
-
+﻿using FLG.Cs.Datamodel.Logger;
+using FLG.Cs.Datamodel.Validation;
 
 namespace FLG.Cs.Logger {
     public class LogManager : ILogManager {
@@ -19,7 +19,7 @@ namespace FLG.Cs.Logger {
 
         public void AddLogger(ELoggerType type)
         {
-            Logger logger = type switch
+            FLGLogger logger = type switch
             {
                 ELoggerType.NO_LOGS => new LoggerNoLogs(),
                 ELoggerType.WRITE_FILE => new LoggerWriteFile(dir),
@@ -66,7 +66,8 @@ namespace FLG.Cs.Logger {
                 logger.Debug(msg);
         }
 
-        public void Log(IResult result) {
+        public void Log(Result result)
+        {
             foreach (var logger in _loggers)
                 logger.Log(result);
         }

@@ -1,4 +1,4 @@
-﻿using FLG.Cs.FLGMath;
+﻿using FLG.Cs.Math;
 
 
 namespace FLG.Cs.Graph {

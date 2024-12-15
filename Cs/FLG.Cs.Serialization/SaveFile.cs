@@ -1,4 +1,5 @@
-﻿using FLG.Cs.Datamodel;
+﻿using FLG.Cs.Datamodel.Serialization;
+
 
 namespace FLG.Cs.Serialization {
     public class SaveFile : ISaveFile {

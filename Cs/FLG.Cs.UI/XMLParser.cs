@@ -1,30 +1,33 @@
 ﻿using System.Xml;
 
-using FLG.Cs.Datamodel;
+using FLG.Cs.Datamodel.Logger;
+using FLG.Cs.Datamodel.UI.Grids;
+using FLG.Cs.Datamodel.UI.Layouts;
+using FLG.Cs.Datamodel.UI.Pages;
+using FLG.Cs.Datamodel.UI.Widgets.Text;
+using FLG.Cs.Datamodel.UI;
+using FLG.Cs.Datamodel.Validation;
+
+using FLG.Cs.Math;
 using FLG.Cs.IO;
-using FLG.Cs.FLGMath;
-using FLG.Cs.Model;
-using FLG.Cs.UI.Grids;
 using FLG.Cs.UI.Layouts;
-
-
-using File = FLG.Cs.IO.File;
+using FLG.Cs.UI.Grids;
 
 
 namespace FLG.Cs.UI {
     internal class XMLParser {
-        private string[] _uiDirs;
+        private readonly string[] _uiDirs;
 
-        private Dictionary<string, IPage> _pages;
-        private Dictionary<string, Layout> _components;
-        private Dictionary<string, Layout> _layouts;
-        private Dictionary<string, AbstractLayoutElement> _targets;
+        private readonly Dictionary<string, IPage> _pages;
+        private readonly Dictionary<string, Layout> _components;
+        private readonly Dictionary<string, Layout> _layouts;
+        private readonly Dictionary<string, AbstractLayoutElement> _targets;
 
-        private List<File> _pageXMLFiles;
-        private List<File> _layoutFiles;
+        private readonly List<FLGFile> _pageXMLFiles;
+        private readonly List<FLGFile> _layoutFiles;
 
-        private ILogManager _logger;
-        private IUIFactory _factory;
+        private readonly ILogManager _logger;
+        private readonly IUIFactory _factory;
 
         public Dictionary<string, IPage> GetPages() => _pages;
         public Dictionary<string, Layout> GetLayouts() => _layouts;
@@ -36,16 +39,16 @@ namespace FLG.Cs.UI {
 
             _uiDirs = uiDirs;
 
-            _pages = new();
-            _components = new();
-            _layouts = new();
-            _targets = new();
+            _pages = [];
+            _components = [];
+            _layouts = [];
+            _targets = [];
 
-            _layoutFiles = new();
+            _layoutFiles = [];
             foreach (string dir in _uiDirs)
                 _layoutFiles.AddRange(IOUtils.GetFilePathsByExtension(dir, ".layout"));
 
-            _pageXMLFiles = new();
+            _pageXMLFiles = [];
             foreach (string dir in _uiDirs)
                 _pageXMLFiles.AddRange(IOUtils.GetFilePathsByExtension(dir, ".page"));
         }
@@ -107,7 +110,7 @@ namespace FLG.Cs.UI {
                     page = pageObject as IPage;
                     _logger.Debug($"Instantiated IPage of type {binding} with param(factory) ctor");
                 }
-                catch (MissingMethodException _)
+                catch (MissingMethodException)
                 {
                     _logger.Debug($"Could not find a ctor with factory param, fallback to default parameterless ctor");
                     try
@@ -224,14 +227,14 @@ namespace FLG.Cs.UI {
                 return Result.SUCCESS;
             }
 
-            foreach (File file in _layoutFiles)
+            foreach (FLGFile file in _layoutFiles)
                 if (file.file == id)
                     return ParseLayout(file, id);
 
             return new Result($"Layout with id {id} could not be found.");
         }
 
-        private Result ParseLayout(File file, string id)
+        private Result ParseLayout(FLGFile file, string id)
         {
             _logger.Debug($"Begin Parsing {file.filename}");
             Result result = ValidateXml(file, "layout", out XmlDocument _, out XmlNode? rootNode);
@@ -331,7 +334,7 @@ namespace FLG.Cs.UI {
 
         #region Helpers
         #region XML
-        private static Result ValidateXml(File file, string expectedRootName, out XmlDocument xmldoc, out XmlNode? rootNode)
+        private static Result ValidateXml(FLGFile file, string expectedRootName, out XmlDocument xmldoc, out XmlNode? rootNode)
         {
             xmldoc = new();
             rootNode = null;
