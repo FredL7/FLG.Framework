@@ -6,18 +6,18 @@ using FLG.Cs.Framework;
 using FLG.Cs.ServiceLocator;
 
 
-namespace ServerExecutable {
-    class ProgramServer {
+namespace ClientExecutable {
+    class ProgramClient {
         private static bool stop = false;
 
         static void Main(string[] args)
         {
-            Console.Title = "Server";
+            Console.Title = "Client";
 
             PreferencesFramework prefs = new()
             {
-                logs = new() { types = [ELoggerType.CONSOLE] },
-                networking = new() { clientType = ENetworkingClientType.SERVER }
+                logs = new() { types = [ELoggerType.NETWORKING] },
+                networking = new() { clientType = ENetworkingClientType.CLIENT }
             };
             var result = FrameworkManager.Instance.Initialize(prefs);
             if (!result)
@@ -25,18 +25,17 @@ namespace ServerExecutable {
                 Console.WriteLine(result.GetMessage());
             }
 
-            var server = Locator.Instance.Get<INetworkingManagerServer>();
-            server.Start(26501);
+            var client = Locator.Instance.Get<INetworkingManagerClient>();
+            client.Connect("127.0.0.1", 26501);
 
             Thread updateThread = new(Update);
             updateThread.Start();
 
-            Console.WriteLine("Press a key to stop the server");
+            Console.WriteLine("Press a key to stop the client");
             Console.ReadKey();
             stop = true;
-            server.Stop();
+            client.Disconnect();
             updateThread.Join();
-
         }
 
         private static void Update()
