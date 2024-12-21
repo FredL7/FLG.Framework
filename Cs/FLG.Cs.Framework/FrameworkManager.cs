@@ -70,7 +70,7 @@ namespace FLG.Cs.Framework {
             {
                 PreferencesLogs prefOverride = new()
                 {
-                    types = new[] { ELoggerType.NO_LOGS },
+                    types = [ELoggerType.NO_LOGS],
                 };
                 var result = InitializeLogsInner(prefOverride);
                 if (!result) return result;
@@ -83,7 +83,7 @@ namespace FLG.Cs.Framework {
         private Result InitializeLogsInner(PreferencesLogs pref)
         {
             if (!ValidateDependenciesLogs())
-                return new Result($"Could not initialize Log Manager: dependencies not initialized (Framework={_initializedFramework}");
+                return new Result($"Could not initialize Log Manager: dependencies not initialized (Framework={_initializedFramework})");
 
             if (!_initializedLogs)
             {
@@ -102,7 +102,7 @@ namespace FLG.Cs.Framework {
             return new Result("Could not initialize Log Manager: Already initialized", severity: ELogLevel.WARN);
         }
 
-        private bool ValidateDependenciesLogs() => _initializedFramework && _initializedLogs;
+        private bool ValidateDependenciesLogs() => _initializedFramework;
         #endregion Logs
 
         #region Serialization

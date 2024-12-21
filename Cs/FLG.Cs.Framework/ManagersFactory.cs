@@ -89,7 +89,7 @@ namespace FLG.Cs.Framework {
                         result.manager = null;
                         return result;
                     }
-                    manager = server;
+                    manager = (NetworkingManager)server; // For correct log message when registering
                     break;
                 case ENetworkingClientType.CLIENT:
                     INetworkingManagerClient client = new NetworkingManagerClient(prefs);
@@ -99,7 +99,7 @@ namespace FLG.Cs.Framework {
                         result.manager = null;
                         return result;
                     }
-                    manager = client;
+                    manager = (NetworkingManager)client;
                     break;
                 default:
                     result.result = new Result($"Unknown network client type {prefs.clientType}");
@@ -107,6 +107,8 @@ namespace FLG.Cs.Framework {
                     return result;
             }
 
+            // Register as INetworkingManager as well
+            // TODO: Figure out logging (does't log as NetworkingManager, but as Server or Client, even with cast)
             if (Locator.Instance.Register(manager))
             {
                 result.result = Result.SUCCESS;

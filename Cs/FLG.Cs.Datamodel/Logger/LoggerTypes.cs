@@ -1,6 +1,6 @@
 ﻿namespace FLG.Cs.Datamodel.Logger {
     public enum ELoggerType {
-        NO_LOGS, WRITE_FILE, NETWORKING, GAME_ENGINE, USER
+        NO_LOGS, CONSOLE, WRITE_FILE, NETWORKING, GAME_ENGINE, USER
     }
 
     public enum ELogLevel {

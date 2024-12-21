@@ -22,6 +22,7 @@ namespace FLG.Cs.Logger {
             FLGLogger logger = type switch
             {
                 ELoggerType.NO_LOGS => new LoggerNoLogs(),
+                ELoggerType.CONSOLE => new LoggerConsole(),
                 ELoggerType.WRITE_FILE => new LoggerWriteFile(dir),
                 ELoggerType.NETWORKING => new LoggerNetworking(),
                 ELoggerType.GAME_ENGINE => throw new ArgumentException("Game Engine logger should be added using `Locator.Instance.get<ILogManager>().AddLogger(ILogger)`"),
