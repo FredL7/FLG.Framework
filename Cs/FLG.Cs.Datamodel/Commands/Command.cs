@@ -19,7 +19,7 @@ namespace FLG.Cs.Datamodel.Commands {
 
         public CommandData GetCommandData() => _data;
 
-        public string ToMessageString()
+        public string ToPacketString()
         {
             StringBuilder sb = new();
 

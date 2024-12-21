@@ -10,13 +10,13 @@ namespace FLG.Cs.Logger {
     internal class LoggerNetworking : FLGLogger {
         protected override void Log(string msg, ELogLevel severity)
         {
-            var network = Locator.Instance.Get<INetworkingManagerClient>();
+            var network = Locator.Instance.Get<INetworkingManager>();
 
             StackTrace stackTrace = new();
             string? methodname = stackTrace.GetFrame(2)?.GetMethod()?.Name;
             string? classname = stackTrace.GetFrame(2)?.GetMethod()?.DeclaringType?.FullName;
             DateTime date = DateTime.Now;
-            string logMessage = MakeLogEntry(network.LogIdentifier, date, severity, methodname, classname, msg);
+            string logMessage = MakeLogEntry(date, severity, methodname, classname, msg);
 
             var command = new Command<ILogManager>(severity.ToLogMethod());
             command.AddParam(logMessage);

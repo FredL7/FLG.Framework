@@ -1,36 +1,49 @@
-﻿namespace FLG.Cs.Networking {
-    internal class ThreadManager {
-        private bool _actionToExecuteOnMainThread = false;
-        private readonly List<Action> _executeOnMainThreadReceive = [];
-        private readonly List<Action> _executeOnMainThreadExecute = []
-;
+﻿using FLG.Cs.Datamodel.Framework;
+using FLG.Cs.Datamodel.Logger;
+
+using FLG.Cs.ServiceLocator;
+
+
+namespace FLG.Cs.Networking {
+    internal class ThreadManager : IGameLoopObject {
+        private readonly List<Action> _actionQueue;
+        private readonly List<Action> _actionBuffer;
+        private bool _actionsAvailable = false;
+
+        public ThreadManager()
+        {
+            _actionQueue = [];
+            _actionBuffer = [];
+        }
+
         public void ExecuteOnMainThread(Action action)
         {
             if (action == null)
             {
+                Locator.Instance.Get<ILogManager>().Debug("No action to execute on main thread");
                 return;
             }
 
-            lock (_executeOnMainThreadReceive)
+            lock (_actionQueue)
             {
-                _executeOnMainThreadReceive.Add(action);
-                _actionToExecuteOnMainThread = true;
+                _actionQueue.Add(action);
+                _actionsAvailable = true;
             }
         }
 
         public void Update()
         {
-            if (_actionToExecuteOnMainThread)
+            if (_actionsAvailable)
             {
-                _executeOnMainThreadExecute.Clear();
-                lock (_executeOnMainThreadReceive)
+                _actionBuffer.Clear();
+                lock (_actionQueue)
                 {
-                    _executeOnMainThreadExecute.AddRange(_executeOnMainThreadReceive);
-                    _executeOnMainThreadReceive.Clear();
-                    _actionToExecuteOnMainThread = false;
+                    _actionBuffer.AddRange(_actionQueue);
+                    _actionQueue.Clear();
+                    _actionsAvailable = false;
                 }
 
-                foreach (var action in _executeOnMainThreadExecute)
+                foreach (var action in _actionBuffer)
                 {
                     action();
                 }

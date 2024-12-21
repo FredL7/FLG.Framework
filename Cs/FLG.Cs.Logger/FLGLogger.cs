@@ -6,9 +6,9 @@ namespace FLG.Cs.Logger {
     public abstract class FLGLogger : ILogger {
         protected abstract void Log(string message, ELogLevel severity);
 
-        protected static string MakeLogEntry(string networkId, DateTime date, ELogLevel severity, string? classname, string? methodname, string msg)
+        protected static string MakeLogEntry(DateTime date, ELogLevel severity, string? classname, string? methodname, string msg)
         {
-            return $"[{date.ToString(LoggerConstants.LOGGING_DATE_PATTERN)}] [{severity.ToPrettyString()}] [${networkId}] [{(classname ?? LoggerConstants.UNKNOWN)}::{(methodname ?? LoggerConstants.UNKNOWN)}()] {msg}";
+            return $"[{date.ToString(LoggerConstants.LOGGING_DATE_PATTERN)}] [{severity.ToPrettyString()}] [{(classname ?? LoggerConstants.UNKNOWN)}::{(methodname ?? LoggerConstants.UNKNOWN)}()] {msg}";
         }
 
         public void Error(string msg)

@@ -7,7 +7,6 @@ using FLG.Cs.ServiceLocator;
 namespace FLG.Cs.Commands {
     public class CommandManager : ICommandManager {
         #region IServiceInstance
-        public void OnServiceRegisteredFail() { }
         public void OnServiceRegistered()
         {
             Locator.Instance.Get<ILogManager>().Debug("Command Manager Registered");

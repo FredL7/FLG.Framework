@@ -202,16 +202,6 @@ namespace FLG.Cs.Framework {
                 if (!result) return result;
                 Locator.Instance.Get<ILogManager>().Info("Initialized Networking Manager with user prefs");
             }
-            else
-            {
-                PreferencesNetworking prefOverride = new()
-                {
-                    clientType = ENetworkClientType.OFFLINE,
-                };
-                var result = InitializeNetworkingInner(prefOverride);
-                if (!result) return result;
-                Locator.Instance.Get<ILogManager>().Debug("Initialized networking Manager with default prefs (offline)");
-            }
 
             return Result.SUCCESS;
         }

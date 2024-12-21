@@ -81,7 +81,7 @@ namespace FLG.Cs.Framework {
             INetworkingManager manager;
             switch (prefs.clientType)
             {
-                case ENetworkClientType.SERVER:
+                case ENetworkingClientType.SERVER:
                     INetworkingManagerServer server = new NetworkingManagerServer(prefs);
                     if (!Locator.Instance.Register(server))
                     {
@@ -91,7 +91,7 @@ namespace FLG.Cs.Framework {
                     }
                     manager = server;
                     break;
-                case ENetworkClientType.CLIENT:
+                case ENetworkingClientType.CLIENT:
                     INetworkingManagerClient client = new NetworkingManagerClient(prefs);
                     if (!Locator.Instance.Register(client))
                     {

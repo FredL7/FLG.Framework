@@ -15,7 +15,6 @@ namespace FLG.Cs.ServiceLocator {
         {
             if (_services.ContainsKey(typeof(T)))
             {
-                service.OnServiceRegisteredFail();
                 throw new Exception($"Service already registered for type {typeof(T)}");
             }
             else
