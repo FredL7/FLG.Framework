@@ -16,7 +16,7 @@ namespace ClientExecutable {
 
             PreferencesFramework prefs = new()
             {
-                logs = new() { types = [ELoggerType.NETWORKING] },
+                logs = new() { identifier = "client sample", types = [ELoggerType.NETWORKING, ELoggerType.CONSOLE] },
                 networking = new() { clientType = ENetworkingClientType.CLIENT }
             };
             var result = FrameworkManager.Instance.Initialize(prefs);

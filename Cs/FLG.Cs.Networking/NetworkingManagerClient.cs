@@ -33,5 +33,7 @@ namespace FLG.Cs.Networking {
         {
             _client.DisconnectFromServer();
         }
+
+        protected override bool GetConnectionStatus() => _client.IsConnected;
     }
 }

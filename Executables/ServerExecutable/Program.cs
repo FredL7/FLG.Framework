@@ -16,7 +16,7 @@ namespace ServerExecutable {
 
             PreferencesFramework prefs = new()
             {
-                logs = new() { types = [ELoggerType.CONSOLE] },
+                logs = new() { identifier = "server sample", types = [ELoggerType.CONSOLE] },
                 networking = new() { clientType = ENetworkingClientType.SERVER }
             };
             var result = FrameworkManager.Instance.Initialize(prefs);

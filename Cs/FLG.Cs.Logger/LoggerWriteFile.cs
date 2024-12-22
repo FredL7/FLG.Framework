@@ -6,7 +6,8 @@ namespace FLG.Cs.Logger {
         private readonly string _logsDir;
         private readonly string _filepath;
 
-        public LoggerWriteFile(string dir)
+        public LoggerWriteFile(string dir, string identifier, string networkingId)
+            : base(identifier, networkingId)
         {
             _logsDir = dir;
 

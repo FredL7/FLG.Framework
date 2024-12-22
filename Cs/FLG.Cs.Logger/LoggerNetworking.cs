@@ -5,16 +5,17 @@ using FLG.Cs.ServiceLocator;
 
 
 namespace FLG.Cs.Logger {
-    internal class LoggerNetworking : FLGLogger {
-        private List<ICommand> _waitingList = [];
+    internal class LoggerNetworking(string identifier, string networkingId) : FLGLogger(identifier, networkingId) {
+        private readonly List<ICommand> _waitingList = [];
 
         protected override void Log(string logEntry, ELogLevel severity)
         {
-            // TODO: Better setup
+            // TODO: Better setup with _waitingList
             // Currently required because there a logs going out before the INetworkingManager is registered
 
             var command = new Command<ILogManager>(severity.ToLogMethod());
             command.AddParam(logEntry);
+            command.AddParam(true);
             _waitingList.Add(command);
 
             INetworkingManager? network;
@@ -24,7 +25,7 @@ namespace FLG.Cs.Logger {
             }
             catch (Exception e)
             {
-                if(e.Message.StartsWith("Service not registered"))
+                if (e.Message.StartsWith("Service not registered"))
                 {
                     return;
                 }
@@ -34,11 +35,14 @@ namespace FLG.Cs.Logger {
                 }
             }
 
-            foreach (var waitingCommand in _waitingList)
+            if (network.IsConnected)
             {
-                network.SendCommand(waitingCommand);
+                foreach (var waitingCommand in _waitingList)
+                {
+                    network.SendCommand(waitingCommand);
+                }
+                _waitingList.Clear();
             }
-            _waitingList.Clear();
         }
     }
 }

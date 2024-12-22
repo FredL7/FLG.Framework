@@ -5,6 +5,7 @@ using FLG.Cs.Datamodel.ServiceLocator;
 
 namespace FLG.Cs.Datamodel.Networking {
     public interface INetworkingManager : IServiceInstance, IGameLoopObject {
-        void SendCommand(ICommand command);
+        public bool IsConnected { get; }
+        public void SendCommand(ICommand command);
     }
 }

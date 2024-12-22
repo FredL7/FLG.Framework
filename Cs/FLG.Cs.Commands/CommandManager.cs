@@ -99,7 +99,8 @@ namespace FLG.Cs.Commands {
         private static void ExecuteCommand(CommandData commandData)
         {
             var logger = Locator.Instance.Get<ILogManager>();
-            string args = string.Join(", ", commandData.args.Select(x => $"{x.type}: {x.value}"));
+            string args = string.Join(", ", commandData.args.Select(x => $"{x.type}: \"{x.value}\""));
+            string argsTypes = string.Join(", ", commandData.args.Select(x => x.type));
             logger.Debug($"Executing {commandData.methodName} from type {commandData.type} with {commandData.args.Count} arguments ({args}).");
 
             try
@@ -112,8 +113,8 @@ namespace FLG.Cs.Commands {
 
                 try
                 {
-                    var commandMethod = commandData.type.GetMethod(commandData.methodName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy)
-                        ?? throw new Exception($"Could not find method {commandData.methodName} in {commandData.type} with {commandData.args.Count} arguments [{args}]");
+                    var commandMethod = commandData.type.GetMethod(commandData.methodName/*, BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy*/)
+                        ?? throw new Exception($"Could not find method {commandData.methodName} in {commandData.type} with {commandData.args.Count} arguments [{argsTypes}]");
                     // https://stackoverflow.com/questions/10550970/how-to-do-proper-reflection-of-base-interface-methods
                     // Will not search through inheritance because interfaces are not inherited, it's a contract for implementation
                     // The easiest solution is to redeclare the inherited methods in the base interface (using the new keyword)

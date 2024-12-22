@@ -9,14 +9,14 @@ namespace FLG.Cs.Networking.Client {
         private void SendTCPData(Packet packet)
         {
             packet.WriteLength();
-            _client.Connection.Tcp.SendData(packet);
+            _client.SendData(packet);
         }
         #endregion TCP
 
         public void WelcomeReceived()
         {
             using Packet packet = new((int)ClientPackets.WELCOME_RECEIVED);
-            packet.Write(_client.Connection.ID);
+            packet.Write(_client.ID);
             packet.Write("Player");
             SendTCPData(packet);
         }

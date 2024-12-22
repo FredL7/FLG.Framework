@@ -10,6 +10,9 @@ namespace FLG.Cs.Networking {
         private readonly ThreadManager _threadManager;
         internal ThreadManager ThreadManager { get => _threadManager; }
 
+        public bool IsConnected { get => GetConnectionStatus(); }
+        protected abstract bool GetConnectionStatus();
+
         public NetworkingManager(PreferencesNetworking prefs)
         {
             _threadManager = new();
@@ -19,6 +22,7 @@ namespace FLG.Cs.Networking {
         {
             Locator.Instance.Get<ILogManager>().Debug("Networking Manager (interface) Registered");
         }
+
         public abstract void SendCommand(ICommand command);
 
         public void Update()

@@ -29,7 +29,7 @@
             {
                 ELogLevel.ERROR => "Error",
                 ELogLevel.WARN => "Warn",
-                ELogLevel.INFO => "info",
+                ELogLevel.INFO => "Info",
                 ELogLevel.DEBUG => "Debug",
                 _ => throw new ArgumentException($"{level} is not valid"),
             };
