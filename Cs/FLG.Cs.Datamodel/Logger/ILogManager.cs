@@ -7,10 +7,11 @@ namespace FLG.Cs.Datamodel.Logger {
         public void AddLogger(ILogger logger);
         new public void SetNetworkingId(string id);
 
-        new public void Error(string msg, bool external = false);
-        new public void Warn(string msg, bool external = false);
-        new public void Info(string msg, bool external = false);
-        new public void Debug(string msg, bool external = false);
+        new public void Error(string msg);
+        new public void Warn(string msg);
+        new public void Info(string msg);
+        new public void Debug(string msg);
         new public void Log(Result result);
+        new public void LogEntry(LogEntry logEntry);
     }
 }

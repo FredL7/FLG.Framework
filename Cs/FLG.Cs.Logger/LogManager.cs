@@ -56,32 +56,38 @@ namespace FLG.Cs.Logger {
         }
         #endregion IServiceInstance
 
-        public void Error(string msg, bool external = false)
+        public void Error(string msg)
         {
             foreach (var logger in _loggers)
-                logger.Error(msg, external);
+                logger.Error(msg);
             throw new Exception(msg);
         }
-        public void Warn(string msg, bool external = false)
+        public void Warn(string msg)
         {
             foreach (var logger in _loggers)
-                logger.Warn(msg, external);
+                logger.Warn(msg);
         }
-        public void Info(string msg, bool external = false)
+        public void Info(string msg)
         {
             foreach (var logger in _loggers)
-                logger.Info(msg, external);
+                logger.Info(msg);
         }
-        public void Debug(string msg, bool external = false)
+        public void Debug(string msg)
         {
             foreach (var logger in _loggers)
-                logger.Debug(msg, external);
+                logger.Debug(msg);
         }
 
         public void Log(Result result)
         {
             foreach (var logger in _loggers)
                 logger.Log(result);
+        }
+
+        public void LogEntry(LogEntry logEntry)
+        {
+            foreach (var logger in _loggers)
+                logger.LogEntry(logEntry);
         }
     }
 }

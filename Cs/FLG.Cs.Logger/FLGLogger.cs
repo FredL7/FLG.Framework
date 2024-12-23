@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Text;
 
 using FLG.Cs.Datamodel.Logger;
 using FLG.Cs.Datamodel.Validation;
@@ -15,51 +14,36 @@ namespace FLG.Cs.Logger {
             _networkingIdentifier = id;
         }
 
-        protected abstract void Log(string logEntry, ELogLevel severity);
+        public abstract void LogEntry(LogEntry logEntry);
 
-        private void LogWrapper(string message, ELogLevel severity, bool external)
+        private void LogWrapper(string message, ELogLevel severity)
         {
-            if (external)
+            StackTrace stackTrace = new();
+            LogEntry entry = new()
             {
-                // When a log message comes from a connected client, it will already be correctly formatted
-                Log(message, severity);
-            }
-            else
-            {
-                StackTrace stackTrace = new();
-                string? classname = stackTrace.GetFrame(3)?.GetMethod()?.DeclaringType?.FullName;
-                string? methodname = stackTrace.GetFrame(3)?.GetMethod()?.Name;
-                DateTime date = DateTime.Now;
-
-                StringBuilder sb = new();
-                sb.Append($"[{date.ToString(LoggerConstants.LOGGING_DATE_PATTERN)}]"); sb.Append(' ');
-                if (!string.IsNullOrEmpty(_identifier))
-                {
-                    sb.Append($"[{_identifier}]"); sb.Append(' ');
-                }
-                if (!string.IsNullOrEmpty(_networkingIdentifier))
-                {
-                    sb.Append($"[{_networkingIdentifier}]"); sb.Append(' ');
-                }
-                sb.Append($"[{severity.ToPrettyString()}]"); sb.Append(' ');
-                sb.Append($"[{(classname ?? LoggerConstants.UNKNOWN)}::{(methodname ?? LoggerConstants.UNKNOWN)}()]"); sb.Append(' ');
-                sb.Append(message);
-                Log(sb.ToString(), severity);
-            }
+                identifier = _identifier,
+                networkingIdentifier = _networkingIdentifier,
+                classname = stackTrace.GetFrame(3)?.GetMethod()?.DeclaringType?.FullName,
+                methodname = stackTrace.GetFrame(3)?.GetMethod()?.Name,
+                date = DateTime.Now,
+                message = message,
+                severity = severity
+            };
+            LogEntry(entry);
         }
 
-        public void Error(string msg, bool external = false)
+        public void Error(string msg)
         {
-            LogWrapper(msg, ELogLevel.ERROR, external);
+            LogWrapper(msg, ELogLevel.ERROR);
             throw new Exception(msg);
         }
-        public void Warn(string msg, bool external = false) { LogWrapper(msg, ELogLevel.WARN, external); }
-        public void Info(string msg, bool external = false) { LogWrapper(msg, ELogLevel.INFO, external); }
-        public void Debug(string msg, bool external = false) { LogWrapper(msg, ELogLevel.DEBUG, external); }
+        public void Warn(string msg) { LogWrapper(msg, ELogLevel.WARN); }
+        public void Info(string msg) { LogWrapper(msg, ELogLevel.INFO); }
+        public void Debug(string msg) { LogWrapper(msg, ELogLevel.DEBUG); }
 
         public void Log(Result result)
         {
-            LogWrapper(result.GetMessage(), result.GetSeverity(), false);
+            LogWrapper(result.GetMessage(), result.GetSeverity());
         }
     }
 }

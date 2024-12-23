@@ -1,23 +1,16 @@
 ﻿using FLG.Cs.Datamodel.Logger;
 using FLG.Cs.Datamodel.Networking;
 using FLG.Cs.Datamodel.Commands;
+
 using FLG.Cs.ServiceLocator;
 
 
 namespace FLG.Cs.Logger {
     internal class LoggerNetworking(string identifier, string networkingId) : FLGLogger(identifier, networkingId) {
-        private readonly List<ICommand> _waitingList = [];
-
-        protected override void Log(string logEntry, ELogLevel severity)
+        public override void LogEntry(LogEntry entry)
         {
-            // TODO: Better setup with _waitingList
-            // Currently required because there a logs going out before the INetworkingManager is registered
-
-            var command = new Command<ILogManager>(severity.ToLogMethod());
-            command.AddParam(logEntry);
-            command.AddParam(true);
-            _waitingList.Add(command);
-
+            // Will drop logs until networking manager is initialized
+            // Use another logger to catch the missed logs
             INetworkingManager? network;
             try
             {
@@ -37,11 +30,9 @@ namespace FLG.Cs.Logger {
 
             if (network.IsConnected)
             {
-                foreach (var waitingCommand in _waitingList)
-                {
-                    network.SendCommand(waitingCommand);
-                }
-                _waitingList.Clear();
+                var command = new Command<ILogManager>("LogEntry");
+                command.AddParam(entry);
+                network.SendCommand(command);
             }
         }
     }

@@ -17,10 +17,11 @@ namespace FLG.Cs.Logger {
             _filepath = Path.Combine(_logsDir, filename + ".log");
         }
 
-        protected override void Log(string logEntry, ELogLevel _)
+        public override void LogEntry(LogEntry entry)
         {
             using StreamWriter w = File.AppendText(_filepath);
-            w.WriteLine(logEntry);
+            // TODO: Convert to xml
+            w.WriteLine(entry.ToPrettyString());
         }
     }
 }
