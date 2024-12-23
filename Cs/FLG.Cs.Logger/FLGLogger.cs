@@ -23,8 +23,8 @@ namespace FLG.Cs.Logger {
             {
                 identifier = _identifier,
                 networkingIdentifier = _networkingIdentifier,
-                classname = stackTrace.GetFrame(3)?.GetMethod()?.DeclaringType?.FullName,
-                methodname = stackTrace.GetFrame(3)?.GetMethod()?.Name,
+                classname = stackTrace.GetFrame(3)?.GetMethod()?.DeclaringType?.FullName ?? string.Empty,
+                methodname = stackTrace.GetFrame(3)?.GetMethod()?.Name ?? string.Empty,
                 date = DateTime.Now,
                 message = message,
                 severity = severity

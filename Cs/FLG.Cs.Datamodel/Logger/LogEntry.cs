@@ -2,16 +2,17 @@
 
 
 namespace FLG.Cs.Datamodel.Logger {
+    [Serializable]
     public class LogEntry {
         public required string identifier;
         public required string networkingIdentifier;
 
-        public string? classname;
-        public string? methodname;
+        public string classname = string.Empty;
+        public string methodname = string.Empty;
         public DateTime date;
 
         public ELogLevel severity;
-        public required string message;
+        public string message = string.Empty;
 
         public override string ToString() => ToPrettyString();
 
