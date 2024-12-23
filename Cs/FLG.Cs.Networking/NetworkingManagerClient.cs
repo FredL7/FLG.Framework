@@ -1,63 +1,37 @@
 ﻿using FLG.Cs.Datamodel.Commands;
 using FLG.Cs.Datamodel.Logger;
 using FLG.Cs.Datamodel.Networking;
+
 using FLG.Cs.ServiceLocator;
 
 
 namespace FLG.Cs.Networking {
-    public class NetworkingManagerClient(PreferencesNetworking prefs) : NetworkingManager(prefs), INetworkingManagerClient {
-        private Client? _client;
+    public class NetworkingManagerClient : NetworkingManager, INetworkingManagerClient {
+        private readonly Client.Client _client;
 
-        public int Id {
-            get {
-                if (_client == null)
-                    throw new InvalidOperationException("Client not initialized");
-                return _client.Id;
-            }
-        }
-
-        public string LogIdentifier {
-            get {
-                if (_client == null)
-                {
-                    return "Unknown Client";
-                }
-                else
-                {
-                    return $"Client {Id}";
-                }
-            }
-        }
-
-        #region IServiceInstance
-        public void OnServiceRegisteredFail() { }
-        public void OnServiceRegistered()
+        public NetworkingManagerClient(PreferencesNetworking prefs) : base(prefs)
         {
-            Locator.Instance.Get<ILogManager>().Debug("Client Networking Manager Registered");
-        }
-        #endregion IServiceInstance
-
-        public void Initialize(string ip, int port)
-        {
-            if (_client != null)
-            {
-                Locator.Instance.Get<ILogManager>().Warn("Client Networking Manager already initialized");
-                return;
-            }
-
-            _client = new Client(ip, port, this);
-            _client.ConnectToServer();
+            _client = new(this);
         }
 
-        public void SendCommand(ICommand command)
+        public override void OnServiceRegistered()
         {
-            if (_client == null)
-            {
-                Locator.Instance.Get<ILogManager>().Warn($"Cannot send command, client not initialized ({command.ToMessageString()})");
-                return;
-            }
+            Locator.Instance.Get<ILogManager>().Debug("Networking Manager (Client) Registered");
+        }
 
+        public override void SendCommand(ICommand command)
+        {
             _client.SendCommand(command);
+        }
+
+        public void Connect(string ip, int port)
+        {
+            _client.ConnectToServer(ip, port);
+        }
+
+        public void Disconnect()
+        {
+            _client.DisconnectFromServer();
         }
     }
 }

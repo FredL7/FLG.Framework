@@ -43,7 +43,6 @@ namespace FLG.Cs.Serialization {
         }
 
         #region IServiceInstance
-        public void OnServiceRegisteredFail() { }
         public void OnServiceRegistered()
         {
             Locator.Instance.Get<ILogManager>().Debug("Serialization Manager Registered");

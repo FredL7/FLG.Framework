@@ -1,92 +1,37 @@
 ﻿using FLG.Cs.Datamodel.Commands;
 using FLG.Cs.Datamodel.Logger;
 using FLG.Cs.Datamodel.Networking;
+
 using FLG.Cs.ServiceLocator;
 
 
 namespace FLG.Cs.Networking {
     public class NetworkingManagerServer : NetworkingManager, INetworkingManagerServer {
-        private Server? _server;
+        private readonly Server.Server _server;
 
-        public int Id {
-            get {
-                if (_server == null)
-                    throw new InvalidOperationException("Server not initialized");
-                return Server.Id;
-            }
-        }
-
-        public string LogIdentifier { get => "Server"; }
-
-        public int Port {
-            get {
-                if (_server == null)
-                    throw new InvalidOperationException("Server not initialized");
-                return _server.Port;
-            }
-        }
-
-        public int MaxConnexions {
-            get {
-                if (_server == null)
-                    throw new InvalidOperationException("Server not initialized");
-                return _server.MaxConnexions;
-            }
-        }
-
-        public NetworkingManagerServer(PreferencesNetworking prefs) : base(prefs) { }
-
-        #region IServiceInstance
-        public void OnServiceRegisteredFail() { }
-        public void OnServiceRegistered()
+        public NetworkingManagerServer(PreferencesNetworking prefs) : base(prefs)
         {
-            Locator.Instance.Get<ILogManager>().Debug("Server Networking Manager Registered");
-        }
-        #endregion IServiceInstance
-
-        public void Initialize(int port, int maxConnexions)
-        {
-            if (_server == null)
-                throw new InvalidOperationException("Server not initialized");
-
-            _server = new Server(port, this);
-            _server.SetMaxConnexions(maxConnexions); // TODO: move setter to Server ctor
+            _server = new(ThreadManager);
         }
 
-        public void SendCommandToClient(int clientId, ICommand command)
+        public override void OnServiceRegistered()
         {
-            if (_server == null)
-                throw new InvalidOperationException("Server not initialized");
-
-            string commandMessage = command.ToMessageString();
-            using Message message = new((int)Messages.COMMAND);
-            message.Write(commandMessage);
-            Locator.Instance.Get<ILogManager>().Debug($"Sending command message to client {clientId} ({commandMessage})");
-            _server.SendTCPData(clientId, message);
+            Locator.Instance.Get<ILogManager>().Debug("Networking Manager (Server) Registered");
         }
 
-        public void SendCommandToAll(ICommand command)
+        public override void SendCommand(ICommand command)
         {
-            if (_server == null)
-                throw new InvalidOperationException("Server not initialized");
-
-            string commandMessage = command.ToMessageString();
-            using Message message = new((int)Messages.COMMAND);
-            message.Write(commandMessage);
-            Locator.Instance.Get<ILogManager>().Debug($"Sending command message to all clients ({commandMessage})");
-            _server.SendTCPDataToAll(message);
+            _server.SendCommand(command);
         }
 
-        public void SendCommandToAllButOne(int exceptId, ICommand command)
+        public void Start(int port)
         {
-            if (_server == null)
-                throw new InvalidOperationException("Server not initialized");
+            _server.Start(port);
+        }
 
-            string commandMessage = command.ToMessageString();
-            using Message message = new((int)Messages.COMMAND);
-            message.Write(commandMessage);
-            Locator.Instance.Get<ILogManager>().Debug($"Sending command message to all clients but {exceptId} ({commandMessage})");
-            _server.SendTCPDataTpAllButOne(exceptId, message);
+        public void Stop()
+        {
+            _server.Stop();
         }
     }
 }

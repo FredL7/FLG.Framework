@@ -18,7 +18,6 @@ namespace FLG.Cs.UI {
         private readonly List<IUIObserver> _observers = [];
 
         #region IServiceInstance
-        public void OnServiceRegisteredFail() { }
         public void OnServiceRegistered()
         {
             logger.Debug("UI Manager Registered");

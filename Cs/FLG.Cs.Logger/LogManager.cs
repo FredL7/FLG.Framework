@@ -37,7 +37,6 @@ namespace FLG.Cs.Logger {
         }
 
         #region IServiceInstance
-        public void OnServiceRegisteredFail() { }
         public void OnServiceRegistered()
         {
             Debug("Logging Manager Registered");

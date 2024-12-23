@@ -1,5 +1,5 @@
 ﻿namespace FLG.Cs.Datamodel.Networking {
-    public enum ENetworkClientType {
-        OFFLINE, SERVER, CLIENT
+    public enum ENetworkingClientType {
+        SERVER, CLIENT
     }
 }
