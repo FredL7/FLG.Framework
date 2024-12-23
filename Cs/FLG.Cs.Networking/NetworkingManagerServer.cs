@@ -1,7 +1,6 @@
 ﻿using FLG.Cs.Datamodel.Commands;
 using FLG.Cs.Datamodel.Logger;
 using FLG.Cs.Datamodel.Networking;
-
 using FLG.Cs.ServiceLocator;
 
 
@@ -33,5 +32,7 @@ namespace FLG.Cs.Networking {
         {
             _server.Stop();
         }
+
+        protected override bool GetConnectionStatus() => true;
     }
 }

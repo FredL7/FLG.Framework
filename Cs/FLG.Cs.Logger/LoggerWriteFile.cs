@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-using FLG.Cs.Datamodel.Logger;
+﻿using FLG.Cs.Datamodel.Logger;
 
 
 namespace FLG.Cs.Logger {
@@ -8,7 +6,8 @@ namespace FLG.Cs.Logger {
         private readonly string _logsDir;
         private readonly string _filepath;
 
-        public LoggerWriteFile(string dir)
+        public LoggerWriteFile(string dir, string identifier, string networkingId)
+            : base(identifier, networkingId)
         {
             _logsDir = dir;
 
@@ -18,15 +17,10 @@ namespace FLG.Cs.Logger {
             _filepath = Path.Combine(_logsDir, filename + ".log");
         }
 
-        protected override void Log(string msg, ELogLevel severity)
+        protected override void Log(string logEntry, ELogLevel _)
         {
-            StackTrace stackTrace = new();
-            string? classname = stackTrace.GetFrame(2)?.GetMethod()?.DeclaringType?.FullName;
-            string? methodname = stackTrace.GetFrame(2)?.GetMethod()?.Name;
-
-            DateTime date = DateTime.Now;
             using StreamWriter w = File.AppendText(_filepath);
-            w.WriteLine(MakeLogEntry(date, severity, classname, methodname, msg));
+            w.WriteLine(logEntry);
         }
     }
 }

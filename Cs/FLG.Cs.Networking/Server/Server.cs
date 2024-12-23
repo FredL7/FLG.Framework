@@ -5,6 +5,7 @@ using FLG.Cs.Datamodel.Commands;
 using FLG.Cs.Datamodel.Logger;
 
 using FLG.Cs.ServiceLocator;
+using FLG.Cs.Datamodel.Validation;
 
 
 namespace FLG.Cs.Networking.Server {
@@ -18,6 +19,8 @@ namespace FLG.Cs.Networking.Server {
         private readonly Dictionary<int, Connection> _connections;
         internal Connection GetConnection(int id) => _connections[id];
         private TcpListener? _tcpListener;
+
+        internal bool IsOnline { get; private set; }
 
         public Server(ThreadManager threadManager)
         {
@@ -39,18 +42,27 @@ namespace FLG.Cs.Networking.Server {
 
         public void Start(int port)
         {
-            Locator.Instance.Get<ILogManager>().Debug("Starting Server...");
+            var logger = Locator.Instance.Get<ILogManager>();
+            logger.SetNetworkingId("SERVER");
+            logger.Debug("Starting Server...");
 
             _tcpListener = new(IPAddress.Any, port);
             _tcpListener.Start();
             _tcpListener.BeginAcceptTcpClient(new AsyncCallback(TCPConnectCallback), null);
 
-            Locator.Instance.Get<ILogManager>().Debug($"Server started, listening on port {port}");
+            IsOnline = true;
+            logger.Debug($"Server started, listening on port {port}");
         }
 
         public void Stop()
         {
-            // TODO
+            IsOnline = false;
+            foreach (var kvp in _connections)
+            {
+                kvp.Value.Disconnect();
+            }
+            _tcpListener?.Stop();
+            _tcpListener = null;
         }
 
         public void SendCommand(ICommand command)
@@ -62,7 +74,7 @@ namespace FLG.Cs.Networking.Server {
         {
             if (_tcpListener == null)
             {
-                Locator.Instance.Get<ILogManager>().Debug("TCP Listener not properly initialized");
+                Locator.Instance.Get<ILogManager>().Debug("TCP Listener closed");
                 return;
             }
 

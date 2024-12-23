@@ -1,27 +1,48 @@
-﻿using System.Diagnostics;
-
-using FLG.Cs.Datamodel.Logger;
+﻿using FLG.Cs.Datamodel.Logger;
 using FLG.Cs.Datamodel.Networking;
 using FLG.Cs.Datamodel.Commands;
 using FLG.Cs.ServiceLocator;
 
 
 namespace FLG.Cs.Logger {
-    internal class LoggerNetworking : FLGLogger {
-        protected override void Log(string msg, ELogLevel severity)
-        {
-            var network = Locator.Instance.Get<INetworkingManager>();
+    internal class LoggerNetworking(string identifier, string networkingId) : FLGLogger(identifier, networkingId) {
+        private readonly List<ICommand> _waitingList = [];
 
-            StackTrace stackTrace = new();
-            string? methodname = stackTrace.GetFrame(2)?.GetMethod()?.Name;
-            string? classname = stackTrace.GetFrame(2)?.GetMethod()?.DeclaringType?.FullName;
-            DateTime date = DateTime.Now;
-            string logMessage = MakeLogEntry(date, severity, methodname, classname, msg);
+        protected override void Log(string logEntry, ELogLevel severity)
+        {
+            // TODO: Better setup with _waitingList
+            // Currently required because there a logs going out before the INetworkingManager is registered
 
             var command = new Command<ILogManager>(severity.ToLogMethod());
-            command.AddParam(logMessage);
+            command.AddParam(logEntry);
+            command.AddParam(true);
+            _waitingList.Add(command);
 
-            network.SendCommand(command);
+            INetworkingManager? network;
+            try
+            {
+                network = Locator.Instance.Get<INetworkingManager>();
+            }
+            catch (Exception e)
+            {
+                if (e.Message.StartsWith("Service not registered"))
+                {
+                    return;
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            if (network.IsConnected)
+            {
+                foreach (var waitingCommand in _waitingList)
+                {
+                    network.SendCommand(waitingCommand);
+                }
+                _waitingList.Clear();
+            }
         }
     }
 }

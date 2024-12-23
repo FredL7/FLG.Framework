@@ -1,6 +1,6 @@
 ﻿namespace FLG.Cs.Datamodel.Logger {
     public enum ELoggerType {
-        NO_LOGS, WRITE_FILE, NETWORKING, GAME_ENGINE, USER
+        NO_LOGS, CONSOLE, WRITE_FILE, NETWORKING, GAME_ENGINE, USER
     }
 
     public enum ELogLevel {
@@ -29,7 +29,7 @@
             {
                 ELogLevel.ERROR => "Error",
                 ELogLevel.WARN => "Warn",
-                ELogLevel.INFO => "info",
+                ELogLevel.INFO => "Info",
                 ELogLevel.DEBUG => "Debug",
                 _ => throw new ArgumentException($"{level} is not valid"),
             };

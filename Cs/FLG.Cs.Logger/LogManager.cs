@@ -3,13 +3,18 @@ using FLG.Cs.Datamodel.Validation;
 
 namespace FLG.Cs.Logger {
     public class LogManager : ILogManager {
+        private readonly string _identifier;
         private readonly List<ILogger> _loggers;
-        private readonly string dir;
+        private readonly string _dir;
+
+        private string _networkingId = "";
 
         public LogManager(PreferencesLogs prefs)
         {
-            dir = prefs.dir;
+            _identifier = prefs.identifier;
+            _dir = prefs.dir;
 
+            // TODO: Support multiple instances of the same logger type?
             _loggers = new(prefs.types.Length);
             foreach (var type in prefs.types)
             {
@@ -21,14 +26,22 @@ namespace FLG.Cs.Logger {
         {
             FLGLogger logger = type switch
             {
-                ELoggerType.NO_LOGS => new LoggerNoLogs(),
-                ELoggerType.WRITE_FILE => new LoggerWriteFile(dir),
-                ELoggerType.NETWORKING => new LoggerNetworking(),
+                ELoggerType.NO_LOGS => new LoggerNoLogs(_identifier, _networkingId),
+                ELoggerType.CONSOLE => new LoggerConsole(_identifier, _networkingId),
+                ELoggerType.WRITE_FILE => new LoggerWriteFile(_dir, _identifier, _networkingId),
+                ELoggerType.NETWORKING => new LoggerNetworking(_identifier, _networkingId),
                 ELoggerType.GAME_ENGINE => throw new ArgumentException("Game Engine logger should be added using `Locator.Instance.get<ILogManager>().AddLogger(ILogger)`"),
                 ELoggerType.USER => throw new ArgumentException("User logger should be added using `Locator.Instance.get<ILogManager>().AddLogger(ILogger)`"),
                 _ => throw new ArgumentException($"Unknown logger type: {type}"),
             };
             _loggers.Add(logger);
+        }
+
+        public void SetNetworkingId(string id)
+        {
+            _networkingId = id;
+            foreach (var logger in _loggers)
+                logger.SetNetworkingId(id);
         }
 
         public void AddLogger(ILogger logger)
@@ -43,26 +56,26 @@ namespace FLG.Cs.Logger {
         }
         #endregion IServiceInstance
 
-        public void Error(string msg)
+        public void Error(string msg, bool external = false)
         {
             foreach (var logger in _loggers)
-                logger.Error(msg);
+                logger.Error(msg, external);
             throw new Exception(msg);
         }
-        public void Warn(string msg)
+        public void Warn(string msg, bool external = false)
         {
             foreach (var logger in _loggers)
-                logger.Warn(msg);
+                logger.Warn(msg, external);
         }
-        public void Info(string msg)
+        public void Info(string msg, bool external = false)
         {
             foreach (var logger in _loggers)
-                logger.Info(msg);
+                logger.Info(msg, external);
         }
-        public void Debug(string msg)
+        public void Debug(string msg, bool external = false)
         {
             foreach (var logger in _loggers)
-                logger.Debug(msg);
+                logger.Debug(msg, external);
         }
 
         public void Log(Result result)

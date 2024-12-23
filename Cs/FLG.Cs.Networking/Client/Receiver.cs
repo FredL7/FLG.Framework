@@ -29,9 +29,11 @@ namespace FLG.Cs.Networking.Client {
         private void Welcome(Packet packet)
         {
             int id = packet.ReadInt();
-            _client.Connection.ID = id;
+            _client.ID = id;
 
-            Locator.Instance.Get<ILogManager>().Debug($"Connected to server with id {id}");
+            var logger = Locator.Instance.Get<ILogManager>();
+            logger.SetNetworkingId($"CLIENT {id}");
+            logger.Debug($"Connected to server with id {id}");
         }
 
         private void Disconnected(Packet packet)

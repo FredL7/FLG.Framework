@@ -8,7 +8,7 @@ namespace FLG.Cs.Networking.Client {
         private readonly TCPClient _tcp;
         private readonly Client _client;
 
-        private bool _isConnected = false;
+        public bool IsConnected { get; private set; }
 
         public int ID { get; set; }
         public IProtocol Tcp { get => _tcp; }
@@ -22,14 +22,14 @@ namespace FLG.Cs.Networking.Client {
         public void Connect(string ip, int port)
         {
             _tcp.Connect(ip, port);
-            _isConnected = true;
+            IsConnected = true;
         }
 
         public void Disconnect()
         {
-            if (_isConnected)
+            if (IsConnected)
             {
-                _isConnected = false;
+                IsConnected = false;
                 _tcp.Disconnect();
 
                 Locator.Instance.Get<ILogManager>().Debug("Disconnected from server");

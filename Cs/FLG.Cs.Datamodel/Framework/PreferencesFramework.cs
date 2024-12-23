@@ -6,6 +6,7 @@ using FLG.Cs.Datamodel.UI;
 
 namespace FLG.Cs.Datamodel.Framework {
     public struct PreferencesFramework {
+        public string identifier;
         public PreferencesLogs? logs;
         public PreferencesUI? ui;
         public PreferencesNetworking? networking;

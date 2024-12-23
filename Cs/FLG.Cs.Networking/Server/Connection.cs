@@ -29,7 +29,7 @@ namespace FLG.Cs.Networking.Server {
 
         public void Disconnect()
         {
-            Locator.Instance.Get<ILogManager>().Debug($"Connection {ID} ({_tcp.IP}) has disconnected");
+            Locator.Instance.Get<ILogManager>().Debug($"Disconnect connection {ID} ({_tcp.IP})");
             _tcp.Disconnect();
             _server.Sender.Disconnected(ID);
 
