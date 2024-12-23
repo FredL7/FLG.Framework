@@ -30,6 +30,7 @@ namespace FLG.Cs.Networking {
 
         public void Stop()
         {
+            // TODO: Send a notification to the clients that this is an expected close
             _server.Stop();
         }
 

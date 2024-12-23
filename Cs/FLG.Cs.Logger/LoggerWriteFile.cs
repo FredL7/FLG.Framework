@@ -4,13 +4,6 @@ using FLG.Cs.Datamodel.Logger;
 
 
 namespace FLG.Cs.Logger {
-    [Serializable]
-    [XmlRoot("LogEntries")]
-    public class LogEntries {
-        [XmlElement("LogEntry")]
-        public List<LogEntry> Entries { get; set; } = [];
-    }
-
     internal class LoggerWriteFile : FLGLogger {
         private readonly string _logsDir;
         private readonly string _filepath;
@@ -46,7 +39,8 @@ namespace FLG.Cs.Logger {
         {
             // TODO: might cause performance issue if it writes the whole xml each time
             _entries.Entries.Add(entry);
-            using StreamWriter w = new(_filepath, false);
+            using FileStream fs = new(_filepath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
+            using StreamWriter w = new(fs);
             _serializer.Serialize(w, _entries);
         }
     }

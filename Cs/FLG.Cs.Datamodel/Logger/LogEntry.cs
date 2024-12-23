@@ -1,7 +1,15 @@
 ﻿using System.Text;
+using System.Xml.Serialization;
 
 
 namespace FLG.Cs.Datamodel.Logger {
+    [Serializable]
+    [XmlRoot("LogEntries")]
+    public class LogEntries {
+        [XmlElement("LogEntry")]
+        public List<LogEntry> Entries { get; set; } = [];
+    }
+
     [Serializable]
     public class LogEntry {
         public required string identifier;
