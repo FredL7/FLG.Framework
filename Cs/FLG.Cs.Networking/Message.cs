@@ -1,5 +1,6 @@
 ﻿using System.Text;
 
+
 namespace FLG.Cs.Networking {
     internal enum Messages {
         WELCOME = 0, HEARTBEAT = 1, COMMAND = 2

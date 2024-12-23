@@ -1,7 +1,9 @@
 ﻿using System.Xml;
 
-using FLG.Cs.Datamodel;
-using FLG.Cs.FLGMath;
+using FLG.Cs.Datamodel.UI.Grids;
+using FLG.Cs.Datamodel.UI.Layouts;
+using FLG.Cs.Datamodel.UI;
+using FLG.Cs.Math;
 
 
 namespace FLG.Cs.UI.Grids {

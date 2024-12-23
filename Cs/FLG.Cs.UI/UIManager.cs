@@ -1,40 +1,27 @@
-﻿using FLG.Cs.Datamodel;
-using FLG.Cs.FLGMath;
+﻿using FLG.Cs.Datamodel.Logger;
+using FLG.Cs.Datamodel.UI;
+using FLG.Cs.Datamodel.UI.Layouts;
+using FLG.Cs.Datamodel.UI.Pages;
+using FLG.Cs.Math;
 using FLG.Cs.UI.Layouts;
 using FLG.Cs.UI.Pages;
 
+
+
 namespace FLG.Cs.UI {
-    public class UIManager : IUIManager {
-        private readonly string[] _uiDirs;
-        private Size _windowSize;
+    public class UIManager(PreferencesUI prefs, ILogManager logger, IUIFactory factory) : IUIManager {
+        private readonly string[] _uiDirs = prefs.dirs;
+        private Size _windowSize = prefs.windowSize;
+        private readonly LayoutsManager _layoutsManager = new();
+        private readonly PagesManager _pagesManager = new();
 
-        private readonly ILogManager _logger;
-        private readonly IUIFactory _factory;
-
-        private readonly LayoutsManager _layoutsManager;
-        private readonly PagesManager _pagesManager;
-
-        private readonly List<IUIObserver> _observers;
-
-        public UIManager(PreferencesUI prefs, ILogManager logger, IUIFactory factory)
-        {
-            _uiDirs = prefs.dirs;
-            _windowSize = prefs.windowSize;
-
-            _logger = logger;
-            _factory = factory;
-
-            _layoutsManager = new();
-            _pagesManager = new();
-
-            _observers = new();
-        }
+        private readonly List<IUIObserver> _observers = [];
 
         #region IServiceInstance
         public void OnServiceRegisteredFail() { }
         public void OnServiceRegistered()
         {
-            _logger.Debug("UI Manager Registered");
+            logger.Debug("UI Manager Registered");
         }
         #endregion IServiceInstance
 
@@ -68,15 +55,15 @@ namespace FLG.Cs.UI {
 
         private void ParseUI()
         {
-            _logger.Debug("Begin XML Parsing");
+            logger.Debug("Begin XML Parsing");
 
-            XMLParser parser = new(_uiDirs, _logger, _factory);
+            XMLParser parser = new(_uiDirs, logger, factory);
             var result = parser.Parse();
-            if (!result) _logger.Log(result);
-            _logger.Debug("Finished XML Parsing");
+            if (!result) logger.Log(result);
+            logger.Debug("Finished XML Parsing");
 
             _layoutsManager.SetLayoutsFromParser(parser.GetLayouts());
-            _pagesManager.SetPagesFromParser(parser.GetPages(), this, _factory);
+            _pagesManager.SetPagesFromParser(parser.GetPages(), this, factory);
 
             // TODO: Register window size change to compute on change (also applies to pages)
             _layoutsManager.ComputeLayoutsRectXforms(_windowSize);

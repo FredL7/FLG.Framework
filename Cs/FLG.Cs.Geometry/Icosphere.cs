@@ -1,4 +1,4 @@
-﻿using FLG.Cs.FLGMath;
+﻿using FLG.Cs.Math;
 
 
 namespace FLG.Cs.Geometry {
@@ -90,8 +90,8 @@ namespace FLG.Cs.Geometry {
 
             for (int i = 0; i < recursionLevel; ++i)
             {
-                List<Triangle> faces2 = new();
-                foreach(var triangle in newFaces)
+                List<Triangle> faces2 = [];
+                foreach (var triangle in newFaces)
                 {
                     // replace the triangle by 4 triangles
                     int a = GetMiddlePoint(triangle.v1, triangle.v2, ref vertices, ref middlePointIndexCache, radius);
@@ -159,11 +159,11 @@ namespace FLG.Cs.Geometry {
 
             return new()
             {
-                vertices = vertices.ToArray(),
+                vertices = [.. vertices],
                 normals = normalizedVertices,
                 indices = indices,
                 uvs = uvs,
-                triangles = faces.ToArray()
+                triangles = [.. faces]
             };
         }
     }

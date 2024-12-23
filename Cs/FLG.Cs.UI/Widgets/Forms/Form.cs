@@ -1,11 +1,16 @@
 ﻿using System.Xml;
 
-using FLG.Cs.Datamodel;
-using FLG.Cs.Model;
+using FLG.Cs.Datamodel.UI.Forms;
+using FLG.Cs.Datamodel.UI.Grids;
+using FLG.Cs.Datamodel.UI.Layouts;
+using FLG.Cs.Datamodel.UI.Widgets.Forms;
+using FLG.Cs.Datamodel.UI.Widgets.Text;
+using FLG.Cs.Datamodel.UI;
+
 using FLG.Cs.UI.Grids;
 
 
-namespace FLG.Cs.UI.Widgets {
+namespace FLG.Cs.UI.Widgets.Forms {
     internal class Form : Container, IForm {
         public override ELayoutElement Type { get => ELayoutElement.FORM; }
 

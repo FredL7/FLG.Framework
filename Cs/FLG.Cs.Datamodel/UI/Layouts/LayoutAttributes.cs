@@ -1,7 +1,7 @@
-﻿using FLG.Cs.FLGMath;
+﻿using FLG.Cs.Math;
 
 
-namespace FLG.Cs.Datamodel {
+namespace FLG.Cs.Datamodel.UI.Layouts {
     public struct LayoutAttributes {
         private const float DEFAULT_WIDTH = 0f;
         private const float DEFAULT_HEIGHT = 0f;
@@ -33,7 +33,8 @@ namespace FLG.Cs.Datamodel {
             Spacing margin = new(), Spacing padding = new(),
             int order = DEFAULT_ORDER, float weight = DEFAULT_WEIGHT,
             string backgroundImage = DEFAULT_BACKGROUNDIMAGE
-        ) {
+        )
+        {
             this.width = width;
             this.height = height;
             this.margin = margin;

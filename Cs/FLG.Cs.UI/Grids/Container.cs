@@ -1,8 +1,12 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Xml;
-using FLG.Cs.Datamodel;
-using FLG.Cs.FLGMath;
+
+using FLG.Cs.Datamodel.UI.Layouts;
+using FLG.Cs.Datamodel.UI;
+using FLG.Cs.Math;
 using FLG.Cs.UI.Layouts;
+
 
 namespace FLG.Cs.UI.Grids {
     public class Container : AbstractLayoutElementComposite {
@@ -31,7 +35,7 @@ namespace FLG.Cs.UI.Grids {
         {
             var children = childrens[0]; // Assert only 1 child
             Spacing margin = children.RectXform.Margin;
-            FLGVector2 position = new (margin.Left, margin.Top);
+            FLGVector2 position = new(margin.Left, margin.Top);
             Size size = new Size(Dimensions.Width - (margin.Left + margin.Right), Dimensions.Height - (margin.Top + margin.Bottom));
             children.RectXform.SetSizesAndPosition(size, position);
         }

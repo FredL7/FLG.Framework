@@ -1,8 +1,8 @@
-﻿using System.Net;
-using System.Net.Sockets;
+﻿using System.Net.Sockets;
+using System.Net;
 
-using FLG.Cs.Datamodel;
 using FLG.Cs.ServiceLocator;
+using FLG.Cs.Datamodel.Logger;
 
 
 namespace FLG.Cs.Networking {

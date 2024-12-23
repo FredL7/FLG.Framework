@@ -1,11 +1,12 @@
-﻿using System.Xml;
+﻿using System.Collections.Generic;
+using System.Xml;
 
-using FLG.Cs.Datamodel;
+using FLG.Cs.Datamodel.UI.Layouts;
 
 
 namespace FLG.Cs.UI.Layouts {
     public abstract class AbstractLayoutElementComposite : AbstractLayoutElement {
-        private readonly Dictionary<string, List<ILayoutElement>> _childrens = new();
+        private readonly Dictionary<string, List<ILayoutElement>> _childrens = [];
         protected List<ILayoutElement> GetChildrensInternal(string id = ILayoutElement.DEFAULT_CHILDREN_TARGET)
         {
             CreateChildrenContainerIfDoesntExists(id);
@@ -26,13 +27,13 @@ namespace FLG.Cs.UI.Layouts {
 
         private void SetupDefaultChildrensTarget()
         {
-            _childrens.Add(ILayoutElement.DEFAULT_CHILDREN_TARGET, new());
+            _childrens.Add(ILayoutElement.DEFAULT_CHILDREN_TARGET, []);
         }
 
         private void CreateChildrenContainerIfDoesntExists(string id)
         {
             if (!_childrens.ContainsKey(id))
-                _childrens.Add(id, new());
+                _childrens.Add(id, []);
         }
 
         public override void AddChild(ILayoutElement child, string id = ILayoutElement.DEFAULT_CHILDREN_TARGET)

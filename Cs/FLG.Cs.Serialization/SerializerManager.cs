@@ -1,8 +1,7 @@
-﻿using FLG.Cs.Datamodel;
+﻿using FLG.Cs.Datamodel.Logger;
+using FLG.Cs.Datamodel.Serialization;
 using FLG.Cs.IO;
 using FLG.Cs.ServiceLocator;
-
-using File = FLG.Cs.IO.File;
 
 
 namespace FLG.Cs.Serialization {
@@ -38,14 +37,15 @@ namespace FLG.Cs.Serialization {
             };
 
             _saveDir = prefs.dir;
-            _saveFiles = new();
+            _saveFiles = [];
 
-            _serializableItems = new();
+            _serializableItems = [];
         }
 
         #region IServiceInstance
         public void OnServiceRegisteredFail() { }
-        public void OnServiceRegistered() {
+        public void OnServiceRegistered()
+        {
             Locator.Instance.Get<ILogManager>().Debug("Serialization Manager Registered");
             DiscoverSaveFile();
         }
@@ -63,8 +63,8 @@ namespace FLG.Cs.Serialization {
                 return;
             }
 
-            string[] exts = { BinarySerializer.SAVE_EXTENSION, JsonSerializer.SAVE_EXTENSION, XmlSerializer.SAVE_EXTENSION };
-            List<File> saveFiles = IOUtils.GetFilePathsByExtensions(_saveDir, exts);
+            string[] exts = [BinarySerializer.SAVE_EXTENSION, JsonSerializer.SAVE_EXTENSION, XmlSerializer.SAVE_EXTENSION];
+            List<FLGFile> saveFiles = IOUtils.GetFilePathsByExtensions(_saveDir, exts);
             foreach (var file in saveFiles)
             {
                 Serializer serializer;

@@ -1,6 +1,7 @@
 ﻿using System.Net.Sockets;
 
-using FLG.Cs.Datamodel;
+using FLG.Cs.Datamodel.Commands;
+using FLG.Cs.Datamodel.Logger;
 using FLG.Cs.ServiceLocator;
 
 
@@ -34,7 +35,7 @@ namespace FLG.Cs.Networking {
                 { (int)Messages.COMMAND, CommandHandler },
             });
 
-            _receiveBuffer = Array.Empty<byte>();
+            _receiveBuffer = [];
             _receivedData = new Message();
             _manager = manager;
         }

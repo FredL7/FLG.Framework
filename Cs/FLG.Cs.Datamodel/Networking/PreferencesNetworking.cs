@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.Datamodel {
+﻿namespace FLG.Cs.Datamodel.Networking {
     public struct PreferencesNetworking {
         public ENetworkClientType clientType;
     }

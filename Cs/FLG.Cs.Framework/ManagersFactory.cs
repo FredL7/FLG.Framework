@@ -1,11 +1,17 @@
-﻿using FLG.Cs.Commands;
-using FLG.Cs.Datamodel;
+﻿using FLG.Cs.Datamodel.Commands;
+using FLG.Cs.Datamodel.Framework;
+using FLG.Cs.Datamodel.Logger;
+using FLG.Cs.Datamodel.Networking;
+using FLG.Cs.Datamodel.Serialization;
+using FLG.Cs.Datamodel.UI;
+using FLG.Cs.Datamodel.Validation;
+
 using FLG.Cs.Logger;
-using FLG.Cs.Model;
-using FLG.Cs.Networking;
-using FLG.Cs.Serialization;
 using FLG.Cs.ServiceLocator;
+using FLG.Cs.Serialization;
 using FLG.Cs.UI;
+using FLG.Cs.Networking;
+using FLG.Cs.Commands;
 
 
 namespace FLG.Cs.Framework {

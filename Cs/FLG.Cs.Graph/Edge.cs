@@ -1,15 +1,8 @@
 ﻿namespace FLG.Cs.Graph {
-    public class Edge<T> where T : INodeItem {
-        public float Weight { get; private set; }
-        public Node<T> Node1 { get; private set; }
-        public Node<T> Node2 { get; private set; }
-
-        public Edge(Node<T> node1, Node<T> node2, float weight = 1f)
-        {
-            Node1 = node1;
-            Node2 = node2;
-            Weight = weight;
-        }
+    public class Edge<T>(Node<T> node1, Node<T> node2, float weight = 1f) where T : INodeItem {
+        public float Weight { get; private set; } = weight;
+        public Node<T> Node1 { get; private set; } = node1;
+        public Node<T> Node2 { get; private set; } = node2;
 
         public Node<T> GetDestination(Node<T> origin)
         {
@@ -43,7 +36,7 @@
             int hashNode2 = Node2.ID;
 
             return hashNode1 < hashNode2 ? (hashNode1 * 397) ^ hashNode2 : (hashNode2 * 397) ^ hashNode2;
-            // Could use larger prime like 1009, 2011, or 3011 but should test hash distribution
+            // Could use larger prime like 1009, 2011, or 3011 but should test hash distribution before optimization
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿namespace FLG.Cs.Cards {
+﻿namespace FLG.Cs.Cards.Library {
     public class StandardDeck52 : Deck {
         public StandardDeck52(int nbPlayers = 1) : base(nbPlayers)
         {
-            List<Card> cards = new();
-            string[] colors = { EBaseColors.CLUBS.ToString(), EBaseColors.DIAMONDS.ToString(), EBaseColors.HEARTS.ToString(), EBaseColors.SPADES.ToString() };
+            List<Card> cards = [];
+            string[] colors = [EBaseColors.CLUBS.ToString(), EBaseColors.DIAMONDS.ToString(), EBaseColors.HEARTS.ToString(), EBaseColors.SPADES.ToString()];
 
             foreach (string color in colors)
             {

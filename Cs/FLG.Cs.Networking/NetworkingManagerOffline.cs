@@ -1,5 +1,7 @@
-﻿using FLG.Cs.Datamodel;
+﻿using FLG.Cs.Datamodel.Logger;
+using FLG.Cs.Datamodel.Networking;
 using FLG.Cs.ServiceLocator;
+
 
 namespace FLG.Cs.Networking {
     public class NetworkingManagerOffline : INetworkingManager {

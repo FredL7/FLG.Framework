@@ -1,6 +1,5 @@
-﻿namespace FLG.Cs.Graph {
-    public enum SpanningTreeAlgorithm
-    {
+﻿namespace FLG.Cs.Graph.Pathfinding {
+    public enum SpanningTreeAlgorithm {
         Kruskal, Prim
     }
 
@@ -43,11 +42,11 @@
         internal static List<Edge<T>> PrimAlgorithm(MatrixGraph<T> graph, int startID)
         {
             PriorityQueue<Edge<T>, float> queue = new();
-            HashSet<Node<T>> visited = new(); // TODO: Could be replaced by bool[] since I have an id for each node
-            List<Edge<T>> edges = new();
+            HashSet<Node<T>> visited = []; // TODO: Could be replaced by bool[] since I have an id for each node
+            List<Edge<T>> edges = [];
 
             visited.Add(graph.Nodes[startID]);
-            foreach(var edge in graph.Nodes[startID].Edges)
+            foreach (var edge in graph.Nodes[startID].Edges)
             {
                 queue.Enqueue(edge, edge.Weight);
             }
@@ -61,7 +60,7 @@
                     edges.Add(current);
                     visited.Add(destination);
 
-                    foreach(var edge in graph.Nodes[destination.ID].Edges)
+                    foreach (var edge in graph.Nodes[destination.ID].Edges)
                     {
                         Node<T> next = edge.GetDestination(graph.Nodes[destination.ID]);
                         if (!visited.Contains(next))

@@ -1,4 +1,7 @@
-using FLG.Cs.Datamodel;
+﻿using System.Collections.Generic;
+
+using FLG.Cs.Datamodel.UI.Pages;
+using FLG.Cs.Datamodel.UI;
 
 
 namespace FLG.Cs.UI.Pages {
@@ -9,7 +12,7 @@ namespace FLG.Cs.UI.Pages {
 
         internal PagesManager()
         {
-            _pages = new();
+            _pages = [];
             _currentPage = string.Empty;
         }
 
@@ -17,15 +20,15 @@ namespace FLG.Cs.UI.Pages {
 
         internal void SetCurrentPage(string id)
         {
-            if (!_pages.ContainsKey(id))
+            if (!_pages.TryGetValue(id, out IPage? value))
             {
                 throw new Exception($"Page with id {id} does not exists");
             }
 
-            _pages[id].OnClose();
+            value.OnClose();
 
             _currentPage = id;
-            _pages[id].OnOpen();
+            value.OnOpen();
         }
 
         internal IPage GetCurrent()

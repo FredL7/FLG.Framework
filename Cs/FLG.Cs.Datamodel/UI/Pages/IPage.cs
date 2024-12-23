@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.Datamodel {
+﻿namespace FLG.Cs.Datamodel.UI.Pages {
     public interface IPage {
         public string PageId { get; }
         public string LayoutId { get; set; }

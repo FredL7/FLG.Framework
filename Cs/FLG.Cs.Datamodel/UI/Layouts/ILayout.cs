@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.Datamodel {
+﻿namespace FLG.Cs.Datamodel.UI.Layouts {
     public interface ILayout {
         public string Name { get; }
         public ILayoutElement Root { get; }

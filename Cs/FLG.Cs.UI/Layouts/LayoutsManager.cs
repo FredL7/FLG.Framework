@@ -1,9 +1,10 @@
-﻿using FLG.Cs.Datamodel;
-using FLG.Cs.FLGMath;
+﻿using System.Collections.Generic;
+
+using FLG.Cs.Datamodel.UI.Layouts;
+using FLG.Cs.Math;
 
 
-namespace FLG.Cs.UI.Layouts
-{
+namespace FLG.Cs.UI.Layouts {
     internal class LayoutsManager {
         private Dictionary<string, Layout> _layouts;
 
@@ -21,7 +22,6 @@ namespace FLG.Cs.UI.Layouts
             {
                 throw new Exception($"Layout with id {id} does not exists");
             }
-
             _currentLayout = id;
         }
 

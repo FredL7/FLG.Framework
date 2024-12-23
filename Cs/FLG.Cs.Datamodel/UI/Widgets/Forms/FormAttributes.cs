@@ -1,4 +1,4 @@
-﻿namespace FLG.Cs.Datamodel {
+﻿namespace FLG.Cs.Datamodel.UI.Widgets.Forms {
     public struct FormAttributes {
         private const float DEFAULT_PADDINGBETWEENROWS = 10.0f;
         private const float DEFAULT_PADDINGBETWEENCOLS = 20.0f;
@@ -23,7 +23,8 @@
             float paddingBetweenColumns = DEFAULT_PADDINGBETWEENCOLS,
             float labelColumnWeight = DEFAULT_LABELCOLWEIGHT,
             float inputColumnWeight = DEFAULT_INPUTCOLWEIGHT
-        ) {
+        )
+        {
             this.paddingBetweenRows = paddingBetweenRows;
             this.paddingBetweenColumns = paddingBetweenColumns;
             this.labelColumnWeight = labelColumnWeight;

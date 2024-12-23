@@ -1,6 +1,8 @@
 ﻿using System.Xml;
 
-using FLG.Cs.Datamodel;
+using FLG.Cs.Datamodel.UI.Layouts;
+using FLG.Cs.Datamodel.UI.Widgets.Text;
+using FLG.Cs.Datamodel.UI;
 using FLG.Cs.UI.Layouts;
 
 

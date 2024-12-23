@@ -1,5 +1,5 @@
-﻿using FLG.Cs.Decorators;
-using FLG.Cs.Datamodel;
+﻿using FLG.Cs.Datamodel.ServiceLocator;
+using FLG.Cs.Decorators;
 
 
 namespace FLG.Cs.ServiceLocator {
@@ -8,7 +8,7 @@ namespace FLG.Cs.ServiceLocator {
 
         private Locator()
         {
-            _services = new();
+            _services = [];
         }
 
         public bool Register<T>(T service) where T : IServiceInstance

@@ -13,7 +13,7 @@
             Nodes = new Node<T>[_items.Length];
             for (int i = 0; i < _items.Length; ++i)
             {
-                Nodes[i] = new(i, _expectedEdges, _items[i], this);
+                Nodes[i] = new(i, _expectedEdges, _items[i]);
             }
         }
 
@@ -25,7 +25,7 @@
             Nodes = new Node<T>[_items.Length];
             for (int i = 0; i < _items.Length; ++i)
             {
-                Nodes[i] = new(i, _expectedEdges, _items[i], this);
+                Nodes[i] = new(i, _expectedEdges, _items[i]);
             }
         }
 

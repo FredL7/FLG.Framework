@@ -1,16 +1,18 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Xml;
 
-using FLG.Cs.Datamodel;
-using FLG.Cs.FLGMath;
+using FLG.Cs.Datamodel.UI.Grids;
+using FLG.Cs.Datamodel.UI.Layouts;
+using FLG.Cs.Math;
 using FLG.Cs.UI.Layouts;
 
 
 namespace FLG.Cs.UI.Grids {
     public abstract class Stack : AbstractLayoutElementComposite {
-        private EGridDirection _direction;
-        private EGridJustify _justify; // Along the main direction
-        private EGridAlignment _alignment; // Along the other direction
+        private readonly EGridDirection _direction;
+        private readonly EGridJustify _justify; // Along the main direction
+        private readonly EGridAlignment _alignment; // Along the other direction
 
         internal Stack(string name, XmlNode node) : base(name, node)
         {
@@ -230,7 +232,7 @@ namespace FLG.Cs.UI.Grids {
             return justifiedMargin;
         }
 
-        private float GetSecondaryMaxMarginFirst(AbstractLayoutElement[] childrens)
+        /*private float GetSecondaryMaxMarginFirst(AbstractLayoutElement[] childrens)
         {
             return childrens.Max(x => GetChildSecondaryMarginFirst(x));
         }
@@ -238,6 +240,6 @@ namespace FLG.Cs.UI.Grids {
         private float GetSecondaryMaxMarginLast(AbstractLayoutElement[] childrens)
         {
             return childrens.Max(x => GetChildSecondaryMarginLast(x));
-        }
+        }*/
     }
 }
