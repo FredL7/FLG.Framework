@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-using FLG.Cs.Datamodel.Commands;
+﻿using FLG.Cs.Datamodel.Commands;
 using FLG.Cs.Datamodel.Logger;
 using FLG.Cs.Datamodel.ServiceLocator;
 using FLG.Cs.ServiceLocator;
@@ -51,29 +49,14 @@ namespace FLG.Cs.Commands {
 
                 // Args
                 string[] argsData = messagedata[2].Split(CommandConstants.REFLECTION_PARAM_SEPARATOR);
-                var pTypes = new ECommandArgumentType[argsData.Length];
-                var pValues = new object[argsData.Length];
+                List<ICommandArgument> args = new(argsData.Length);
                 for (int i = 0; i < argsData.Length; ++i)
                 {
                     string[] arg = argsData[i].Split(CommandConstants.REFLECTION_TYPE_SEPARATOR);
                     ECommandArgumentType pType = arg[0].FromTypeString();
                     string pValueRaw = arg[1];
-                    object pValue = pType switch
-                    {
-                        ECommandArgumentType.BOOL => Boolean.Parse(pValueRaw),
-                        ECommandArgumentType.INT => Int32.Parse(pValueRaw),
-                        ECommandArgumentType.FLOAT => float.Parse(pValueRaw),
-                        ECommandArgumentType.STRING => pValueRaw,
-                        _ => throw new ArgumentException($"Unknown type {pType}"),
-                    };
-
-                    pTypes[i] = pType;
-                    pValues[i] = pValue;
-                }
-                List<CommandArgument> args = new(pValues.Length);
-                for (int i = 0; i < pValues.Length; ++i)
-                {
-                    args.Add(new() { type = pTypes[i], value = pValues[i] });
+                    var commandArg = ICommandArgumentExtension.GetCommandArgument(pType, pValueRaw);
+                    args.Add(commandArg);
                 }
 
                 // Ctor
@@ -99,8 +82,8 @@ namespace FLG.Cs.Commands {
         private static void ExecuteCommand(CommandData commandData)
         {
             var logger = Locator.Instance.Get<ILogManager>();
-            string args = string.Join(", ", commandData.args.Select(x => $"{x.type}: \"{x.value}\""));
-            string argsTypes = string.Join(", ", commandData.args.Select(x => x.type));
+            string args = string.Join(", ", commandData.args.Select(x => $"{x.Type}: \"{x.Value}\""));
+            string argsTypes = string.Join(", ", commandData.args.Select(x => x.Type));
             logger.Debug($"Executing {commandData.methodName} from type {commandData.type} with {commandData.args.Count} arguments ({args}).");
 
             try
@@ -119,7 +102,7 @@ namespace FLG.Cs.Commands {
                     // Will not search through inheritance because interfaces are not inherited, it's a contract for implementation
                     // The easiest solution is to redeclare the inherited methods in the base interface (using the new keyword)
                     // Another solution would be to search recursively though type.GetInterfaces()
-                    commandMethod.Invoke(serviceInstance, commandData.args.Select(x => x.value).ToArray());
+                    commandMethod.Invoke(serviceInstance, commandData.args.Select(x => x.Value).ToArray());
                 }
                 catch (Exception e)
                 {

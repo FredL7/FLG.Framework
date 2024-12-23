@@ -3,9 +3,9 @@
 
 namespace FLG.Cs.Logger {
     internal class LoggerConsole(string identifier, string networkingId) : FLGLogger(identifier, networkingId) {
-        protected override void Log(string logEntry, ELogLevel _)
+        public override void LogEntry(LogEntry entry)
         {
-            Console.WriteLine(logEntry);
+            Console.WriteLine(entry.ToPrettyString());
         }
     }
 }
