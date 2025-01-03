@@ -9,6 +9,12 @@ namespace FLG.Cs.Logger {
     internal class LoggerNetworking(string identifier, string networkingId) : FLGLogger(identifier, networkingId) {
         public override void LogEntry(LogEntry entry)
         {
+            if (entry.severity >= ELogLevel.DEBUG)
+            {
+                // Should keep debugging information constrained to the current application
+                return;
+            }
+
             // Will drop logs until networking manager is initialized
             // Use another logger to catch the missed logs
             INetworkingManager? network;
