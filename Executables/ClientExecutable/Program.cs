@@ -10,7 +10,7 @@ namespace ClientExecutable {
     class ProgramClient {
         private static bool stop = false;
 
-        static void Main(string[] args)
+        static void Main(string[] _)
         {
             Console.Title = "Client";
 

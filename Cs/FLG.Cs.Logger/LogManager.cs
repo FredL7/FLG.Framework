@@ -14,7 +14,7 @@ namespace FLG.Cs.Logger {
             _identifier = prefs.identifier;
             _dir = prefs.dir;
 
-            // TODO: Support multiple instances of the same logger type?
+            //? Support multiple instances of the same logger type
             _loggers = new(prefs.types.Length);
             foreach (var type in prefs.types)
             {

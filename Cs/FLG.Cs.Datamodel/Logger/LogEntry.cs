@@ -1,7 +1,15 @@
 ﻿using System.Text;
+using System.Xml.Serialization;
 
 
 namespace FLG.Cs.Datamodel.Logger {
+    [Serializable]
+    [XmlRoot("LogEntries")]
+    public class LogEntries {
+        [XmlElement("LogEntry")]
+        public List<LogEntry> Entries { get; set; } = [];
+    }
+
     [Serializable]
     public class LogEntry {
         public required string identifier;
@@ -16,7 +24,7 @@ namespace FLG.Cs.Datamodel.Logger {
 
         public override string ToString() => ToPrettyString();
 
-        // TODO: Why didn't I use ToString() directly?
+        //? Why didn't I use ToString() directly
         public string ToPrettyString()
         {
             StringBuilder sb = new();

@@ -61,7 +61,7 @@ namespace FLG.Cs.UI.Widgets.Forms {
                     new(alignHorizontal: ETextAlignHorizontal.RIGHT, alignVertical: ETextAlignVertical.CENTER));
                 inputLine.AddChild(inputLabel, pageID);
 
-                // TODO: Better way than to create a copy?
+                //? Better way than to create a copy
                 InputField inputField = new(field.Name, field.Label, field.Placeholder, field.Model,
                     new(weight: _formAttributes.inputColumnWeight, margin: new(0, 0, _formAttributes.paddingBetweenColumns / 2.0f, 0)));
                 newFields.Add(inputField);
@@ -94,7 +94,7 @@ namespace FLG.Cs.UI.Widgets.Forms {
                 _submitAction(Name, Model);
             }
 
-            // TODO: Clear the form?
+            //? Clear the form
         }
 
         public bool ValidateFields()

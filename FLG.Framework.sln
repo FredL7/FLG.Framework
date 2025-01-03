@@ -49,6 +49,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerExecutable", "Executa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientExecutable", "Executables\ClientExecutable\ClientExecutable.csproj", "{79A29E23-647C-42D8-B030-D26CB59DA1FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogsViewer", "Executables\LogsViewer\LogsViewer.csproj", "{BD516869-7184-49EF-B074-D57DB9E6E10E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +125,10 @@ Global
 		{79A29E23-647C-42D8-B030-D26CB59DA1FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79A29E23-647C-42D8-B030-D26CB59DA1FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79A29E23-647C-42D8-B030-D26CB59DA1FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD516869-7184-49EF-B074-D57DB9E6E10E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD516869-7184-49EF-B074-D57DB9E6E10E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD516869-7184-49EF-B074-D57DB9E6E10E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD516869-7184-49EF-B074-D57DB9E6E10E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -149,6 +155,7 @@ Global
 		{FB1CD4BA-CC5E-4D10-AE6E-2831261C5251} = {EF1699E3-9130-4896-BBDA-0EEA74FF1B87}
 		{82799837-70AF-4C91-9775-F46E274EC832} = {6016D943-404B-4809-9CF5-1F6F0DAEE1B1}
 		{79A29E23-647C-42D8-B030-D26CB59DA1FB} = {6016D943-404B-4809-9CF5-1F6F0DAEE1B1}
+		{BD516869-7184-49EF-B074-D57DB9E6E10E} = {6016D943-404B-4809-9CF5-1F6F0DAEE1B1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C9DDB0C3-DDC4-4E4E-80B6-9DB8400310DF}

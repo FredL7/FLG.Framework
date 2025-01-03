@@ -10,7 +10,7 @@ namespace ServerExecutable {
     class ProgramServer {
         private static bool stop = false;
 
-        static void Main(string[] args)
+        static void Main(string[] _)
         {
             Console.Title = "Server";
 

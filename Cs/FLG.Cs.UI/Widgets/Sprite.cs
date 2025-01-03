@@ -15,8 +15,8 @@ namespace FLG.Cs.UI.Widgets {
         internal Sprite(string name, XmlNode node) : base(name, node)
         {
             Source = XMLParser.GetStringAttribute(node, "source", string.Empty);
-            // TODO: Warn if Source is empty or fallback to magenta cube :) ?
-            // TODO: Allow no width or height declaration and instead fill parent while keeping ratio
+            //? Warn if Source is empty or fallback to magenta cube
+            // Allow no width or height declaration and instead fill parent while keeping ratio
         }
         internal Sprite(string name, string source, LayoutAttributes attributes)
             : base(name, attributes)

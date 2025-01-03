@@ -69,7 +69,7 @@ namespace FLG.Cs.UI {
 
         public IInputField InputField(string name, string label, string placeholder, IInputFieldModel model, LayoutAttributes layoutAttr)
             => new InputField(name, label, placeholder, model, layoutAttr);
-        // TODO: Second method of InputField without model that will use a default
+        //? Second method of InputField without model that will use a default
         #endregion Forms
     }
 }
