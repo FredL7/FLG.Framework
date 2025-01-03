@@ -1,6 +1,6 @@
 ﻿namespace FLG.Cs.Datamodel.UI.Widgets.Forms {
     public interface IInputFieldModel {
-        public bool SetValue(string value); // TODO: Replace bool by Result class
+        public bool SetValue(string value); //? Replace bool by Result class
         public bool SetValue(object value);
 
         public string GetValueAsString();

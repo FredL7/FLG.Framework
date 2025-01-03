@@ -37,7 +37,7 @@ namespace FLG.Cs.Logger {
 
         public override void LogEntry(LogEntry entry)
         {
-            // TODO: might cause performance issue if it writes the whole xml each time
+            //? might cause performance issue if it writes the whole xml each time
             _entries.Entries.Add(entry);
             using FileStream fs = new(_filepath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
             using StreamWriter w = new(fs);

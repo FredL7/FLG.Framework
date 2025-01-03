@@ -39,7 +39,7 @@ namespace FLG.Cs.Networking.Server {
                 Locator.Instance.Get<ILogManager>().Debug($"Connection with ID {connectionId} has assumed the wrong id ({connectionIdCheck})");
             }
 
-            // TODO: callback for connection successfully initialized?
+            //? callback for connection successfully initialized
         }
 
         private void Command(int connectionId, Packet packet)

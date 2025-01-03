@@ -24,7 +24,7 @@ namespace FLG.Cs.Datamodel.Logger {
 
         public override string ToString() => ToPrettyString();
 
-        // TODO: Why didn't I use ToString() directly?
+        //? Why didn't I use ToString() directly
         public string ToPrettyString()
         {
             StringBuilder sb = new();

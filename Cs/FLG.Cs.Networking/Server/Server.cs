@@ -15,7 +15,7 @@ namespace FLG.Cs.Networking.Server {
         internal Receiver Receiver { get; private set; }
         internal Sender Sender { get; private set; }
 
-        //? : using int for id, where >0 is for client players, and <0 is for utility?
+        //? : using int for id, where >0 is for client players, and <0 is for utility
         private readonly Dictionary<int, Connection> _connections;
         internal Connection GetConnection(int id) => _connections[id];
         private TcpListener? _tcpListener;
@@ -87,7 +87,7 @@ namespace FLG.Cs.Networking.Server {
             Locator.Instance.Get<ILogManager>().Debug($"Assigning id {id} to {client.Client.RemoteEndPoint}...");
             Connection connection = new(id, this, _threadManager);
             _connections[id] = connection;
-            connection.Connect(client); // TODO: return true/false if success?
+            connection.Connect(client); //? return true/false if success
         }
 
         private int GetNextAvailableId()

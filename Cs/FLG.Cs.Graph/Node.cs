@@ -41,7 +41,7 @@
             {
                 throw new ArgumentException("Cannot create an edge between a node and itself"); // Maybe we'd want to?
             }
-            // TODO: Directed?
+            //? Directed
 #endif
             Edge<T> edge = new(node1, node2, weight);
             if (!node1._edgesHash.Contains(edge))
@@ -58,7 +58,7 @@
 
         public static void SetNeighbours(Edge<T> edge)
         {
-            // TODO: Directed?
+            //? Directed
             if (!edge.Node1._edgesHash.Contains(edge))
             {
                 edge.Node1.Edges.Add(edge);

@@ -42,7 +42,7 @@
         internal static List<Edge<T>> PrimAlgorithm(MatrixGraph<T> graph, int startID)
         {
             PriorityQueue<Edge<T>, float> queue = new();
-            HashSet<Node<T>> visited = []; // TODO: Could be replaced by bool[] since I have an id for each node
+            HashSet<Node<T>> visited = []; //? Could be replaced by bool[] since I have an id for each node
             List<Edge<T>> edges = [];
 
             visited.Add(graph.Nodes[startID]);
