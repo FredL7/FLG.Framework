@@ -19,6 +19,7 @@ namespace FLG.Cs.UI.Widgets {
             }
         }
         public ETextAlignHorizontal AlignHorizontal { get; private set; }
+        public ETextAlignVertical AlignVertical { get; private set; }
 
         public event EventHandler? TextChanged;
 
@@ -26,6 +27,7 @@ namespace FLG.Cs.UI.Widgets {
         {
             _content = XMLParser.GetText(node);
             AlignHorizontal = XMLParser.GetTextAlignHorizontal(node);
+            AlignVertical = XMLParser.GetTextAlignVertical(node);
         }
         internal Text(string name, string content, LayoutAttributes layoutAttr, TextAttributes textAttr)
             : base(name, layoutAttr)
