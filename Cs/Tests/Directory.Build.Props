@@ -1,7 +1,0 @@
-<Project>
- <PropertyGroup>
-    <BaseOutputPath>$(ProjectDir)bin</BaseOutputPath>
-    <BaseIntermediateOutputPath>$(ProjectDir)obj</BaseIntermediateOutputPath>
-	<UseCommonOutputDirectory>false</UseCommonOutputDirectory>
-  </PropertyGroup>
-</Project>

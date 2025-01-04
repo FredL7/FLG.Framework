@@ -7,22 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Cs\FLG.Cs.Datamodel\FLG.Cs.Datamodel.csproj" />
+    <ProjectReference Include="..\..\..\cs\framework\FLG.Cs.Datamodel\FLG.Cs.Datamodel.csproj" />
     <ProjectReference Include="..\FLG.Unity.Helpers\FLG.Unity.Helpers.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="UnityEngine">
-      <HintPath>..\dependencies\UnityEngine\UnityEngine.dll</HintPath>
+      <HintPath>..\..\dependencies\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\dependencies\UnityEngine\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\..\dependencies\UnityEngine\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>..\dependencies\UnityEngine\UnityEngine.TextRenderingModule.dll</HintPath>
+      <HintPath>..\..\dependencies\UnityEngine\UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\dependencies\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\..\dependencies\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
 
