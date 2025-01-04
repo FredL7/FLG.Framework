@@ -7,16 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Cs\FLG.Cs.Datamodel\FLG.Cs.Datamodel.csproj" />
-    <ProjectReference Include="..\..\Cs\FLG.Cs.Logger\FLG.Cs.Logger.csproj" />
+    <ProjectReference Include="..\..\..\cs\framework\FLG.Cs.Datamodel\FLG.Cs.Datamodel.csproj" />
+    <ProjectReference Include="..\..\..\cs\framework\FLG.Cs.Logger\FLG.Cs.Logger.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="UnityEngine">
-      <HintPath>..\dependencies\UnityEngine\UnityEngine.dll</HintPath>
+      <HintPath>..\..\dependencies\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\dependencies\UnityEngine\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\..\dependencies\UnityEngine\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
   </ItemGroup>
 
