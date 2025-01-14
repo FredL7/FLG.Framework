@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>FLG.Godot.Helpers</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -14,12 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Cs\FLG.Cs.Datamodel\FLG.Cs.Datamodel.csproj" />
-    <ProjectReference Include="..\..\Cs\FLG.Cs.Decorators\FLG.Cs.Decorators.csproj" />
-    <ProjectReference Include="..\..\Cs\FLG.Cs.FLGMath\FLG.Cs.FLGMath.csproj" />
-    <ProjectReference Include="..\..\Cs\FLG.Cs.Framework\FLG.Cs.Framework.csproj" />
-    <ProjectReference Include="..\..\Cs\FLG.Cs.Geometry\FLG.Cs.Geometry.csproj" />
-    <ProjectReference Include="..\..\Cs\FLG.Cs.Model\FLG.Cs.Model.csproj" />
+    <ProjectReference Include="..\..\..\cs\framework\FLG.Cs.Datamodel\FLG.Cs.Datamodel.csproj" />
+    <ProjectReference Include="..\..\..\cs\framework\FLG.Cs.Decorators\FLG.Cs.Decorators.csproj" />
+    <ProjectReference Include="..\..\..\cs\framework\FLG.Cs.Math\FLG.Cs.Math.csproj" />
+    <ProjectReference Include="..\..\..\cs\framework\FLG.Cs.Framework\FLG.Cs.Framework.csproj" />
+    <ProjectReference Include="..\..\..\cs\framework\FLG.Cs.Geometry\FLG.Cs.Geometry.csproj" />
   </ItemGroup>
 
   <ItemGroup>
