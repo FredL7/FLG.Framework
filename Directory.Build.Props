@@ -1,4 +1,11 @@
-<Project>
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <BaseOutputPath>$(SolutionDir)\_build\bin</BaseOutputPath>
+    <!--BaseIntermediateOutputPath>$(SolutionDir)\_build\obj</BaseIntermediateOutputPath-->
+	<UseCommonOutputDirectory>true</UseCommonOutputDirectory>
+  </PropertyGroup>
+
   <PropertyGroup>
     <AssemblyVersion>0.3.0</AssemblyVersion>
     <FileVersion>$(AssemblyVersion)</FileVersion>
