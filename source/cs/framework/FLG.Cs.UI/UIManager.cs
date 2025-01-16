@@ -2,16 +2,19 @@
 using FLG.Cs.Datamodel.UI;
 using FLG.Cs.Datamodel.UI.Layouts;
 using FLG.Cs.Datamodel.UI.Pages;
+
 using FLG.Cs.Math;
 using FLG.Cs.UI.Layouts;
 using FLG.Cs.UI.Pages;
 
 
-
 namespace FLG.Cs.UI {
-    public class UIManager(PreferencesUI prefs, ILogManager logger, IUIFactory factory) : IUIManager {
+    public class UIManager(PreferencesUI prefs, ILogManager logger) : IUIManager {
         private readonly string[] _uiDirs = prefs.dirs;
+
         private Size _windowSize = prefs.windowSize;
+
+        private readonly UIFactory _factory = new();
         private readonly LayoutsManager _layoutsManager = new();
         private readonly PagesManager _pagesManager = new();
 
@@ -37,8 +40,7 @@ namespace FLG.Cs.UI {
         public void AddObserver(IUIObserver observer) { _observers.Add(observer); }
         public void RemoveObserver(IUIObserver observer)
         {
-            if (_observers.Contains(observer))
-                _observers.Remove(observer);
+            _observers.Remove(observer);
         }
 
         public IEnumerable<ILayout> GetLayouts() => _layoutsManager.GetLayouts();
@@ -56,13 +58,13 @@ namespace FLG.Cs.UI {
         {
             logger.Debug("Begin XML Parsing");
 
-            XMLParser parser = new(_uiDirs, logger, factory);
+            XMLParser parser = new(_uiDirs, logger, _factory);
             var result = parser.Parse();
             if (!result) logger.Log(result);
             logger.Debug("Finished XML Parsing");
 
             _layoutsManager.SetLayoutsFromParser(parser.GetLayouts());
-            _pagesManager.SetPagesFromParser(parser.GetPages(), this, factory);
+            _pagesManager.SetPagesFromParser(parser.GetPages(), this, _factory);
 
             // TODO: Register window size change to compute on change (also applies to pages)
             _layoutsManager.ComputeLayoutsRectXforms(_windowSize);

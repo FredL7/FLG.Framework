@@ -18,6 +18,43 @@ namespace FLG.Cs.Framework {
             _gameLoopObjects = [];
         }
 
+        public static PreferencesFrameworkSanitized SanitizePreferences(PreferencesFramework prefs)
+        {
+            PreferencesFrameworkSanitized sanitized = new()
+            {
+                identifier = prefs.identifier
+            };
+
+            PreferencesLogs logsDefault = new()
+            {
+                types = [ELoggerType.NO_LOGS],
+            };
+
+            sanitized.logsDefault = SanitizePreference(prefs.logs, logsDefault, "Logs", out var logs); ;
+            sanitized.logs = logs;
+
+            // TODO: Complete
+            // sanitized.uiDefault = SanitizePreference(prefs.ui, )
+
+            return sanitized;
+        }
+
+        private static bool SanitizePreference<T>(T? pref, T defaultValue, string id, out T value) where T : struct
+        {
+            if (pref.HasValue)
+            {
+                value = pref.Value;
+
+                return true;
+            }
+            else
+            {
+                value = defaultValue;
+                Locator.Instance.Get<ILogManager>().Info($"Using default {id} preferences");
+                return false;
+            }
+        }
+
         #region Initializer
         public Result Initialize(PreferencesFramework prefs)
         {

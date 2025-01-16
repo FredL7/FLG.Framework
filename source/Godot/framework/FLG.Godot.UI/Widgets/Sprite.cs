@@ -1,15 +1,13 @@
 ﻿using Godot;
 
-using FLG.Cs.Datamodel;
+using FLG.Cs.Datamodel.UI.Widgets;
 
-namespace FLG.Godot.UI {
-    public class Sprite : IWidget<ISprite> {
-        public ISprite Widget { get; private set; }
+using FLG.Godot.Helpers;
 
-        public Sprite(ISprite widget)
-        {
-            Widget = widget;
-        }
+
+namespace FLG.Godot.UI.Widgets {
+    public class FLGSprite(ISprite widget) : IWidget<ISprite> {
+        public ISprite Widget { get; private set; } = widget;
 
         public Node Draw(Node parent, bool _)
         {
@@ -17,7 +15,7 @@ namespace FLG.Godot.UI {
             {
                 Name = Widget.Name,
                 Position = new Vector2(Widget.Position.X, Widget.Position.Y),
-                Texture = ResourceLoader.Load<Texture2D>("res://" + Widget.Source),
+                Texture = ResourceLoader.Load<Texture2D>(IOHelper.GlobalizePathResources(Widget.Source)),
                 AnchorLeft = 0f,
                 AnchorRight = 0f,
                 AnchorTop = 0f,

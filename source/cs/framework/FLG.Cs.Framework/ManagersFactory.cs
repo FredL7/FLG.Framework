@@ -57,10 +57,9 @@ namespace FLG.Cs.Framework {
         internal static FrameworkFactoryResult<IUIManager> CreateUIManager(PreferencesUI prefs)
         {
             var logger = Locator.Instance.Get<ILogManager>();
-            var factory = new UIFactory();
 
             FrameworkFactoryResult<IUIManager> result;
-            IUIManager manager = new UIManager(prefs, logger, factory);
+            IUIManager manager = new UIManager(prefs, logger);
             if (Locator.Instance.Register(manager))
             {
                 result.result = Result.SUCCESS;

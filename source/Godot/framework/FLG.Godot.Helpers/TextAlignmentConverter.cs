@@ -1,11 +1,7 @@
-﻿using FLG.Cs.Datamodel;
-using Godot;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Godot;
+
+using FLG.Cs.Datamodel.UI.Widgets.Text;
+
 
 namespace FLG.Godot.Helpers {
     public static class TextAlignmentConverter {

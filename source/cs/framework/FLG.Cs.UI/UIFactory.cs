@@ -5,15 +5,16 @@ using FLG.Cs.Datamodel.UI.Layouts;
 using FLG.Cs.Datamodel.UI.Widgets.Forms;
 using FLG.Cs.Datamodel.UI.Widgets.Text;
 using FLG.Cs.Datamodel.UI.Widgets;
-using FLG.Cs.Datamodel.UI;
 
 using FLG.Cs.UI.Grids;
 using FLG.Cs.UI.Layouts;
 using FLG.Cs.UI.Widgets;
 using FLG.Cs.UI.Widgets.Forms;
+using FLG.Cs.Datamodel.UI;
 
 
 namespace FLG.Cs.UI {
+    // Can't be a static class because needs to be passed to the projectdef instances of pages
     public class UIFactory : IUIFactory {
         internal static AbstractLayoutElement? Xml(XmlNode node, string name)
         {

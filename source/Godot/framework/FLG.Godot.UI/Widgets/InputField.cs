@@ -1,18 +1,13 @@
 ﻿using Godot;
 
-using FLG.Cs.Datamodel;
+using FLG.Cs.Datamodel.UI.Widgets.Forms;
 
 
-namespace FLG.Godot.UI {
-    public class InputField : IWidget<IInputField> {
-        public IInputField Widget { get; private set; }
+namespace FLG.Godot.UI.Widgets {
+    public class FLGInputField(IInputField widget) : IWidget<IInputField> {
+        public IInputField Widget { get; private set; } = widget;
 
         private LineEdit? _inputField;
-
-        public InputField(IInputField widget)
-        {
-            Widget = widget;
-        }
 
         public Node Draw(Node parent, bool fromEditor)
         {

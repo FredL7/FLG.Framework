@@ -12,4 +12,21 @@ namespace FLG.Cs.Datamodel.Framework {
         public PreferencesNetworking? networking;
         public PreferencesSerialization? serialization;
     }
+
+    public struct PreferencesFrameworkSanitized
+    {
+        public string identifier;
+
+        public PreferencesLogs logs;
+        public bool logsDefault;
+
+        public PreferencesUI ui;
+        public bool uiDefault;
+
+        public PreferencesNetworking networking;
+        public bool networkingDefault;
+
+        public PreferencesSerialization serialization;
+        public bool serializationDefault;
+    }
 }

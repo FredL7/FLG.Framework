@@ -1,16 +1,13 @@
-﻿using FLG.Cs.Datamodel;
-using Godot;
+﻿using Godot;
 
-namespace FLG.Godot.UI {
-    public class Text : IWidget<IText> {
-        public IText Widget { get; private set; }
+using FLG.Cs.Datamodel.UI.Widgets.Text;
 
-        private RichTextLabel label;
 
-        public Text(IText widget)
-        {
-            Widget = widget;
-        }
+namespace FLG.Godot.UI.Widgets {
+    public class FLGText(IText widget) : IWidget<IText> {
+        public IText Widget { get; private set; } = widget;
+
+        private RichTextLabel? label;
 
         public Node Draw(Node parent, bool fromEditor)
         {
@@ -32,9 +29,12 @@ namespace FLG.Godot.UI {
             return label;
         }
 
-        public void UpdateText(object sender, EventArgs e)
+        public void UpdateText(object? sender, EventArgs e)
         {
-            label.Text = TextAlign(Widget.Content);
+            if (label != null)
+            {
+                label.Text = TextAlign(Widget.Content);
+            }
         }
 
         public string TextAlign(string content)
